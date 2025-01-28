@@ -26,6 +26,7 @@ const Header = () => {
                         <div className='flex hover:cursor-pointer gap-1' ><CiShoppingCart className='text-2xl font-bold flex' /> <h1 className='flex font-bold'>Cart</h1> </div>
                 </div>
         </div>
+        
 
         <div className='flex ml-5 gap-5' >
                 <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 ' > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
