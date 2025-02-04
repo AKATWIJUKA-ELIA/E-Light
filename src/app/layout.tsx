@@ -2,7 +2,15 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/page";
-
+import FirstHero from "@/components/FirstHero/page"
+import {
+        ClerkProvider,
+        SignInButton,
+        SignedIn,
+        SignedOut,
+        UserButton
+      } from '@clerk/nextjs'
+import SecondHero from "@/components/SecondHero/page";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,13 +23,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className="bg-white"
-      >
-        <Header/>
-        {children}
-      </body>
-    </html>
+     <ClerkProvider>
+     <html lang="en">
+       <body className="bg-white" >
+         <Header/>
+         <FirstHero/>
+         <SecondHero/>
+         {children}
+       </body>
+     </html>
+   </ClerkProvider>
   );
 }
