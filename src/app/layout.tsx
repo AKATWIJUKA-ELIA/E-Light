@@ -10,6 +10,7 @@ import {
         SignedOut,
         UserButton
       } from '@clerk/nextjs'
+import SecondHero from "@/components/SecondHero/page";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,6 +28,7 @@ export default function RootLayout({
        <body className="bg-white" >
          <Header/>
          <FirstHero/>
+         <SecondHero/>
          {children}
        </body>
      </html>
