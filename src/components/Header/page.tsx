@@ -1,11 +1,22 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { BsList } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import DropDownMenu from '../DropDownMenu/page';
 const Header = () => {
+
+        const [Hovered,setHovered] = useState(false)
+        const HandleDropDownMenu=()=>{
+                setHovered(true)
+        }
+
+        const showDropDownMenu=()=>{
+                setHovered(true)
+        }
   return (
     <div className='bg-white text-black gap-1 flex flex-col   border border-gray-300 py-3'>
         <div className='flex w-[100%] gap-24 ' >
@@ -40,7 +51,7 @@ const Header = () => {
         
 
         <div className='flex ml-5 gap-5' >
-                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 ' > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
+                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '  onMouseOver={showDropDownMenu} > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1 >Electronics</h1></div>
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1>Furniture</h1></div>
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1>Health & Beauty</h1></div>
@@ -55,6 +66,7 @@ const Header = () => {
 
         </div>
 
+        <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     </div>
   )
 }
