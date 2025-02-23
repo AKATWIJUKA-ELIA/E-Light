@@ -1,18 +1,35 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { BsList } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import DropDownMenu from '../DropDownMenu/page';
+import Link from 'next/link';
 const Header = () => {
+
+        const [Hovered,setHovered] = useState(false)
+        const HandleDropDownMenu=()=>{
+                setHovered(true)
+        }
+
+        const showDropDownMenu=()=>{
+                setHovered(true)
+        }
+        const close=()=>{
+                setHovered(false)
+        }
   return (
     <div className='bg-white text-black gap-1 flex flex-col   border border-gray-300 py-3'>
         <div className='flex w-[100%] gap-24 ' >
                 <div className='flex gap-12 w-[60%]' >
                         <div className='flex rounded-md ml-5'>
+                                <Link href="/">
                                 <Image className='rounded-md h-10' src="/images/Logo.png" alt='logo' width='200' height="100">
                                 </Image>
+                                </Link>
                         </div>
 
                         <div className='flex w-[100%] p-auto '>
@@ -40,21 +57,14 @@ const Header = () => {
         
 
         <div className='flex ml-5 gap-5' >
-                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 ' > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1 >Electronics</h1></div>
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1>Furniture</h1></div>
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1>Health & Beauty</h1></div>
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1>Accessories</h1></div>
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1>Properties</h1></div>
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' ><h1>Arts & Crafts</h1></div>
-                <div className='flex rounded-full   p-1  hover:cursor-pointer hover:bg-gray-100 ' ><h1>Home Utilities</h1></div>
-                <div className='flex rounded-full   p-1  hover:cursor-pointer hover:bg-gray-100 ' ><h1>Computers</h1></div>
-                <div className='flex rounded-full   p-1  hover:cursor-pointer hover:bg-gray-100 ' ><h1>Phones</h1></div>
-                <div className='flex rounded-full   p-1  hover:cursor-pointer hover:bg-gray-100 ' ><h1>Kids Section</h1></div>
-                <div className='flex rounded-full   p-1  hover:cursor-pointer hover:bg-gray-100 ' ><h1>Gadgets</h1></div>
+                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
+                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' >
+                        <Link href="/post" >Posts an Item</Link>
+                </div>
 
         </div>
 
+        <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     </div>
   )
 }
