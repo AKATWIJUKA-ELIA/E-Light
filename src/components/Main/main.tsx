@@ -58,7 +58,7 @@ const Main = () => {
       
           {/* Footer (Price & Date) */}
           <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
-            <span className="font-semibold text-lg text-black">Shs: {data.product_price}</span>
+            <span className="font-semibold text-lg text-black">Shs: {data.product_price? Number(data.product_price).toFixed(2):"loading.."}</span>
             <time dateTime={data._creationTime}>
               {new Date(data._creationTime).toLocaleDateString()}
             </time>
