@@ -5,6 +5,8 @@ import Image from "next/image";
 import { BiX } from 'react-icons/bi';
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useQuery } from "convex/react";
+import { api } from '../../../convex/_generated/api'
 
 
 interface DropDownMenuProps {
@@ -13,6 +15,10 @@ interface DropDownMenuProps {
 }
 
 const DropDownMenu: React.FC<DropDownMenuProps> = ({ isvisible, onClose,  }) => {
+
+        const cartegories = useQuery(api.cartegories.getCartegories);
+
+
       if (!isvisible) return null;
 const handleclose = (e: { target: { id: string; }; })=>{
       
@@ -30,22 +36,15 @@ const handleclose = (e: { target: { id: string; }; })=>{
                 <div id="Categories">
 
                         <div className="vertical-line ml-2  fade-in "  > 
-                              <div className=" cursor-pointer mr-2 my-5 slider slide--fast">
+                                {cartegories? (cartegories.map(({_id, cartegory}) =>
+                                <div key={_id} className=" cursor-pointer mr-2 my-5 slider slide--fast">
                                     
-                                    <Link href="">
-                                          <h1   className='animated font-bold main '  > <span id='main' className='animated current href=""'>Students Life</span></h1> 
-                                    </Link>
-                              </div>
-                              <div className=" cursor-pointer mr-2 my-5  slider slide--slow ">
-                                    <h1  className='animated font-bold ' ><span id='payments' className='animated'>Sports</span></h1> 
+                                <Link href="">
+                                      <h1   className='animated font-bold main '  > <span id='main' className='animated current href=""'>{cartegory}</span></h1> 
+                                </Link>
+                          </div>
+                                )):(<div className="vertical-line ml-2  fade-in "  > Loading . . .  </div>)}
                               
-                              </div>
-                              <div className=" cursor-pointer mr-2 my-5  slider slide--slower">
-                                    <h1  className='animated font-bold ' >  <span id='why_bugema' className='animated'>Clubs & Associations</span></h1> 
-                              </div>
-                              <div className=" cursor-pointer mr-2 my-5 slider slide--slowest ">
-                                    <h1  className='animated font-bold '> <span className='animated' id='contact'>Student Leadership</span></h1> 
-                              </div>                
                               
                         </div>
                   

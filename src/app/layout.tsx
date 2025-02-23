@@ -10,6 +10,7 @@ import {
         SignedOut,
         UserButton
       } from '@clerk/nextjs'
+      import { ConvexClientProvider } from "./ConvexClientProvider";
 import SecondHero from "@/components/SecondHero/page";
 
 export const metadata: Metadata = {
@@ -23,15 +24,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+        <ConvexClientProvider>
      <ClerkProvider>
      <html lang="en">
        <body className="bg-white" >
-         <Header/>
-         <FirstHero/>
-         <SecondHero/>
+        <Header/>
          {children}
        </body>
      </html>
    </ClerkProvider>
+   </ConvexClientProvider>
   );
 }
