@@ -32,7 +32,7 @@ const Main = () => {
         className="bg-white flex flex-col rounded-lg shadow-md overflow-hidden "
       >
         {/* Product Image */}
-        <Link href={`/products/${data._id}`} className="w-full">
+        <Link href={`/product/${data._id}`} className="w-full">
           <div className="relative w-full h-64 flex items-center justify-center bg-gray-100 transition-transform duration-200 hover:scale-105">
             <Image
               src={data.product_image}

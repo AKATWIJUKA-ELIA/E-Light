@@ -42,8 +42,7 @@ const Header = () => {
                         <div className='flex hover:cursor-pointer' >EN /UG.</div>
                         <div className='flex hover:cursor-pointer gap-1 py-1 ' >
                                 <SignedIn>
-                                <UserButton />
-                                <h1 className='flex'>Hi-<span className='font-bold'> Elia</span></h1> 
+                                <UserButton showName />
                                 </SignedIn> 
                                 <SignedOut>
                                 <VscAccount className='text-2xl flex' /> 

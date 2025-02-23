@@ -43,3 +43,15 @@ export const createProduct = mutation({
     },
     
   })
+
+  export const getProduct = query({
+        args:{id: v.string(),},
+              handler: async (ctx, args) => {
+                     const single = await ctx.db.query("products").filter((q)=> q.eq(q.field("_id"), args.id)).first(); 
+                     console.log("Single Job",single)
+                    single ? (
+                     single.product_image =  await ctx.storage.getUrl(single.product_image)
+                    ):null
+                    return single
+                    },
+                    })
