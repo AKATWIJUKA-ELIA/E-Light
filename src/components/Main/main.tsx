@@ -32,7 +32,7 @@ const Main = () => {
         className="bg-white flex flex-col rounded-lg shadow-md overflow-hidden "
       >
         {/* Product Image */}
-        <Link href={`/products/${data._id}`} className="w-full">
+        <Link href={`/product/${data._id}`} className="w-full">
           <div className="relative w-full h-64 flex items-center justify-center bg-gray-100 transition-transform duration-200 hover:scale-105">
             <Image
               src={data.product_image}
@@ -58,7 +58,7 @@ const Main = () => {
       
           {/* Footer (Price & Date) */}
           <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
-            <span className="font-semibold text-lg text-black">Shs: {data.product_price}</span>
+            <span className="font-semibold text-lg text-black">Shs: {data.product_price? Number(data.product_price).toFixed(2):"loading.."}</span>
             <time dateTime={data._creationTime}>
               {new Date(data._creationTime).toLocaleDateString()}
             </time>
