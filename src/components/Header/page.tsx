@@ -50,7 +50,7 @@ const Header = () => {
                                 </SignedOut>
                                
                         </div>
-                        <div className='flex hover:cursor-pointer gap-1' ><CiShoppingCart className='text-2xl font-bold  flex' /> <h1 className='flex font-bold'>Cart</h1> </div>
+                        <Link href="/cart" className='flex hover:cursor-pointer gap-1' ><CiShoppingCart className='text-2xl font-bold  flex' /> <h1 className='flex font-bold'>Cart</h1> </Link>
                 </div>
         </div>
         
@@ -58,7 +58,7 @@ const Header = () => {
         <div className='flex ml-5 gap-5' >
                 <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' >
-                        <Link href="/post" >Posts an Item</Link>
+                        <Link href="/post" >Sell Something?</Link>
                 </div>
 
         </div>

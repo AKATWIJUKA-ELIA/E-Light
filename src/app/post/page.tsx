@@ -9,9 +9,13 @@ import { useMutation } from 'convex/react';
 
 const AddProduct =  () => {
       const now = new Date().toISOString();
-
+        const HandleImage = (event: React.ChangeEvent<HTMLInputElement>)=>{
+                const files = event.target.files
+                return files
+        }
       const generateUploadUrl = useMutation(api.products.generateUploadUrl);
-      const [selectedImage, setSelectedImage] = useState<File | null>(null);
+      const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
+      const [storage, setstorage] = useState<Array<string>>([""])
       const fileInputRef = useRef<HTMLInputElement>(null);
 
       const createProduct = useMutation(api.products.createProduct)
@@ -25,7 +29,7 @@ const AddProduct =  () => {
                 product_cartegory: "",
                 product_condition: "",
                 product_description: "",
-                product_image: "",
+                product_image: string[],
                 product_name: "",
                 product_owner_id: "",
                 product_price: "",
@@ -35,7 +39,7 @@ const AddProduct =  () => {
                 product_cartegory: "",
                 product_condition: "",
                 product_description: "",
-                product_image: "",
+                product_image: [],
                 product_name: "",
                 product_owner_id: "",
                 product_price: "",
@@ -49,6 +53,7 @@ const AddProduct =  () => {
                   }));
                 };
                 const [name] = useState(() => "User " + Math.floor(Math.random() * 10000));
+
                 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
@@ -58,7 +63,7 @@ const AddProduct =  () => {
                                 product_cartegory: "",
                                 product_condition: "",
                                 product_description: "",
-                                product_image: "",
+                                product_image: [],
                                 product_name: "",
                                 product_owner_id: "",
                                 product_price: "",
@@ -71,25 +76,34 @@ const AddProduct =  () => {
                   try {
                          // Step 1: Get a short-lived upload URL
                         const postUrl = await generateUploadUrl();
-
-                        const result = await fetch(postUrl, {
-                              method: "POST",
-                              headers: { "Content-Type": selectedImage!.type },
-                              body: selectedImage,
-                              });
-                              console.log(result)
-                        const response = await result.json();
-                        const storageId = String(response.storageId);
-                        console.log(storageId)
-                        const updatedproduct={
-                              ...product,
-                         product_image: storageId,
-                          product_name: product.product_name,
-                          product_description: product.product_description,
-                          product_owner_id: userid,
-                          product_cartegory: product.product_cartegory,
-                        }
-                        console.log(updatedproduct)
+                        const responses = await Promise.all(
+                                Array.from(selectedImage || []).map(async (image: File) => {
+                                  const result = await fetch(postUrl, {
+                                    method: "POST",
+                                    headers: { "Content-Type": image.type },
+                                    body: image,
+                                  });
+                            
+                                  if (!result.ok) throw new Error("Failed to upload image");
+                            
+                                  return result.json(); 
+                                })
+                              );
+                        
+                              const storageIds = responses.map((res) => res.storageId);
+                              setstorage((prev) => [...prev, ...storageIds]);
+                            
+                              const updatedproduct = {
+                                ...product,
+                                product_image: [...storageIds], // Ensure new IDs are included
+                                product_name: product.product_name,
+                                product_description: product.product_description,
+                                product_owner_id: userid,
+                                product_cartegory: product.product_cartegory,
+                                approved: false,
+                              };
+                            
+                              console.log("Updated Product: ", updatedproduct);
                         
                         
                         await createProduct({ products: updatedproduct });
@@ -190,7 +204,8 @@ const AddProduct =  () => {
             id="imageUrl"
             name="imageUrl"
             ref={fileInputRef}
-            onChange={(event) => setSelectedImage(event.target.files?.[0] || null)}
+            multiple
+            onChange={(event) => setSelectedImage((prev) => [...(prev || []), ...(event.target.files ? Array.from(event.target.files) : [])])}
             required
             className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
