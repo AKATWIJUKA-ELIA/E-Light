@@ -31,7 +31,7 @@ export const createProduct = mutation({
            
         handler: async (ctx) => {
       const products = await ctx.db.query("products").filter((q)=> q.eq(q.field("approved"), true)).collect(); 
-      console.log(products)
+//       console.log(products)
       return Promise.all(
         products.map(async (product) => ({
           ...product,
@@ -49,7 +49,7 @@ export const createProduct = mutation({
         args:{id: v.string(),},
               handler: async (ctx, args) => {
                      const single = await ctx.db.query("products").filter((q)=> q.eq(q.field("_id"), args.id)).first(); 
-                     console.log("Single Job",single)
+                //      console.log("Single Job",single)
                     if (single) {
                         single.product_image = await Promise.all(
                             single.product_image.map(async (image: string) => {

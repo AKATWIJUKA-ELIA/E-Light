@@ -39,19 +39,11 @@ export default function ShoppingCart() {
     },
   ])
 
-  const [giftItems, setGiftItems] = useState<Record<string, boolean>>({})
-  const [isOrderGift, setIsOrderGift] = useState(false)
+
 
   const updateQuantity = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return
     setCartItems(cartItems.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)))
-  }
-
-  const toggleGift = (id: string) => {
-    setGiftItems({
-      ...giftItems,
-      [id]: !giftItems[id],
-    })
   }
 
   const deleteItem = (id: string) => {
@@ -136,27 +128,20 @@ export default function ShoppingCart() {
                 </div>
               </div>
 
-              <div className="text-right font-bold md:w-24">${item.price.toFixed(2)}</div>
+              <div className="text-right font-bold md:w-24">Shs:{item.price.toFixed(2)}</div>
             </div>
           </div>
         ))}
 
         <div className="text-right text-lg font-bold">
-          Subtotal ({itemCount} items): ${subtotal.toFixed(2)}
+          Subtotal ({itemCount} items): Shs:{subtotal.toFixed(2)}
         </div>
       </div>
 
       <div className="lg:w-1/4">
         <div className="bg-white p-4 rounded border border-gray-200 mb-6">
           <div className="text-lg font-bold mb-4">
-            Subtotal ({itemCount} items): ${subtotal.toFixed(2)}
-          </div>
-
-          <div className="flex items-start mb-4">
-            
-            <label htmlFor="order-gift" className="ml-2 text-sm">
-              This order contains a gift
-            </label>
+            Subtotal ({itemCount} items) Shs:{subtotal.toFixed(2)}
           </div>
 
           <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-full">

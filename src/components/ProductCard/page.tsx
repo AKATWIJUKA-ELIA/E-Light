@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Oval } from 'react-loader-spinner'
+import { useAppSelector } from "@/hooks";
 
 interface ProductProps {
   product: {
@@ -14,6 +15,8 @@ interface ProductProps {
 }
 
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
+        const cart  = useAppSelector((state) => state.cart.items);
+        console.log("Cart is: ",cart)
   return (
     <div className="flex gap-20 bg-white rounded-lg border border-black mt-5 h-screen shadow-md overflow-hidden p-4">
       {/* Product Image */}
