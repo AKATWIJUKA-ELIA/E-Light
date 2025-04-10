@@ -7,7 +7,7 @@ import { useMutation } from 'convex/react';
 
 
 const AddProduct =  () => {
-        }
+        
       const generateUploadUrl = useMutation(api.products.generateUploadUrl);
       const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
       const fileInputRef = useRef<HTMLInputElement>(null);
