@@ -1,4 +1,4 @@
-export default async function sendEmail(Email: any) {
+export default async function sendEmail(Email: string) {
         try {
           const response = await fetch('/send-email', {
             method: 'POST',
@@ -34,7 +34,7 @@ export default async function sendEmail(Email: any) {
         }
       };
     
-      export async function sendDismissalEmail(Email: any) {
+      export async function sendDismissalEmail(Email: string) {
             try {
               const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/send-email`, {
                 method: 'POST',

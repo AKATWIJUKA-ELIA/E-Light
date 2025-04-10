@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/page";
 import ReduxProvider from "./ReduxProvider";
-import FirstHero from "@/components/FirstHero/page"
-import {
-        ClerkProvider,
-        SignInButton,
-        SignedIn,
-        SignedOut,
-        UserButton
-      } from '@clerk/nextjs'
-      import { ConvexClientProvider } from "./ConvexClientProvider";
-import SecondHero from "@/components/SecondHero/page";
+import {ClerkProvider,} from '@clerk/nextjs'
+import { ConvexClientProvider } from "./ConvexClientProvider";
 
 export const metadata: Metadata = {
   title: "ShopCheap",

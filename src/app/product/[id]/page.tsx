@@ -10,7 +10,7 @@ interface PageProps {
 
 const Product = ({params}:PageProps) => {
         const { id } = use(params); 
-        const { data: product, loading } = useGetProductById(id); 
+        const { data: product } = useGetProductById(id); 
   if (!product) {
     return  <Oval
                             visible={true}

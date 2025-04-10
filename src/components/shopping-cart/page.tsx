@@ -1,5 +1,4 @@
-"use client"
-import { useMemo } from "react";
+"use client";
 import Image from "next/image"
 import { Minus, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -10,16 +9,6 @@ import { Oval } from 'react-loader-spinner'
 import useReduceCart from "@/hooks/useReduceCart"
 import useIncreaseCart from "@/hooks/useIncreaseCart"
 import useDeleteCart from "@/hooks/useDeleteCart"
-interface CartItem {
-  id: string
-  name: string
-  price: number
-  quantity: number
-  image: string
-  inStock: boolean
-  style?: string
-  color?: string
-}
 
 const ShoppingCart= ()=> {
         const cart = useAppSelector((state) => state.cart.items)

@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Oval } from 'react-loader-spinner'
 import useAddToCart  from '../../hooks/useAddToCart';
 
@@ -34,7 +33,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
      
                    <div className="flex mt-5 mx-auto   w-[70%]">
                         <div className="flex   gap-3 border border-blue-600 rounded-lg  h-[100%] w-[15%]">
-                   {product? (product.product_image?.map((item: any) => (
+                   {product? (product.product_image?.map((item: string) => (
                    <Image
                    key={item} 
                        src={item}

@@ -1,6 +1,5 @@
 "use client"
 import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react'
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
@@ -8,14 +7,9 @@ import { useMutation } from 'convex/react';
 
 
 const AddProduct =  () => {
-      const now = new Date().toISOString();
-        const HandleImage = (event: React.ChangeEvent<HTMLInputElement>)=>{
-                const files = event.target.files
-                return files
         }
       const generateUploadUrl = useMutation(api.products.generateUploadUrl);
       const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
-      const [storage, setstorage] = useState<Array<string>>([""])
       const fileInputRef = useRef<HTMLInputElement>(null);
 
       const createProduct = useMutation(api.products.createProduct)
@@ -52,7 +46,6 @@ const AddProduct =  () => {
                   setProduct((prev) => ({...prev,[name]: value,
                   }));
                 };
-                const [name] = useState(() => "User " + Math.floor(Math.random() * 10000));
 
                 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
@@ -91,7 +84,6 @@ const AddProduct =  () => {
                               );
                         
                               const storageIds = responses.map((res) => res.storageId);
-                              setstorage((prev) => [...prev, ...storageIds]);
                             
                               const updatedproduct = {
                                 ...product,

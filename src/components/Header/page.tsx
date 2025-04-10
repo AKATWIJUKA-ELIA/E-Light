@@ -14,15 +14,9 @@ const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
-        const HandleDropDownMenu=()=>{
-                setHovered(true)
-        }
 
         const showDropDownMenu=()=>{
                 setHovered(true)
-        }
-        const close=()=>{
-                setHovered(false)
         }
   return (
     <div className='bg-white text-black gap-1 flex flex-col   border border-gray-300 py-3'>
