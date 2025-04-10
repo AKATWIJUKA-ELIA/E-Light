@@ -15,12 +15,6 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ isvisible, onClose,  }) => 
 
 
       if (!isvisible) return null;
-const handleclose = (e: { target: { id: string; }; })=>{
-      
-      if( e.target.id === 'wrapper ') onClose();
-      document.querySelector('.active')?.classList.remove('active');
-      
-}
 
   return (
       <>

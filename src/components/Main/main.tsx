@@ -4,7 +4,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
+interface Product{
+        _id: number
+        product_name: string
+        product_image:string
+        product_description:string
+        product_price:number
+        _creationTime:Date
 
+}
 const Main = () => {
         
         const [products, setproducts] = useState<any[]>([]);
