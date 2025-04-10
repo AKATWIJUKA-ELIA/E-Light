@@ -15,7 +15,7 @@ interface Product{
 }
 const Main = () => {
         
-        const [products, setproducts] = useState<any[]>([]);
+        const [products, setproducts] =  useState<Product[] | undefined>();
         const product = useQuery(api.products.getProducts)
         useEffect(() => {
                 
