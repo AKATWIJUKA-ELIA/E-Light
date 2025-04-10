@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/page";
+import ReduxProvider from "./ReduxProvider";
 import FirstHero from "@/components/FirstHero/page"
 import {
         ClerkProvider,
@@ -26,12 +27,14 @@ export default function RootLayout({
   return (
         <ConvexClientProvider>
      <ClerkProvider>
+     <ReduxProvider>
      <html lang="en">
        <body className="bg-white" >
         <Header/>
          {children}
        </body>
      </html>
+     </ReduxProvider>
    </ClerkProvider>
    </ConvexClientProvider>
   );

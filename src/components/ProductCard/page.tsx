@@ -2,11 +2,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Oval } from 'react-loader-spinner'
-import { useAppSelector } from "@/hooks";
+import useAddToCart  from '../../hooks/useAddToCart';
 
 interface ProductProps {
   product: {
-        product_id: string;
+        _id: string;
     product_name: string;
     product_image: string[];
     product_price: number;
@@ -15,8 +15,8 @@ interface ProductProps {
 }
 
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
-        const cart  = useAppSelector((state) => state.cart.items);
-        console.log("Cart is: ",cart)
+        const HandleAddToCart = useAddToCart()
+
   return (
     <div className="flex gap-20 bg-white rounded-lg border border-black mt-5 h-screen shadow-md overflow-hidden p-4">
       {/* Product Image */}
@@ -81,7 +81,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         </div>
         
         <div className="flex mt-4">          
-          <button className="bg-blue-600 text-white mx-auto w-[80%]  px-4 py-2 rounded-3xl hover:bg-blue-700 hover:cursor-pointer transition">
+          <button onClick={()=>HandleAddToCart(product)} className="bg-blue-600 text-white mx-auto w-[80%]  px-4 py-2 rounded-3xl hover:bg-blue-700 hover:cursor-pointer transition">
             Add to Cart
           </button>
         </div>

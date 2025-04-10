@@ -48,7 +48,7 @@ const Main = () => {
         <div className="p-4 flex flex-col gap-2">
           {/* Product Name */}
           <h2 className="text-lg font-semibold text-gray-900">
-            <Link href={`/products/${data._id}`} className="hover:underline">
+            <Link href={`/product/${data._id}`} className="hover:underline">
               {data.product_name}
             </Link>
           </h2>

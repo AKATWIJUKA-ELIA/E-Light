@@ -1,11 +1,15 @@
 "use client"
-
-import { useState } from "react"
+import { useMemo } from "react";
 import Image from "next/image"
 import { Minus, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-
+import { useAppSelector } from "@/hooks"
+import useGetProductById from "@/hooks/useGetProductById"
+import { Oval } from 'react-loader-spinner'
+import useReduceCart from "@/hooks/useReduceCart"
+import useIncreaseCart from "@/hooks/useIncreaseCart"
+import useDeleteCart from "@/hooks/useDeleteCart"
 interface CartItem {
   id: string
   name: string
@@ -17,45 +21,32 @@ interface CartItem {
   color?: string
 }
 
-export default function ShoppingCart() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "1",
-      name: "Turandoss Layered Crescent Necklaces for Women - 14K Gold Plated Crescent Layered Choker Necklace for Women Layering Necklace",
-      price: 17.99,
-      quantity: 3,
-      image: "/placeholder.svg?height=150&width=150",
-      inStock: true,
-      style: "3PCS -Gold Chain&Crescent&Bar",
-    },
-    {
-      id: "2",
-      name: "DEARMAY Gold Bracelets for Women Trendy Gold Jewelry Set for Women Cuban Link Chain 14K Gold Plated Filled Figaro Paperclip Rope Herringbone Bracelet Pack 18K Gifts",
-      price: 15.99,
-      quantity: 2,
-      image: "/placeholder.svg?height=150&width=150",
-      inStock: true,
-      color: "BRACELET-C",
-    },
-  ])
+const ShoppingCart= ()=> {
+        const cart = useAppSelector((state) => state.cart.items)
+        const ReduceCart = useReduceCart()
+        const IncreaseCart = useIncreaseCart()
+        const Delete = useDeleteCart()
+        const itemCount = cart?.reduce((total, item) => total + (item.quantity || 0), 0)
 
+        const calculateSubtotal = () => {
+                return cart.reduce((total, item) => total + item.product_price * item.quantity, 0)
+              }
+            
+              const subtotal = calculateSubtotal()
+        const products = cart.map((item) => ({
+                id: item.product_id,
+                query: useGetProductById(item.product_id),
+        }));
+        const isLoading = products.some((p) => p.query.loading);
 
+        // Retrieve the Quantity of individual Products
+        const HandleQuantity = (id:string)=>{
+                const CartQuantity = cart.map((item) => item.product_id === id ? item.quantity:"")
+                return CartQuantity
+        }
+        
+        
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return
-    setCartItems(cartItems.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)))
-  }
-
-  const deleteItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id))
-  }
-
-  const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-  }
-
-  const subtotal = calculateSubtotal()
-  const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0)
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto p-4">
@@ -66,13 +57,30 @@ export default function ShoppingCart() {
         </div>
         <Separator className="mb-6" />
 
-        {cartItems.map((item) => (
+        {isLoading ? (
+            <Oval
+                                        visible={true}
+                                        height="80"
+                                        width="80"
+                                        color="#0000FF"
+                                        secondaryColor="#ddd"
+                                        ariaLabel="oval-loading"
+                                        wrapperStyle={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            height: "100vh",
+                                        }}
+                                        wrapperClass=""
+                                        />
+        ) : (products.map((item) => (
+                item.query.data && (
           <div key={item.id} className="mb-6 pb-6 border-b border-gray-200">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-shrink-0 w-32 h-32">
                 <Image
-                  src={item.image || "/placeholder.svg"}
-                  alt={item.name}
+                  src={item.query.data.product_image[0] || "/placeholder.svg"}
+                  alt={item.query.data.product_name}
                   width={150}
                   height={150}
                   className="object-contain"
@@ -80,12 +88,12 @@ export default function ShoppingCart() {
               </div>
 
               <div className="flex-grow">
-                <h2 className="text-lg font-medium">{item.name}</h2>
+                <h2 className="text-lg font-medium">{item.query.data.product_name}</h2>
                 <p className="text-sm text-green-600 mt-1">{item.inStock ? "In Stock" : "Out of Stock"}</p>
 
          
 
-                {item.style && (
+                {/* {item.style && (
                   <p className="text-sm mt-1">
                     <span className="font-medium">Style:</span> {item.style}
                   </p>
@@ -95,26 +103,26 @@ export default function ShoppingCart() {
                   <p className="text-sm mt-1">
                     <span className="font-medium">Color:</span> {item.color}
                   </p>
-                )}
+                )} */}
 
                 <div className="flex flex-wrap items-center gap-4 mt-3">
                   <div className="flex items-center border border-gray-300 rounded-full">
                     <button
                       className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() => ReduceCart(item.id)}
                     >
                       <Minus className="h-3 w-3" />
                     </button>
-                    <span className="w-8 text-center">{item.quantity}</span>
+                    <span className="w-8 text-center">{HandleQuantity(item.id)}</span>
                     <button
                       className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => IncreaseCart(item.id)}
                     >
                       <Plus className="h-3 w-3" />
                     </button>
                   </div>
 
-                  <button className="text-sm text-blue-500 hover:underline" onClick={() => deleteItem(item.id)}>
+                  <button className="text-sm text-blue-500 hover:underline" onClick={() => Delete(item.id)}>
                     Delete
                   </button>
 
@@ -128,20 +136,22 @@ export default function ShoppingCart() {
                 </div>
               </div>
 
-              <div className="text-right font-bold md:w-24">Shs:{item.price.toFixed(2)}</div>
+              <div className="text-right font-bold md:w-24">Shs:{item.query.data.product_price}</div>
             </div>
           </div>
-        ))}
+        ))))}
 
         <div className="text-right text-lg font-bold">
-          Subtotal ({itemCount} items): Shs:{subtotal.toFixed(2)}
+          Subtotal 
+          ({itemCount} items): Shs:{subtotal.toFixed(2)}
         </div>
       </div>
 
       <div className="lg:w-1/4">
         <div className="bg-white p-4 rounded border border-gray-200 mb-6">
           <div className="text-lg font-bold mb-4">
-            Subtotal ({itemCount} items) Shs:{subtotal.toFixed(2)}
+            Subtotal
+             ({itemCount} items) Shs:{subtotal.toFixed(2)}
           </div>
 
           <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-full">
@@ -214,3 +224,4 @@ export default function ShoppingCart() {
     </div>
   )
 }
+export default ShoppingCart;
