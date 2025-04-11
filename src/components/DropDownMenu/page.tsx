@@ -1,9 +1,4 @@
-import React, { Children } from 'react';
-import { FaArrowRight } from 'react-icons/fa6';
-import football from "../../public/images/nav/sports/football.jpg";
-import Image from "next/image";
-import { BiX } from 'react-icons/bi';
-import { useEffect, useState } from "react";
+import React from 'react';
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from '../../../convex/_generated/api'
@@ -20,12 +15,6 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ isvisible, onClose,  }) => 
 
 
       if (!isvisible) return null;
-const handleclose = (e: { target: { id: string; }; })=>{
-      
-      if( e.target.id === 'wrapper ') onClose();
-      document.querySelector('.active')?.classList.remove('active');
-      
-}
 
   return (
       <>

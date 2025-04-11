@@ -1,6 +1,5 @@
 
 import nodemailer from 'nodemailer';
-require('dotenv').config();
 export async function POST(request) {
   const body = await request.json();
   const { to, subject, html } = body;

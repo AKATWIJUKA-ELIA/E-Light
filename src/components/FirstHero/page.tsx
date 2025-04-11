@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 const FisrtHero = () => {
 
-        const Images: any[] = [
+        const Images: string[] = [
                 '/images/001_LandCruiser250.jpg',
                 '/images/002_LandCruiser250.jpg',
                 '/images/004_LandCruiser250 (1).jpg',

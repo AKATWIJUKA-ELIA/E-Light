@@ -1,15 +1,20 @@
-import Header from "@/components/Header/page";
-import Image from "next/image";
+"use client"
 import FisrtHero from "@/components/FirstHero/page";
 import SecondHero from "@/components/SecondHero/page";
 import Main from "@/components/Main/main";
-
+import { Provider } from "react-redux"
+import { PersistGate } from "redux-persist/integration/react";
+import {store,persistor} from "@/store/store"
 export default function Home() {
   return (
-    <div className="bg-white">
-        <FisrtHero/>
-        <SecondHero/>
-        <Main/>
-    </div>
+        <Provider store={store}>
+                <PersistGate persistor={persistor}>
+                <div className="bg-white">
+                <FisrtHero/>
+                <SecondHero/>
+                <Main/>
+                </div>
+                </PersistGate>
+ </Provider>
   );
 }

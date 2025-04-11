@@ -1,17 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/page";
-import FirstHero from "@/components/FirstHero/page"
-import {
-        ClerkProvider,
-        SignInButton,
-        SignedIn,
-        SignedOut,
-        UserButton
-      } from '@clerk/nextjs'
-      import { ConvexClientProvider } from "./ConvexClientProvider";
-import SecondHero from "@/components/SecondHero/page";
+import ReduxProvider from "./ReduxProvider";
+import {ClerkProvider,} from '@clerk/nextjs'
+import { ConvexClientProvider } from "./ConvexClientProvider";
 
 export const metadata: Metadata = {
   title: "ShopCheap",
@@ -26,12 +18,14 @@ export default function RootLayout({
   return (
         <ConvexClientProvider>
      <ClerkProvider>
+     <ReduxProvider>
      <html lang="en">
        <body className="bg-white" >
         <Header/>
          {children}
        </body>
      </html>
+     </ReduxProvider>
    </ClerkProvider>
    </ConvexClientProvider>
   );

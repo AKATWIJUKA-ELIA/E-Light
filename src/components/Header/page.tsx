@@ -8,22 +8,19 @@ import { CiShoppingCart } from "react-icons/ci";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
-const Header = () => {
+import { useAppSelector } from '@/hooks';
 
+const Header = () => {
+        const cartitem = useAppSelector(state => state.cart.items);
+        const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
-        const HandleDropDownMenu=()=>{
-                setHovered(true)
-        }
 
         const showDropDownMenu=()=>{
                 setHovered(true)
         }
-        const close=()=>{
-                setHovered(false)
-        }
   return (
     <div className='bg-white text-black gap-1 flex flex-col   border border-gray-300 py-3'>
-        <div className='flex w-[100%] gap-24 ' >
+        <div className='flex w-[100%] gap-18 ' >
                 <div className='flex gap-12 w-[60%]' >
                         <div className='flex rounded-md ml-5'>
                                 <Link href="/">
@@ -50,7 +47,7 @@ const Header = () => {
                                 </SignedOut>
                                
                         </div>
-                        <Link href="/cart" className='flex hover:cursor-pointer gap-1' ><CiShoppingCart className='text-2xl font-bold  flex' /> <h1 className='flex font-bold'>Cart</h1> </Link>
+                        <Link href="/cart" className='flex hover:cursor-pointer gap-1' ><CiShoppingCart className='text-2xl font-bold  flex' /> <h1 className='flex font-bold'>Cart {Cart? Cart:""}</h1> </Link>
                 </div>
         </div>
         
