@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
-// import { Oval } from 'react-loader-spinner'
 import { FaOpencart } from "react-icons/fa6";
 import ProductSkeleton from '../ProductsSkeleton/page'
 interface Product {
@@ -29,7 +28,7 @@ const Main = () => {
                     setproducts(product)
                 }
                   console.log("data is ",products)
-        }, [product]);
+        }, [products]);
         console.log("Url is",products[1])
 
         const truncateString = (text: string, maxLength: number): string => {

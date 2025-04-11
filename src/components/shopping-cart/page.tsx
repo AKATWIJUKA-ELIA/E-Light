@@ -1,5 +1,4 @@
 "use client"
-import { useMemo } from "react";
 import Image from "next/image"
 import { Minus, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
