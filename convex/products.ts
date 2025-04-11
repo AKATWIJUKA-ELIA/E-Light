@@ -60,3 +60,35 @@ export const createProduct = mutation({
                     return single
                     },
                     })
+        
+
+export const getProductsByIds = query({
+args: { ids: v.array(v.string()) }, // Accept an array of product IDs
+handler: async (ctx, { ids }) => {
+        return await Promise.all(
+          ids.map(async (id) => {
+            const normalizedId = ctx.db.normalizeId("products", id);
+            if (!normalizedId) {
+              throw new Error(`Invalid ID: ${id}`);
+            }
+            const product= await ctx.db.get(normalizedId);
+            if(product){
+                product.product_image = await Promise.all(
+                        product.product_image.map(async (image: string) => {
+                                return await ctx.storage.getUrl(image);
+                        }
+                ))
+          }
+          return product;
+        })
+        ); // Fetch all products at once
+},
+
+});
+
+export const getImageUrl = query({
+        args: { fileId: v.id("_storage") }, // Convex stores files in the `_storage` table
+        handler: async (ctx, { fileId }) => {
+          return await ctx.storage.getUrl(fileId); // Generate the view URL
+        },
+      });

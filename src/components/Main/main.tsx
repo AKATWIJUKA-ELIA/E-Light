@@ -4,26 +4,33 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
-interface Product{
-        _id: number
-        product_name: string
-        product_image:string
-        product_description:string
-        product_price:number
-        _creationTime:Date
-
+// import { Oval } from 'react-loader-spinner'
+import { FaOpencart } from "react-icons/fa6";
+import ProductSkeleton from '../ProductsSkeleton/page'
+interface Product {
+ approved: boolean;
+  product_category: string;
+  product_condition: string;
+  product_description: string;
+  product_image: string;
+  product_name: string;
+  product_owner_id: string;
+  product_price: string;
+  _creationTime: number;
+  _id: string;
 }
 const Main = () => {
         
-        const [products, setproducts] =  useState<Product[] | undefined>();
+        const [products, setproducts] = useState<Product[]>([]);
         const product = useQuery(api.products.getProducts)
+        
         useEffect(() => {
-                
                 if (product) {
                     setproducts(product)
                 }
                   console.log("data is ",products)
         }, [product]);
+        console.log("Url is",products[1])
 
         const truncateString = (text: string, maxLength: number): string => {
                 return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
@@ -55,11 +62,14 @@ const Main = () => {
         {/* Product Details */}
         <div className="p-4 flex flex-col gap-2">
           {/* Product Name */}
-          <h2 className="text-lg font-semibold text-gray-900">
+        
+          <h2 className=" flex text-lg font-semibold text-gray-900">
             <Link href={`/product/${data._id}`} className="hover:underline">
               {data.product_name}
             </Link>
           </h2>
+          
+          <FaOpencart  className='ml-auto -mt-8 text-2xl hover:cursor-pointer font-bold' />
       
           {/* Product Description */}
           <p className="text-gray-600 text-sm">{truncateString(data.product_description, 30)}</p>
@@ -67,7 +77,7 @@ const Main = () => {
           {/* Footer (Price & Date) */}
           <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
             <span className="font-semibold text-lg text-black">Shs: {data.product_price? Number(data.product_price).toFixed(2):"loading.."}</span>
-            <time dateTime={data._creationTime}>
+            <time dateTime={new Date(data._creationTime).toISOString()}>
               {new Date(data._creationTime).toLocaleDateString()}
             </time>
           </div>
@@ -75,7 +85,7 @@ const Main = () => {
       </div>
       
         )):(
-                <div>Loading. . . </div>
+                <ProductSkeleton/>
         )}
         
     </div>
