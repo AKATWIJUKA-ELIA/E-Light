@@ -41,7 +41,7 @@ const ShoppingCart= ()=> {
                 const item = cart.find((item) => item.product_id === id);
                 return item ? item.quantity : 0; // Return 0 if not found
             };
-            
+
         const Product = (products: Product[]) => {
                 return products.map((p) => ({
                     ...p, // Spread the existing product fields
@@ -103,7 +103,7 @@ const ShoppingCart= ()=> {
 
               <div className="flex-grow">
                 <h2 className="text-lg font-medium">{item.product_name}</h2>
-                <p className="text-sm text-green-600 mt-1">{item.inStock ? "In Stock" : "Out of Stock"}</p>
+                {/* <p className="text-sm text-green-600 mt-1">{"In Stock" : "Out of Stock"}</p> */}
 
                 <div className="flex flex-wrap items-center gap-4 mt-3">
                   <div className="flex items-center border border-gray-300 rounded-full">
