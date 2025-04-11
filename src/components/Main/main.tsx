@@ -28,7 +28,7 @@ const Main = () => {
                     setproducts(product)
                 }
                   console.log("data is ",products)
-        }, [products]);
+        }, );
         console.log("Url is",products[1])
 
         const truncateString = (text: string, maxLength: number): string => {

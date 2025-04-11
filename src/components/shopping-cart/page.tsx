@@ -9,6 +9,20 @@ import useReduceCart from "@/hooks/useReduceCart"
 import useIncreaseCart from "@/hooks/useIncreaseCart"
 import useDeleteCart from "@/hooks/useDeleteCart"
 import useGetProductsByIds from "@/hooks/useGetProductsByIds";
+import Link from "next/link"
+interface Product {
+        total:number
+        approved: boolean;
+         product_category: string;
+         product_condition: string;
+         product_description: string;
+         product_image: string;
+         product_name: string;
+         product_owner_id: string;
+         product_price: string;
+         _creationTime: number;
+         _id: string;
+       }
 
 const ShoppingCart= ()=> {
         const cart = useAppSelector((state) => state.cart.items)
@@ -17,18 +31,29 @@ const ShoppingCart= ()=> {
         const Delete = useDeleteCart()
         const itemCount = cart?.reduce((total, item) => total + (item.quantity || 0), 0)
 
-        const calculateSubtotal = () => {
-                return cart.reduce((total, item) => total + item.product_price * item.quantity, 0)
-              }
-            
-        const subtotal = calculateSubtotal()
         console.log("Cart is ", cart)
         const productIds = cart.map((item) => item.product_id);
         console.log("product ids", productIds)
         const { data: products, loading: isLoading } = useGetProductsByIds(productIds.flatMap(id=>id));
         console.log("Products : ",products)
-        // const isLoading = products.some((p) => p.query.loading);
+        
+        const itemQuantity = (id: string) => {
+                const item = cart.find((item) => item.product_id === id);
+                return item ? item.quantity : 0; // Return 0 if not found
+            };
+            
+        const Product = (products: Product[]) => {
+                return products.map((p) => ({
+                    ...p, // Spread the existing product fields
+                    total: Number(p.product_price) * itemQuantity(p._id) // Add total field
+                }));
+            };
+              
+        const NewProduct = Product(products)
 
+        const subtotal = () => {
+                return NewProduct.reduce((total, product) => total + (product.total || 0), 0);
+            };
         // Retrieve the Quantity of individual Products
         const HandleQuantity = (id:string)=>{
                 const CartQuantity = cart.map((item) => item.product_id === id ? item.quantity:"")
@@ -61,10 +86,11 @@ const ShoppingCart= ()=> {
                                         }}
                                         wrapperClass=""
                                         />
-        ) : (products.map((item) => (
-          <div key={item.id} className="mb-6 pb-6 border-b border-gray-200">
+        ) : (NewProduct.map((item) => (
+          <div key={item._id} className="mb-6 pb-6 border-b border-gray-200">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-shrink-0 w-32 h-32">
+              <Link href={`/product/${item._id}`}>
               <Image
                 src={item.product_image[0]} // Get URL from precomputed array
                 alt={item.product_name}
@@ -72,25 +98,12 @@ const ShoppingCart= ()=> {
                 height={150}
                 className="object-contain"
                 />
+              </Link>
               </div>
 
               <div className="flex-grow">
                 <h2 className="text-lg font-medium">{item.product_name}</h2>
                 <p className="text-sm text-green-600 mt-1">{item.inStock ? "In Stock" : "Out of Stock"}</p>
-
-         
-
-                {/* {item.style && (
-                  <p className="text-sm mt-1">
-                    <span className="font-medium">Style:</span> {item.style}
-                  </p>
-                )}
-
-                {item.color && (
-                  <p className="text-sm mt-1">
-                    <span className="font-medium">Color:</span> {item.color}
-                  </p>
-                )} */}
 
                 <div className="flex flex-wrap items-center gap-4 mt-3">
                   <div className="flex items-center border border-gray-300 rounded-full">
@@ -123,14 +136,14 @@ const ShoppingCart= ()=> {
                 </div>
               </div>
 
-              <div className="text-right font-bold md:w-24">Shs:{item.product_price}</div>
+              <div className="text-right font-bold md:w-24">Shs:{item.total}</div>
             </div>
           </div>
         )))}
 
         <div className="text-right text-lg font-bold">
           Subtotal 
-          ({itemCount} items): Shs:{subtotal.toFixed(2)}
+          ({itemCount} items): Shs:{subtotal().toFixed(2)}
         </div>
       </div>
 
@@ -138,7 +151,7 @@ const ShoppingCart= ()=> {
         <div className="bg-white p-4 rounded border border-gray-200 mb-6">
           <div className="text-lg font-bold mb-4">
             Subtotal
-             ({itemCount} items) Shs:{subtotal.toFixed(2)}
+             ({itemCount} items) Shs:{subtotal().toFixed(2)}
           </div>
 
           <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-full">
