@@ -4,8 +4,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
-import { FaOpencart } from "react-icons/fa6";
+import { MdAddShoppingCart } from "react-icons/md";
 import ProductSkeleton from '../ProductsSkeleton/page'
+import useAddToCart  from '../../hooks/useAddToCart';
 interface Product {
  approved: boolean;
   product_category: string;
@@ -22,6 +23,7 @@ const Main = () => {
         
         const [products, setproducts] = useState<Product[]>([]);
         const product = useQuery(api.products.getProducts)
+        const addToCart = useAddToCart()
         
         useEffect(() => {
                 if (product) {
@@ -68,7 +70,7 @@ const Main = () => {
             </Link>
           </h2>
           
-          <FaOpencart  className='ml-auto -mt-8 text-2xl hover:cursor-pointer font-bold' />
+          <MdAddShoppingCart  className='ml-auto -mt-8 text-2xl hover:cursor-pointer font-bold' onClick={()=>addToCart(data)} />
       
           {/* Product Description */}
           <p className="text-gray-600 text-sm">{truncateString(data.product_description, 30)}</p>

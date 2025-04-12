@@ -2,7 +2,7 @@ import ShoppingCart from "@/components/shopping-cart/page"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-100 py-6">
+    <main className="min-h-screen bg-gray-100 py-6 mt-20">
       <ShoppingCart />
 
       <div className="max-w-7xl mx-auto p-4 mt-6 text-sm text-gray-600">

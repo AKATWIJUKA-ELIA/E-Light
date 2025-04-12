@@ -10,6 +10,7 @@ import useIncreaseCart from "@/hooks/useIncreaseCart"
 import useDeleteCart from "@/hooks/useDeleteCart"
 import useGetProductsByIds from "@/hooks/useGetProductsByIds";
 import Link from "next/link"
+import { useEffect, useState } from "react"
 interface Product {
         total:number
         approved: boolean;
@@ -30,12 +31,19 @@ const ShoppingCart= ()=> {
         const IncreaseCart = useIncreaseCart()
         const Delete = useDeleteCart()
         const itemCount = cart?.reduce((total, item) => total + (item.quantity || 0), 0)
+        
 
         console.log("Cart is ", cart)
         const productIds = cart.map((item) => item.product_id);
         console.log("product ids", productIds)
         const { data: products, loading: isLoading } = useGetProductsByIds(productIds.flatMap(id=>id));
+        const [loading,setLoading] = useState(isLoading)
         console.log("Products : ",products)
+        useEffect(() => {
+                if (cart.length === 0 ||cart.length > 0) {
+                        setLoading(false);
+                }
+        }, [cart]);
         
         const itemQuantity = (id: string) => {
                 const item = cart.find((item) => item.product_id === id);
@@ -70,29 +78,32 @@ const ShoppingCart= ()=> {
         </div>
         <Separator className="mb-6" />
 
-        {isLoading ? (
-            <Oval
-                                        visible={true}
-                                        height="80"
-                                        width="80"
-                                        color="#0000FF"
-                                        secondaryColor="#ddd"
-                                        ariaLabel="oval-loading"
-                                        wrapperStyle={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            height: "100vh",
-                                        }}
-                                        wrapperClass=""
-                                        />
-        ) : (NewProduct.map((item) => (
+        
+        {cart.length === 0 ?(
+                <div className="text-center text-gray-500">Your cart is empty</div>
+        ):loading ? (
+                <Oval
+                                            visible={true}
+                                            height="80"
+                                            width="80"
+                                            color="#0000FF"
+                                            secondaryColor="#ddd"
+                                            ariaLabel="oval-loading"
+                                            wrapperStyle={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                height: "100vh",
+                                            }}
+                                            wrapperClass=""
+                                            />
+            ): (NewProduct.map((item) => (
           <div key={item._id} className="mb-6 pb-6 border-b border-gray-200">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-shrink-0 w-32 h-32">
               <Link href={`/product/${item._id}`}>
               <Image
-                src={item.product_image[0]} // Get URL from precomputed array
+                src={item.product_image[0]} 
                 alt={item.product_name}
                 width={150}
                 height={150}
