@@ -31,7 +31,14 @@ const CartSlice = createSlice({
                         const indexproduct_id = state.items.find(item => item.product_id ===product_id);
                         if(indexproduct_id){
                                 indexproduct_id.quantity -= quantity;
-                        }else{
+                                if(indexproduct_id.quantity < 1){
+                                        const index = state.items.findIndex(item => item.product_id === product_id);
+                                        if (index !== -1) {
+                                        state.items.splice(index, 1);
+                                }
+                                }
+                        }
+                        else{
                                 state.items.push({product_id, quantity});
                         }
                 },

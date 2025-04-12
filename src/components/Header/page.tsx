@@ -1,10 +1,11 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Image from 'next/image'
 import { BsList } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
+import { FaOpencart } from "react-icons/fa6";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
@@ -14,12 +15,28 @@ const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
-
+        const [sticky, setSticky] = useState(false);
         const showDropDownMenu=()=>{
                 setHovered(true)
         }
+        const handleStickyNavbar = () => {
+                if (window.scrollY >= 100) {
+                  setSticky(true);
+                } else {
+                  setSticky(false);
+                }
+              };
+              useEffect(() => {
+                window.addEventListener("scroll", handleStickyNavbar);
+                return () => {
+                  window.removeEventListener("scroll", handleStickyNavbar);
+                };
+              }, []); 
+        //         flex    border border-gray-300 
   return (
-    <div className='bg-white text-black gap-1 flex flex-col   border border-gray-300 py-3'>
+    <div className={`header fixed  top-0 left-0 z-40 flex flex-col py-3 w-full  bg-white text-black gap-1
+            ${sticky ? " bg-dark !fixed !z-[9999] ! bg-opacity-100 shadow-sticky backdrop-blur-lg fade-in !transition dark:! dark:!bg-opacity-100": "absolute" }`
+      }>
         <div className='flex w-[100%] gap-18 ' >
                 <div className='flex gap-12 w-[60%]' >
                         <div className='flex rounded-md ml-5'>
@@ -47,7 +64,17 @@ const Header = () => {
                                 </SignedOut>
                                
                         </div>
-                        <Link href="/cart" className='flex hover:cursor-pointer gap-1' ><CiShoppingCart className='text-2xl font-bold  flex' /> <h1 className='flex font-bold'>Cart {Cart? Cart:""}</h1> </Link>
+                        <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
+                                <div className="relative">
+                                <CiShoppingCart className="text-2xl font-bold" />
+                                {Cart ? (
+                                <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                                        {Cart}
+                                </span>
+                                ) : null}
+                                </div>
+                                <h1 className="font-bold">Cart</h1>
+                        </Link>
                 </div>
         </div>
         
