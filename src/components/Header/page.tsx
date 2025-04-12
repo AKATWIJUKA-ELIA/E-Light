@@ -5,7 +5,6 @@ import { BsList } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
-import { FaOpencart } from "react-icons/fa6";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
