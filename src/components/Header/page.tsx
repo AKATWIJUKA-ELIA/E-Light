@@ -3,7 +3,6 @@ import React, { useState,useEffect } from 'react'
 import Image from 'next/image'
 import { Separator } from "@/components/ui/separator"
 import { BsList } from "react-icons/bs";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
