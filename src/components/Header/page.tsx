@@ -1,8 +1,8 @@
 'use client'
 import React, { useState,useEffect } from 'react'
 import Image from 'next/image'
+import { Separator } from "@/components/ui/separator"
 import { BsList } from "react-icons/bs";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
@@ -15,6 +15,7 @@ const Header = () => {
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
+        
         const showDropDownMenu=()=>{
                 setHovered(true)
         }
@@ -33,6 +34,7 @@ const Header = () => {
               }, []); 
         //         flex    border border-gray-300 
   return (
+    <>
     <div className={`header fixed  top-0 left-0 z-40 flex flex-col py-3 w-full  bg-white text-black gap-1
             ${sticky ? " bg-dark !fixed !z-[9999] ! bg-opacity-100 shadow-sticky backdrop-blur-lg fade-in !transition dark:! dark:!bg-opacity-100": "absolute" }`
       }>
@@ -50,18 +52,22 @@ const Header = () => {
                         </div>
                 </div>
 
-                <div className='flex gap-8'>
-                        <div className='flex hover:cursor-pointer' > <h1>Download the Elight App</h1></div>
-                        <div className='flex hover:cursor-pointer' >EN /UG.</div>
-                        <div className='flex hover:cursor-pointer gap-1 py-1 ' >
-                                <SignedIn>
-                                <UserButton showName />
-                                </SignedIn> 
-                                <SignedOut>
-                                <VscAccount className='text-2xl flex' /> 
-                                <SignInButton mode='modal' />
-                                </SignedOut>
-                               
+                <div className='flex gap-8 ml-10 '>
+                        <div className='flex gap-4  items-center ' >
+                        <div className='flex hover:cursor-pointer' > <h1>Mobile App</h1></div>
+                        <div className='flex hover:cursor-pointer ' >EN /UG.</div>
+                        </div>
+                        <div className="flex items-center gap-2 py-1 hover:cursor-pointer">
+                        <SignedIn>
+                        <UserButton showName />
+                        </SignedIn>
+
+                        <SignedOut>
+                        <div className="flex items-center gap-1">
+                        <VscAccount className="text-2xl" />
+                        <SignInButton mode="modal" />
+                        </div>
+                        </SignedOut>
                         </div>
                         <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
                                 <div className="relative">
@@ -76,18 +82,22 @@ const Header = () => {
                         </Link>
                 </div>
         </div>
+        <Separator/>
         
 
         <div className='flex ml-5 gap-5' >
-                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
+                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
+                         <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1>
+                          </div>
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' >
                         <Link href="/post" >Sell Something?</Link>
                 </div>
 
         </div>
 
-        <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     </div>
+    <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
+    </>
   )
 }
 

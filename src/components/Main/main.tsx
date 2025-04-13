@@ -70,7 +70,7 @@ const Main = () => {
             </Link>
           </h2>
           
-          <MdAddShoppingCart  className='ml-auto -mt-8 text-2xl hover:cursor-pointer font-bold' onClick={()=>addToCart(data)} />
+          <MdAddShoppingCart  className='ml-auto text-green-700 -mt-8 text-2xl hover:cursor-pointer font-bold' onClick={()=>addToCart(data)} />
       
           {/* Product Description */}
           <p className="text-gray-600 text-sm">{truncateString(data.product_description, 30)}</p>
