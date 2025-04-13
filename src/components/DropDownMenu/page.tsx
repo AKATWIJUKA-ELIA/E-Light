@@ -2,7 +2,6 @@ import React from 'react';
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from '../../../convex/_generated/api'
-import Image from 'next/image';
 import { BiX } from 'react-icons/bi';
 
 
@@ -21,7 +20,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ isvisible, onClose,  }) => 
   return (
       <>
         
-        <div className="  fade-in fixed z-40 inset-0 backdrop-blur-lg flex  w-[100%] h-[60%] mt-[8.4%]   overflow-auto overflow-x-hidden bg-white" id="wrapper" onMouseLeave={onClose} >                  
+        <div className="  fade-in fixed z-40 inset-0 backdrop-blur-lg flex  w-[100%] h-[60%] mt-[7%]   overflow-auto overflow-x-hidden bg-white" id="wrapper" onMouseLeave={onClose} >                  
                      
                      <div id="programs">
    

@@ -16,6 +16,7 @@ const Header = () => {
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
+        
         const showDropDownMenu=()=>{
                 setHovered(true)
         }
@@ -34,6 +35,7 @@ const Header = () => {
               }, []); 
         //         flex    border border-gray-300 
   return (
+    <>
     <div className={`header fixed  top-0 left-0 z-40 flex flex-col py-3 w-full  bg-white text-black gap-1
             ${sticky ? " bg-dark !fixed !z-[9999] ! bg-opacity-100 shadow-sticky backdrop-blur-lg fade-in !transition dark:! dark:!bg-opacity-100": "absolute" }`
       }>
@@ -85,15 +87,18 @@ const Header = () => {
         
 
         <div className='flex ml-5 gap-5' >
-                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} > <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1><RiArrowDropDownLine className='text-2xl' /> </div>
+                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
+                         <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1>
+                          </div>
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' >
                         <Link href="/post" >Sell Something?</Link>
                 </div>
 
         </div>
 
-        <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     </div>
+    <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
+    </>
   )
 }
 
