@@ -5,3 +5,7 @@
       .revert {
             transition: 0.7s ease-in-out;
           }
+          .hovered {
+                background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1)); /* #e2e8f0 */
+                transition: background-color 1s ease-in-out;
+              }
