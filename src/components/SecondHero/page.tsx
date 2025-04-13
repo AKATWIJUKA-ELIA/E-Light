@@ -100,11 +100,11 @@ const SecondHero = () => {
   <div className="flex flex-col justify-center gap-8  w-full max-w-6xl">
     {/* Title */}
     <div className="flex justify-center text-center p-4">
-      <h1 className="text-3xl font-bold text-black">Quick Sales</h1>
+      <h1 className="text-3xl font-bold text-black">Sponsored</h1>
     </div>
 
     {/* Carousels Wrapper */}
-    <div className="flex gap-4 py-6 justify-center  w-full">
+    <div className="flex gap-4  justify-center  w-full">
       {/* Carousel 1 */}
       <div className="flex-1 min-w-0 flex justify-center ">
         <Carousel opts={{ align: "center", loop: true }} className="w-full">
