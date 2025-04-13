@@ -11,7 +11,10 @@ import Autoplay from "embla-carousel-autoplay"
 import '../../../public/styles/styles.css'
 
 const SecondHero = () => {
-        const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false }) // 3s delay, keep playing after user interaction
+        const carousel = Autoplay({ delay: 3000}) // 3s delay, keep playing after user interaction
+        const carousel1 = Autoplay({ delay: 3000})
+        const carousel2 = Autoplay({ delay: 3000})
+        const carousel3 = Autoplay({ delay: 3000})
   return (
 
 <div className="flex  items-center justify-center bg-slate-100 p-20 px-10 gap-3">
@@ -23,7 +26,7 @@ const SecondHero = () => {
         
       {/* Carousel 1 */}
       <div className="flex-1 min-w-0 flex justify-center  ">
-        <Carousel opts={{ align: "center", loop: true }} plugins={[autoplay]} className="w-full ">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full ">
           <CarouselContent>
             {Array.from({ length: 6 }).map((_, index) => (
               <CarouselItem key={index} >
@@ -44,7 +47,7 @@ const SecondHero = () => {
 
             {/* Carousel 4 */}
             <div className="flex-1 min-w-0 flex justify-center  ">
-        <Carousel opts={{ align: "center", loop: true }} plugins={[autoplay]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
           <CarouselContent>
             {Array.from({ length: 6 }).map((_, index) => (
               <CarouselItem key={index}>
@@ -74,7 +77,7 @@ const SecondHero = () => {
 
       {/* Carousel 1 */}
       <div className="flex-1 min-w-0 flex justify-center ">
-        <Carousel opts={{ align: "center", loop: true }} plugins={[autoplay]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
           <CarouselContent>
             {Array.from({ length: 6 }).map((_, index) => (
               <CarouselItem key={index}>
@@ -95,7 +98,7 @@ const SecondHero = () => {
 
             {/* Carousel 4 */}
             <div className="flex-1 min-w-0 flex justify-center ">
-        <Carousel opts={{ align: "center", loop: true }}plugins={[autoplay]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel3]}  className="w-full">
           <CarouselContent>
             {Array.from({ length: 6 }).map((_, index) => (
               <CarouselItem key={index}>
