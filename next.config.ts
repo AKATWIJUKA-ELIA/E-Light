@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
                       hostname: 'cheery-cod-687.convex.cloud',
                       pathname: '/**',
                     },
+                    {
+                        protocol: 'https',
+                        hostname: 'www.bootdey.com',
+                        pathname: '/**',
+                      },
                   ],
                 },
               };
