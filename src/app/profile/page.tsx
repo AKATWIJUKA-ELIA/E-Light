@@ -26,7 +26,9 @@ const Profile=()=> {
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
-              <DataTable products={products ?? []} />
+              <div className="border-2 rounded-lg">
+                <DataTable  products={products ?? [] } />
+              </div>
             </div>
           </div>
         </div>
