@@ -60,6 +60,10 @@ const Header = () => {
                         <div className="flex items-center gap-2 py-1 hover:cursor-pointer">
                         <SignedIn>
                         <UserButton showName />
+                        <Link href="/profile">
+                        <button >
+                        Dashboard
+                        </button></Link>
                         </SignedIn>
 
                         <SignedOut>
