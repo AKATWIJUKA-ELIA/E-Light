@@ -25,9 +25,9 @@ interface DataTableProps {
 }
 const DataTable: React.FC<DataTableProps> = ({ products }) => {
         return (
-          <Table className="border-2 rounded-lg">
+          <Table className="border rounded-lg">
             <TableCaption>A list of your recent invoices.</TableCaption>
-            <TableHeader>
+            <TableHeader  >
               <TableRow>
                 <TableHead className="w-[100px]">Product</TableHead>
                 <TableHead>Category</TableHead>
