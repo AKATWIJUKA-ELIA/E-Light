@@ -1,13 +1,19 @@
-import { AppSidebar } from "@/components/app-sidebar"
+"use client"
+// import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
+import DataTable  from "@/components/data-table"
 import { SectionCards } from "../../components/section-cards"
 import { SiteHeader } from "../../components/site-header"
 import { SidebarInset, SidebarProvider } from "../../components/ui/sidebar"
+import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
+import { useUser } from "@clerk/nextjs"
 
-import data from "./data.json"
-
-export default function Page() {
+const Profile=()=> {
+        const user = useUser()
+        console.log("User id is: ", user.user?.id ?? "No user ID available")
+        const { data: products, loading: isLoading } = useGetProductsByOwner(user.user?.id||'');
+        console.log("Products are: ", products ?? "No Products")
+        
   return (
     <SidebarProvider >
       {/* <AppSidebar variant="inset" /> */}
@@ -20,7 +26,7 @@ export default function Page() {
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
-              <DataTable data={data} />
+              <DataTable products={products ?? []} />
             </div>
           </div>
         </div>
@@ -28,3 +34,4 @@ export default function Page() {
     </SidebarProvider>
   )
 }
+export default Profile

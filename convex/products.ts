@@ -92,3 +92,24 @@ export const getImageUrl = query({
           return await ctx.storage.getUrl(fileId); // Generate the view URL
         },
       });
+
+      export const getProductsByOwner = query({
+        args: { id: v.string() },
+        handler: async (ctx, args) => {
+          const products = await ctx.db
+            .query("products")
+            .filter((q) => q.eq(q.field("product_owner_id"), args.id))
+            .collect();
+      
+          for (const product of products) {
+            product.product_image = await Promise.all(
+              product.product_image.map(async (image: string) => {
+                return await ctx.storage.getUrl(image);
+              })
+            );
+          }
+      
+          console.log("primary products:", products);
+          return products;
+        },
+      });
