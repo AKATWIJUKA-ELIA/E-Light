@@ -11,7 +11,7 @@ import { useUser } from "@clerk/nextjs"
 const Profile=()=> {
         const user = useUser()
         console.log("User id is: ", user.user?.id ?? "No user ID available")
-        const { data: products, loading: isLoading } = useGetProductsByOwner(user.user?.id||'');
+        const { data: products, } = useGetProductsByOwner(user.user?.id||'');
         console.log("Products are: ", products ?? "No Products")
         
   return (
