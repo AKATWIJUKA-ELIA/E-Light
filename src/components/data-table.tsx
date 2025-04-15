@@ -3,7 +3,6 @@ import {
         TableBody,
         TableCaption,
         TableCell,
-        TableFooter,
         TableHead,
         TableHeader,
         TableRow,
@@ -26,7 +25,7 @@ interface DataTableProps {
 }
 const DataTable: React.FC<DataTableProps> = ({ products }) => {
         return (
-          <Table>
+          <Table className="border-2 rounded-lg">
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
               <TableRow>
@@ -49,19 +48,19 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                   <TableCell>{product.product_condition}</TableCell>
                   <TableCell className="text-right"><Image src={product.product_image[0]} width={50} height={50} alt={product.product_name}/></TableCell>
                   <TableCell className="text-right">{product.product_price}</TableCell>
-                  <TableCell className="text-right">{product.approved}</TableCell>
+                  <TableCell className="text-right">{product.approved?"Approved":"Pending"}</TableCell>
                   <TableCell className="text-right"><time dateTime={new Date(product._creationTime).toISOString()}>
               {new Date(product._creationTime).toLocaleDateString()}
             </time></TableCell>
                 </TableRow>
               ))}
             </TableBody>
-            <TableFooter>
+            {/* <TableFooter>
               <TableRow>
                 <TableCell colSpan={3}>Total</TableCell>
                 <TableCell className="text-right">$2,500.00</TableCell>
               </TableRow>
-            </TableFooter>
+            </TableFooter> */}
           </Table>
         )
       }
