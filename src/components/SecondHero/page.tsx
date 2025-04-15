@@ -1,5 +1,6 @@
-import React from 'react'
-import { Card, CardContent } from "@/components/ui/card"
+import React, { useEffect, useState } from 'react'
+import { useQuery } from 'convex/react'
+import { api } from '../../../convex/_generated/api'
 import {
   Carousel,
   CarouselContent,
@@ -9,116 +10,133 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import '../../../public/styles/styles.css'
-
+import HeroCard from '../HeroCards/page'
+interface Product {
+        approved: boolean;
+         product_category: string;
+         product_condition: string;
+         product_description: string;
+         product_image: string;
+         product_name: string;
+         product_owner_id: string;
+         product_price: string;
+         _creationTime: number;
+         _id: string;
+       }
 const SecondHero = () => {
-        const carousel = Autoplay({ delay: 3000}) // 3s delay, keep playing after user interaction
-        const carousel1 = Autoplay({ delay: 3000})
-        const carousel2 = Autoplay({ delay: 3000})
-        const carousel3 = Autoplay({ delay: 3000})
+        const carousel = Autoplay({ delay: 1500}) // 3s delay, keep playing after user interaction
+        const carousel1 = Autoplay({ delay: 3300})
+        const carousel2 = Autoplay({ delay: 4000})
+        const carousel3 = Autoplay({ delay: 2700})
+
+        const [products, setproducts] = useState<Product[]>([]);
+                const product = useQuery(api.products.getProducts)
+                
+                useEffect(() => {
+                        if (product) {
+                            setproducts(product)
+                        }
+                          console.log("data is ",products)
+                }, );
+
+                
   return (
 
-<div className="flex  items-center justify-center bg-slate-100 p-20 px-10 gap-3">
+<div className='flex flex-col' >
 
-  <div className="flex flex-col justify-center gap-8 border  hover:border-gray-300 hover:rounded-md hover:bg-slate-200 transition-colors duration-[10000ms] ease-in-out p-20 w-[50%] max-w-6xl">
+      <div className='flex justify-center' >
+        <h1 className='text-3xl font-bold text-gray-900'>
+                Sponsored Products
+        </h1>
+        </div>  
 
-    {/* Carousels Wrapper */}
-    <div className="flex gap-4  justify-center  w-full ">
-        
-      {/* Carousel 1 */}
-      <div className="flex-1 min-w-0 flex justify-center  ">
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full ">
-          <CarouselContent>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <CarouselItem key={index} >
-                <div className="p-1">
-                  <Card className="h-auto transition-transform duration-200 hover:scale-105 ">
-                    <CardContent className="flex items-center justify-center p-6 h-64 ">
-                      <span className="text-4xl font-semibold">{index + 1}</span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
+ <div className="flex  items-center justify-center bg-gray-300 rounded-lg p-20 px-10 gap-3">
+ <div className="flex flex-col justify-center gap-8 border border-gray-200 shadow-lg  hover:bg-gray-200 transition-colors duration-[10000ms] ease-in-out p-20 w-[50%] max-w-6xl">
 
-            {/* Carousel 4 */}
-            <div className="flex-1 min-w-0 flex justify-center  ">
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
-          <CarouselContent>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1 ">
-                  <Card className="h-auto transition-transform duration-200 hover:scale-105">
-                    <CardContent className="flex items-center justify-center p-6 h-64">
-                      <span className="text-4xl font-semibold">{index + 1}</span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
-
-
-    </div>
+{/* Carousels Wrapper */}
+<div className="flex gap-4  justify-center  w-full ">
+    
+  {/* Carousel 1 */}
+  <div className="flex-1 min-w-0 flex justify-center  ">
+    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full ">
+      <CarouselContent>
+        {products.map((product) => (
+          <CarouselItem key={product._id} >
+            <div className="p-1">
+            <HeroCard key={product._id} product={product} />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
   </div>
 
-  <div className="flex flex-col justify-center gap-8 border hover:border-gray-300 hover:rounded-md hover:bg-slate-200 transition-colors duration-[10000ms] ease-in-out p-20  w-[50%] max-w-6xl">
-
-    {/* Carousels Wrapper */}
-    <div className="flex gap-4  justify-center  w-full">
-
-      {/* Carousel 1 */}
-      <div className="flex-1 min-w-0 flex justify-center ">
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
-          <CarouselContent>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1">
-                  <Card className="h-auto transition-transform duration-200 hover:scale-105">
-                    <CardContent className="flex items-center justify-center p-6 h-64">
-                      <span className="text-4xl font-semibold">{index + 1}</span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
-
-            {/* Carousel 4 */}
-            <div className="flex-1 min-w-0 flex justify-center ">
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel3]}  className="w-full">
-          <CarouselContent>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1 ">
-                  <Card className="h-auto transition-transform duration-200 hover:scale-105">
-                    <CardContent className="flex items-center justify-center p-6 h-64">
-                      <span className="text-4xl font-semibold">{index + 1}</span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
-
-    </div>
+        {/* Carousel 4 */}
+        <div className="flex-1 min-w-0 flex justify-center  ">
+    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+      <CarouselContent>
+        {products.map((product) => (
+          <CarouselItem key={product._id} >
+            <div className="p-1">
+            <HeroCard key={product._id} product={product} />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
   </div>
+
+
+</div>
+</div>
+
+<div className="flex flex-col justify-center gap-8 border shadow-xl border-gray-100 hover:rounded-md hover:bg-gray-200 transition-colors duration-[10000ms] ease-in-out p-20  w-[50%] max-w-6xl">
+
+{/* Carousels Wrapper */}
+<div className="flex gap-4  justify-center  w-full">
+
+  {/* Carousel 1 */}
+  <div className="flex-1 min-w-0 flex justify-center ">
+    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
+    <CarouselContent>
+        {products.map((product) => (
+          <CarouselItem key={product._id} >
+            <div className="p-1">
+            <HeroCard key={product._id} product={product} />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  </div>
+
+        {/* Carousel 4 */}
+        <div className="flex-1 min-w-0 flex justify-center ">
+    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel3]}  className="w-full">
+    <CarouselContent>
+        {products.map((product) => (
+          <CarouselItem key={product._id} >
+            <div className="p-1">
+            <HeroCard key={product._id} product={product} />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  </div>
+
+</div>
+</div>
+ </div>
+
 </div>
 
   )

@@ -21,7 +21,7 @@ const FisrtHero = () => {
 
         
   return (
-        <div className='bg-pink-200 mt-32 ' >
+        <div className='bg-pink-200 rounded-lg mt-32 ' >
                 <Carousel opts={{
         align: "start",
         loop: true,
