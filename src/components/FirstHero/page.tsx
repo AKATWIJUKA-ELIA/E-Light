@@ -29,6 +29,7 @@ const FisrtHero = () => {
         const carousel = Autoplay({ delay: 10000})
         const carousel1 = Autoplay({ delay: 15000})
         const carousel2 = Autoplay({ delay: 20000})
+        const carousel3 = Autoplay({ delay: 16000})
                 const [products, setproducts] = useState<Product[]>([]);
                         const product = useQuery(api.products.getProducts)
                         
@@ -136,7 +137,7 @@ const FisrtHero = () => {
         <CarouselNext />
         </Carousel>
 
-        <Carousel opts={{align: "start",loop: true,}} plugins={[carousel2]} className="  w-full">
+        <Carousel opts={{align: "start",loop: true,}} plugins={[carousel3]} className="  w-full">
         <CarouselContent>
   {products.map((product, index) => (
     <CarouselItem key={index}>
