@@ -30,11 +30,11 @@ const HeroCard = ({ product }: HeroCardProps) => {
          { product?(
                 <div
                 key={product._id}
-                className="bg-transparent flex flex-col rounded-lg shadow-md overflow-hidden shadow-xl "
+                className="bg-transparent flex flex-col rounded-md shadow-m overflow-hidden shadow-xl "
               >
                 {/* Product Image */}
                 <Link href={`/product/${product._id}`} className="w-full">
-                  <div className="relative w-full h-64 flex items-center justify-center bg-transparent   transition-transform duration-200 hover:scale-105">
+                  <div className="relative w-full h-50 md:h-64 flex items-center justify-center bg-transparent   transition-transform duration-200 hover:scale-105">
                     <Image
                       src={product.product_image}
                       alt={product.product_name}
@@ -61,8 +61,8 @@ const HeroCard = ({ product }: HeroCardProps) => {
                   <p className="text-gray-600 text-sm">{truncateString(product.product_description, 30)}</p>
               
                   {/* Footer (Price & Date) */}
-                  <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
-                    <span className="font-semibold text-lg text-black">Shs: {product.product_price? Number(product.product_price).toFixed(2):"loading.."}</span>
+                  <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 mt-2">
+                    <span className="font-semibold md:text-lg text-black">Shs: {product.product_price? Number(product.product_price).toFixed(2):"loading.."}</span>
                     <time dateTime={new Date(product._creationTime).toISOString()}>
                       {new Date(product._creationTime).toLocaleDateString()}
                     </time>

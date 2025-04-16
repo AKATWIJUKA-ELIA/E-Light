@@ -9,7 +9,7 @@ export default function Home() {
   return (
         <Provider store={store}>
                 <PersistGate persistor={persistor}>
-                <div className="bg-white">
+                <div className="bg-white overflow-x-hidden">
                 <FisrtHero/>
                 <SecondHero/>
                 <Main/>

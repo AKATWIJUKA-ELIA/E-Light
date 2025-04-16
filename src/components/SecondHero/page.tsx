@@ -24,10 +24,10 @@ interface Product {
          _id: string;
        }
 const SecondHero = () => {
-        const carousel = Autoplay({ delay: 1500}) // 3s delay, keep playing after user interaction
+        const carousel = Autoplay({ delay: 5000}) // 3s delay, keep playing after user interaction
         const carousel1 = Autoplay({ delay: 3300})
         const carousel2 = Autoplay({ delay: 4000})
-        const carousel3 = Autoplay({ delay: 2700})
+        const carousel3 = Autoplay({ delay: 6000})
 
         const [products, setproducts] = useState<Product[]>([]);
                 const product = useQuery(api.products.getProducts)
@@ -50,7 +50,7 @@ const SecondHero = () => {
         </h1>
         </div>  
 
- <div className="flex  items-center justify-center bg-gray-300 rounded-lg p-20 px-10 gap-3">
+ <div className="hidden md:flex  items-center justify-center bg-gray-50  p-20 px-10 gap-3">
  <div className="flex flex-col justify-center gap-8 border border-gray-200 shadow-lg  hover:bg-gray-200 transition-colors duration-[10000ms] ease-in-out p-20 w-[50%] max-w-6xl">
 
 {/* Carousels Wrapper */}
