@@ -30,7 +30,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
          { product?(
                 <div
                 key={product._id}
-                className="bg-transparent flex flex-col rounded-lg shadow-md overflow-hidden "
+                className="bg-transparent flex flex-col rounded-lg shadow-md overflow-hidden shadow-xl "
               >
                 {/* Product Image */}
                 <Link href={`/product/${product._id}`} className="w-full">
