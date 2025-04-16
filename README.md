@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShopCheap
+<img src="https://dashboard.convex.dev/_next/image?url=https%3A%2F%2Fcheery-cod-687.convex.cloud%2Fapi%2Fstorage%2Fb0911682-4c2a-4bfb-8f81-fa0d3b1a864a&w=1920&q=75" >
+<img src="https://dashboard.convex.dev/_next/image?url=https%3A%2F%2Fcheery-cod-687.convex.cloud%2Fapi%2Fstorage%2F03235000-218f-419d-b286-3dedc62b62af&w=1920&q=75" >
+
+This is a **B2B commerce application** built with modern web technologies to facilitate business-to-business transactions in an efficient and scalable way.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Application](#running-the-application)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Features
+
+- Intuitive user interface for B2B transactions.
+- Secure and scalable architecture.
+- Easy-to-use admin panel for managing products, orders, and users.
+- Responsive design for mobile and desktop platforms.
+
+---
+
+## Technologies Used
+
+This application is primarily built using:
+
+- **TypeScript** (96.1%)
+- **JavaScript** (2.5%)
+- **CSS** (1.4%)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to set up the project on your local development environment.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ensure you have the following installed:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js (LTS version recommended)
+- npm or yarn (package manager)
+- Git
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
 
-## Learn More
+1. Clone the repository:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   git clone https://github.com/AKATWIJUKA-ELIA/E-Light.git
+   cd E-Light
