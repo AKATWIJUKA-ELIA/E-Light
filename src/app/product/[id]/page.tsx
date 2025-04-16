@@ -29,7 +29,7 @@ const Product = ({params}:PageProps) => {
                             />
   }
   return (
-    <div>
+    <div className='mt-20'>
         <ProductCard product={product} />
     </div>
   )
