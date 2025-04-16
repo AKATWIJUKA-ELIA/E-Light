@@ -47,19 +47,27 @@ const Header = () => {
                                 </Link>
                         </div>
 
-                        <div className='flex w-[100%] p-auto '>
+                        <div className='hidden md:flex w-[100%] p-auto '>
                                 <input type="text" className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' placeholder='Search '  />
                         </div>
                 </div>
 
-                <div className='flex gap-8 ml-10 '>
+                <div className='flex gap-4 md:gap-8 ml-10 '>
                         <div className='flex gap-4  items-center ' >
-                        <div className='flex hover:cursor-pointer' > <h1>Mobile App</h1></div>
-                        <div className='flex hover:cursor-pointer ' >EN /UG.</div>
+                        <div className='flex hover:cursor-pointer' > <h1 className="whitespace-nowrap overflow-hidden text-ellipsis">Mobile App</h1>
+                        </div>
+                        {/* <div className='flex hover:cursor-pointer ' >EN /UG.</div> */}
                         </div>
                         <div className="flex items-center gap-2 py-1 hover:cursor-pointer">
                         <SignedIn>
+                        <div className="hidden lg:block">
                         <UserButton showName />
+                        </div>
+
+                        {/* For small screens */}
+                        <div className="block lg:hidden">
+                        <UserButton />
+                        </div>
                         <Link href="/profile">
                         <button >
                         Dashboard
@@ -82,22 +90,25 @@ const Header = () => {
                                 </span>
                                 ) : null}
                                 </div>
-                                <h1 className="font-bold">Cart</h1>
+                                <h1 className="font-bold hidden md:flex  ">Cart</h1>
                         </Link>
                 </div>
         </div>
         <Separator/>
         
-
+        <div className='flex md:hidden  w-[100%] p-auto '>
+                                <input type="text" className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' placeholder='Search '  />
+        </div>
         <div className='flex ml-5 gap-5' >
                 <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
                          <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1>
-                          </div>
+                </div>
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' >
                         <Link href="/post" >Sell Something?</Link>
                 </div>
-
         </div>
+       
+
 
     </div>
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
