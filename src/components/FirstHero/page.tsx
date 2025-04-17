@@ -42,9 +42,12 @@ const FisrtHero = () => {
 
         
   return (
-        <div className='bg-pink-200 grid grid-cols-1 md:grid-cols-4  mt-32 ' >
-
-        <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="  w-full">
+        <div className='bg-pink-200 mb-10 ' >
+<div>
+<h1></h1>
+</div>
+<div className=' hidden md:grid grid-cols-1 md:grid-cols-4'>
+<Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="  w-full">
         <CarouselContent className=''>
   {products.map((product, index) => (
     <CarouselItem key={index}>
@@ -167,6 +170,7 @@ const FisrtHero = () => {
         <CarouselPrevious />
         <CarouselNext />
         </Carousel>
+</div>
         </div>
   )
 }

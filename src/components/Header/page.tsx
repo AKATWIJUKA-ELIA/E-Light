@@ -36,7 +36,7 @@ const Header = () => {
   return (
     <>
     <div className={` fixed  top-0 left-0 z-40 flex flex-col py-3 w-full  bg-white text-black gap-1
-            ${sticky ? "  !fixed !z-[9999] ! bg-opacity-100 shadow-sticky backdrop-blur-lg fade-in !transition ": "absolute" }`
+            ${sticky ? "bg-transparent  !fixed !z-[9999] ! bg-opacity-100 shadow-sticky backdrop-blur-lg fade-in !transition ": "absolute" }`
       }>
         <div className='flex w-[100%] gap-18 ' >
                 <div className='flex gap-12 w-[60%]' >
