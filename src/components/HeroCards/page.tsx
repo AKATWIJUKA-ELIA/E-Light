@@ -36,7 +36,9 @@ const HeroCard = ({ product }: HeroCardProps) => {
                 <Link href={`/product/${product._id}`} className="w-full">
                   <div className="relative w-full h-50 md:h-64 flex items-center justify-center bg-transparent   transition-transform duration-200 hover:scale-105">
                     <Image
-                      src={product.product_image}
+                      src={Array.isArray(product.product_image) && product.product_image.length > 0 
+                        ? product.product_image[0] 
+                        : product.product_image}
                       alt={product.product_name}
                       width={900}
                       height={500}

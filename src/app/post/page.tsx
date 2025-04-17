@@ -66,9 +66,20 @@ const AddProduct =  () => {
                           fileInputRef.current.value = '';
                         }
                       };
+                const cleanImageField=()=>{
+                        setSelectedImage(null);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = '';
+                        }
+                }
                   try {
                          // Step 1: Get a short-lived upload URL
                         const postUrl = await generateUploadUrl();
+                        if(selectedImage && selectedImage.length > 5){
+                                alert("Error, You can only upload upto Five Images")
+                                cleanImageField()
+                                return
+                        }
                         const responses = await Promise.all(
                                 Array.from(selectedImage || []).map(async (image: File) => {
                                   const result = await fetch(postUrl, {
@@ -81,11 +92,11 @@ const AddProduct =  () => {
                             
                                   return result.json(); 
                                 })
-                              );
+                        );
                         
-                              const storageIds = responses.map((res) => res.storageId);
+                        const storageIds = responses.map((res) => res.storageId);
                             
-                              const updatedproduct = {
+                        const updatedproduct = {
                                 ...product,
                                 product_image: [...storageIds], // Ensure new IDs are included
                                 product_name: product.product_name,
@@ -93,11 +104,9 @@ const AddProduct =  () => {
                                 product_owner_id: userid,
                                 product_cartegory: product.product_cartegory,
                                 approved: false,
-                              };
+                        };
                             
-                              console.log("Updated Product: ", updatedproduct);
-                        
-                        
+                        // console.log("Updated Product: ", updatedproduct);
                         await createProduct({ products: updatedproduct });
 
                       alert("product created successfully!");
@@ -111,7 +120,7 @@ const AddProduct =  () => {
                 };
 
   return (
-     <div className=' mt-32 w-[50%]  items-center justify-center  mx-auto bg-gray-200 rounded-lg ' >
+     <div className=' mt-40 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 rounded-lg ' >
       <h1 className='text-2xl font-bold text-center text-black ' >Add  Products</h1>
        <form onSubmit={handleSubmit} className="space-y-4 p-3">
       <div>
