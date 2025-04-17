@@ -4,7 +4,6 @@ import React, { useRef, useState } from 'react'
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
 import { useSendMail } from '@/hooks/useSendMail';
-import { User } from '@clerk/nextjs/server';
 
 
 
@@ -13,7 +12,7 @@ const AddProduct =  () => {
       const generateUploadUrl = useMutation(api.products.generateUploadUrl);
       const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
       const fileInputRef = useRef<HTMLInputElement>(null);
-      const { sendEmail, sending, error } = useSendMail();
+      const { sendEmail, } = useSendMail();
 
       const createProduct = useMutation(api.products.createProduct)
 
