@@ -3,6 +3,8 @@ import { useUser } from '@clerk/nextjs';
 import React, { useRef, useState } from 'react'
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
+import { useSendMail } from '@/hooks/useSendMail';
+import { User } from '@clerk/nextjs/server';
 
 
 
@@ -11,6 +13,7 @@ const AddProduct =  () => {
       const generateUploadUrl = useMutation(api.products.generateUploadUrl);
       const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
       const fileInputRef = useRef<HTMLInputElement>(null);
+      const { sendEmail, sending, error } = useSendMail();
 
       const createProduct = useMutation(api.products.createProduct)
 
@@ -108,9 +111,9 @@ const AddProduct =  () => {
                             
                         // console.log("Updated Product: ", updatedproduct);
                         await createProduct({ products: updatedproduct });
-
                       alert("product created successfully!");
                       cleanForm()
+                      sendEmail( "New Product Created", `User ${user?.fullName}, Added a product`);
                     
                   } catch (error) {
                     console.error("Error creating product:", error);

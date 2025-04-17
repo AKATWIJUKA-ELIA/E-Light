@@ -1,8 +1,7 @@
-
 import nodemailer from 'nodemailer';
 export async function POST(request) {
   const body = await request.json();
-  const { to, subject, html } = body;
+  const { to, subject, text } = body;
 
   try {
     const transporter = nodemailer.createTransport({
@@ -19,7 +18,7 @@ export async function POST(request) {
       from:"eliaakjtrnq@gmail.com",
       to,
       subject,
-      html,
+      text,
     };
 
     const info = await transporter.sendMail(mailOptions);
