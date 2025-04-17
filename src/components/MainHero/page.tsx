@@ -40,10 +40,10 @@ const MainHero = () => {
 
         
   return (
-        <div className='bg-pink-200  grid grid-cols-2  mt-32 ' >
+        <div className='bg-pink-200   mt-32 ' >
 
-        <div className='grid grid-cols-2 h  '>
-        <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className=" ">
+        <div className='grid grid-cols-4 ml-32' >
+        <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="">
         <CarouselContent className=''>
   {products.map((product, index) => (
     <CarouselItem key={index}>
@@ -73,10 +73,6 @@ const MainHero = () => {
         <CarouselPrevious />
         <CarouselNext />
         </Carousel>
-        </div>
-
-        <div className='flex'>
-                BEST ON DISCOUNTS
         </div>
 
         </div>
