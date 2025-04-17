@@ -119,7 +119,10 @@ export const getImageUrl = query({
         handler: async (ctx, args) => {
           const products = await ctx.db
             .query("products")
-            .filter((q) => q.eq(q.field("product_cartegory"), args.category))
+            .filter((q) => q.and(
+                q.eq(q.field("product_cartegory"), args.category),
+                q.eq(q.field("approved"),true)
+              ))
             .collect();
       
           for (const product of products) {
