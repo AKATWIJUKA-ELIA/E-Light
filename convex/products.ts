@@ -20,7 +20,7 @@ export const createProduct = mutation({
                   }),
         },
         handler: async (ctx, args) => {
-              console.log(args.products)
+        //       console.log(args.products)
               await ctx.db.insert("products", {
                     ...args.products,
               });
@@ -109,7 +109,28 @@ export const getImageUrl = query({
             );
           }
       
-          console.log("primary products:", products);
+        //   console.log("primary products:", products);
+          return products;
+        },
+      });
+
+      export const getRelatedProducts = query({
+        args: { category: v.string() },
+        handler: async (ctx, args) => {
+          const products = await ctx.db
+            .query("products")
+            .filter((q) => q.eq(q.field("product_cartegory"), args.category))
+            .collect();
+      
+          for (const product of products) {
+            product.product_image = await Promise.all(
+              product.product_image.map(async (image: string) => {
+                return await ctx.storage.getUrl(image);
+              })
+            );
+          }
+      
+          console.log("Related products:", products);
           return products;
         },
       });

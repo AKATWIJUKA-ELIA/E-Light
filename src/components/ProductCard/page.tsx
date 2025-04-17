@@ -2,6 +2,16 @@ import React from "react";
 import Image from "next/image";
 import { Oval } from 'react-loader-spinner'
 import useAddToCart from '../../hooks/useAddToCart';
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
+
 
 interface ProductProps {
   product: {
@@ -14,20 +24,45 @@ interface ProductProps {
 }
 
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
+        const carousel = Autoplay({ delay: 10000})
   const HandleAddToCart = useAddToCart();
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 bg-white rounded-lg border border-black mt-5 shadow-md overflow-hidden p-4">
+    <div className="flex flex-col lg:flex-row gap-6 bg-white mt-5 shadow-md overflow-hidden p-4">
       
       {/* Product Image */}
       <div className="flex flex-col w-full lg:w-3/5 bg-slate-50 shadow-md rounded-lg p-4">
         <div className="mx-auto rounded-lg h-64 sm:h-72 md:h-80 w-full relative overflow-hidden">
-          <Image
-            src={product.product_image[0]}
-            alt={product.product_name}
-            fill
-            className="object-cover rounded-lg hover:opacity-90 transition"
-          />
+        <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="  w-full">
+        <CarouselContent className=''>
+  {product.product_image.map((image, index) => (
+    <CarouselItem key={index}>
+      <div className="p-1">
+        <Card className="h-auto bg-transparent">
+          <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
+            {/* Image */}
+            <Image
+              src={image}
+        //       height={100}
+        //       width={450}
+              alt={product.product_name}
+             fill
+             className='object-cover w-full h-full'
+            />
+
+            {/* Text Overlay */}
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
+              {product.product_name}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
+  ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+        </Carousel>
         </div>
 
         {/* Small Images */}
@@ -67,16 +102,23 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         </div>
 
         <div>
-          <h1 className="text-gray-600 font-bold">Description:</h1>
+          <h1 className="text-gray-600 font-bold">Product Details:</h1>
           <p className="text-sm text-gray-800">{product.product_description}</p>
         </div>
 
-        <button
+        <div className="flex  space-x-2">
+                <button
           onClick={() => HandleAddToCart(product)}
           className="bg-blue-600 text-white w-full px-4 py-2 rounded-3xl hover:bg-blue-700 transition"
         >
           Add to Cart
         </button>
+        <button
+          onClick={() => HandleAddToCart(product)}
+          className="bg-blue-600 text-white w-full px-4 py-2 rounded-3xl hover:bg-blue-700 transition"
+        >
+          Share this Product
+        </button></div>
       </div>
     </div>
   );
