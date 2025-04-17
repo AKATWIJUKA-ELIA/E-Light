@@ -39,7 +39,7 @@ const Product = ({params}:PageProps) => {
                         <h2>Related Products</h2>
                 </div>
         <div className=' gap-2 grid grid-cols-2 md:grid-cols-5'>
-        {relatedProducts? (relatedProducts.map((product, index) => (
+        {relatedProducts? (relatedProducts.map((product) => (
                 <HeroCard key={product._id} product={product} />
         ))):(
                 <Oval

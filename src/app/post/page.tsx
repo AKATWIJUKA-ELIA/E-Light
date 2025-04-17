@@ -10,8 +10,6 @@ const AddProduct =  () => {
         
       const generateUploadUrl = useMutation(api.products.generateUploadUrl);
       const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
-      const [ImagesArray, setImagesArray] = useState<Array<File> | null>(null);
-      const [maxfileerror, setmaxfileerror] = useState("");
       const fileInputRef = useRef<HTMLInputElement>(null);
 
       const createProduct = useMutation(api.products.createProduct)
@@ -68,16 +66,22 @@ const AddProduct =  () => {
                           fileInputRef.current.value = '';
                         }
                       };
+                const cleanImageField=()=>{
+                        setSelectedImage(null);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = '';
+                        }
+                }
                   try {
                          // Step 1: Get a short-lived upload URL
                         const postUrl = await generateUploadUrl();
                         if(selectedImage && selectedImage.length > 5){
-                                setmaxfileerror("Error, You can only upload upto Five Images")
-                        }else{
-                                setImagesArray(selectedImage)
+                                alert("Error, You can only upload upto Five Images")
+                                cleanImageField()
+                                return
                         }
                         const responses = await Promise.all(
-                                Array.from(ImagesArray || []).map(async (image: File) => {
+                                Array.from(selectedImage || []).map(async (image: File) => {
                                   const result = await fetch(postUrl, {
                                     method: "POST",
                                     headers: { "Content-Type": image.type },
@@ -102,12 +106,10 @@ const AddProduct =  () => {
                                 approved: false,
                         };
                             
-                        console.log("Updated Product: ", updatedproduct);
-                        
-                        
+                        // console.log("Updated Product: ", updatedproduct);
                         await createProduct({ products: updatedproduct });
 
-                      {maxfileerror? alert(maxfileerror):alert("product created successfully!");}
+                      alert("product created successfully!");
                       cleanForm()
                     
                   } catch (error) {
