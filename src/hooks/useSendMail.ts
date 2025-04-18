@@ -4,7 +4,7 @@ export const useSendMail = () => {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(false);
 
-  const sendEmail = async ( subject: string, message: string) => {
+  const sendEmail = async (to:string, subject: string, message: string) => {
     setSending(true);
     setError(false);
 
@@ -15,7 +15,7 @@ export const useSendMail = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          to: 'eliatranquil@gmail.com',
+          to: to,
           subject,
           text: `${message}`,
         }),

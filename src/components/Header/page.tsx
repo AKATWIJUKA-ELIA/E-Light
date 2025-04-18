@@ -114,7 +114,7 @@ const Header = () => {
 
          <div className='hidden md:flex   ml-5 gap-14 ' >
               { categories?.slice(0, 7)?.map((cartegory,index)=>
-                <div key={index}  className=' rounded-3xl   p-1   hover:cursor-pointer hover:bg-gray-100' >
+                <div key={index}  className=' rounded-xl   p-2   hover:cursor-pointer hover:bg-gray-100' >
                 <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap' >{cartegory.cartegory}</Link>
                 </div>
         )}

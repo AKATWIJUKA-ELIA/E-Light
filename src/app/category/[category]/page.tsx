@@ -10,15 +10,15 @@ const Category = ({params}:PageProps) => {
         const { category } = use(params);
         const { data: relatedProducts } = useGetRelatedProducts(category);
   return (
-        <div>
+        <div className='mt-32' >
                 {
-                        (relatedProducts ?? []).length > 0 ? (<div className='flex flex-col mt-32' >
+                        (relatedProducts ?? []).length > 0 ? (<div className='flex flex-col ' >
                         <div className='flex flex-col gap-4'>
                                 <div className='flex w-[60%]'>
-                                <Input/>
+                                <Input placeholder='Search' />
                                 </div>
                                 <div className='flex'>
-                                        <h1 className='text-dark ' >Best Match for "<span className='font-bold' >{category}</span>"</h1>
+                                        <h1 className='text-dark ' >Best Match for &ldquo;<span className='font-bold' >{category}</span>&ldquo;</h1>
                                 </div>
                         </div>
 
@@ -31,7 +31,7 @@ const Category = ({params}:PageProps) => {
         </div>
         </div>):(
                 <div className='flex'>
-                <h1 className='text-dark ' >No Results Found for "{decodeURIComponent(category) }"</h1>
+                <h1 className='text-dark ' >No Matches Found for &ldquo;<span className='font-bold' >{decodeURIComponent(category) }</span>&ldquo;</h1>
         </div>
         )}
         </div>

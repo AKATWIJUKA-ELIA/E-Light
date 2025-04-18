@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react'
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
 import { useSendMail } from '@/hooks/useSendMail';
+import useGetCategories from '@/hooks/useGetCategories';
 
 
 
@@ -13,6 +14,8 @@ const AddProduct =  () => {
       const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
       const fileInputRef = useRef<HTMLInputElement>(null);
       const { sendEmail, } = useSendMail();
+      const { data: categories } = useGetCategories(); 
+      const admin = process.env.ADMIN
 
       const createProduct = useMutation(api.products.createProduct)
 
@@ -43,7 +46,7 @@ const AddProduct =  () => {
               
                 const [isSubmitting, setIsSubmitting] = useState(false);
               
-                const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
                   const { name, value } = e.target;
                   setProduct((prev) => ({...prev,[name]: value,
                   }));
@@ -112,7 +115,8 @@ const AddProduct =  () => {
                         await createProduct({ products: updatedproduct });
                       alert("product created successfully!");
                       cleanForm()
-                      sendEmail( "New Product Created", `User ${user?.fullName}, Added a product`);
+                      sendEmail( `${admin}` ,"New Product Created", `User ${user?.fullName}, Added a product`);
+                      sendEmail( `${user?.emailAddresses}`,"New Product Created", `Hello  ${user?.fullName}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
                     
                   } catch (error) {
                     console.error("Error creating product:", error);
@@ -159,16 +163,22 @@ const AddProduct =  () => {
         <label htmlFor="cartegory" className="flex text-sm font-medium text-gray-700">
           Cartegory
         </label>
-        <input
-          type="text"
+        <select
           id="product_cartegory"
           name="product_cartegory"
-          value={product.product_cartegory}
           onChange={handleChange}
           required
            className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm"
-        />
+        >
+                <option value=""  >Select category</option>
+                {categories?.map((category,index) => (
+                <option key={index} value={category.cartegory}>
+                  {category.cartegory}
+                </option>
+              ))}
+              </select>
       </div>
+      
       <div>
         <label htmlFor="condition" className="flex text-sm font-medium text-gray-700">
           Condition
@@ -194,6 +204,11 @@ const AddProduct =  () => {
           name="product_price"
           value={product.product_price}
           onChange={handleChange}
+          onKeyDown={(e) => {
+    if (["e", "E", "+", "-"].includes(e.key)) {
+      e.preventDefault();
+    }
+  }}
           required
            className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm"
         />
