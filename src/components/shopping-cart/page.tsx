@@ -71,7 +71,7 @@ const ShoppingCart= ()=> {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto p-4">
-      <div className="lg:w-3/4 bg-white p-6 rounded border border-gray-200">
+      <div className="lg:w-3/4 bg-slate-100 p-6 rounded border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Shopping Cart</h1>
           <span className="text-right">Price</span>
@@ -165,7 +165,7 @@ const ShoppingCart= ()=> {
              ({itemCount} items) Shs:{subtotal().toFixed(2)}
           </div>
 
-          <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-full">
+          <Button className="w-full bg-gold hover:bg-yellow-500 text-dark font-medium rounded-full">
             Proceed to checkout
           </Button>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header/page";
+import { Footer } from "@/components/Footer/page";
 import ReduxProvider from "./ReduxProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
@@ -31,6 +32,7 @@ export default function RootLayout({
               >
                 <Header />
                 {children}
+                <Footer/>
                 <ModeToggle />
               </ThemeProvider>
             </ReduxProvider>
