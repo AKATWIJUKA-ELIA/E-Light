@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { Card, CardContent } from "@/components/ui/card"
@@ -12,9 +13,10 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 
+
 interface Product {
         approved: boolean;
-         product_category: string;
+        product_cartegory: string;
          product_condition: string;
          product_description: string;
          product_image: string;
@@ -53,6 +55,7 @@ const FisrtHero = () => {
     <CarouselItem key={index}>
       <div className="p-1">
         <Card className="h-auto bg-transparent">
+          <Link href={`/category/${product.product_cartegory}`} >
           <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
             <Image
@@ -66,9 +69,10 @@ const FisrtHero = () => {
 
             {/* Text Overlay */}
             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
-              {product.product_name}
+              {product.product_cartegory}
             </div>
           </CardContent>
+          </Link>
         </Card>
       </div>
     </CarouselItem>
@@ -84,22 +88,24 @@ const FisrtHero = () => {
     <CarouselItem key={index}>
       <div className="p-1">
         <Card className="h-auto">
-          <CardContent className="relative flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
+        <Link href={`/category/${product.product_cartegory}`} >
+          <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
             <Image
               src={product.product_image}
         //       height={100}
         //       width={450}
               alt={product.product_name}
-              fill
+             fill
              className='object-cover w-full h-full'
             />
 
             {/* Text Overlay */}
             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
-              {product.product_name}
+              {product.product_cartegory}
             </div>
           </CardContent>
+          </Link>
         </Card>
       </div>
     </CarouselItem>
@@ -115,22 +121,24 @@ const FisrtHero = () => {
     <CarouselItem key={index}>
       <div className="p-1">
         <Card className="h-auto">
-          <CardContent className="relative flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
+        <Link href={`/category/${product.product_cartegory}`} >
+          <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
             <Image
               src={product.product_image}
         //       height={100}
         //       width={450}
               alt={product.product_name}
-              fill
+             fill
              className='object-cover w-full h-full'
             />
 
             {/* Text Overlay */}
             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
-              {product.product_name}
+              {product.product_cartegory}
             </div>
           </CardContent>
+          </Link>
         </Card>
       </div>
     </CarouselItem>
@@ -146,22 +154,24 @@ const FisrtHero = () => {
     <CarouselItem key={index}>
       <div className="p-1">
         <Card className="h-auto">
-          <CardContent className="relative flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
+        <Link href={`/category/${product.product_cartegory}`} >
+          <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
             <Image
               src={product.product_image}
         //       height={100}
         //       width={450}
               alt={product.product_name}
-              fill
+             fill
              className='object-cover w-full h-full'
             />
 
             {/* Text Overlay */}
             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
-              {product.product_name}
+              {product.product_cartegory}
             </div>
           </CardContent>
+          </Link>
         </Card>
       </div>
     </CarouselItem>

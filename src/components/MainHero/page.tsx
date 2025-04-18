@@ -43,10 +43,10 @@ const MainHero = () => {
         <div className='bg-pink-200   mt-32 ' >
 
         <div className='grid grid-cols-4 ml-32' >
-        <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="">
+        <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="">
         <CarouselContent className=''>
   {products.map((product, index) => (
-    <CarouselItem key={index}>
+    <CarouselItem key={index} className="basis-[300px] shrink-0">
       <div className="p-1">
         <Card className="h-auto bg-transparent w-full">
           <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-48 overflow-hidden w-full">

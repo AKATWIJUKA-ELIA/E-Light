@@ -9,12 +9,14 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';
+import useGetCategories from '@/hooks/useGetCategories';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
+        const { data: categories } = useGetCategories(); 
         
         const showDropDownMenu=()=>{
                 setHovered(true)
@@ -99,13 +101,32 @@ const Header = () => {
         <div className='flex md:hidden  w-[100%] p-auto '>
                                 <input type="text" className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' placeholder='Search '  />
         </div>
-        <div className='flex ml-5 gap-5' >
+        <div className='flex ml-5  md:ml-32 ' >
+                
+        <div className='flex flex-nowrap ' >
                 <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
-                         <BsList className=' font-bold text-2xl ' /> <h1 className='flex'>All Categories</h1>
-                </div>
+                         <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>All Categories</h1>
+                </div  >
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' >
                         <Link href="/post" >Sell Something?</Link>
                 </div>
+         </div>
+
+         <div className='hidden md:flex   ml-5 gap-14 ' >
+              { categories?.slice(0, 7)?.map((cartegory,index)=>
+                <div key={index}  className=' rounded-xl   p-2   hover:cursor-pointer hover:bg-gray-100' >
+                <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap' >{cartegory.cartegory}</Link>
+                </div>
+        )}
+              </div>
+              <div className=' flex md:hidden  grid-cols-3 ml-5 gap-14 ' >
+              { categories?.slice(0, 1)?.map((cartegory,index)=>
+                <div key={index} className=' rounded-3xl   p-1   hover:cursor-pointer hover:bg-gray-100' >
+                <Link href={`/category/${cartegory.cartegory}`} >{cartegory.cartegory}</Link>
+                </div>
+        )}
+              </div>
+
         </div>
        
 
