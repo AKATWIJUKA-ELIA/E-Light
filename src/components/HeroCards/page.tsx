@@ -30,7 +30,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
          { product?(
                 <div
                 key={product._id}
-                className="bg-transparent flex flex-col rounded-md shadow-m overflow-hidden shadow-xl hover:bg-gold border hover:border-dark ransition-transform duration-500"
+                className="bg-transparent flex flex-col rounded-md shadow-m overflow-hidden shadow-xl hover:bg-yellow-100 border hover:border-dark ransition-transform duration-500"
               >
                 {/* Product Image */}
                 <Link href={`/product/${product._id}`} className="w-full">
@@ -57,7 +57,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
                     </Link>
                   </h2>
                   
-                  <MdAddShoppingCart  className='ml-auto text-gold -mt-8 text-2xl hover:cursor-pointer font-bold' onClick={()=>addToCart(product)} />
+                  <MdAddShoppingCart  className='ml-auto text-gold -mt-8 text-2xl hover:cursor-pointer  font-bold' onClick={()=>addToCart(product)} />
               
                   {/* Product Description */}
                   <p className="text-gray-600 text-sm">{truncateString(product.product_description, 30)}</p>
