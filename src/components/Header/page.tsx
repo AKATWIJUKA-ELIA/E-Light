@@ -10,17 +10,37 @@ import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';
 import useGetCategories from '@/hooks/useGetCategories';
+import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
+import { Input } from '../ui/input';
+import SearchModel from '../SearchModel/page';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
-        const { data: categories } = useGetCategories(); 
+        const { data: categories } = useGetCategories();
+        const { data: products } = useGetApprovedProducts();
+        const [Focused, setFocused] = useState(false)
+        const [searchTerm, setSearchTerm] = useState('');
+        const [filteredProducts, setFilteredProducts] = useState(products);
         
         const showDropDownMenu=()=>{
                 setHovered(true)
         }
+        const forceBlur = () => {
+                document.getElementById("inputsearch")?.blur();
+              };
+        const HandleClose =()=>{
+                setFocused(false)
+                forceBlur()
+        }
+        useEffect(() => {
+                const results = products?.filter((product) =>
+                  product.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                setFilteredProducts(results);
+              }, [searchTerm, products]);
         const handleStickyNavbar = () => {
                 if (window.scrollY >= 100) {
                   setSticky(true);
@@ -50,7 +70,14 @@ const Header = () => {
                         </div>
 
                         <div className='hidden md:flex w-[100%] p-auto '>
-                                <input type="text" className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' placeholder='Search '  />
+                                <Input value={searchTerm}
+                                id='inputsearch'
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                 onFocus={()=>{setFocused(true)}}
+                                 onBlur={()=>{setFocused(false)}}
+                                 type="text"
+                                  className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' 
+                                  placeholder='Search '  />
                         </div>
                 </div>
 
@@ -133,6 +160,7 @@ const Header = () => {
 
     </div>
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
+    { Focused && searchTerm.length>1 ? (<SearchModel products={filteredProducts||[]} onClose={HandleClose} />):("")}
     </>
   )
 }

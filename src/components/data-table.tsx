@@ -8,6 +8,7 @@ import {
         TableRow,
       } from "@/components/ui/table"
       import Image from "next/image";
+import { Oval } from "react-loader-spinner";
 interface Product {
         _id:string,
   approved: boolean,
@@ -26,7 +27,7 @@ interface DataTableProps {
 const DataTable: React.FC<DataTableProps> = ({ products }) => {
         return (
                 <div className="w-full overflow-x-auto rounded-lg border">
-                <Table className="min-w-[800px]">
+                {products?( <Table className="min-w-[800px]">
                   <TableCaption>A list of your recent invoices.</TableCaption>
                   <TableHeader>
                     <TableRow>
@@ -68,7 +69,17 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                       </TableRow>
                     ))}
                   </TableBody>
-                </Table>
+                </Table>):(
+                        <Oval
+                        visible={true}
+                                    height="80"
+                                    width="80"
+                                    color="#0000FF"
+                                    secondaryColor="#ddd"
+                                    ariaLabel="oval-loading"
+                                    wrapperClass=""
+                        />
+                )}
               </div>
               
         )

@@ -1,8 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { useQuery } from 'convex/react'
-import { api } from '../../../convex/_generated/api'
 import HeroCard from '../HeroCards/page'
+import useGetApprovedProducts from '@/hooks/useGetApprovedProducts'
 
 interface Product {
   approved: boolean;
@@ -19,7 +18,7 @@ interface Product {
 
 const Main = () => {
   const [products, setProducts] = useState<Product[]>([])
-  const productsData = useQuery(api.products.getProducts)
+  const {data:productsData} = useGetApprovedProducts()
 
   useEffect(() => {
     if (productsData) {
