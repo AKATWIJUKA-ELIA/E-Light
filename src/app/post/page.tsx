@@ -15,7 +15,7 @@ const AddProduct =  () => {
       const fileInputRef = useRef<HTMLInputElement>(null);
       const { sendEmail, } = useSendMail();
       const { data: categories } = useGetCategories(); 
-      const admin = process.env.ADMIN
+      const admin = process.env.NEXT_PUBLIC_ADMIN
 
       const createProduct = useMutation(api.products.createProduct)
 
