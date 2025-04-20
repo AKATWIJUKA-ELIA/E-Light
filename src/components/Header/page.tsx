@@ -74,7 +74,6 @@ const Header = () => {
                                 id='inputsearch'
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                  onFocus={()=>{setFocused(true)}}
-                                 onBlur={()=>{setFocused(false)}}
                                  type="text"
                                   className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' 
                                   placeholder='Search '  />
@@ -126,7 +125,13 @@ const Header = () => {
         <Separator/>
         
         <div className='flex md:hidden  w-[100%] p-auto '>
-                                <input type="text" className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' placeholder='Search '  />
+        <Input value={searchTerm}
+                                id='inputsearchmobile'
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                 onFocus={()=>{setFocused(true)}}
+                                 type="text"
+                                  className='flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%]' 
+                                  placeholder='Search '  />
         </div>
         <div className='flex ml-5  md:ml-32 ' >
                 
@@ -160,7 +165,7 @@ const Header = () => {
 
     </div>
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
-    { Focused && searchTerm.length>1 ? (<SearchModel products={filteredProducts||[]} onClose={HandleClose} />):("")}
+    {  searchTerm.length>1 ? (<SearchModel Focused={Focused} products={filteredProducts||[]} onClose={HandleClose} />):("")}
     </>
   )
 }
