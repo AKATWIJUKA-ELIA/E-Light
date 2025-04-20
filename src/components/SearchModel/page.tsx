@@ -12,48 +12,49 @@ interface Product {
 interface SearchModel {
   onClose: () => void;
   products:Product[];
+  Focused:boolean
 }
 
 
-const SearchModel: React.FC<SearchModel> = ({ onClose,products  }) => {
+const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
+
+        if (!Focused) return null;
 
   return (
-      <>
-        
-                <div className="  fade-in fixed ml-[10%] z-40 inset-0 backdrop-blur-lg shadow-lg shadow-gray-400 flex rounded-3xl w-[70%] h-[50%] mt-[7%]   overflow-auto overflow-x-hidden bg-slate-100" id="wrapper" onMouseLeave={onClose} >                  
+        <div className="  fade-in fixed ml-[10%] z-40 inset-0 backdrop-blur-lg shadow-lg shadow-gray-400 flex rounded-3xl w-[70%] h-[50%] mt-[7%]   overflow-auto overflow-x-hidden bg-slate-100" onMouseLeave={onClose} >                  
                      
-                <div className=" mx-auto px-5  fade-in w-full gap-4"  > 
-                                <div className='flex'>
-                                        <h1 className='font-bold'>
-                                                Related Searches
-                                        </h1>
-                                </div>
-                        <div className='flex flex-col w-full '>
-                        {products ? (
-                                products.map((product) => (
-                                <div
-                                key={product._id}
-                                className="flex cursor-pointer w-full rounded-lg mr-2 p-2 slider slide--fast hover:bg-gray-200"
-                                >
-                                <Link href={`/category/${encodeURIComponent(String(product.product_cartegory))}`}  className='flex gap-2' onClick={onClose}>
-                                <BiSearch className='flex  mt-2'/>
-                                        <h1 className=" flex  animated main">
-                                        <span id="main" className="animated current">
-                                        {product.product_cartegory}
-                                        </span>
-                                        </h1>
-                                </Link>
-                                </div>
-                                ))
-                                ) : (
-                                <div className="vertical-line ml-2 fade-in">Loading . . .</div>
-                                )}
+        <div className=" mx-auto px-5  fade-in w-full gap-4"  > 
+                        <div className='flex'>
+                                <h1 className='font-bold'>
+                                        Related Searches
+                                </h1>
                         </div>
+                <div className='flex flex-col w-full '>
+                {products ? (
+                        products.map((product) => (
+                                <Link key={product._id} href={`/category/${encodeURIComponent(String(product.product_cartegory))}`} onClick={onClose}  className='flex gap-2' >
+                        <div
+                        
+                        className="flex cursor-pointer w-full rounded-lg mr-2 p-2 slider slide--fast hover:bg-gray-200"
+                        >
+                       
+                        <BiSearch className='flex  mt-2'/>
+                                <h1 className=" flex  animated main">
+                                <span id="main" className="animated current">
+                                {product.product_cartegory}
+                                </span>
+                                </h1>
+                        </div>
+                        </Link>
+                        ))
+                        ) : (
+                        <div className="vertical-line ml-2 fade-in">Loading . . .</div>
+                        )}
+                </div>
 
 
-                        </div>
-               </div>
-      </>
+                </div>
+       </div>
       
   );
 };
