@@ -9,6 +9,9 @@ import {
       } from "@/components/ui/table"
       import Image from "next/image";
 import { Oval } from "react-loader-spinner";
+import { Button } from "./ui/button";
+import EditModal from "./EditModal/page";
+import { useState } from "react";
 interface Product {
         _id:string,
   approved: boolean,
@@ -25,7 +28,14 @@ interface DataTableProps {
   products: Product[];
 }
 const DataTable: React.FC<DataTableProps> = ({ products }) => {
+        const [isvisible, setisvisible] = useState(false);
+        const [productId, setproductId] = useState("");
+        const HandleEdit=(ProductId:string)=>{
+                setproductId(ProductId)
+                setisvisible(true)
+        }
         return (
+                <>
                 <div className="w-full overflow-x-auto rounded-lg border">
                 {products?( <Table className="min-w-[800px]">
                   <TableCaption>A list of your recent invoices.</TableCaption>
@@ -39,6 +49,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                       <TableHead className="text-right">Price</TableHead>
                       <TableHead className="text-right">Status</TableHead>
                       <TableHead className="text-right">Date Created</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -66,6 +77,10 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                             {new Date(product._creationTime).toLocaleDateString()}
                           </time>
                         </TableCell>
+                        <TableCell className=" justify-center  flex gap-1">
+                        <Button className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 " onClick={()=>{HandleEdit(product._id)}} >Edit</Button>
+                        <Button className="flex bg-red-400  hover:bg-red-700 transition-transform duration-500 " >Delete</Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -81,6 +96,8 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                         />
                 )}
               </div>
+                <EditModal isvisible={isvisible} onClose={() => setisvisible(false)} productId={productId} />
+                </>
               
         )
       }

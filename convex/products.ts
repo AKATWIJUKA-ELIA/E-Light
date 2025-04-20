@@ -137,3 +137,24 @@ export const getImageUrl = query({
           return products;
         },
       });
+
+      export const UpdateProduct = mutation({
+        args:{_id: v.id("products"),
+                product: v.object({
+                _id: v.id("products"),
+                 approved: v.boolean(),
+                  product_cartegory: v.string(),
+                  product_condition: v.string(),
+                  product_description: v.string(),
+                  product_image: v.array(v.string()),
+                  product_name: v.string(),
+                  product_price: v.string(),
+                    }),
+          },
+        handler: async (ctx, args) => {
+              if(args.product){
+              const job = await ctx.db.patch(args._id, args.product);
+              return job
+              }
+              
+        }})
