@@ -3,6 +3,7 @@ import React, { use } from 'react'
 import useGetRelatedProducts from '@/hooks/useGetRelated'
 import HeroCard from '@/components/HeroCards/page'
 import { Input } from '@/components/ui/input'
+import ProductsNotFound from '@/components/NoProductsFound/page'
 interface PageProps {
         params: Promise<{ category: string }>
       }
@@ -10,7 +11,7 @@ const Category = ({params}:PageProps) => {
         const { category } = use(params);
         const { data: relatedProducts } = useGetRelatedProducts(category);
   return (
-        <div className='mt-32' >
+        <div className=' mt-36 md:mt-32' >
                 {
                         (relatedProducts ?? []).length > 0 ? (<div className='flex flex-col ' >
                         <div className='flex flex-col gap-4'>
@@ -30,8 +31,8 @@ const Category = ({params}:PageProps) => {
                 ))}
         </div>
         </div>):(
-                <div className='flex'>
-                <h1 className='text-dark ' >No Matches Found for &ldquo;<span className='font-bold' >{decodeURIComponent(category) }</span>&ldquo;</h1>
+                <div className='mt-10  flex'>
+                <ProductsNotFound category={category} />
         </div>
         )}
         </div>
