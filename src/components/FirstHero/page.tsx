@@ -39,8 +39,7 @@ const FisrtHero = () => {
                                 if (product) {
                                     setproducts(product)
                                 }
-                                  console.log("data is ",products)
-                        }, [products]);
+                        }, );
 
         
   return (

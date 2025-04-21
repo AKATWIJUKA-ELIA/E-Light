@@ -33,12 +33,12 @@ const ShoppingCart= ()=> {
         const itemCount = cart?.reduce((total, item) => total + (item.quantity || 0), 0)
         
 
-        console.log("Cart is ", cart)
+        // console.log("Cart is ", cart)
         const productIds = cart.map((item) => item.product_id);
-        console.log("product ids", productIds)
+        // console.log("product ids", productIds)
         const { data: products, loading: isLoading } = useGetProductsByIds(productIds.flatMap(id=>id));
         const [loading,setLoading] = useState(isLoading)
-        console.log("Products : ",products)
+        // console.log("Products : ",products)
         useEffect(() => {
                 if (cart.length === 0 ||cart.length > 0) {
                         setLoading(false);

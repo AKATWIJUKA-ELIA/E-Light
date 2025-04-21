@@ -56,7 +56,7 @@ const CartSlice = createSlice({
                         const index = state.items.findIndex(item => item.product_id === product_id);
                         if (index !== -1) {
                         state.items.splice(index, 1);
-                        console.log("Current State",state.items)
+                        // console.log("Current State",state.items)
     }
                 }
         }

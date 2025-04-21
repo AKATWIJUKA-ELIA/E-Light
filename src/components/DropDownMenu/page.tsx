@@ -15,7 +15,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ isvisible, onClose,  }) => 
         const [category,setCategory] = useState("")
         const {data:cartegories} = useGetCategories()
         const {data:related} = useGetRelatedProducts(category)
-        console.log("related",related)
+        // console.log("related",related)
 
 // useEffect(()=>{
         
