@@ -1,11 +1,55 @@
+"use client"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, ArrowRight } from "lucide-react"
+import { useSendMail } from "@/hooks/useSendMail"
+import useAddEmail from "@/hooks/useAddEmail"
+import { useState } from "react"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const [useremail,setuseremail] = useState("")
+  const[submitting,setIsSubmitting] = useState(false)
+  const {sendEmail}  = useSendMail()
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        setuseremail(e.target.value) 
+  }
+  
+  const cleanForm = () => {
+        setuseremail("")
+      }
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      setIsSubmitting(true)
+  
+      try {
+        useAddEmail(useremail)
+        sendEmail(useremail, "Welcome to ShopCheap - Thanks for Subscribing!", `Hi ${useremail},
+
+Thank you for subscribing to ShopCheap! We're thrilled to have you on board.
+
+Now, you'll be the first to receive exclusive updates, tips, promotions, or industry insights. Expect valuable content delivered straight to your inbox .
+
+If you ever have questions or feedback, just reply to this email—we'd love to hear from you!\n
+
+Thanks again for joining us. Stay tuned for your first edition!\n
+
+Best regards,\n
+ShopCheap\n
+https://shopcheap.vercel.app/`
+)
+        } catch (error) {
+        console.error("Error updating product:", error)
+        alert("Email Already Exist")
+      } finally {
+        setIsSubmitting(false)
+        cleanForm()
+      }
+    }
+  console.log(useremail)
 
   return (
     <footer className="bg-dark border-t">
@@ -20,10 +64,20 @@ export function Footer() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Input type="email" placeholder="Your email address" className="max-w-md border-black" />
-              <Button className="bg-gold">
+                
+              <form onSubmit={handleSubmit} className="flex gap-2">
+              <Input 
+              value={useremail}
+              onChange={handleChange}
+              type="email"
+               placeholder={submitting?"Submitting ...":"Your email address"}
+                className="max-w-md border-black" 
+                />
+
+              <Button type="submit" className="bg-gold">
                 Subscribe <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
+              </form>
             </div>
           </div>
         </div>
