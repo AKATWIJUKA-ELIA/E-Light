@@ -40,7 +40,7 @@ const FisrtHero = () => {
                                     setproducts(product)
                                 }
                                   console.log("data is ",products)
-                        }, [products]);
+                        }, );
 
         
   return (

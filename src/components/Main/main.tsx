@@ -24,7 +24,7 @@ const Main = () => {
     if (productsData) {
       setProducts(productsData)
     }
-  }, [productsData])
+  }, )
 
   return (
     <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2'>
