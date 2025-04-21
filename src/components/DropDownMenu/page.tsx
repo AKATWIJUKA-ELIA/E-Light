@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import Link from "next/link";
 import { BiX } from 'react-icons/bi';
 import useGetCategories from '@/hooks/useGetCategories';
