@@ -13,6 +13,7 @@ export function Footer() {
   const [useremail,setuseremail] = useState("")
   const[submitting,setIsSubmitting] = useState(false)
   const {sendEmail}  = useSendMail()
+  const AddEmail= useAddEmail()
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setuseremail(e.target.value) 
@@ -26,7 +27,7 @@ export function Footer() {
       setIsSubmitting(true)
   
       try {
-        useAddEmail(useremail)
+        AddEmail(useremail)
         sendEmail(useremail, "Welcome to ShopCheap - Thanks for Subscribing!", `Hi ${useremail},
 
 Thank you for subscribing to ShopCheap! We're thrilled to have you on board.
