@@ -9,3 +9,39 @@
                 background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1)); /* #e2e8f0 */
                 transition: background-color 1s ease-in-out;
               }
+
+              .fade-in {
+                opacity: 0;
+                transform: scaleY(0);
+                transform-origin: top;
+                animation: fadeGrow 0.2s ease-in-out forwards;
+              }
+              
+              .fade-out {
+                opacity: 1;
+                transform: scaleY(1);
+                transform-origin: top;
+                animation: fadeShrink 5.5s ease-in-out forwards;
+              }
+              
+              @keyframes fadeGrow {
+                from {
+                  opacity: 0;
+                  transform: scaleY(0);
+                }
+                to {
+                  opacity: 1;
+                  transform: scaleY(1);
+                }
+              }
+              
+              @keyframes fadeShrink {
+                from {
+                  /* opacity: 1; */
+                  transform: scaleY(1);
+                }
+                to {
+                  /* opacity: 0; */
+                  transform: scaleY(0);
+                }
+              }
