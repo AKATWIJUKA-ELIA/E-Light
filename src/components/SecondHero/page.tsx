@@ -36,7 +36,7 @@ const SecondHero = () => {
                         if (product) {
                             setproducts(product)
                         }
-                          console.log("data is ",products)
+                        //   console.log("data is ",products)
                 }, [product]);
 
                 

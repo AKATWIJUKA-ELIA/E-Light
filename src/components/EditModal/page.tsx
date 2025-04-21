@@ -132,7 +132,7 @@ const EditModal: React.FC<EditModalProps> = ({ isvisible, onClose, productId }) 
 
       // Only upload images if there are any selected
       if (selectedImages.length > 0) {
-        console.log("Images to upload: ", selectedImages)
+        // console.log("Images to upload: ", selectedImages)
         // Step 1: Get a short-lived upload URL for each image
         const uploadPromises = selectedImages.map(async (image) => {
           const postUrl = await generateUploadUrl()

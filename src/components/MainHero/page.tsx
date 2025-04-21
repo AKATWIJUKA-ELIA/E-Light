@@ -35,7 +35,6 @@ const MainHero = () => {
                                 if (product) {
                                     setproducts(product)
                                 }
-                                  console.log("data is ",products)
                         }, );
 
         

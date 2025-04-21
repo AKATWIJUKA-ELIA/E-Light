@@ -24,7 +24,7 @@ export const useSendMail = () => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Email sent:", data.message);
+        // console.log("Email sent:", data.message);
       } else {
         setError(true);
         console.error("Email sending failed:", data.message);
