@@ -158,3 +158,17 @@ export const getImageUrl = query({
               }
               
         }})
+
+        export const DeleteProduct = mutation({
+                args: { id: v.id("products") }, // use `v.id("tableName")` for safety
+                handler: async (ctx, args) => {
+                  const product = await ctx.db.get(args.id);
+              
+                  if (!product) {
+                    throw new Error("Product not found");
+                  }
+              
+                  await ctx.db.delete(args.id);
+                  return { success: true };
+                },
+              });
