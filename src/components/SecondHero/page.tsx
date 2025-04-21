@@ -37,7 +37,7 @@ const SecondHero = () => {
                             setproducts(product)
                         }
                           console.log("data is ",products)
-                }, );
+                }, [product]);
 
                 
   return (

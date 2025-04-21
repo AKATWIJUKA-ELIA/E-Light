@@ -136,15 +136,15 @@ const Header = () => {
         <div className='flex ml-5  md:ml-32 ' >
                 
         <div className='flex flex-nowrap ' >
-                <div className='flex rounded-full   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
+                <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
                          <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>All Categories</h1>
                 </div  >
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' >
+                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' onMouseOver={HandleClose} >
                         <Link href="/post" >Sell Something?</Link>
                 </div>
-         </div>
+        </div >
 
-         <div className='hidden md:flex   ml-5 gap-14 ' >
+        <div className='hidden md:flex   ml-5 gap-14 ' >
               { categories?.slice(0, 7)?.map((cartegory,index)=>
                 <div key={index}  className=' rounded-xl   p-2   hover:cursor-pointer hover:bg-gray-100' >
                 <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap' >{cartegory.cartegory}</Link>
