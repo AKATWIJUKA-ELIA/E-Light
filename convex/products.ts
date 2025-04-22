@@ -172,3 +172,21 @@ export const getImageUrl = query({
                   return { success: true };
                 },
               });
+
+        
+              export const getAllProducts = query({
+                handler: async (ctx) => {
+              const products = await ctx.db.query("products").collect(); 
+        //       console.log(products)
+              return Promise.all(
+                products.map(async (product) => ({
+                  ...product,
+                  product_image: product.product_image ? await ctx.storage.getUrl(product.product_image[0]) : null,
+                 
+                }))
+              
+              );
+              
+            },
+            
+          })
