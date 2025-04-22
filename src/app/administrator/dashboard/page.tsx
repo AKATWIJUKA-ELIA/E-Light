@@ -9,18 +9,32 @@ import { SidebarInset, SidebarProvider } from "../../../components/ui/sidebar"
 import useGetAllProducts from "@/hooks/useGetAllProducts"
 // import { useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
+interface Product {
+        _id:string,
+  approved: boolean,
+  product_cartegory: string,
+  product_condition: string,
+  product_description: string,
+  product_image: string,
+  product_name: string,
+  product_owner_id: string,
+  product_price: string,
+  _creationTime:Date
+      }
+      type products = Product[]
 
+      
 const Profile=()=> {
 
         // const User = useUser()
         const { data: Allproducts, } = useGetAllProducts() 
-        const [Products, setProducts] = useState<any[]>([])
-        const [ApprovedProducts, setApprovedProducts] = useState<any[]>([])
-        const [PendingProducts, setPendingProducts] = useState<any[]>([])
+        const [Products, setProducts] = useState<products>([])
+        const [ApprovedProducts, setApprovedProducts] = useState<products>([])
+        const [PendingProducts, setPendingProducts] = useState<products>([])
         const [currentcard,setcurrentcard] = useState("")
         // console.log("Products are: ", products ?? "No Products")
         useEffect(()=>{
-                setProducts(Allproducts?Allproducts:[])
+                setProducts(Allproducts ? Allproducts : [])
 
         },[Allproducts])
 
@@ -43,7 +57,7 @@ const Profile=()=> {
                       } else if (currentcard === "pending") {
                         setProducts(PendingProducts);
                       } else {
-                        setProducts(Allproducts ?? []);
+                        setProducts(Allproducts ? Allproducts : []);
                       }
         },[currentcard, ApprovedProducts, PendingProducts, Allproducts])
         console.log("CurrentCard is :",currentcard)

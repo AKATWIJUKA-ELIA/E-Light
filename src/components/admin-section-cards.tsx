@@ -11,6 +11,19 @@ import {
 } from "@/components/ui/card"
 import useGetAllProducts from "@/hooks/useGetAllProducts"
 import { useEffect, useState } from "react"
+interface Product {
+        _id:string,
+  approved: boolean,
+  product_cartegory: string,
+  product_condition: string,
+  product_description: string,
+  product_image: string,
+  product_name: string,
+  product_owner_id: string,
+  product_price: string,
+  _creationTime:Date
+      }
+      type products = Product[]
 
 interface SectionProps {
   ClickedCard: (value:string) => void
@@ -18,8 +31,8 @@ interface SectionProps {
 
 const  SectionCards: React.FC<SectionProps>=({ClickedCard})=> {
         const { data: Allproducts, } = useGetAllProducts()
-                const [ApprovedProducts, setApprovedProducts] = useState<any[]>([])
-                const [PendingProducts, setPendingProducts] = useState<any[]>([])
+                const [ApprovedProducts, setApprovedProducts] = useState<products>([])
+                const [PendingProducts, setPendingProducts] = useState<products>([])
                 useEffect(()=>{
                         const HanldeFilter=()=>{
                                 const filteredapproved = [] as any[]
