@@ -40,8 +40,8 @@ const Profile=()=> {
 
         useEffect(()=>{
                 const HanldeFilter=()=>{
-                        const filteredapproved = [] as any[]
-                        const filteredpending = [] as any[]
+                        const filteredapproved = [] as products
+                        const filteredpending = [] as products
                         Allproducts?.map((product)=>product.approved
                         ?filteredapproved.push(product):filteredpending.push(product) )
                         setApprovedProducts(filteredapproved)
