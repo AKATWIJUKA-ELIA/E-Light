@@ -55,7 +55,17 @@ const EditModal: React.FC<EditModalProps> = ({ isvisible, onClose, productId }) 
       })
     }
   }, [Initialproduct])
-
+  const cleanImageField=()=>{
+        setSelectedImages([]);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+}
+const handleclose =()=>{
+        cleanImageField()
+        onClose()
+        setImagePreview([])
+}
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setProduct((prev) => {
@@ -75,15 +85,16 @@ const EditModal: React.FC<EditModalProps> = ({ isvisible, onClose, productId }) 
         for (const file of filesArray) {
                 if (file.size > maxFileSize) {
                   alert(`"${file.name}" is too large. Maximum allowed size is 1MB.`);
+                  cleanImageField()
                 } else {
                   validFiles.push(file);
                 }
               }
      
-
       // Check if adding these files would exceed the 5 image limit
       if (validFiles.length > 5) {
         alert("You can only upload up to 5 images")
+        cleanImageField()
         return
       }
 
@@ -93,11 +104,6 @@ const EditModal: React.FC<EditModalProps> = ({ isvisible, onClose, productId }) 
       const previewUrls = validFiles.map((file) => URL.createObjectURL(file))
       setImagePreview(previewUrls)
     }
-  }
-
-  const removeImage = (index: number) => {
-    setSelectedImages((prev) => prev.filter((_, i) => i !== index))
-    setImagePreview((prev) => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -192,9 +198,9 @@ const EditModal: React.FC<EditModalProps> = ({ isvisible, onClose, productId }) 
   if (!isvisible) return null
 
   return (
-    <div className="fade-in fixed z-40 inset-0 backdrop-blur-2xl shadow-lg shadow-black rounded-lg flex ml-[10%] w-[80%] h-[80%] bg-slate-300 mt-[8%] overflow-auto overflow-x-hidden">
-      <div className="mt-4 md:mt-3 mb-2 md:w-[60%] shadow-md shadow-black items-center justify-center mx-auto bg-gray-200 rounded-lg">
-        <h1 className="text-2xl font-bold text-center text-black">Update Product</h1>
+    <div className="fade-in fixed z-40 inset-0 backdrop-blur-sm shadow-lg shadow-black rounded-lg flex  w-[100%] h-[100%]   overflow-auto overflow-x-hidden">
+      <div className="my-auto mt-[8%] md:w-[60%] shadow-md shadow-black items-center justify-center mx-auto bg-gray-200 rounded-lg">
+      <h1 className="text-2xl font-bold text-center text-black">Update Product</h1>
         <form onSubmit={handleSubmit} className="space-y-4 p-3">
           <div>
             <label htmlFor="product_name" className="block text-sm font-medium text-gray-700">
@@ -311,13 +317,13 @@ const EditModal: React.FC<EditModalProps> = ({ isvisible, onClose, productId }) 
                         alt={`Preview ${index + 1}`}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
                       />
-                      <button
+                      {/* <button
                         type="button"
                         onClick={() => removeImage(index)}
                         className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
                       >
                         ×
-                      </button>
+                      </button> */}
                     </div>
                   ))}
                 </div>
@@ -337,7 +343,7 @@ const EditModal: React.FC<EditModalProps> = ({ isvisible, onClose, productId }) 
             <button
               type="button"
               className="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-400 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              onClick={onClose}
+              onClick={handleclose}
             >
               Cancel
             </button>
