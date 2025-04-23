@@ -199,8 +199,11 @@ const handleclose =()=>{
 
   return (
     <div className="fade-in fixed z-40 inset-0 backdrop-blur-sm shadow-lg shadow-black rounded-lg flex  w-[100%] h-[100%]   overflow-auto overflow-x-hidden">
-      <div className="my-auto mt-[8%] md:w-[60%] shadow-md shadow-black items-center justify-center mx-auto bg-gray-200 rounded-lg">
-      <h1 className="text-2xl font-bold text-center text-black">Update Product</h1>
+      <div className="my-auto mt-[30%] md:mt-[8%] md:w-[60%] shadow-md shadow-black items-center justify-center mx-auto bg-gray-200 rounded-lg">
+      <div>
+        <h1 className="text-2xl font-bold text-center text-black">Update Product</h1>
+        <h1 className="text-sm font-bold text-center text-black">Note: While Updating your Product, you must add the images again</h1>
+      </div>
         <form onSubmit={handleSubmit} className="space-y-4 p-3">
           <div>
             <label htmlFor="product_name" className="block text-sm font-medium text-gray-700">
@@ -306,7 +309,7 @@ const handleclose =()=>{
             />
 
             {/* Image preview section */}
-            {imagePreview.length > 0 && (
+            { imagePreview.length > 0 && (
               <div className="">
                 <p className="text-sm font-medium text-gray-700 mb-2">Selected Images: {selectedImages.length} of 5 images selected</p>  
                 <div className="flex flex-wrap gap-2">

@@ -50,7 +50,7 @@ https://shopcheap.vercel.app/`
         cleanForm()
       }
     }
-  console.log(useremail)
+//   console.log(useremail)
 
   return (
     <footer className="bg-dark border-t">
