@@ -41,7 +41,7 @@ const  SectionCards: React.FC<SectionProps>=({ClickedCard})=> {
                                 ?filteredapproved.push(product):filteredpending.push(product) )
                                 setApprovedProducts(filteredapproved)
                                 setPendingProducts(filteredpending)
-                                console.log("Approved Products:",filteredpending)
+                                // console.log("Approved Products:",filteredpending)
                         }
                         HanldeFilter()
                 },[Allproducts])

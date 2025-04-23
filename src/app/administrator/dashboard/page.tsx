@@ -46,7 +46,7 @@ const Profile=()=> {
                         ?filteredapproved.push(product):filteredpending.push(product) )
                         setApprovedProducts(filteredapproved)
                         setPendingProducts(filteredpending)
-                        console.log("Approved Products:",filteredpending)
+                        // console.log("Approved Products:",filteredpending)
                 }
                 HanldeFilter()
         },[Allproducts])
@@ -60,7 +60,7 @@ const Profile=()=> {
                         setProducts(Allproducts ? Allproducts : []);
                       }
         },[currentcard, ApprovedProducts, PendingProducts, Allproducts])
-        console.log("CurrentCard is :",currentcard)
+        // console.log("CurrentCard is :",currentcard)
         
   return (
     <SidebarProvider >

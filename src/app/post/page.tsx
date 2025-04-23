@@ -15,6 +15,7 @@ const AddProduct =  () => {
       const fileInputRef = useRef<HTMLInputElement>(null);
       const { sendEmail, } = useSendMail();
       const { data: categories } = useGetCategories(); 
+        const [imagePreview, setImagePreview] = useState<string[]>([])
       const admin = process.env.NEXT_PUBLIC_ADMIN
 
       const createProduct = useMutation(api.products.createProduct)
@@ -45,7 +46,40 @@ const AddProduct =  () => {
                 });
               
                 const [isSubmitting, setIsSubmitting] = useState(false);
+                const cleanImageField=()=>{
+                        setSelectedImage([]);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = '';
+                        }
+                }
+                const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                  if (e.target.files) {
+                      const filesArray = Array.from(e.target.files)
+                      const maxFileSize = 3 * 1024 * 1024; // 1MB in bytes
+                      const validFiles: File[] = [];
+                      for (const file of filesArray) {
+                              if (file.size > maxFileSize) {
+                                alert(`"${file.name}" is too large. Maximum allowed size is 3MB.`);
+                                cleanImageField()
+                              } else {
+                                validFiles.push(file);
+                              }
+                            }
+                   
+                    // Check if adding these files would exceed the 5 image limit
+                    if (validFiles.length > 5) {
+                      alert("You can only upload up to 5 images")
+                      cleanImageField()
+                      return
+                    }
               
+                    setSelectedImage(validFiles)
+              
+                    // Create preview URLs for the selected images
+                    const previewUrls = validFiles.map((file) => URL.createObjectURL(file))
+                    setImagePreview(previewUrls)
+                  }
+                }
                 const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
                   const { name, value } = e.target;
                   setProduct((prev) => ({...prev,[name]: value,
@@ -115,6 +149,8 @@ const AddProduct =  () => {
                         await createProduct({ products: updatedproduct });
                       alert("product created successfully!");
                       cleanForm()
+                      cleanImageField()
+                      setImagePreview([])
                       sendEmail( `${admin}` ,"New Product Created", `User ${user?.fullName}, Added a product`);
                       sendEmail( `${user?.emailAddresses}`,"New Product Created", `Hello  ${user?.fullName}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
                     
@@ -223,13 +259,38 @@ const AddProduct =  () => {
             name="imageUrl"
             ref={fileInputRef}
             multiple
-            onChange={(event) => setSelectedImage((prev) => [...(prev || []), ...(event.target.files ? Array.from(event.target.files) : [])])}
+            onChange={handleImageChange}
             required
             className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
+          { imagePreview.length > 0 && (
+              <div className="">
+                <p className="text-sm font-medium text-gray-700 mb-2">Selected Images: {selectedImage?.length} of 5 images selected</p>  
+                <div className="flex flex-wrap gap-2">
+                  {imagePreview.map((src, index) => (
+                    <div key={index} className="relative">
+                      <img
+                        src={src || "/placeholder.svg"}
+                        alt={`Preview ${index + 1}`}
+                        className="h-20 w-20 object-cover rounded-md border border-gray-300"
+                      />
+                      {/* <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                      >
+                        ×
+                      </button> */}
+                    </div>
+                  ))}
+                </div>
+              
+              </div>
+            )}
         </div>
 
       <div>
+      
         <button
           type="submit"
           disabled={isSubmitting}

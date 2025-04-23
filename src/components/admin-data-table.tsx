@@ -12,7 +12,9 @@ import { Oval } from "react-loader-spinner";
 import { Button } from "./ui/button";
 import EditModal from "./EditModal/page";
 import DeleteModal from "./DeleteModal/page";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ApproveRevokeModal from "./ApproveRevoke/page";
+import useGetProductById from "@/hooks/useGetProductById";
 interface Product {
         _id:string,
   approved: boolean,
@@ -30,8 +32,22 @@ interface DataTableProps {
 }
 const DataTable: React.FC<DataTableProps> = ({ products }) => {
         const [isvisible, setisvisible] = useState(false);
+        const [ischange, setischange] = useState(false);
         const [isdelete, setisdelete] = useState(false);
         const [productId, setproductId] = useState("");
+        const[action, setaction] = useState(Boolean)
+        
+        const HandleApproveRevoke=(ProductId:string)=>{
+                setproductId(ProductId)
+                setischange(true)
+        }
+
+        const {data:product} = useGetProductById(productId)
+                useEffect(()=>{
+                        if(product){
+                                setaction(product.approved)
+                        }
+                })
         const HandleEdit=(ProductId:string)=>{
                 setproductId(ProductId)
                 setisvisible(true)
@@ -40,6 +56,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                 setproductId(ProductId)
                 setisdelete(true)
         }
+
         return (
                 <>
                 <div className="w-full overflow-x-auto rounded-lg border">
@@ -84,6 +101,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                           </time>
                         </TableCell>
                         <TableCell className=" justify-center  flex gap-1">
+                        <Button className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 " onClick={()=>{HandleApproveRevoke(product._id)}} >{product.approved? "Revoke" : "Approve"}</Button>
                         <Button className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 " onClick={()=>{HandleEdit(product._id)}} >Edit</Button>
                         <Button className="flex bg-red-400  hover:bg-red-700 transition-transform duration-500 " onClick={()=>{HandleDelete(product._id)}}  >Delete</Button>
                         </TableCell>
@@ -104,6 +122,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
               </div>
                 <EditModal isvisible={isvisible} onClose={() => setisvisible(false)} productId={productId} />
                 <DeleteModal isdelete={isdelete} onClose={() => setisdelete(false)} productId={productId} />
+                <ApproveRevokeModal ischange={ischange}  onClose={() => setischange(false)} productId={productId} Action={action}/>
                 </>
               
         )

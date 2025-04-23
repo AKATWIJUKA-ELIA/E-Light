@@ -133,7 +133,7 @@ export const getImageUrl = query({
             );
           }
       
-          console.log("Related products:", products);
+        //   console.log("Related products:", products);
           return products;
         },
       });
@@ -190,3 +190,20 @@ export const getImageUrl = query({
             },
             
           })
+
+          export const ApproveRevoke = mutation({
+                args: { id: v.id("products") },
+                handler: async (ctx, args) => {
+                  const product = await ctx.db.get(args.id);
+              
+                  if (!product) {
+                    throw new Error("Product not found");
+                  }
+              
+                  const updatedProduct = await ctx.db.patch(args.id, {
+                    approved: !product.approved,
+                  });
+              
+                  return updatedProduct;
+                },
+              });
