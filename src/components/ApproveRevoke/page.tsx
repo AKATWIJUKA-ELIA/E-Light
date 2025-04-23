@@ -19,10 +19,10 @@ const ApproveRevokeModal: React.FC<ApproveRevokeModalProps> = ({ ischange, onClo
 
 useEffect(()=>{
         const HandleAction = () => {
-                Action ? setaction("Revoke") : setaction("Approve");
+                setaction(Action ? "Revoke" : "Approve");
         }
         HandleAction()
-})
+},[Action])
   const HandleEdit=async (id:string)=>{
         try{
         await Edit(id)
