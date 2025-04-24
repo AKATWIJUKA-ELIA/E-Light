@@ -40,9 +40,10 @@ const FisrtHero = () => {
 
         
   return (
-        <div className='bg-gradient-to-r from-indigo-100 via-purple-100 to-gold mb-10 ' >
+        <div className='md:bg-gradient-to-r from-indigo-100 via-purple-100 to-gold mb-10 ' >
 <div>
-<h1 className='font-bold'>Categories</h1>
+<h1 className='hidden md:flex font-bold'>Categories</h1>
+<h1 className='flex md:hidden font-bold'>More to like</h1>
 </div>
 <div className=' hidden md:grid grid-cols-1 md:grid-cols-1'>
 <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="  w-full">
