@@ -32,21 +32,21 @@ const MainHero = () => {
         const images = [
                 {
                 name:"Heror",
-                src:"/images/Heror.png",
+                src:"https://cheery-cod-687.convex.cloud/api/storage/115cc2cd-79c0-4b3c-bb84-86df5f76e138",
                 overlay:"April Sales Here 😊 "
                 },
                 {
                         name:"Hero1",
-                        src:"/images/Hero.jpg",
+                        src:"https://cheery-cod-687.convex.cloud/api/storage/55199998-af85-4493-af98-d8c3aff3d8dd",
                         overlay:"Grab April Discounts While Offers Last😁🤗"
                 },
                 {
                         name:"Heror",
-                        src:"/images/Hero3.jpg",
+                        src:"https://cheery-cod-687.convex.cloud/api/storage/a0cb51bd-83c4-4a01-8590-04818bf8111e",
                         overlay:"Different Categories For Grabs😂😮"
                 },
-            
-
+                
+//HalyonBC
         ]
                 const [products, setproducts] = useState<Product[]>([]);
                         const product = useQuery(api.products.getProducts)
