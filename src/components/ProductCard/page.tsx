@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Oval } from 'react-loader-spinner'
 import useAddToCart from '../../hooks/useAddToCart';
 import { Card, CardContent } from "@/components/ui/card"
+
 import {
   Carousel,
   CarouselContent,
@@ -25,7 +26,34 @@ interface ProductProps {
 
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
         const carousel = Autoplay({ delay: 10000})
+        const[Copied,setCopied] = useState(false)
   const HandleAddToCart = useAddToCart();
+
+  const handleCopy = (link:string) => {
+        if (typeof window === "undefined"){
+                return
+        }
+                navigator.clipboard.writeText(link);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 3000);
+              
+                
+      };
+      const handleShare = (link: string,name:string) => {
+        if (navigator.share) {
+          navigator
+            .share({
+              title: `"Check out  ${name} on ShopCheap!`,
+              text: "Hey, take a look at this:",
+              url: link,
+            })
+            .then(() => console.log("Shared successfully"))
+            .catch((error) => console.error("Error sharing", error));
+        } else {
+                handleCopy(link)
+                alert("Sharing not supported on this device. Try copying the link instead.");
+        }
+      };
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 bg-white mt-5 shadow-md overflow-hidden p-4">
@@ -114,10 +142,10 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
           Add to Cart
         </button>
         <button
-          onClick={() => HandleAddToCart(product)}
+          onClick={() => handleShare(`https://shopcheap.vercel.app/product/${product._id}`,`${product.product_name}`)}
           className="bg-blue-600 text-white w-full px-4 py-2 rounded-3xl hover:bg-blue-700 transition"
         >
-          Share this Product
+          {Copied?"Link copied successfully":"Share this Product"}
         </button></div>
       </div>
     </div>
