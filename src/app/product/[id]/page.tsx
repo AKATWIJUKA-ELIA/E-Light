@@ -3,7 +3,7 @@ import React, { use } from 'react'
 import ProductCard from '@/components/ProductCard/page';
 import { Oval } from 'react-loader-spinner'
 import useGetProductById from '@/hooks/useGetProductById';
-import getProductsByOwnerApproved from '@/hooks/getProductsByOwnerApproved';
+import useGetProductsByOwnerApproved from '@/hooks/useGetProductsByOwnerApproved';
 import useGetRelatedProducts from '@/hooks/useGetRelated';
 import HeroCard from '@/components/HeroCards/page';
 import { CardContent } from "@/components/ui/card"
@@ -24,7 +24,7 @@ const Product = ({params}:PageProps) => {
         const { id } = use(params); 
         const { data: product } = useGetProductById(id); 
         const { data: relatedProducts } = useGetRelatedProducts(product?.product_cartegory);
-        const { data: SameSellerProducts } = getProductsByOwnerApproved(product?.product_owner_id);
+        const { data: SameSellerProducts } = useGetProductsByOwnerApproved(product?.product_owner_id);
         const carousel = Autoplay({ delay: 10000})
   if (!product) {
     return  <Oval

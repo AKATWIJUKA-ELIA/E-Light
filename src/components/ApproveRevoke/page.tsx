@@ -4,7 +4,7 @@ import useGetProductById from "@/hooks/useGetProductById"
 import useApproveRevoke from "@/hooks/useApproveRevoke"
 import { useSendMail } from "@/hooks/useSendMail"
 import { useEffect, useState } from "react"
-import useGetUserById from "@/hooks/useGeUserById"
+import useGetUserById from "@/hooks/useGetUserById"
 
 interface ApproveRevokeModalProps {
         ischange: boolean
@@ -22,7 +22,7 @@ const ApproveRevokeModal: React.FC<ApproveRevokeModalProps> = ({ ischange, onClo
 const userId = Product?.product_owner_id
 // console.log("UserId  :",userId )
 const { user } = useGetUserById(userId)
-// console.log("User :",user )
+console.log("User :",user )
 // console.log("email Address",user?.emailAddresses[0].emailAddress)
 const UserEmail = user?.emailAddresses[0].emailAddress
 

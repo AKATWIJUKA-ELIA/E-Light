@@ -1,7 +1,7 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
-const getProductsByOwnerApproved = (id: string) => {
+const useGetProductsByOwnerApproved = (id: string) => {
     const products = useQuery(api.products.getProductsByOwnerApproved, id ? { id } : "skip"); // Prevent calling hook with an empty ID
 
     return {
@@ -11,4 +11,4 @@ const getProductsByOwnerApproved = (id: string) => {
     };
 };
 
-export default getProductsByOwnerApproved;
+export default useGetProductsByOwnerApproved;
