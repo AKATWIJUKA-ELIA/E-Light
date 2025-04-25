@@ -9,7 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.10.3",
+    "@clerk/clerk-sdk-node": "^4.13.23",
+    "@clerk/nextjs": "^6.18.0",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
@@ -38,7 +39,7 @@
     "embla-carousel-react": "^8.6.0",
     "flowbite-react": "^0.10.2",
     "lucide-react": "^0.487.0",
-    "next": "15.1.6",
+    "next": "^15.2.3",
     "next-themes": "^0.4.6",
     "nodemailer": "^6.10.0",
     "react": "^18.2.0",

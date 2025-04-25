@@ -333,6 +333,24 @@ const handleclose =()=>{
               
               </div>
             )}
+              { imagePreview.length == 0 && product && product.product_image?product.product_image.length > 0 && (
+              <div className="">
+                <p className="text-sm font-medium text-gray-700 mb-2">Current Images: {product.product_image.length} </p>  
+                <div className="flex flex-wrap gap-2">
+                  {product.product_image.map((src:string,) => (
+                    <div key={src} className="relative">
+                      <img
+                        src={src || "/placeholder.svg"}
+                        alt={`Preview `}
+                        className="h-20 w-20 object-cover rounded-md border border-gray-300"
+                      />
+                     
+                    </div>
+                  ))}
+                </div>
+              
+              </div>
+            ):("")}
           </div>
 
           <div className="flex justify-between space-x-3">
