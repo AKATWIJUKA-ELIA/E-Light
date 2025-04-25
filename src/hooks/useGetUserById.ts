@@ -22,7 +22,7 @@ type ClerkUser = {
         publicMetadata: { role: string };
         totpEnabled: boolean;
         twoFactorEnabled: boolean;
-        unsafeMetadata: {};
+        unsafeMetadata: {item:string};
         updatedAt: number;
         username: string;
         web3Wallets: string[];
