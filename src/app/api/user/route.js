@@ -1,5 +1,5 @@
 import { clerkClient } from "@clerk/clerk-sdk-node"
-import { NextRequest, NextResponse } from "next/server"
+import {  NextResponse } from "next/server"
 
 export async function POST(request) {
         const body = await request.json();
