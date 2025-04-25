@@ -18,7 +18,7 @@ type ClerkUser = {
         primaryEmailAddressId: string;
         primaryPhoneNumberId: string | null;
         primaryWeb3WalletId: string | null;
-        privateMetadata: {}|null;
+        privateMetadata: {item:string};
         publicMetadata: { role: string };
         totpEnabled: boolean;
         twoFactorEnabled: boolean;
