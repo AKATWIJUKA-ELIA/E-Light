@@ -61,7 +61,7 @@ const HandleChange =(cart:string)=>{
                                         {cartegories? (cartegories.map(({_id, cartegory}) =>
                                                 <div key={_id} className=" cursor-pointer mr-2  p-2 slider slide--fast hover:bg-gray-100 rounded-lg ">
                                                 
-                                                <Link href={`/category/${cartegory}`}  onMouseOver={()=>{HandleChange(cartegory)}} onClick={onClose}>
+                                                <Link href={`/category/${encodeURIComponent(cartegory)}`}  onMouseOver={()=>{HandleChange(cartegory)}} onClick={onClose}>
                                                 <h1   className='animated  main '  > <span id='main' className='animated current   '>{cartegory}</span></h1> 
                                                 </Link>
                                                 </div>

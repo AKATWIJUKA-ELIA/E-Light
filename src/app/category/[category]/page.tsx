@@ -9,7 +9,7 @@ interface PageProps {
       }
 const Category = ({params}:PageProps) => {
         const { category } = use(params);
-        const { data: relatedProducts } = useGetRelatedProducts(category);
+        const { data: relatedProducts } = useGetRelatedProducts(decodeURIComponent(category));
   return (
         <div className=' mt-36 md:mt-32' >
                 {
@@ -19,7 +19,7 @@ const Category = ({params}:PageProps) => {
                                 <Input placeholder='Search' />
                                 </div>
                                 <div className='flex'>
-                                        <h1 className='text-dark ' >Best Match for &ldquo;<span className='font-bold' >{category}</span>&ldquo;</h1>
+                                        <h1 className='text-dark ' >Best Match for &ldquo;<span className='font-bold' >{decodeURIComponent(category)}</span>&ldquo;</h1>
                                 </div>
                         </div>
 
