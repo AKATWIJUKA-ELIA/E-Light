@@ -39,7 +39,15 @@ const useGetUserById = (userId: string | "") => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/user/${userId}`);
+        const res = await fetch('/api/user', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  id: userId,
+                }),
+              } );
         if (!res.ok) throw new Error("Failed to fetch user");
         const data = await res.json();
         setUser(data);
