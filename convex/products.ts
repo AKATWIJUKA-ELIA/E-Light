@@ -114,6 +114,30 @@ export const getImageUrl = query({
         },
       });
 
+      export const getProductsByOwnerApproved = query({
+        args: { id: v.string() },
+        handler: async (ctx, args) => {
+          const products = await ctx.db
+            .query("products")
+            .filter((q) => q.and(
+                q.eq(q.field("product_owner_id"), args.id),
+                q.eq(q.field("approved"),true)
+              ))
+            .collect();
+      
+          for (const product of products) {
+            product.product_image = await Promise.all(
+              product.product_image.map(async (image: string) => {
+                return await ctx.storage.getUrl(image);
+              })
+            );
+          }
+      
+        //   console.log("primary products:", products);
+          return products;
+        },
+      });
+
       export const getRelatedProducts = query({
         args: { category: v.string() },
         handler: async (ctx, args) => {

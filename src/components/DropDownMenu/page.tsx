@@ -28,7 +28,7 @@ const HandleChange =(cart:string)=>{
   return (
       <>
         
-        <div className="  fade-in  fixed z-40 inset-0 backdrop-blur-lg shadow-lg flex  w-[100%] h-[60%] mt-[7%]   overflow-auto overflow-x-hidden bg-white" id="wrapper" onMouseLeave={onClose} >                  
+        <div className="  fade-in  fixed z-40 inset-0 backdrop-blur-lg shadow-lg flex  w-[70%] md:w-[100%]  md:h-[60%]  mt-[16%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-white" id="wrapper" onMouseLeave={onClose} >                  
                      
                      <div id="programs">
    
@@ -57,6 +57,7 @@ const HandleChange =(cart:string)=>{
                            <div  className='flex h-full' id="Categories">
 
                                 <div className="ml-12   h-90 overflow-y-auto  "  > 
+                                       <h1 className='font-bold text-2xl' > Categories</h1>
                                         {cartegories? (cartegories.map(({_id, cartegory}) =>
                                                 <div key={_id} className=" cursor-pointer mr-2  p-2 slider slide--fast hover:bg-gray-100 rounded-lg ">
                                                 
@@ -68,7 +69,7 @@ const HandleChange =(cart:string)=>{
                                 
                                 
                                 </div>
-                                <div className='grid grid-cols-2 md:grid-cols-7 p-2 gap-2'>
+                                <div className='hidden  md:grid grid-cols-2 md:grid-cols-7 p-2 gap-2'>
                                         {!related ? (
                                         <div className="col-span-full flex justify-center items-center h-40">
                                         <Oval

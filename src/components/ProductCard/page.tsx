@@ -125,7 +125,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
           {product.product_name}
         </h2>
 
-        <div className="bg-black text-white px-4 py-2 rounded-lg text-center">
+        <div className="bg-dark text-white px-4 py-2 rounded-lg text-center">
           <span className="text-xl font-bold">Shs: {product.product_price}</span>
         </div>
 
@@ -143,7 +143,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         </button>
         <button
           onClick={() => handleShare(`https://shopcheap.vercel.app/product/${product._id}`,`${product.product_name}`)}
-          className="bg-blue-600 text-white w-full px-4 py-2 rounded-3xl hover:bg-blue-700 transition"
+          className="bg-gold text-white w-full px-4 py-2 rounded-3xl hover:bg-yellow-700 transition"
         >
           {Copied?"Link copied successfully":"Share this Product"}
         </button></div>

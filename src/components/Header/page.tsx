@@ -64,7 +64,7 @@ const Header = () => {
                 <div className='flex gap-12 w-[60%]' >
                         <div className='flex rounded-md ml-5'>
                                 <Link href="/">
-                                <Image className='rounded-md h-10' src="/images/Logo.png" alt='logo' width='200' height="100">
+                                <Image className='rounded-md h-10' src="/images/Logo1.png" alt='logo' width='200' height="100">
                                 </Image>
                                 </Link>
                         </div>
@@ -82,7 +82,7 @@ const Header = () => {
 
                 <div className='flex gap-4 md:gap-8 ml-10 '>
                         <div className='flex gap-4  items-center ' >
-                        <div className='flex hover:cursor-pointer' > <h1 className="whitespace-nowrap overflow-hidden text-ellipsis">Mobile App</h1>
+                        <div className='flex hover:cursor-pointer' > <h1 className=" hidden md:flex whitespace-nowrap overflow-hidden text-ellipsis">Mobile App</h1>
                         </div>
                         {/* <div className='flex hover:cursor-pointer ' >EN /UG.</div> */}
                         </div>
@@ -103,9 +103,18 @@ const Header = () => {
                         </SignedIn>
 
                         <SignedOut>
-                        <div className="flex items-center gap-1">
+                        <div className="hidden md:flex items-center gap-1">
                         <VscAccount className="text-2xl" />
-                        <SignInButton mode="modal" />
+                        <SignInButton mode="modal"  />
+                        </div>
+                        <div className="flex md:hidden items-center gap-1">
+                        
+                        <SignInButton mode="modal"  >
+                        <button className="p-2 rounded bg-transparent ">
+                        {/* Replace this with an icon or keep it empty for no text */}
+                        <VscAccount className="text-2xl" />
+                        </button>
+                        </SignInButton>
                         </div>
                         </SignedOut>
                         </div>

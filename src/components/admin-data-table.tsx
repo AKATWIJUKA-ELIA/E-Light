@@ -101,8 +101,8 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                           </time>
                         </TableCell>
                         <TableCell className=" justify-center  flex gap-1">
-                        <Button className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 " onClick={()=>{HandleApproveRevoke(product._id)}} >{product.approved? "Revoke" : "Approve"}</Button>
-                        <Button className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 " onClick={()=>{HandleEdit(product._id)}} >Edit</Button>
+                        <Button className={`flex  ${product.approved?"bg-gray-300 hover:bg-gray-500":"bg-green-300 hover:bg-green-500"}  transition-transform duration-500 `} onClick={()=>{HandleApproveRevoke(product._id)}} >{product.approved? "Revoke" : "Approve"}</Button>
+                        <Button className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 " onClick={()=>{HandleEdit(product._id)}} >Preview</Button>
                         <Button className="flex bg-red-400  hover:bg-red-700 transition-transform duration-500 " onClick={()=>{HandleDelete(product._id)}}  >Delete</Button>
                         </TableCell>
                       </TableRow>
