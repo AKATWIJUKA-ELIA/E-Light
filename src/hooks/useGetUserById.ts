@@ -5,7 +5,7 @@ type ClerkUser = {
         createOrganizationEnabled: boolean;
         createdAt: number;
         emailAddresses: { id: string; emailAddress: string }[];
-        externalAccounts: any[]; // You can be more specific if needed
+        externalAccounts: object[]; // You can be more specific if needed
         externalId: string | null;
         firstName: string | null;
         hasImage: boolean;
@@ -18,14 +18,14 @@ type ClerkUser = {
         primaryEmailAddressId: string;
         primaryPhoneNumberId: string | null;
         primaryWeb3WalletId: string | null;
-        privateMetadata: Record<string, any>;
+        privateMetadata: {};
         publicMetadata: { role: string };
         totpEnabled: boolean;
         twoFactorEnabled: boolean;
-        unsafeMetadata: Record<string, any>;
+        unsafeMetadata: {};
         updatedAt: number;
         username: string;
-        web3Wallets: any[];
+        web3Wallets: string[];
       };
       
 const useGetUserById = (userId: string | "") => {

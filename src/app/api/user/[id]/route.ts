@@ -11,6 +11,6 @@ export async function GET(
     const user = await clerkClient.users.getUser(id);
     return NextResponse.json(user);
   } catch (error) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
+    return NextResponse.json({ error: `User not found or ${error}` }, { status: 404 });
   }
 }
