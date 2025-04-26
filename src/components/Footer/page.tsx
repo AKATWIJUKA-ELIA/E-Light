@@ -191,7 +191,7 @@ https://shopcheap.vercel.app/`
                     <span className="sr-only">Instagram</span>
                   </a>
                   <a
-                    href="https://twitter.com"
+                    href="https://x.com/shopcheap__"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-gray-200 p-2 rounded-full hover:bg-gold transition-colors"
