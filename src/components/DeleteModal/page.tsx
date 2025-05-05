@@ -37,7 +37,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isdelete, onClose, productId 
         sendEmail(
           user.emailAddresses[0].emailAddress,
           "Product Deletion",
-          `Hello ${user.fullName}, Your product ${Product?.product_name} was Deleted successfully \n Thank you for Doing Business with Us... \nyou can always add more products \n Regards \n ShopCheap \n https://shopcheap.vercel.app/ .`,
+          `Hello ${user.fullName}, Your product ${Product?.product_name} was Deleted \nyou can always add more products   \n Thank you for Doing Business with Us... \n Regards \n ShopCheap \n https://shopcheap.vercel.app/ .`,
         )
       }
 

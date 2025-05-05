@@ -15,6 +15,8 @@ const AddProduct =  () => {
       const fileInputRef = useRef<HTMLInputElement>(null);
       const { sendEmail, } = useSendMail();
       const { data: categories } = useGetCategories(); 
+      const[successProduct,setsuccessProduct] = useState(false)
+      const [ErrorProduct,setErrorProduct] = useState(false)
         const [imagePreview, setImagePreview] = useState<string[]>([])
       const admin = process.env.NEXT_PUBLIC_ADMIN
 
@@ -58,6 +60,13 @@ const AddProduct =  () => {
                       const maxFileSize = 3 * 1024 * 1024; // 1MB in bytes
                       const validFiles: File[] = [];
                       for (const file of filesArray) {
+
+                        if (!file.type.startsWith("image/")) {
+                                alert(`"${file.name}" is not a valid image file.`);
+                                cleanImageField();
+                                return; 
+                              }
+
                               if (file.size > maxFileSize) {
                                 alert(`"${file.name}" is too large. Maximum allowed size is 3MB.`);
                                 cleanImageField()
@@ -89,6 +98,7 @@ const AddProduct =  () => {
                 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
+                  const TIMEOUT_MS = 10000; // ⏱ 10 seconds
                   const cleanForm = () => {
                         setProduct({
                                 approved: "",
@@ -111,7 +121,18 @@ const AddProduct =  () => {
                           fileInputRef.current.value = '';
                         }
                 }
+
+                const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+                        return Promise.race([
+                          promise,
+                          new Promise<T>((_, reject) =>
+                            setTimeout(() => reject(new Error("Request timed out")), ms)
+                          ),
+                        ]);
+                      };
+
                   try {
+                        await withTimeout((async () => {
                          // Step 1: Get a short-lived upload URL
                         const postUrl = await generateUploadUrl();
                         if(selectedImage && selectedImage.length > 5){
@@ -147,15 +168,22 @@ const AddProduct =  () => {
                             
                         // console.log("Updated Product: ", updatedproduct);
                         await createProduct({ products: updatedproduct });
-                      alert("product created successfully!");
+                        setsuccessProduct(true)
+                        setTimeout(()=>{
+                                setsuccessProduct(false)
+                        },5000)
                       cleanForm()
                       cleanImageField()
                       setImagePreview([])
                       sendEmail( `${admin}` ,"New Product Created", `User ${user?.fullName}, Added a product`);
                       sendEmail( `${user?.emailAddresses}`,"New Product Created", `Hello  ${user?.fullName}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
-                    
+                })(), TIMEOUT_MS);
                   } catch (error) {
+                        setErrorProduct(true)
                     console.error("Error creating product:", error);
+                    setTimeout(()=>{
+                        setErrorProduct(false)
+                    },4000)
                   } finally {
                     setIsSubmitting(false);
                   }
@@ -163,7 +191,12 @@ const AddProduct =  () => {
 
   return (
      <div className=' mt-40 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 rounded-lg ' >
-      <h1 className='text-2xl font-bold text-center text-black ' >Add  Products</h1>
+        {successProduct 
+        ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁😁!!!,  your product  is pending for Approval</h1>)
+        :(<h1 className='text-2xl font-bold text-center text-black ' >Add  Products</h1>)
+        }
+        {ErrorProduct && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔😔!!</h1>}
+      
        <form onSubmit={handleSubmit} className="space-y-4 p-3">
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -258,6 +291,7 @@ const AddProduct =  () => {
             id="imageUrl"
             name="imageUrl"
             ref={fileInputRef}
+            accept="image/*"
             multiple
             onChange={handleImageChange}
             required

@@ -12,6 +12,8 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
   const [useremail,setuseremail] = useState("")
   const[submitting,setIsSubmitting] = useState(false)
+  const [submitted,setsubmitted] = useState(false)
+  const [ErrorMail, setErrorMail ] = useState("")
   const {sendEmail}  = useSendMail()
   const AddEmail= useAddEmail()
   
@@ -42,11 +44,18 @@ Best regards,\n
 ShopCheap\n
 https://shopcheap.vercel.app/`
 )
+setTimeout(() => {
+        setIsSubmitting(false);
+        setsubmitted(true)
+      }, 5000); 
+
         } catch (error) {
-        console.error("Error updating product:", error)
-        alert("Email Already Exist")
+        console.error("Error :", error)
+        setErrorMail(String(error))
       } finally {
-        setIsSubmitting(false)
+        setTimeout(() => {
+                setsubmitted(false)
+              }, 10000); 
         cleanForm()
       }
     }
@@ -64,8 +73,9 @@ https://shopcheap.vercel.app/`
                 Get the latest updates, deals and exclusive offers directly to your inbox.
               </p>
             </div>
-            <div className="flex gap-2">
-                
+            <div className="flex flex-col gap-2">
+                {submitted && <div ><h1 className="text-green-500 ">Success!!!!  check your email for more details</h1></div>}
+                {ErrorMail && <div ><h1 className="text-red-500 ">Error!!!! {ErrorMail} </h1></div>}
               <form onSubmit={handleSubmit} className="flex gap-2">
               <Input 
               value={useremail}

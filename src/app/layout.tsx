@@ -24,17 +24,17 @@ export default function RootLayout({
         <ConvexClientProvider>
           <ClerkProvider>
             <ReduxProvider>
-              <ThemeProvider
+              {/* <ThemeProvider
                 attribute="class"
                 defaultTheme="system"
                 enableSystem
                 disableTransitionOnChange
-              >
+              > */}
                 <Header />
                 {children}
                 <Footer/>
-                <ModeToggle />
-              </ThemeProvider>
+                {/* <ModeToggle /> */}
+              {/* </ThemeProvider> */}
             </ReduxProvider>
           </ClerkProvider>
         </ConvexClientProvider>
