@@ -21,7 +21,7 @@ const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
         if (!Focused) return null;
 
   return (
-        <div className="  fade-in fixed md:ml-[10%] z-40 inset-0 backdrop-blur-lg shadow-lg shadow-gray-400 flex rounded-3xl md:w-[70%] h-[50%] mt-[25%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-slate-100" onMouseLeave={onClose} >                  
+        <div className="  fade-in fixed md:ml-[10%] z-40 inset-0 backdrop-blur-lg shadow-lg shadow-gray-400 flex rounded-3xl md:w-[70%] h-[50%] mt-[38%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-slate-100" onMouseLeave={onClose} >                  
                      
         <div className=" mx-auto px-5  fade-in w-full gap-4"  > 
                         <div className='flex'>
