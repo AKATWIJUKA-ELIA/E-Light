@@ -5,8 +5,8 @@ import { Footer } from "@/components/Footer/page";
 import ReduxProvider from "./ReduxProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/Dark-light/page";
+// import { ThemeProvider } from "@/components/theme-provider";
+// import { ModeToggle } from "@/components/Dark-light/page";
 
 export const metadata: Metadata = {
   title: "ShopCheap",
