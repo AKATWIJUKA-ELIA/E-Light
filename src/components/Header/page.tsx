@@ -76,7 +76,7 @@ const Header = () => {
                                  onFocus={()=>{setFocused(true)}}
                                  type="text"
                                   className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' 
-                                  placeholder='Search '  />
+                                  placeholder='Search Categories & product names'  />
                         </div>
                 </div>
 
@@ -140,7 +140,7 @@ const Header = () => {
                                  onFocus={()=>{setFocused(true)}}
                                  type="text"
                                   className='flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%]' 
-                                  placeholder='Search '  />
+                                  placeholder='Search Categories & product names'  />
         </div>
         <div className='flex ml-5  md:ml-32 ' >
                 
