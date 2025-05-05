@@ -14,7 +14,7 @@ const Category = ({params}:PageProps) => {
         <div className=' mt-36 md:mt-32' >
                 {
                         (relatedProducts ?? []).length > 0 ? (<div className='flex flex-col ' >
-                        <div className='flex flex-col gap-4'>
+                        <div className='flex flex-col gap-4 mt-5'>
                                 <div className='flex w-[60%]'>
                                 <Input placeholder='Search' />
                                 </div>

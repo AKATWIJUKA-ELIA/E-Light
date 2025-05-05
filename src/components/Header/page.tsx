@@ -13,6 +13,7 @@ import useGetCategories from '@/hooks/useGetCategories';
 import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
 import { Input } from '../ui/input';
 import SearchModel from '../SearchModel/page';
+import { BiX } from 'react-icons/bi';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
@@ -24,6 +25,7 @@ const Header = () => {
         const [Focused, setFocused] = useState(false)
         const [searchTerm, setSearchTerm] = useState('');
         const [filteredProducts, setFilteredProducts] = useState(products);
+        const [comingSoon, setcomingSoon] = useState(false)
         
         const showDropDownMenu=()=>{
                 setHovered(true)
@@ -32,8 +34,12 @@ const Header = () => {
                 document.getElementById("inputsearch")?.blur();
               };
         const HandleClose =()=>{
+                setSearchTerm("")
                 setFocused(false)
                 forceBlur()
+        }
+        const HandleComing = ()=>{
+                setcomingSoon(true)
         }
         useEffect(() => {
                 const results = products?.filter((product) =>
@@ -77,12 +83,15 @@ const Header = () => {
                                  type="text"
                                   className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' 
                                   placeholder='Search Categories & product names'  />
+                                  { searchTerm.length>1 && <BiX onClick={HandleClose} className="absolute hover:cursor-pointer border right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>}
                         </div>
                 </div>
 
                 <div className='flex gap-4 md:gap-8 ml-10 '>
                         <div className='flex gap-4  items-center ' >
-                        <div className='flex hover:cursor-pointer' > <h1 className=" hidden md:flex whitespace-nowrap overflow-hidden text-ellipsis">Mobile App</h1>
+                        <div className='flex hover:cursor-pointer' onMouseEnter={HandleComing} onMouseLeave={()=>setcomingSoon(false)} > {comingSoon
+                        ?(<h1 className=" hidden md:flex whitespace-nowrap text-gold font-bold overflow-hidden text-ellipsis">Coming Soon</h1>)
+                        :(<h1 className=" hidden md:flex whitespace-nowrap overflow-hidden text-ellipsis">Mobile App</h1>)}
                         </div>
                         {/* <div className='flex hover:cursor-pointer ' >EN /UG.</div> */}
                         </div>
@@ -141,6 +150,7 @@ const Header = () => {
                                  type="text"
                                   className='flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%]' 
                                   placeholder='Search Categories & product names'  />
+                                  { searchTerm.length>1 && <BiX onClick={HandleClose} className="absolute border right-12  bg-gray-100 text-dark text-3xl   rounded-lg"/>}
         </div>
         <div className='flex ml-5  md:ml-32 ' >
                 
