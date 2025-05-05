@@ -144,12 +144,13 @@ const Header = () => {
         </div>
         <div className='flex ml-5  md:ml-32 ' >
                 
-        <div className='flex flex-nowrap ' >
+        <div className='flex flex-nowrap gap-4 ' >
                 <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
-                         <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>All Categories</h1>
+                         <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>Categories</h1>
                 </div  >
                 <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' onMouseOver={HandleClose} >
-                        <Link href="/post" >Sell Something?</Link>
+                        <Link className='hidden md:flex' href="/post" >Sell Something?</Link>
+                        <Link className='flex md:hidden' href="/post" >post advert?</Link>
                 </div>
         </div >
 

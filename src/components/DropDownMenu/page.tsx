@@ -28,7 +28,7 @@ const HandleChange =(cart:string)=>{
   return (
       <>
         
-        <div className="  fade-in  fixed z-40 inset-0 backdrop-blur-lg shadow-lg flex  w-[70%] md:w-[100%]  md:h-[60%]  mt-[16%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-white" id="wrapper" onMouseLeave={onClose} >                  
+        <div className="  fade-in  fixed z-40 inset-0 backdrop-blur-lg shadow-lg flex  w-[70%] md:w-[100%]  md:h-[60%]  mt-[42%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-white" id="wrapper" onMouseLeave={onClose} >                  
                      
                      <div id="programs">
    
@@ -45,7 +45,7 @@ const HandleChange =(cart:string)=>{
                                        textAlign: 'center',
                                        lineHeight: '30px',
                                        position: 'absolute',
-                                       right: '70px',
+                                       right: '40px',
                                        top: '20px',
                                        }}
                                        onClick={onClose}>

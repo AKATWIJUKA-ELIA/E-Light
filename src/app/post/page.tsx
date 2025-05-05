@@ -190,7 +190,7 @@ const AddProduct =  () => {
                 };
 
   return (
-     <div className=' mt-40 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 rounded-lg ' >
+     <div className=' mt-44 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 rounded-lg ' >
         {successProduct 
         ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁😁!!!,  your product  is pending for Approval</h1>)
         :(<h1 className='text-2xl font-bold text-center text-black ' >Add  Products</h1>)
