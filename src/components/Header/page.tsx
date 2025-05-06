@@ -45,7 +45,11 @@ const Header = () => {
                 const results = products?.filter((product) =>
                   product.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase())
                 );
-                setFilteredProducts(results);
+                if(results && results.length>0){
+                        setFilteredProducts(results);
+                }else
+                setFilteredProducts([]);
+                
               }, [searchTerm, products]);
         const handleStickyNavbar = () => {
                 if (window.scrollY >= 100) {
@@ -158,7 +162,7 @@ const Header = () => {
                 <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
                          <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>Categories</h1>
                 </div  >
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' onMouseOver={HandleClose} >
+                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' onMouseOver={() => setHovered(false)} >
                         <Link className='hidden md:flex' href="/post" >Sell Something?</Link>
                         <Link className='flex md:hidden' href="/post" >post advert?</Link>
                 </div>
@@ -185,7 +189,7 @@ const Header = () => {
 
     </div>
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
-    {  searchTerm.length>1 ? (<SearchModel Focused={Focused} products={filteredProducts||[]} onClose={HandleClose} />):("")}
+    {  searchTerm.length>1 ? (<SearchModel Focused={Focused} products={filteredProducts ||[]} onClose={HandleClose} />):("")}
     </>
   )
 }

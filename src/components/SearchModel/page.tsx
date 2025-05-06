@@ -30,7 +30,7 @@ const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
                                 </h1>
                         </div>
                 <div className='flex flex-col w-full '>
-                {products ? (
+                {products && products.length>0 ? (
                         products.map((product) => (
                                 <Link key={product._id} href={`/category/${encodeURIComponent(String(product.product_cartegory))}`} onClick={onClose}  className='flex gap-2' >
                         <div
@@ -41,14 +41,14 @@ const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
                         <BiSearch className='flex  mt-2'/>
                                 <h1 className=" flex  animated main">
                                 <span id="main" className="animated current">
-                                {product.product_cartegory}
+                                {product.product_cartegory }
                                 </span>
                                 </h1>
                         </div>
                         </Link>
                         ))
                         ) : (
-                        <div className="vertical-line ml-2 fade-in">Loading . . .</div>
+                        <div className="vertical-line ml-2 fade-in"><h1 className='text-black' >  Sorry!!!, we cound&apos;nt find any results for your search. . .</h1></div>
                         )}
                 </div>
 
