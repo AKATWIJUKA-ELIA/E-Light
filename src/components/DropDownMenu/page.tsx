@@ -74,12 +74,13 @@ const HandleChange =(cart:string)=>{
                                         <div className="col-span-full flex justify-center items-center h-40">
                                         <Oval
                                                 visible={true}
-                                                height="40"
-                                                width="40"
+                                                height="20"
+                                                width="20"
                                                 color="#0000FF"
                                                 secondaryColor="#ddd"
                                                 ariaLabel="oval-loading"
                                         />
+                                        <h1 className='text-2xl text-gray-500 '>Hover an item to see related Categories</h1>
                                         </div>
                                                 ) : related.length === 0 ? (
                                                 <div className="col-span-full text-center text-gray-500">No results found.</div>
