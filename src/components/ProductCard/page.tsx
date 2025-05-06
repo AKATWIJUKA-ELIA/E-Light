@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         console.log("User is ",user)
         const UserEmail = user?.emailAddresses[0].emailAddress || ""
         const UserName = user?.username|| ""
-        const PhoneNumbers = user?.phoneNumbers|| []
+        // const PhoneNumbers = user?.phoneNumbers|| []
   const HandleAddToCart = useAddToCart();
 
   const handleCopy = (link:string) => {
