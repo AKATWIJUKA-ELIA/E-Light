@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Oval } from 'react-loader-spinner'
 import useAddToCart from '../../hooks/useAddToCart';
 import { Card, CardContent } from "@/components/ui/card"
+import useGetUserById from "@/hooks/useGetUserById"
 
 import {
   Carousel,
@@ -21,12 +22,18 @@ interface ProductProps {
     product_image: string[];
     product_price: number;
     product_description: string;
+    product_owner_id:string
   };
 }
 
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
         const carousel = Autoplay({ delay: 10000})
         const[Copied,setCopied] = useState(false)
+        const { user } = useGetUserById(product?.product_owner_id)
+        console.log("User is ",user)
+        const UserEmail = user?.emailAddresses[0].emailAddress || ""
+        const UserName = user?.username|| ""
+        const PhoneNumbers = user?.phoneNumbers|| []
   const HandleAddToCart = useAddToCart();
 
   const handleCopy = (link:string) => {
@@ -145,8 +152,27 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
           onClick={() => handleShare(`https://shopcheap.vercel.app/product/${product._id}`,`${product.product_name}`)}
           className="bg-gold text-white w-full px-4 py-2 rounded-3xl hover:bg-yellow-700 transition"
         >
-          {Copied?"Link copied successfully":"Share this Product"}
-        </button></div>
+          {Copied?"Link copied successfully":"Share "}
+        </button>
+        </div>
+        <div className=" flex flex-col md:flex space-x-2">
+                <h1 className=" flex text-gray-600 font-bold">
+                        Sellers Details : 
+                </h1>
+                <ul className="flex flex-col" >
+                        <li>
+                        <h1  > <span className="font-bold" > UserName </span> : {UserName}</h1>
+                        </li>
+                        {/* <li>
+                        <h1 > <span className="font-bold" > Phone Number : </span>  {PhoneNumbers}  </h1>
+                        </li> */}
+                        <li>
+                        <h1   > <span className="font-bold" > Email : </span>  <a href={`mailto: ${UserEmail}`}>{UserEmail}</a></h1>
+                        </li>
+                </ul>
+                
+
+        </div>
       </div>
     </div>
   );
