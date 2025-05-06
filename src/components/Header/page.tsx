@@ -14,6 +14,8 @@ import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
 import { Input } from '../ui/input';
 import SearchModel from '../SearchModel/page';
 import { BiX } from 'react-icons/bi';
+import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
@@ -26,6 +28,11 @@ const Header = () => {
         const [searchTerm, setSearchTerm] = useState('');
         const [filteredProducts, setFilteredProducts] = useState(products);
         const [comingSoon, setcomingSoon] = useState(false)
+        const carousel = Autoplay({ delay: 6000})
+
+        const truncateString = (text: string, maxLength: number): string => {
+                return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
+              };
         
         const showDropDownMenu=()=>{
                 setHovered(true)
@@ -175,13 +182,26 @@ const Header = () => {
                 </div>
         )}
               </div>
-              <div className=' flex md:hidden  grid-cols-3 ml-5 gap-14 ' >
-              { categories?.slice(0, 1)?.map((cartegory,index)=>
-                <div key={index} className=' rounded-3xl   p-1   hover:cursor-pointer hover:bg-gray-100' >
-                <Link href={`/category/${cartegory.cartegory}`} >{cartegory.cartegory}</Link>
+              <div className="flex md:hidden ml-3 w-[27%] h-8  bg-gray-100 rounded-lg items-center justify-center p-1 overflow-hidden">
+                        <Carousel
+                        opts={{ align: "start", loop: true }}
+                        plugins={[carousel]}
+                        className="w-full max-w-full h-6 "
+                        >
+                        <CarouselContent className="w-full">
+                        {categories?.map((cartegory, index) => (
+                                <CarouselItem key={index} className="w-full flex-shrink-0">
+                                <Link
+                                href={`/category/${cartegory.cartegory}`}
+                                className="flex-nowrap "
+                                >
+                                {truncateString(cartegory.cartegory,10)}
+                                </Link>
+                                </CarouselItem>
+                        ))}
+                        </CarouselContent>
+                        </Carousel>
                 </div>
-        )}
-              </div>
 
         </div>
        
