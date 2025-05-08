@@ -74,7 +74,7 @@ const Header = () => {
         //         flex    border border-gray-300 
   return (
     <>
-    <div className={` fixed  top-0 left-0 z-40 flex flex-col py-3 w-full  bg-white text-black gap-1
+    <div className={` fixed  top-0 left-0 z-40 flex flex-col py-3 w-full  bg-white text-black gap-1 dark:bg-dark dark:text-white
             ${sticky ? "bg-transparent  !fixed !z-[9999] ! bg-opacity-100 shadow-sticky backdrop-blur-lg fade-in !transition ": "absolute" }`
       }>
         <div className='flex w-[100%] gap-18 ' >
@@ -92,7 +92,7 @@ const Header = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                  onFocus={()=>{setFocused(true)}}
                                  type="text"
-                                  className=' flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%] ' 
+                                  className=' flex p-5 h-10 rounded-full border border-3  border-gray-300 w-[100%] dark:bg-black dark:text-white ' 
                                   placeholder='Search Categories & product names'  />
                                   { searchTerm.length>1 && <BiX onClick={HandleClose} className="absolute hover:cursor-pointer border right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>}
                         </div>
@@ -151,7 +151,7 @@ const Header = () => {
                         </Link>
                 </div>
         </div>
-        <Separator/>
+        <Separator className='dark:bg-black'/>
         
         <div className='flex md:hidden  w-[100%] p-auto '>
         <Input value={searchTerm}
@@ -166,10 +166,10 @@ const Header = () => {
         <div className='flex ml-5  md:ml-32 ' >
                 
         <div className='flex flex-nowrap gap-4 ' >
-                <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
+                <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 dark:bg-transparent dark:hover:bg-gray-700'   onMouseOver={showDropDownMenu} >
                          <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>Categories</h1>
                 </div  >
-                <div className='flex rounded-full   p-1   hover:cursor-pointer hover:bg-gray-100' onMouseOver={() => setHovered(false)} >
+                <div className='flex rounded-full   p-2   hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700' onMouseOver={() => setHovered(false)} >
                         <Link className='hidden md:flex' href="/post" >Sell Something?</Link>
                         <Link className='flex md:hidden' href="/post" >post advert?</Link>
                 </div>
@@ -177,12 +177,12 @@ const Header = () => {
 
         <div className='hidden md:flex   ml-5 gap-14 ' >
               { categories?.slice(0, 7)?.map((cartegory,index)=>
-                <div key={index}  className=' rounded-xl   p-2   hover:cursor-pointer hover:bg-gray-100' >
+                <div key={index}  className=' rounded-xl   p-2   hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700' >
                 <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap' >{cartegory.cartegory}</Link>
                 </div>
         )}
               </div>
-              <div className="flex md:hidden ml-3 w-[27%] h-8  bg-gray-100 rounded-lg items-center justify-center p-1 overflow-hidden">
+              <div className="flex md:hidden ml-3 w-[27%] h-8  bg-gray-100 dark:bg-transparent rounded-lg items-center justify-center p-1 overflow-hidden">
                         <Carousel
                         opts={{ align: "start", loop: true }}
                         plugins={[carousel]}

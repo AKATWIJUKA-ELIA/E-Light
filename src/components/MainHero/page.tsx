@@ -40,11 +40,11 @@ const MainHero = () => {
                         src:"https://cheery-cod-687.convex.cloud/api/storage/55199998-af85-4493-af98-d8c3aff3d8dd",
                         overlay:"Grab April Discounts While Offers Last😁🤗"
                 },
-                {
-                        name:"Heror",
-                        src:"https://cheery-cod-687.convex.cloud/api/storage/a0cb51bd-83c4-4a01-8590-04818bf8111e",
-                        overlay:"Different Categories For Grabs😂😮"
-                },
+                // {
+                //         name:"Heror",
+                //         src:"https://cheery-cod-687.convex.cloud/api/storage/a0cb51bd-83c4-4a01-8590-04818bf8111e",
+                //         overlay:"Different Categories For Grabs😂😮"
+                // },
                 
 //HalyonBC
         ]
