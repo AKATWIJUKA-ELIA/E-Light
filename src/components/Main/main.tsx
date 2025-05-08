@@ -27,7 +27,7 @@ const Main = () => {
   }, )
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2'>
+    <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2 dark:bg-black '>
       {products.map((product) => (
         <HeroCard key={product._id} product={product} />
       ))}
