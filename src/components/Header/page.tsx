@@ -166,7 +166,7 @@ const Header = () => {
         <div className='flex ml-5  md:ml-32 ' >
                 
         <div className='flex flex-nowrap gap-4 ' >
-                <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 '   onMouseOver={showDropDownMenu} >
+                <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 dark:bg-transparent dark:hover:bg-gray-700'   onMouseOver={showDropDownMenu} >
                          <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>Categories</h1>
                 </div  >
                 <div className='flex rounded-full   p-2   hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700' onMouseOver={() => setHovered(false)} >
@@ -182,7 +182,7 @@ const Header = () => {
                 </div>
         )}
               </div>
-              <div className="flex md:hidden ml-3 w-[27%] h-8  bg-gray-100 rounded-lg items-center justify-center p-1 overflow-hidden">
+              <div className="flex md:hidden ml-3 w-[27%] h-8  bg-gray-100 dark:bg-transparent rounded-lg items-center justify-center p-1 overflow-hidden">
                         <Carousel
                         opts={{ align: "start", loop: true }}
                         plugins={[carousel]}
