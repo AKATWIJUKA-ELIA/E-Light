@@ -227,7 +227,7 @@ const AddProduct =  () => {
         ></textarea>
       </div>
 
-      <div className='flex md:flex md:gap-12'>
+      <div className='flex md:flex gap-2 md:gap-12'>
       <div>
         <label htmlFor="cartegory" className="flex text-sm font-medium text-gray-700 dark:text-white ">
           Cartegory
