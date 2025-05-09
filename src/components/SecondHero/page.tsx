@@ -149,7 +149,7 @@ const SecondHero = () => {
  </div>
 
 {/* Mobile Section */}
- <div className=" flex md:hidden  items-center justify-center bg-gray-50 bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100  ">
+ <div className=" flex md:hidden  items-center justify-center bg-gray-50 bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100 dark:bg-gray-900 dark:bg-none    ">
 
 <div className="flex flex-col justify-center gap-2 border border-gray-200 shadow-lg  hover:bg-gray-200 transition-colors duration-[10000ms] ease-in-out p-2 w-full">
 
