@@ -190,16 +190,16 @@ const AddProduct =  () => {
                 };
 
   return (
-     <div className=' mt-44 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 rounded-lg ' >
+     <div className=' mt-44 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 dark:bg-dark rounded-lg ' >
         {successProduct 
         ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁😁!!!,  your product  is pending for Approval</h1>)
-        :(<h1 className='text-2xl font-bold text-center text-black ' >Add  Products</h1>)
+        :(<h1 className='text-2xl font-bold text-center text-black dark:text-white ' >Add  Products</h1>)
         }
         {ErrorProduct && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔😔!!</h1>}
       
-       <form onSubmit={handleSubmit} className="space-y-4 p-3">
+       <form onSubmit={handleSubmit} className="space-y-4 p-3 ">
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-white ">
           Product Name
         </label>
         <input
@@ -209,12 +209,12 @@ const AddProduct =  () => {
           value={product.product_name}
           onChange={handleChange}
           required
-           className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm"
+           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
         />
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-white ">
           Description
         </label>
         <textarea
@@ -223,13 +223,13 @@ const AddProduct =  () => {
           value={product.product_description}
           onChange={handleChange}
           required
-           className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm"
+           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
         ></textarea>
       </div>
 
       <div className='flex md:flex md:gap-12'>
       <div>
-        <label htmlFor="cartegory" className="flex text-sm font-medium text-gray-700">
+        <label htmlFor="cartegory" className="flex text-sm font-medium text-gray-700 dark:text-white ">
           Cartegory
         </label>
         <select
@@ -237,7 +237,7 @@ const AddProduct =  () => {
           name="product_cartegory"
           onChange={handleChange}
           required
-           className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm"
+           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
         >
                 <option value=""  >Select category</option>
                 {categories?.map((category,index) => (
@@ -249,7 +249,7 @@ const AddProduct =  () => {
       </div>
       
       <div>
-        <label htmlFor="condition" className="flex text-sm font-medium text-gray-700">
+        <label htmlFor="condition" className="flex text-sm font-medium text-gray-700 dark:text-white">
           Condition
         </label>
         <input
@@ -259,12 +259,12 @@ const AddProduct =  () => {
           value={product.product_condition}
           onChange={handleChange}
           required
-           className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm"
+           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white "
         />
       </div>
       </div>
       <div>
-        <label htmlFor="price" className="flex text-sm font-medium text-gray-700">
+        <label htmlFor="price" className="flex text-sm font-medium text-gray-700 dark:text-white">
           Price
         </label>
         <input
@@ -279,11 +279,11 @@ const AddProduct =  () => {
     }
   }}
           required
-           className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm"
+           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white "
         />
       </div>
       <div>
-          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 dark:text-white">
             Attach an Image (Upto 5 images)
           </label>
           <input
