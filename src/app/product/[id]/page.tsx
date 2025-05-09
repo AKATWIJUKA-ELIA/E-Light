@@ -46,7 +46,7 @@ const Product = ({params}:PageProps) => {
   return (
 <div className='mt-32'>
         <ProductCard product={product} />
-        <div className='md:ml-10'>
+        <div className='md:ml-10 '>
                 <div className='ml-10 font-bold text-2xl'>
                         <h2>Related Products</h2>
                 </div>

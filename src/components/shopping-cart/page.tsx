@@ -31,7 +31,7 @@ const ShoppingCart= ()=> {
         const IncreaseCart = useIncreaseCart()
         const Delete = useDeleteCart()
         const itemCount = cart?.reduce((total, item) => total + (item.quantity || 0), 0)
-        
+        const[Copied,setCopied] = useState(false)
 
         // console.log("Cart is ", cart)
         const productIds = cart.map((item) => item.product_id);
@@ -68,13 +68,42 @@ const ShoppingCart= ()=> {
                 return CartQuantity
         }
 
+          const handleCopy = (link:string) => {
+        if (typeof window === "undefined"){
+                return
+        }
+                navigator.clipboard.writeText(link);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 3000);
+              
+                
+      };
+
+      const handleShare = (link: string,name:string) => {
+        if (navigator.share) {
+          navigator
+            .share({
+              title: `"Check out  ${name} on ShopCheap!`,
+              text: "Hey, take a look at this:",
+              url: link,
+            })
+            .then(() => console.log("Shared successfully"))
+            .catch((error) => console.error("Error sharing", error));
+        } else {
+                handleCopy(link)
+                alert("Sharing not supported on this device. Try copying the link instead.");
+        }
+      };
+
+
+
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto p-4">
-      <div className="lg:w-3/4 bg-slate-100 p-6 rounded border border-gray-200">
+    <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto p-4  ">
+      <div className="lg:w-3/4 bg-slate-100 p-6 rounded border border-gray-200 dark:bg-gray-800 dark:border-gray-800 ">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Shopping Cart</h1>
-          <span className="text-right">Price</span>
+          <span className="text-right hidden md:flex">Price</span>
         </div>
         <Separator className="mb-6" />
 
@@ -137,13 +166,13 @@ const ShoppingCart= ()=> {
                     Delete
                   </button>
 
-                  <span className="text-sm text-blue-500 hover:underline cursor-pointer">Save for later</span>
+                  {/* <span className="text-sm text-blue-500 hover:underline cursor-pointer">Save for later</span> */}
 
-                  <span className="text-sm text-blue-500 hover:underline cursor-pointer">
+                  {/* <span className="text-sm text-blue-500 hover:underline cursor-pointer">
                     Compare with similar items
-                  </span>
+                  </span> */}
 
-                  <span className="text-sm text-blue-500 hover:underline cursor-pointer">Share</span>
+                  <span className="text-sm text-blue-500 hover:underline cursor-pointer" onClick={() => handleShare(`https://shopcheap.vercel.app/product/${item._id}`,`${item.product_name}`)} >Share</span>
                 </div>
               </div>
 
@@ -159,7 +188,7 @@ const ShoppingCart= ()=> {
       </div>
 
       <div className="lg:w-1/4">
-        <div className="bg-white p-4 rounded border border-gray-200 mb-6">
+        <div className="bg-white p-4 rounded border border-gray-200 mb-6 dark:bg-gray-500 dark:border-gray-500">
           <div className="text-lg font-bold mb-4">
             Subtotal
              ({itemCount} items) Shs:{subtotal().toFixed(2)}
@@ -170,7 +199,7 @@ const ShoppingCart= ()=> {
           </Button>
         </div>
 
-        <div className="bg-white p-4 rounded border border-gray-200">
+        <div className="bg-white p-4 rounded border border-gray-200 dark:bg-gray-500 dark:border-gray-500 ">
           <h2 className="text-lg font-bold mb-4">New international customers purchased</h2>
 
           <div className="space-y-6">

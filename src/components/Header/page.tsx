@@ -109,7 +109,7 @@ const Header = () => {
                         <div className="flex items-center gap-2 py-1 hover:cursor-pointer">
                         <SignedIn>
                         <div className="hidden lg:block">
-                        <UserButton showName />
+                        <UserButton showName  />
                         </div>
 
                         {/* For small screens */}
