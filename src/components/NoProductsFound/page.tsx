@@ -44,7 +44,7 @@ const ProductsNotFound= ({category}: ProductsNotFoundProps)=> {
             <ShoppingBag className="h-24 w-24 text-gray-300" strokeWidth={1} />
           </div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Search className="h-12 w-12 text-gray-400" />
+            {/* <Search className="h-12 w-12 text-gray-400" /> */}
           </div>
         </div>
 

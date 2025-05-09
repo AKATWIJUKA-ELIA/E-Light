@@ -15,7 +15,7 @@ const Category = ({params}:PageProps) => {
                         (relatedProducts ?? []).length > 0 ? (<div className='flex flex-col ' >
                         <div className='flex flex-col gap-4 mt-5'>
                                 <div className='flex'>
-                                        <h1 className='text-dark ' >Best Match for &ldquo;<span className='font-bold' >{decodeURIComponent(category)}</span>&ldquo;</h1>
+                                        <h1 className='text-dark dark:text-white ' >Best Match for &ldquo;<span className='font-bold' >{decodeURIComponent(category)}</span>&ldquo;</h1>
                                 </div>
                         </div>
 

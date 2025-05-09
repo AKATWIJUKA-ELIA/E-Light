@@ -49,14 +49,14 @@ const  SectionCards: React.FC<SectionProps>=({ClickedCard})=> {
   return (
     <div className=" *:data-[slot=card]:shadow-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
       
-      <Card onClick={()=>ClickedCard("")}  className="@container/card bg-blue-100 transition-transform duration-200 hover:border-pink-400 hover:cursor-pointer hover:scale-105  ">
+      <Card onClick={()=>ClickedCard("")}  className="@container/card bg-blue-100 transition-transform duration-200 hover:border-pink-400 hover:cursor-pointer hover:scale-105 dark:text-black ">
         <CardHeader className="relative">
           <CardDescription>All Products</CardDescription>
           <CardTitle  className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
           {Allproducts?.length} Products
           </CardTitle>
-          <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+          <div className="absolute right-4 top-4 ">
+            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs dark:text-black">
               <TrendingUpIcon className="size-3" />
               +12.5%
             </Badge>
@@ -72,14 +72,14 @@ const  SectionCards: React.FC<SectionProps>=({ClickedCard})=> {
         </CardFooter>
       </Card>
 
-      <Card onClick={()=>ClickedCard("approved")}  className="@container/card bg-pink-100 transition-transform duration-200 hover:border-blue-400 hover:cursor-pointer hover:scale-105">
+      <Card onClick={()=>ClickedCard("approved")}  className="@container/card bg-pink-100 transition-transform duration-200 hover:border-blue-400 hover:cursor-pointer hover:scale-105 dark:text-black ">
         <CardHeader className="relative">
           <CardDescription>Approved Products</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
           {ApprovedProducts?.length} Products
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs dark:text-black">
               <TrendingDownIcon className="size-3" />
               -20%
             </Badge>
@@ -95,14 +95,14 @@ const  SectionCards: React.FC<SectionProps>=({ClickedCard})=> {
         </CardFooter>
       </Card>
 
-      <Card onClick={()=>ClickedCard("pending")} className="@container/card bg-blue-100 transition-transform duration-200 hover:border-pink-400 hover:cursor-pointer hover:scale-105">
+      <Card onClick={()=>ClickedCard("pending")} className="@container/card bg-blue-100 transition-transform duration-200 hover:border-pink-400 hover:cursor-pointer hover:scale-105 dark:text-black ">
         <CardHeader className="relative">
           <CardDescription>Pending Products</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
             {PendingProducts?.length} Products
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs dark:text-black">
               <TrendingUpIcon className="size-3" />
               +4.5%
             </Badge>
@@ -116,14 +116,14 @@ const  SectionCards: React.FC<SectionProps>=({ClickedCard})=> {
         </CardFooter>
       </Card>
 
-      <Card onClick={()=>ClickedCard("users")} className="@container/card bg-pink-100 transition-transform duration-200 hover:border-blue-400 hover:cursor-pointer hover:scale-105">
+      <Card onClick={()=>ClickedCard("users")} className="@container/card bg-pink-100 transition-transform duration-200 hover:border-blue-400 hover:cursor-pointer hover:scale-105 dark:text-black ">
         <CardHeader className="relative">
           <CardDescription>Active Accounts / Users</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
             45,678
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs dark:text-black">
               <TrendingUpIcon className="size-3" />
               +12.5%
             </Badge>
@@ -137,14 +137,14 @@ const  SectionCards: React.FC<SectionProps>=({ClickedCard})=> {
         </CardFooter>
       </Card>
 
-      <Card className="@container/card bg-blue-100 transition-transform duration-200 hover:border-pink-400 hover:cursor-pointer hover:scale-105">
+      <Card className="@container/card bg-blue-100 transition-transform duration-200 hover:border-pink-400 hover:cursor-pointer hover:scale-105 dark:text-black ">
         <CardHeader className="relative">
           <CardDescription>Growth Rate</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
             4.5%
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs  dark:text-black">
               <TrendingUpIcon className="size-3" />
               +4.5%
             </Badge>

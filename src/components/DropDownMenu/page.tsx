@@ -28,7 +28,7 @@ const HandleChange =(cart:string)=>{
   return (
       <>
         
-        <div className="  fade-in  fixed z-40 inset-0 backdrop-blur-lg shadow-lg flex  w-[70%] md:w-[100%]  md:h-[60%]  mt-[42%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-white" id="wrapper" onMouseLeave={onClose} >                  
+        <div className="  fade-in  fixed z-40 inset-0 backdrop-blur-lg shadow-lg flex  w-[70%] md:w-[100%]  md:h-[60%]  mt-[42%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-white dark:bg-dark " id="wrapper" onMouseLeave={onClose} >                  
                      
                      <div id="programs">
    
@@ -59,7 +59,7 @@ const HandleChange =(cart:string)=>{
                                 <div className="ml-12   h-90 overflow-y-auto  "  > 
                                        <h1 className='font-bold text-2xl' > Categories</h1>
                                         {cartegories? (cartegories.map(({_id, cartegory}) =>
-                                                <div key={_id} className=" cursor-pointer mr-2  p-2 slider slide--fast hover:bg-gray-100 rounded-lg ">
+                                                <div key={_id} className=" cursor-pointer mr-2  p-2 slider slide--fast hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg ">
                                                 
                                                 <Link href={`/category/${encodeURIComponent(cartegory)}`}  onMouseOver={()=>{HandleChange(cartegory)}} onClick={onClose}>
                                                 <h1   className='animated  main '  > <span id='main' className='animated current   '>{cartegory}</span></h1> 

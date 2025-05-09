@@ -199,10 +199,10 @@ const handleclose =()=>{
 
   return (
     <div className="fade-in fixed z-40 inset-0 backdrop-blur-sm shadow-lg shadow-black rounded-lg flex  w-[100%] h-[100%]   overflow-auto overflow-x-hidden">
-      <div className="my-auto mt-[30%] md:mt-[8%] md:w-[60%] shadow-md shadow-black items-center justify-center mx-auto bg-gray-200 rounded-lg">
-      <div>
-        <h1 className="text-2xl font-bold text-center text-black">Update Product</h1>
-        <h1 className="text-sm font-bold text-center text-black">Note: While Updating your Product, you must add the images again</h1>
+      <div className="my-auto mt-[30%] md:mt-[8%] md:w-[60%] shadow-md shadow-black items-center justify-center mx-auto bg-gray-200 dark:bg-dark rounded-lg">
+      <div >
+        <h1 className="text-2xl font-bold text-center text-black dark:text-white ">Update Product</h1>
+        <h1 className="text-sm font-bold text-center text-black dark:text-white ">Note: While Updating your Product, you must add the images again</h1>
       </div>
         <form onSubmit={handleSubmit} className="space-y-4 p-3">
           <div>
@@ -216,7 +216,7 @@ const handleclose =()=>{
               value={product?.product_name || ""}
               onChange={handleChange}
               required
-              className="appearance-none rounded-lg relative block w-full px-3 py-1 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm"
+              className="bg-transparent rounded-lg relative block w-full px-3 py-1 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
             />
           </div>
 
@@ -230,7 +230,7 @@ const handleclose =()=>{
               value={product?.product_description || ""}
               onChange={handleChange}
               required
-              className="appearance-none rounded-lg relative block w-full px-3 py-1 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm"
+              className="bg-transparent rounded-lg relative block w-full px-3 py-1 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
             ></textarea>
           </div>
 
@@ -267,7 +267,7 @@ const handleclose =()=>{
                 value={product?.product_condition || ""}
                 onChange={handleChange}
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm"
+                className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
               />
             </div>
           </div>
@@ -288,7 +288,7 @@ const handleclose =()=>{
                 }
               }}
               required
-              className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm"
+              className="bg-transparent  rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-4 focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
             />
           </div>
 

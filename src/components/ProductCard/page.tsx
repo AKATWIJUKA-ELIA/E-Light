@@ -63,10 +63,10 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
       };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 bg-white mt-5 shadow-md overflow-hidden p-4">
+    <div className="flex flex-col lg:flex-row gap-6 bg-white mt-5 shadow-md overflow-hidden p-4 dark:bg-dark ">
       
       {/* Product Image */}
-      <div className="flex flex-col w-full lg:w-3/5 bg-slate-50 shadow-md rounded-lg p-4">
+      <div className="flex flex-col w-full lg:w-3/5 bg-slate-50 shadow-md rounded-lg p-4 dark:bg-gray-900">
         <div className="mx-auto rounded-lg h-64 sm:h-72 md:h-80 w-full relative overflow-hidden">
         <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="  w-full">
         <CarouselContent className=''>
@@ -127,7 +127,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
       </div>
 
       {/* Product Details */}
-      <div className="flex flex-col w-full lg:w-2/5 bg-white shadow-md rounded-lg p-4 space-y-4">
+      <div className="flex flex-col w-full lg:w-2/5 bg-white shadow-md rounded-lg p-4 space-y-4 dark:bg-gray-700">
         <h2 className="text-2xl text-center font-semibold text-gray-900">
           {product.product_name}
         </h2>
@@ -137,8 +137,8 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         </div>
 
         <div>
-          <h1 className="text-gray-600 font-bold">Product Details:</h1>
-          <p className="text-sm text-gray-800">{product.product_description}</p>
+          <h1 className="text-gray-600 font-bold dark:text-black ">Product Details:</h1>
+          <p className="text-sm text-gray-800 dark:text-white ">{product.product_description}</p>
         </div>
 
         <div className="flex  space-x-2">

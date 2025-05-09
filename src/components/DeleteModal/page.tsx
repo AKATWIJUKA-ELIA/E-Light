@@ -50,7 +50,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isdelete, onClose, productId 
 
   return (
     <div className="fade-in fixed z-40 inset-0 backdrop-blur-sm shadow-lg shadow-black rounded-lg flex  w-[100%] h-[100%]   overflow-auto overflow-x-hidden">
-      <div className="  md:w-[60%] h-64 shadow-md shadow-black items-center justify-center my-auto mx-auto bg-gray-200 rounded-lg">
+      <div className="  md:w-[60%] h-64 shadow-md shadow-black items-center justify-center my-auto mx-auto bg-gray-200 dark:bg-gray-600 rounded-lg">
         <h1 className="text-2xl font-bold text-center text-black">Delete Product  -<span className="text-gold" >&apos;{Product?.product_name}&apos;</span></h1>
         <div className="flex space-x-3 justify-center mt-10  py-10">
             <button
