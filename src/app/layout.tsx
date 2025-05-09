@@ -5,8 +5,8 @@ import { Footer } from "@/components/Footer/page";
 import ReduxProvider from "./ReduxProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
-// import { ThemeProvider } from "@/components/theme-provider";
-// import { ModeToggle } from "@/components/Dark-light/page";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/Dark-light/page";
 
 export const metadata: Metadata = {
   title: "ShopCheap",
@@ -24,17 +24,17 @@ export default function RootLayout({
         <ConvexClientProvider>
           <ClerkProvider>
             <ReduxProvider>
-              {/* <ThemeProvider
+              <ThemeProvider
                 attribute="class"
                 defaultTheme="system"
                 enableSystem
                 disableTransitionOnChange
-              > */}
+              > 
                 <Header />
                 {children}
                 <Footer/>
-                {/* <ModeToggle /> */}
-              {/* </ThemeProvider> */}
+                <ModeToggle />
+              </ThemeProvider> 
             </ReduxProvider>
           </ClerkProvider>
         </ConvexClientProvider>
