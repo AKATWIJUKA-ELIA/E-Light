@@ -48,7 +48,7 @@ const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
                         </Link>
                         ))
                         ) : (
-                        <div className="vertical-line ml-2 fade-in"><h1 className='text-black' >  Sorry!!!, we cound&apos;nt find any results for your search. . .</h1></div>
+                        <div className="vertical-line ml-2 fade-in"><h1 className='text-black' >  Sorry!!!, we could&apos;nt find any results for your search. . .</h1></div>
                         )}
                 </div>
 

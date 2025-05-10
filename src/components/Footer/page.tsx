@@ -13,12 +13,14 @@ export function Footer() {
   const [useremail,setuseremail] = useState("")
   const[submitting,setIsSubmitting] = useState(false)
   const [submitted,setsubmitted] = useState(false)
-  const [ErrorMail, setErrorMail ] = useState("")
+  const [ErrorMail, setErrorMail ] = useState(false)
+   const [ErrorMailMessage, setErrorMailMessage ] = useState('')
   const {sendEmail}  = useSendMail()
   const AddEmail= useAddEmail()
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setuseremail(e.target.value) 
+       
   }
   
   const cleanForm = () => {
@@ -27,10 +29,18 @@ export function Footer() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       setIsSubmitting(true)
-  
+         try{
+                AddEmail(useremail)
+        }catch(error:any){
+                setErrorMail(true)
+                setTimeout(() => {
+                        setErrorMailMessage(error.message)
+      }, 5000); 
+        }
       try {
-        AddEmail(useremail)
-        sendEmail(useremail, "Welcome to ShopCheap - Thanks for Subscribing!", `Hi ${useremail},
+        
+if(!ErrorMail){
+                sendEmail(useremail, "Welcome to ShopCheap - Thanks for Subscribing!", `Hi ${useremail},
 
 Thank you for subscribing to ShopCheap! We're thrilled to have you on board.
 
@@ -48,12 +58,14 @@ setTimeout(() => {
         setIsSubmitting(false);
         setsubmitted(true)
       }, 5000); 
+}
 
         } catch (error) {
         console.error("Error :", error)
-        setErrorMail(String(error))
+        
       } finally {
         setTimeout(() => {
+                setIsSubmitting(false);
                 setsubmitted(false)
               }, 10000); 
         cleanForm()
@@ -83,7 +95,7 @@ setTimeout(() => {
                 )}
                 {ErrorMail && (
                   <div>
-                    <h1 className="text-red-500">Error!!!! {ErrorMail}</h1>
+                    <h1 className="text-red-500">Error!!!! {ErrorMailMessage}</h1>
                   </div>
                 )}
                 <form onSubmit={handleSubmit} className="flex gap-2">

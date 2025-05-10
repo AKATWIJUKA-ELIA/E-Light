@@ -51,11 +51,13 @@ export const createProduct = mutation({
                      const single = await ctx.db.query("products").filter((q)=> q.eq(q.field("_id"), args.id)).first(); 
                 //      console.log("Single Job",single)
                     if (single) {
-                        single.product_image = await Promise.all(
-                            single.product_image.map(async (image: string) => {
-                                return await ctx.storage.getUrl(image);
-                            })
-                        );
+                        single.product_image = (
+                        await Promise.all(
+                        single.product_image.map(async (image: string) => {
+                        return await ctx.storage.getUrl(image);
+                        })
+                        )
+                        ).filter((url): url is string => url !== null);
                     }
                     return single
                     },
@@ -73,11 +75,11 @@ handler: async (ctx, { ids }) => {
             }
             const product= await ctx.db.get(normalizedId);
             if(product){
-                product.product_image = await Promise.all(
+                product.product_image = (await Promise.all(
                         product.product_image.map(async (image: string) => {
                                 return await ctx.storage.getUrl(image);
                         }
-                ))
+                ))).filter((url): url is string => url !== null);
           }
           return product;
         })
@@ -102,11 +104,11 @@ export const getImageUrl = query({
             .collect();
       
           for (const product of products) {
-            product.product_image = await Promise.all(
+            product.product_image = (await Promise.all(
               product.product_image.map(async (image: string) => {
                 return await ctx.storage.getUrl(image);
               })
-            );
+            )).filter((url): url is string => url !== null);
           }
       
         //   console.log("primary products:", products);
@@ -126,11 +128,11 @@ export const getImageUrl = query({
             .collect();
       
           for (const product of products) {
-            product.product_image = await Promise.all(
+            product.product_image = (await Promise.all(
               product.product_image.map(async (image: string) => {
                 return await ctx.storage.getUrl(image);
               })
-            );
+            )).filter((url): url is string => url !== null);
           }
       
         //   console.log("primary products:", products);
@@ -150,11 +152,11 @@ export const getImageUrl = query({
             .collect();
       
           for (const product of products) {
-            product.product_image = await Promise.all(
+            product.product_image = (await Promise.all(
               product.product_image.map(async (image: string) => {
                 return await ctx.storage.getUrl(image);
               })
-            );
+            )).filter((url): url is string => url !== null);
           }
       
         //   console.log("Related products:", products);
