@@ -171,7 +171,7 @@ const Header = () => {
                 </div  >
                 <div className='flex rounded-full   p-2   hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700' onMouseOver={() => setHovered(false)} >
                         <Link className='hidden md:flex' href="/post" >Sell Something?</Link>
-                        <Link className='flex md:hidden' href="/post" >post advert?</Link>
+                        <Link className='flex md:hidden' href="/post" >sell ?</Link>
                 </div>
         </div >
 
