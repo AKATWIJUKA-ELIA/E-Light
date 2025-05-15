@@ -17,11 +17,11 @@ interface Product {
   product_cartegory: string,
   product_condition: string,
   product_description: string,
-  product_image: string,
+  product_image: string|null,
   product_name: string,
   product_owner_id: string,
   product_price: string,
-  _creationTime:Date
+  _creationTime:number
       }
       type products = Product[]
 

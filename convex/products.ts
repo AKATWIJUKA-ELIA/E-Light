@@ -30,16 +30,17 @@ export const createProduct = mutation({
   export const getProducts = query({
            
         handler: async (ctx) => {
-      const products = await ctx.db.query("products").filter((q)=> q.eq(q.field("approved"), true)).collect(); 
+      const products = await ctx.db.query("products").filter((q)=> q.eq(q.field("approved"), true)).collect();
+
+                for (const product of products) {
+            product.product_image = (await Promise.all(
+              product.product_image.map(async (image: string) => {
+                return await ctx.storage.getUrl(image);
+              })
+            )).filter((url): url is string => url !== null);
+          }
 //       console.log(products)
-      return Promise.all(
-        products.map(async (product) => ({
-          ...product,
-          product_image: product.product_image ? await ctx.storage.getUrl(product.product_image[0]):null
-         
-        }))
-      
-      );
+      return products
       
     },
     
