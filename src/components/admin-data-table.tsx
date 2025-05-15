@@ -21,11 +21,11 @@ interface Product {
   product_cartegory: string,
   product_condition: string,
   product_description: string,
-  product_image: string,
+  product_image: string | null,
   product_name: string,
   product_owner_id: string,
   product_price: string,
-  _creationTime:Date
+  _creationTime:number
 }
 interface DataTableProps {
   products: Product[];
@@ -84,7 +84,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                         <TableCell className="text-right">{product.product_condition}</TableCell>
                         <TableCell className="text-right">
                           <Image
-                            src={product.product_image}
+                            src={product.product_image ?? "/placeholder.png"}
                             width={50}
                             height={50}
                             alt={product.product_name}

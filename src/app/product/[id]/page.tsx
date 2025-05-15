@@ -23,8 +23,8 @@ interface PageProps {
 const Product = ({params}:PageProps) => {
         const { id } = use(params); 
         const { data: product } = useGetProductById(id); 
-        const { data: relatedProducts } = useGetRelatedProducts(product?.product_cartegory);
-        const { data: SameSellerProducts } = useGetProductsByOwnerApproved(product?.product_owner_id);
+        const { data: relatedProducts } = useGetRelatedProducts(product?.product_cartegory??"");
+        const { data: SameSellerProducts } = useGetProductsByOwnerApproved(product?.product_owner_id??"");
         const carousel = Autoplay({ delay: 10000})
   if (!product) {
     return  <Oval

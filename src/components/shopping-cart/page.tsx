@@ -11,18 +11,19 @@ import useDeleteCart from "@/hooks/useDeleteCart"
 import useGetProductsByIds from "@/hooks/useGetProductsByIds";
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { Id } from "../../../convex/_generated/dataModel"
 interface Product {
-        total:number
+        total:number;
+         _id: Id<"products">;
         approved: boolean;
-         product_category: string;
+         product_cartegory: string;
          product_condition: string;
          product_description: string;
-         product_image: string;
+         product_image: string[];
          product_name: string;
          product_owner_id: string;
          product_price: string;
          _creationTime: number;
-         _id: string;
        }
 
 const ShoppingCart= ()=> {
@@ -56,8 +57,8 @@ const ShoppingCart= ()=> {
                     total: Number(p.product_price) * itemQuantity(p._id) // Add total field
                 }));
             };
-              
-        const NewProduct = Product(products)
+        const validProducts = products.filter((p): p is Product => p !== null);
+        const NewProduct = Product(validProducts)
 
         const subtotal = () => {
                 return NewProduct.reduce((total, product) => total + (product.total || 0), 0);

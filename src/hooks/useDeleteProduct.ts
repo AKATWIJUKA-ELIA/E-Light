@@ -5,7 +5,7 @@ import type { Id } from "../../convex/_generated/dataModel"; // Import the Id ty
 const useDeleteProduct = () => {
   const deleteProduct = useMutation(api.products.DeleteProduct);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string|undefined) => {
     try {
       const result = await deleteProduct({ id: id as Id<"products"> });
       return result;

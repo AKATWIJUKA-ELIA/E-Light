@@ -5,10 +5,10 @@ import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
 interface Product {
         approved: boolean;
-         product_category: string;
+         product_cartegory: string;
          product_condition: string;
          product_description: string;
-         product_image: string;
+         product_image: string[];
          product_name: string;
          product_owner_id: string;
          product_price: string;
@@ -37,8 +37,8 @@ const HeroCard = ({ product }: HeroCardProps) => {
               <div className="relative w-full h-48 flex items-center justify-center bg-transparent transition-transform duration-200 hover:scale-105">
                 <Image
                   src={
-                    Array.isArray(product.product_image) && product.product_image.length > 0
-                      ? product.product_image[0]
+                     Array.isArray(product.product_image)
+                      ? (product.product_image.length > 0 ? product.product_image[0] : "")
                       : product.product_image
                   }
                   alt={product.product_name}

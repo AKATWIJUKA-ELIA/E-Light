@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useQuery } from 'convex/react'
-import { api } from '../../../convex/_generated/api'
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
@@ -12,6 +10,7 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
+import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
 
 
 interface Product {
@@ -19,7 +18,7 @@ interface Product {
         product_cartegory: string;
          product_condition: string;
          product_description: string;
-         product_image: string;
+         product_image: string[];
          product_name: string;
          product_owner_id: string;
          product_price: string;
@@ -30,13 +29,13 @@ interface Product {
 const FisrtHero = () => {
         const carousel = Autoplay({ delay: 10000})
                 const [products, setproducts] = useState<Product[]>([]);
-                        const product = useQuery(api.products.getProducts)
+                const {data:product} = useGetApprovedProducts()
                         
                         useEffect(() => {
-                                if (product) {
-                                    setproducts(product)
-                                }
-                        }, );
+                            if (product) {
+                                setproducts(product);
+                            }
+                        }, [product]);
 
         
   return (
@@ -56,7 +55,7 @@ const FisrtHero = () => {
           <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
             <Image
-              src={product.product_image}
+              src={product.product_image[0] ?? "/placeholder.png"}
         //       height={100}
         //       width={450}
               alt={product.product_name}
