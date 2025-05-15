@@ -50,7 +50,7 @@ const ShoppingCart= ()=> {
                 return item ? item.quantity : 0; // Return 0 if not found
             };
 
-        const Product = (products: Product[]) => {
+        const Product = (products: any[]) => {
                 return products.map((p) => ({
                     ...p, // Spread the existing product fields
                     total: Number(p.product_price) * itemQuantity(p._id) // Add total field
