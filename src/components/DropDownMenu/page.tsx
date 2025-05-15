@@ -91,8 +91,8 @@ const HandleChange =(cart:string)=>{
                                                         <div className="relative w-full h-16 gap-3 flex items-center justify-center bg-transparent transition-transform duration-200 hover:scale-105">
                                                         <Image
                                                         src={
-                                                                Array.isArray(product.product_image) && product.product_image.length > 0
-                                                                ? product.product_image[0]
+                                                                 Array.isArray(product.product_image)
+                                                                 ? (product.product_image.length > 0 ? product.product_image[0] : "")
                                                                 : product.product_image
                                                         }
                                                         alt={product.product_name}

@@ -20,7 +20,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isdelete, onClose, productId 
   const Delete = useDeleteProduct()
 
 
-  const HandleDelete=async (id:string)=>{
+  const HandleDelete=async (id:string|undefined)=>{
         try{
         await Delete(id)
         onClose()

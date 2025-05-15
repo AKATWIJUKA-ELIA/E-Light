@@ -5,7 +5,7 @@ import type { Id } from "../../convex/_generated/dataModel"; // Import the Id ty
 const useApproveRevoke = () => {
   const EditProduct = useMutation(api.products.ApproveRevoke);
 
-  const handleEdit = async (id: string) => {
+  const handleEdit = async (id: string|undefined) => {
     try {
       const result = await EditProduct({ id: id as Id<"products"> });
       return result;

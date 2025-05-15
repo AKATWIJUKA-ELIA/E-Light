@@ -19,7 +19,7 @@ const ApproveRevokeModal: React.FC<ApproveRevokeModalProps> = ({ ischange, onClo
   const Edit = useApproveRevoke()
   const[action, setaction] = useState("")
   const[message,setmessage] = useState("")
-const userId = Product?.product_owner_id
+const userId = Product?.product_owner_id || ""
 // console.log("UserId  :",userId )
 const { user } = useGetUserById(userId)
 // console.log("User :",user )
@@ -32,7 +32,7 @@ useEffect(()=>{
         }
         HandleAction()
 },[Action])
-  const HandleEdit=async (id:string)=>{
+  const HandleEdit=async (id:string|undefined)=>{
         try{
         await Edit(id)
         onClose()
@@ -50,7 +50,7 @@ useEffect(()=>{
                     setmessage(e.currentTarget.value)
                 //     console.log("message",message)
                 }
-  const HandleSubmit=(id:string)=>{
+  const HandleSubmit=(id:string|undefined)=>{
         HandleEdit(id)
         sendEmail(`${UserEmail}`,`${action}d`,`${message}`)
         setmessage("")

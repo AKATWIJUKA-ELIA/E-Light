@@ -5,7 +5,7 @@ import useGetApprovedProducts from '@/hooks/useGetApprovedProducts'
 
 interface Product {
   approved: boolean;
-  product_category: string;
+  product_cartegory: string;
   product_condition: string;
   product_description: string;
   product_image: string;

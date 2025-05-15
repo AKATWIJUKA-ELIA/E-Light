@@ -19,7 +19,7 @@ interface Product {
         product_cartegory: string;
          product_condition: string;
          product_description: string;
-         product_image: string;
+         product_image: string|null;
          product_name: string;
          product_owner_id: string;
          product_price: string;
@@ -56,7 +56,7 @@ const FisrtHero = () => {
           <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
             <Image
-              src={product.product_image}
+              src={product.product_image ?? "/placeholder.png"}
         //       height={100}
         //       width={450}
               alt={product.product_name}

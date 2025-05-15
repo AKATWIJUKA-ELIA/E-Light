@@ -22,7 +22,7 @@ const Category = ({params}:PageProps) => {
                
                 
                 <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2'>
-                {relatedProducts?.map((product?) => (
+                {relatedProducts?.map((product) => (
                 <HeroCard key={product._id} product={product} />
                 ))}
         </div>
