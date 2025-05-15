@@ -1,4 +1,5 @@
-import {mutation, query} from "./_generated/server"
+import {mutation} from "./_generated/server"
+import { ConvexError } from "convex/values";
 import {v} from "convex/values"
 
 export const AddEmail = mutation({
@@ -11,7 +12,7 @@ export const AddEmail = mutation({
       .unique();
       
           if (existing) {
-            throw new Error("This email is already subscribed.");
+            throw new ConvexError("This email is already subscribed.");
           }
       
           // If not found, insert the email
