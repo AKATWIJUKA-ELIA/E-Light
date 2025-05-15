@@ -19,11 +19,11 @@ const useAddEmail = () => {
       return { success: true };
     } catch (error) {
       if (error instanceof ConvexError) {
-        console.error("Convex application error:", error.data);
+        // console.error("Convex application error:", error.data);
         setemailError(true);
         return { success: false, error: error.data };
       } else {
-        console.error("Unexpected error:", error);
+        // console.error("Unexpected error:", error);
         return {
           success: false,
           error: "An unexpected error occurred while adding the email.",
