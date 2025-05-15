@@ -33,10 +33,17 @@ const FisrtHero = () => {
                         const product = useQuery(api.products.getProducts)
                         
                         useEffect(() => {
-                                if (product) {
-                                    setproducts(product)
-                                }
-                        }, );
+                            if (product) {
+                                // Map product_image to string or null if necessary
+                                const mappedProducts = product.map((p: any) => ({
+                                    ...p,
+                                    product_image: Array.isArray(p.product_image)
+                                        ? (p.product_image[0] ?? null)
+                                        : p.product_image ?? null
+                                }));
+                                setproducts(mappedProducts);
+                            }
+                        }, [product]);
 
         
   return (
