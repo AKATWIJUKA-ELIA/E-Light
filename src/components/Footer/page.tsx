@@ -13,7 +13,7 @@ export function Footer() {
   const [useremail,setuseremail] = useState("")
   const[submitting,setIsSubmitting] = useState(false)
   const [submitted,setsubmitted] = useState(false)
-   const [ErrorMailMessage, setErrorMailMessage ] = useState<String>('')
+   const [ErrorMailMessage, setErrorMailMessage ] = useState<string>('')
   const {sendEmail}  = useSendMail()
   const { save } = useAddEmail();
   
