@@ -51,12 +51,17 @@ const MainHero = () => {
                 const [products, setproducts] = useState<Product[]>([]);
                         const product = useQuery(api.products.getProducts)
                         
-                        useEffect(() => {
-                                if (product) {
-                                    setproducts(product)
-                                }
-                        }, );
-
+useEffect(() => {
+                            if (product) {
+                                const mappedProducts = product.map((p: any) => ({
+                                    ...p,
+                                    product_image: Array.isArray(p.product_image)
+                                        ? (p.product_image[0] ?? null)
+                                        : p.product_image ?? null
+                                }));
+                                setproducts(mappedProducts);
+                            }
+                        }, [product]);
         
   return (
         <div className= ' bg-pink-200   mt-32 grid grid-cols-1  '  >

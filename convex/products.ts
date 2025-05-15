@@ -35,9 +35,7 @@ export const createProduct = mutation({
       return Promise.all(
         products.map(async (product) => ({
           ...product,
-          product_image: product.product_image ? product.product_image.map(async(product_image)=>{
-                await ctx.storage.getUrl(product_image)
-          }):[]
+          product_image: product.product_image ? await ctx.storage.getUrl(product.product_image[0]):null
          
         }))
       
