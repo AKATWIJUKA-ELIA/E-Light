@@ -22,13 +22,7 @@ const Main = () => {
 
 useEffect(() => {
                             if (productsData) {
-                                const mappedProducts = productsData.map((p: any) => ({
-                                    ...p,
-                                    product_image: Array.isArray(p.product_image)
-                                        ? (p.product_image[0] ?? null)
-                                        : p.product_image ?? null
-                                }));
-                                setProducts(mappedProducts);
+                                setProducts(productsData);
                             }
                         }, [productsData]);
 

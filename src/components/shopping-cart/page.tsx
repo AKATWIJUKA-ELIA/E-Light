@@ -23,7 +23,7 @@ interface Product {
          product_price: string;
          _creationTime: number;
          _id: string;
-       } []
+       }
 
 const ShoppingCart= ()=> {
         const cart = useAppSelector((state) => state.cart.items)

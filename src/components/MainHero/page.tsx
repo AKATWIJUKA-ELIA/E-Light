@@ -12,13 +12,14 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 import Link from 'next/link';
+import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
 
 interface Product {
         approved: boolean;
          product_cartegory: string;
          product_condition: string;
          product_description: string;
-         product_image: string;
+         product_image: string[];
          product_name: string;
          product_owner_id: string;
          product_price: string;
@@ -29,6 +30,8 @@ interface Product {
 const MainHero = () => {
         const carousel1 = Autoplay({ delay: 9000})
         const carousel = Autoplay({ delay: 10000})
+        const [products, setproducts] = useState<Product[]>([]);
+        const {data:product} = useGetApprovedProducts()
         const images = [
                 {
                 name:"Heror",
@@ -48,18 +51,10 @@ const MainHero = () => {
                 
 //HalyonBC
         ]
-                const [products, setproducts] = useState<Product[]>([]);
-                        const product = useQuery(api.products.getProducts)
                         
 useEffect(() => {
                             if (product) {
-                                const mappedProducts = product.map((p: any) => ({
-                                    ...p,
-                                    product_image: Array.isArray(p.product_image)
-                                        ? (p.product_image[0] ?? null)
-                                        : p.product_image ?? null
-                                }));
-                                setproducts(mappedProducts);
+                                setproducts(product);
                             }
                         }, [product]);
         
@@ -106,7 +101,7 @@ useEffect(() => {
             {/* Image */}
             <Link href={`/category/${product.product_cartegory}`} >
             <Image
-              src={product.product_image}
+              src={product.product_image[0]??""}
         //       height={100}
         //       width={450}
               alt={product.product_name}
