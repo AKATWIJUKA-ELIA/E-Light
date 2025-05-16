@@ -1,15 +1,81 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { FaGoogle } from "react-icons/fa";
+import { useState } from "react"
+import { useSendMail } from '@/hooks/useSendMail';
 
-export function SignUpForm({
+interface user {
+        username: string;
+        email: string;
+        password: string;
+        password2:string;
+        phoneNumber:string
+}
+const SignUpForm = ({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"form">) {
+}: React.ComponentPropsWithoutRef<"form">)=> {
+
+        const [isSubmitting, setIsSubmitting] = useState(false)
+        const [User, setUser] = useState<user>({
+                username: "",
+                email: "",
+                password:"",
+                password2:"",
+                phoneNumber:""
+        })
+        
+        const { sendEmail, } = useSendMail();
+         const admin = process.env.NEXT_PUBLIC_ADMIN
+
+
+        
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+                    const { name, value } = e.target;
+                    setUser((prev) => ({...prev,[name]: value,
+                    }));
+                  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        // Allow only digits, +, -, space
+        const cleaned = value.replace(/[^0-9+]/g, "");
+        User.phoneNumber= cleaned;
+        handleChange(e)
+};
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  setIsSubmitting(true);
+                  
+                  const cleanForm = () => {
+                        setUser({
+                                username: "",
+                                email: "",
+                                phoneNumber: "",
+                                password: "",
+                                password2: "",
+                        });
+                        
+                      };
+                      
+                  try {
+                        
+                      cleanForm()
+                      sendEmail( `${admin}` ,"New User Created", `User ${User?.username}, Added a product`);
+                      sendEmail( `${User?.email}`,"New Product Created", `Hello  ${User?.username}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
+                
+                  } catch (error) {
+                      
+                  } finally {
+                    setIsSubmitting(false);
+                  }}
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form onSubmit={handleSubmit} className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Welcome to <span className="text-dark" >Shop</span><span className="text-gold">Cheap</span> </h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -20,15 +86,38 @@ export function SignUpForm({
 
        <div className="grid grid-cols-2 gap-3">
          <div className="grid gap-2">
-          <Label htmlFor="email">User name</Label>
-          <Input id="text" type="email" placeholder="shopcheap" required />
+          <Label htmlFor="email">Username</Label>
+          <Input id="username" 
+          type="text"
+          value={User.username}
+          onChange={handleChange}
+          maxLength={10} 
+          placeholder="shopcheap"
+           required />
         </div>
 
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="example@gmail.com" required />
+          <Input id="email" 
+          type="email"
+          value={User.email} 
+          placeholder="example@gmail.com" 
+          required
+          onChange={handleChange} 
+          />
         </div>
        </div>
+
+        <div className="grid gap-2">
+          <Label htmlFor="password">Phone Number</Label>
+          <Input id="phoneNumber" 
+          type="tel" 
+          maxLength={13}
+          value={User.phoneNumber}
+         onChange={handlePhoneChange}
+          placeholder="+256123456789"  
+          required />
+        </div>
 
         <div className="grid gap-2">
           <div className="flex items-center">
@@ -40,12 +129,24 @@ export function SignUpForm({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" required />
+          <Input 
+          id="password" 
+          type="password"
+          onChange={handleChange}
+          value={User.password}
+           required
+            />
         </div>
 
         <div className="grid gap-2">
           <Label htmlFor="password">Confirm Password</Label>
-          <Input id="confirmpassword" type="password"  required />
+          <Input 
+          id="confirmpassword" 
+          type="password"
+          onChange={handleChange} 
+          value={User.password2}
+           required 
+           />
         </div>
 
         <Button type="submit" className="w-full bg-dark dark:bg-gold ">
@@ -70,3 +171,4 @@ export function SignUpForm({
     </form>
   )
 }
+export default SignUpForm
