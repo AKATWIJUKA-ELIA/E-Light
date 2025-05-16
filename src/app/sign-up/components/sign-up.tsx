@@ -86,7 +86,7 @@ const SignUpForm = ({
 
        <div className="grid grid-cols-2 gap-3">
          <div className="grid gap-2">
-          <Label htmlFor="email">Username</Label>
+          <Label htmlFor="username">Username</Label>
           <Input id="username" 
           type="text"
           value={User.username}
@@ -109,7 +109,7 @@ const SignUpForm = ({
        </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="password">Phone Number</Label>
+          <Label htmlFor="phoneNumber">Phone Number</Label>
           <Input id="phoneNumber" 
           type="tel" 
           maxLength={13}
@@ -139,7 +139,7 @@ const SignUpForm = ({
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="password">Confirm Password</Label>
+          <Label htmlFor="confirmpassword">Confirm Password</Label>
           <Input 
           id="confirmpassword" 
           type="password"
@@ -150,7 +150,7 @@ const SignUpForm = ({
         </div>
 
         <Button type="submit" className="w-full bg-dark dark:bg-gold ">
-          SignUp
+          {isSubmitting?"Submitting":"Sign Up"}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">
