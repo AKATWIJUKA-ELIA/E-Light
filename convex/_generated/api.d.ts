@@ -16,6 +16,7 @@ import type {
 import type * as cartegories from "../cartegories.js";
 import type * as NewsLetter from "../NewsLetter.js";
 import type * as products from "../products.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -29,6 +30,7 @@ declare const fullApi: ApiFromModules<{
   cartegories: typeof cartegories;
   NewsLetter: typeof NewsLetter;
   products: typeof products;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

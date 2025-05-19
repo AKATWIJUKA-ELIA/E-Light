@@ -18,7 +18,7 @@ export default defineSchema({
   cartegories: defineTable({ cartegory: v.string() }),
 
   customers: defineTable({
-    fullName: v.string(),
+    username: v.string(),
     email: v.string(),
     passwordHash: v.string(),
     phoneNumber: v.optional(v.string()),

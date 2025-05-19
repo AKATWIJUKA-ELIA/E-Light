@@ -6,65 +6,108 @@ import { Label } from "@/components/ui/label"
 import { FaGoogle } from "react-icons/fa";
 import { useState } from "react"
 import { useSendMail } from '@/hooks/useSendMail';
+import { api } from "../../../../convex/_generated/api"
+import { useMutation } from "convex/react";
 
 interface user {
-        username: string;
-        email: string;
-        password: string;
-        password2:string;
-        phoneNumber:string
+        username: string,
+        email: string,
+        passwordHash: string,
+        phoneNumber: string,
+        profilePicture:string,
+        isVerified: boolean,
+        role: string,
+        reset_token: string,
+        reset_token_expires:number,
+        updatedAt: number,
+        lastLogin: number,
 }
 const SignUpForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">)=> {
 
+        const CreateUser = useMutation(api.users.CreateUser)
         const [isSubmitting, setIsSubmitting] = useState(false)
+        const [email, setEmail] = useState('');
+        const [password1, setPassword1] = useState('');
+        const [password2, setPassword2] = useState('');
+        const [username, setusername] = useState('');
+        const [phoneNumber, setPhoneNumber] = useState('');
         const [User, setUser] = useState<user>({
                 username: "",
                 email: "",
-                password:"",
-                password2:"",
-                phoneNumber:""
+                passwordHash:"",
+                phoneNumber:"",
+                profilePicture:"",
+                isVerified: false,
+                role: "",
+                reset_token: "",
+                reset_token_expires:0,
+                updatedAt: 0,
+                lastLogin: 0
         })
         
         const { sendEmail, } = useSendMail();
          const admin = process.env.NEXT_PUBLIC_ADMIN
 
+        const resetUser = () => {
+                        setUser({
+                                username: "",
+                                email: "",
+                                phoneNumber: "",
+                                passwordHash: "",
+                                profilePicture: "",
+                                isVerified: false,
+                                role: "",
+                                reset_token: "",
+                                reset_token_expires: 0,
+                                updatedAt: 0,
+                                lastLogin: 0
+                        });
+                        
+                      };
 
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement >) => {
+//                     const { name, value } = e.target;
+//                      console.log("value",e.target.value)
+//                     setFormData((prev) => ({...prev,[name]: value,
+//                     }));
+//                   };
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setusername(value)
         
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-                    const { name, value } = e.target;
-                    setUser((prev) => ({...prev,[name]: value,
-                    }));
-                  };
-
+};
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         // Allow only digits, +, -, space
         const cleaned = value.replace(/[^0-9+]/g, "");
-        User.phoneNumber= cleaned;
-        handleChange(e)
+         setPhoneNumber(cleaned);
 };
+const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        const value = e.target.value;
+        setEmail(value)
+}
+const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        const value = e.target.value;
+        setPassword2(value)
+}
+const handlePassword1Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        const value = e.target.value;
+        setPassword1(value)
+}
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
                   
-                  const cleanForm = () => {
-                        setUser({
-                                username: "",
-                                email: "",
-                                phoneNumber: "",
-                                password: "",
-                                password2: "",
-                        });
-                        
-                      };
                       
                   try {
-                        
-                      cleanForm()
+                        await CreateUser(User)
+
+                      resetUser()
                       sendEmail( `${admin}` ,"New User Created", `User ${User?.username}, was Created `);
                       sendEmail( `${User?.email}`,"Welcome to ShopCheap", `Hello  ${User?.username}, 
 
@@ -101,8 +144,8 @@ https://shopcheap.vercel.app/`)
           <Label htmlFor="username">Username</Label>
           <Input id="username" 
           type="text"
-          value={User.username}
-          onChange={handleChange}
+          value={username}
+          onChange={handleUsernameChange}
           maxLength={10} 
           placeholder="shopcheap"
            required />
@@ -112,10 +155,10 @@ https://shopcheap.vercel.app/`)
           <Label htmlFor="email">Email</Label>
           <Input id="email" 
           type="email"
-          value={User.email} 
+          value={email} 
           placeholder="example@gmail.com" 
           required
-          onChange={handleChange} 
+          onChange={handleEmailChange} 
           />
         </div>
        </div>
@@ -125,7 +168,7 @@ https://shopcheap.vercel.app/`)
           <Input id="phoneNumber" 
           type="tel" 
           maxLength={13}
-          value={User.phoneNumber}
+          value={phoneNumber}
          onChange={handlePhoneChange}
           placeholder="+256123456789"  
           required />
@@ -144,8 +187,8 @@ https://shopcheap.vercel.app/`)
           <Input 
           id="password" 
           type="password"
-          onChange={handleChange}
-          value={User.password}
+          onChange={handlePassword1Change}
+          value={password1}
            required
             />
         </div>
@@ -155,8 +198,8 @@ https://shopcheap.vercel.app/`)
           <Input 
           id="confirmpassword" 
           type="password"
-          onChange={handleChange} 
-          value={User.password2}
+          onChange={handlePassword2Change} 
+          value={password2}
            required 
            />
         </div>
