@@ -11,6 +11,7 @@ import { useMutation } from "convex/react";
 import useValidateUsername from "@/hooks/useValidateUsername"
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
+import Link from "next/link"
 
 interface user {
         username: string,
@@ -211,7 +212,8 @@ resetUser()
 clearForm()
                 
                   } catch (error) {
-                      
+                        // Handle This
+                      alert(error)
                   } finally {
                     setIsSubmitting(false);
                   }}
@@ -334,9 +336,9 @@ clearForm()
       </div>
       <div className="text-center text-sm">
         Already have an account?{" "}
-        <a href="/sign-in" className="underline underline-offset-4">
+        <Link href="/sign-in" className="underline underline-offset-4">
           Sign in
-        </a>
+        </Link>
       </div>
     </form>
   )
