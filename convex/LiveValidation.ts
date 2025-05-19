@@ -1,7 +1,7 @@
-import { query } from "./_generated/server";
+import { mutation } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 
-export const Validateusername = query({
+export const Validateusername = mutation({
         args:{username:v.string()},
         handler: async(ctx, args)=>{
                 const existing = await ctx.db

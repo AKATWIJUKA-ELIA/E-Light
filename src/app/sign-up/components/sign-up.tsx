@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { useSendMail } from '@/hooks/useSendMail';
 import { api } from "../../../../convex/_generated/api"
 import { useMutation } from "convex/react";
+import useValidateUsername from "@/hooks/useValidateUsername"
 
 interface user {
         username: string,
@@ -39,6 +40,7 @@ const SignUpForm = ({
         const [password1, setPassword1] = useState('');
         const [password2, setPassword2] = useState('');
         const [username, setusername] = useState('');
+        const [UserNameIsTaken, setUserNameIsTaken] = useState<boolean>(false);
         const [phoneNumber, setPhoneNumber] = useState('');
         const [passwordsDontMatch, setpasswordsDontMatch] = useState(false);
         const [formdata, setformdata] = useState<formdata>({
@@ -62,6 +64,7 @@ const SignUpForm = ({
         })
         
         const { sendEmail, } = useSendMail();
+        const  {CheckUsername} = useValidateUsername()
          const admin = process.env.NEXT_PUBLIC_ADMIN
 
         const resetUser = () => {
@@ -88,10 +91,26 @@ const SignUpForm = ({
                 setPhoneNumber('');
                 setpasswordsDontMatch(false);
         }
-
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+ const ValidateUsername = async (name:string)=>{
+        const response = await CheckUsername(name)
+          if (!response.success) {
+                                setUserNameIsTaken(true)
+                                return
+                        }
+                        setUserNameIsTaken(false)
+                        // setusername(name)
+ }
+  const handleUsernameChange =async (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
+
+        if(value.length>3){
+              await ValidateUsername(value)
+        } else{
+                setUserNameIsTaken(false)
+        }
+        
         setusername(value)
+       
         
 };
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -183,9 +202,13 @@ clearForm()
           type="text"
           value={username}
           onChange={handleUsernameChange}
-          maxLength={10} 
+          minLength={5}
+          maxLength={10}
           placeholder="shopcheap"
            required />
+           {username && username.length<5 && <h1 className="text-red-600 text-xs ">username should have atleast 5 characters </h1>}
+           {UserNameIsTaken && <h1 className="text-red-600 text-xs "><span className="text-black dark:text-white" >{username}</span> is taken </h1>}
+           {!UserNameIsTaken && username.length>4 &&  <h1 className="text-green-600 text-sm "><span className="text-black dark:text-white" >{username}</span> is available </h1>}
         </div>
 
         <div className="grid gap-2">
