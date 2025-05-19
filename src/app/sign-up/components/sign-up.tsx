@@ -9,6 +9,7 @@ import { useSendMail } from '@/hooks/useSendMail';
 import { api } from "../../../../convex/_generated/api"
 import { useMutation } from "convex/react";
 import useValidateUsername from "@/hooks/useValidateUsername"
+import { IoMdEyeOff } from "react-icons/io";
 
 interface user {
         username: string,
@@ -39,6 +40,7 @@ const SignUpForm = ({
         const [email, setEmail] = useState('');
         const [password1, setPassword1] = useState('');
         const [password2, setPassword2] = useState('');
+        const [PasswordError,setPasswordError] = useState(false)
         const [username, setusername] = useState('');
         const [UserNameIsTaken, setUserNameIsTaken] = useState<boolean>(false);
         const [phoneNumber, setPhoneNumber] = useState('');
@@ -101,15 +103,13 @@ const SignUpForm = ({
                         // setusername(name)
  }
   const handleUsernameChange =async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-
+        const value = e.target.value.toLowerCase();
+        setusername(value)
         if(value.length>3){
               await ValidateUsername(value)
         } else{
                 setUserNameIsTaken(false)
         }
-        
-        setusername(value)
        
         
 };
@@ -124,11 +124,18 @@ const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setEmail(value)
 }
 
-const handlePassword1Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        const value = e.target.value;
-        setPassword1(value)
-        
-}
+const handlePassword1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value;
+  setPassword1(value);
+
+  const isValidPassword =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(value);
+
+  if (!isValidPassword) {
+    setPasswordError(true);
+  } else {
+    setPasswordError(false); // Clear error if valid
+  }
+};
 
 const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const value = e.target.value;
@@ -228,6 +235,7 @@ clearForm()
           <Input id="phoneNumber" 
           type="tel" 
           maxLength={13}
+          minLength={10}
           value={phoneNumber}
          onChange={handlePhoneChange}
           placeholder="+256123456789"  
@@ -244,6 +252,7 @@ clearForm()
               Forgot your password?
             </a>
           </div>
+          <div className="relative" >
           <Input 
           id="password" 
           type="password"
@@ -251,21 +260,34 @@ clearForm()
           value={password1}
            required
             />
+            <IoMdEyeOff
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                />
+                </div>
+            {PasswordError  &&  <h1 className="text-red-500 text-xs" >Password must be at least 8 characters, include upper and lower case letters, and a number</h1>}
         </div>
 
-        <div className="grid gap-2">
-          <Label htmlFor="confirmpassword">Confirm Password</Label>
-          <Input 
-          id="confirmpassword" 
-          type="password"
-          onChange={handlePassword2Change} 
-          value={password2}
-           required 
-           />
-           { passwordsDontMatch && <h1 className="text-red-600 text-sm">passwords don&apos;t match</h1>}
-        </div>
+                <div className="grid gap-2">
+                <Label htmlFor="confirmpassword">Confirm Password</Label>
+                <div className="relative">
+                <Input
+                id="confirmpassword"
+                type="password"
+                onChange={handlePassword2Change}
+                value={password2}
+                required
+                className="pr-10" // Add padding to the right to avoid overlap with the icon
+                />
+                <IoMdEyeOff
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                />
+                </div>
+                {passwordsDontMatch && (
+                <h1 className="text-red-600 text-sm">passwords don&apos;t match</h1>
+                )}
+                </div>
 
-        <Button type="submit" className="w-full bg-dark dark:bg-gold ">
+        <Button type="submit" disabled={!username || !password1 || !password2|| UserNameIsTaken || PasswordError || passwordsDontMatch} className="w-full bg-dark dark:bg-gold ">
           {isSubmitting?"Submitting":"Sign Up"}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
