@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as cartegories from "../cartegories.js";
+import type * as LiveValidation from "../LiveValidation.js";
 import type * as NewsLetter from "../NewsLetter.js";
 import type * as products from "../products.js";
 import type * as users from "../users.js";
@@ -28,6 +29,7 @@ import type * as users from "../users.js";
  */
 declare const fullApi: ApiFromModules<{
   cartegories: typeof cartegories;
+  LiveValidation: typeof LiveValidation;
   NewsLetter: typeof NewsLetter;
   products: typeof products;
   users: typeof users;

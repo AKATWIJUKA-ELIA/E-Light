@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { FaGoogle } from "react-icons/fa";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSendMail } from '@/hooks/useSendMail';
 import { api } from "../../../../convex/_generated/api"
 import { useMutation } from "convex/react";
@@ -22,6 +22,12 @@ interface user {
         updatedAt: number,
         lastLogin: number,
 }
+interface formdata{
+        username: string,
+        email: string,
+        password: string,
+        phoneNumber: string,
+}
 const SignUpForm = ({
   className,
   ...props
@@ -34,6 +40,13 @@ const SignUpForm = ({
         const [password2, setPassword2] = useState('');
         const [username, setusername] = useState('');
         const [phoneNumber, setPhoneNumber] = useState('');
+        const [passwordsDontMatch, setpasswordsDontMatch] = useState(false);
+        const [formdata, setformdata] = useState<formdata>({
+                username: '',
+                email: '',
+                password: '',
+                phoneNumber: '',
+        })
         const [User, setUser] = useState<user>({
                 username: "",
                 email: "",
@@ -67,13 +80,14 @@ const SignUpForm = ({
                         });
                         
                       };
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement >) => {
-//                     const { name, value } = e.target;
-//                      console.log("value",e.target.value)
-//                     setFormData((prev) => ({...prev,[name]: value,
-//                     }));
-//                   };
+        const clearForm = ()=>{
+                setEmail('');
+                setPassword1('');
+                setPassword2('');
+                setusername('');
+                setPhoneNumber('');
+                setpasswordsDontMatch(false);
+        }
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -90,26 +104,47 @@ const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const value = e.target.value;
         setEmail(value)
 }
+
+const handlePassword1Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        const value = e.target.value;
+        setPassword1(value)
+        
+}
+
 const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const value = e.target.value;
         setPassword2(value)
 }
-const handlePassword1Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        const value = e.target.value;
-        setPassword1(value)
-}
+
+        useEffect(()=>{
+                if(password1!=password2){
+                setpasswordsDontMatch(true)
+                return
+                }
+                setpasswordsDontMatch(false)
+                setformdata({
+                        ...formdata,
+                        username:username,
+                        email:email,
+                        phoneNumber:phoneNumber,
+                        password: password1,
+                })
+        },[password1,password2,username,email,phoneNumber])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
-                  
-                      
                   try {
-                        await CreateUser(User)
+                        await CreateUser({
+                                ...User,
+                                username: formdata.username,
+                                email: formdata.email,
+                                phoneNumber: formdata.phoneNumber,
+                                passwordHash: formdata.password
+                        })
 
-                      resetUser()
-                      sendEmail( `${admin}` ,"New User Created", `User ${User?.username}, was Created `);
-                      sendEmail( `${User?.email}`,"Welcome to ShopCheap", `Hello  ${User?.username}, 
+                      sendEmail( `${admin}` ,"New User Created", `User ${formdata.username}, was Created `);
+                      sendEmail( `${formdata.email}`,"Welcome to ShopCheap", `Hello  ${formdata.username}, 
 
 Thank you for Joining us at  ShopCheap! We're thrilled to have you on board.
 
@@ -122,6 +157,8 @@ Thanks again for joining us.\n
 Best regards,\n
 ShopCheap\n
 https://shopcheap.vercel.app/`)
+resetUser()
+clearForm()
                 
                   } catch (error) {
                       
@@ -202,6 +239,7 @@ https://shopcheap.vercel.app/`)
           value={password2}
            required 
            />
+           { passwordsDontMatch && <h1 className="text-red-600 text-sm">passwords don&apos;t match</h1>}
         </div>
 
         <Button type="submit" className="w-full bg-dark dark:bg-gold ">

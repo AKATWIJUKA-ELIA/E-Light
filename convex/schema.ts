@@ -29,7 +29,8 @@ export default defineSchema({
     reset_token_expires:v.number(),
     updatedAt: v.number(),
     lastLogin: v.optional(v.number()),
-  }),
+  }).index("by_email", ["email"])
+  .index("by_username", ["username"]),
 
   orders: defineTable({
     order_status: v.string(),
