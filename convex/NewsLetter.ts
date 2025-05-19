@@ -11,7 +11,7 @@ export const AddEmail = mutation({
       .withIndex("by_email", (q) => q.eq("email", args.email))
       .unique();
       
-          if (existing) {
+        if (existing) {
             throw new ConvexError("This email is already subscribed.");
           }
       

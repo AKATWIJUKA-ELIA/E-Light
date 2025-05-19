@@ -16,6 +16,7 @@ import SearchModel from '../SearchModel/page';
 import { BiX } from 'react-icons/bi';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
@@ -25,6 +26,7 @@ const Header = () => {
         const { data: categories } = useGetCategories();
         const { data: products } = useGetApprovedProducts();
         const [Focused, setFocused] = useState(false)
+         const [showlowerBar, setshowlowerBar] = useState(true)
         const [searchTerm, setSearchTerm] = useState('');
         const [filteredProducts, setFilteredProducts] = useState(products);
         const [comingSoon, setcomingSoon] = useState(false)
@@ -33,7 +35,13 @@ const Header = () => {
         const truncateString = (text: string, maxLength: number): string => {
                 return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
               };
-        
+        const pathname = usePathname()
+        useEffect(()=>{
+                if(pathname ==="/sign-up" || pathname === "/sign-in"){
+                        setshowlowerBar(false)
+                }
+        })
+        console.log(pathname)
         const showDropDownMenu=()=>{
                 setHovered(true)
         }
@@ -153,7 +161,9 @@ const Header = () => {
         </div>
         <Separator className='dark:bg-black'/>
         
-        <div className='flex md:hidden  w-[100%] p-auto '>
+        {showlowerBar ? (
+           <>
+           <div className='flex md:hidden  w-[100%] p-auto '>
         <Input value={searchTerm}
                                 id='inputsearchmobile'
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -163,6 +173,7 @@ const Header = () => {
                                   placeholder='Search Categories & product names'  />
                                   { searchTerm.length>1 && <BiX onClick={HandleClose} className="absolute border right-12  bg-gray-100 text-dark text-3xl   rounded-lg"/>}
         </div>
+
         <div className='flex ml-5  md:ml-32 ' >
                 
         <div className='flex flex-nowrap gap-4 ' >
@@ -204,6 +215,10 @@ const Header = () => {
                 </div>
 
         </div>
+           </>     
+        ):(<div>
+
+        </div>) }
        
 
 
