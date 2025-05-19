@@ -12,6 +12,7 @@ import useValidateUsername from "@/hooks/useValidateUsername"
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import Link from "next/link"
+import bcrypt from "bcryptjs"
 
 interface user {
         username: string,
@@ -73,7 +74,9 @@ const SignUpForm = ({
         
         const { sendEmail, } = useSendMail();
         const  {CheckUsername} = useValidateUsername()
-         const admin = process.env.NEXT_PUBLIC_ADMIN
+        const admin = process.env.NEXT_PUBLIC_ADMIN
+
+        
 
         const resetUser = () => {
                         setUser({
@@ -167,20 +170,33 @@ const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setPassword2(value)
 }
 
-        useEffect(()=>{
-                if(password1!=password2){
-                setpasswordsDontMatch(true)
-                return
+        useEffect(() => {
+                if (password1 != password2) {
+                        setpasswordsDontMatch(true)
+                        return
                 }
                 setpasswordsDontMatch(false)
-                setformdata({
-                        ...formdata,
-                        username:username,
-                        email:email,
-                        phoneNumber:phoneNumber,
-                        password: password1,
-                })
-        },[password1,password2,username,email,phoneNumber])
+
+                const hashPassword = async (plainPassword: string) => {
+                        const saltRounds = 10;
+                        const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+                        console.log("hash",hashedPassword)
+                        return hashedPassword;
+                };
+
+                const updateFormData = async () => {
+                        const PasswordHash = await hashPassword(password1);
+                        setformdata({
+                                ...formdata,
+                                username: username,
+                                email: email,
+                                phoneNumber: phoneNumber,
+                                password: PasswordHash,
+                        });
+                };
+
+                updateFormData();
+        }, [password1, password2, username, email, phoneNumber])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
