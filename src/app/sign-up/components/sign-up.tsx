@@ -65,8 +65,20 @@ const SignUpForm = ({
                   try {
                         
                       cleanForm()
-                      sendEmail( `${admin}` ,"New User Created", `User ${User?.username}, Added a product`);
-                      sendEmail( `${User?.email}`,"New Product Created", `Hello  ${User?.username}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
+                      sendEmail( `${admin}` ,"New User Created", `User ${User?.username}, was Created `);
+                      sendEmail( `${User?.email}`,"Welcome to ShopCheap", `Hello  ${User?.username}, 
+
+Thank you for Joining us at  ShopCheap! We're thrilled to have you on board.
+
+Subscribe to our News Letter to be the first to receive exclusive updates, tips, promotions, or industry insights And Expect valuable content delivered straight to your inbox .
+
+If you ever have questions or feedback, just reply to this email—we'd love to hear from you!\n
+
+Thanks again for joining us.\n
+
+Best regards,\n
+ShopCheap\n
+https://shopcheap.vercel.app/`)
                 
                   } catch (error) {
                       
