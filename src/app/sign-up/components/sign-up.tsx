@@ -10,6 +10,7 @@ import { api } from "../../../../convex/_generated/api"
 import { useMutation } from "convex/react";
 import useValidateUsername from "@/hooks/useValidateUsername"
 import { IoMdEyeOff } from "react-icons/io";
+import { IoEye } from "react-icons/io5";
 
 interface user {
         username: string,
@@ -36,9 +37,13 @@ const SignUpForm = ({
 }: React.ComponentPropsWithoutRef<"form">)=> {
 
         const CreateUser = useMutation(api.users.CreateUser)
+        const [view1,setview1] = useState(false)
+        const [view2,setview2] = useState(false)
         const [isSubmitting, setIsSubmitting] = useState(false)
         const [email, setEmail] = useState('');
         const [password1, setPassword1] = useState('');
+        const [password1type, setpassword1type] = useState('password');
+        const [password2type, setpassword2type] = useState('password');
         const [password2, setPassword2] = useState('');
         const [PasswordError,setPasswordError] = useState(false)
         const [username, setusername] = useState('');
@@ -85,6 +90,25 @@ const SignUpForm = ({
                         });
                         
                       };
+        const HandleView = (type:string)=>{
+                if(type==="password1"){
+                        setview1(true)
+                        setpassword1type("text")
+                }else if(type==="password2"){
+                        setview2(true)
+                        setpassword2type("text")
+                }
+                
+        }
+                const HandleHide = (type:string)=>{
+                        if(type==="password1"){
+                        setview1(false)
+                        setpassword1type("password")
+                }else if(type==="password2"){
+                        setview2(false)
+                        setpassword2type("password")
+                }
+        }
         const clearForm = ()=>{
                 setEmail('');
                 setPassword1('');
@@ -255,14 +279,18 @@ clearForm()
           <div className="relative" >
           <Input 
           id="password" 
-          type="password"
+          type={password1type}
           onChange={handlePassword1Change}
           value={password1}
            required
             />
-            <IoMdEyeOff
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+            {view1 ?(
+                <IoEye  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" onClick={()=>HandleHide("password1")}  />
+                ):(
+                        <IoMdEyeOff 
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" onClick={()=>HandleView("password1")}
                 />
+                )}
                 </div>
             {PasswordError  &&  <h1 className="text-red-500 text-xs" >Password must be at least 8 characters, include upper and lower case letters, and a number</h1>}
         </div>
@@ -272,15 +300,19 @@ clearForm()
                 <div className="relative">
                 <Input
                 id="confirmpassword"
-                type="password"
+                type={password2type}
                 onChange={handlePassword2Change}
                 value={password2}
                 required
                 className="pr-10" // Add padding to the right to avoid overlap with the icon
                 />
-                <IoMdEyeOff
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                {view2 ?(
+                <IoEye  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" onClick={()=>HandleHide("password2")}  />
+                ):(
+                        <IoMdEyeOff
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" onClick={()=>HandleView("password2")}
                 />
+                )}
                 </div>
                 {passwordsDontMatch && (
                 <h1 className="text-red-600 text-sm">passwords don&apos;t match</h1>
