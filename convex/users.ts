@@ -27,3 +27,11 @@ export const CreateUser = mutation({
                 
         }
         })
+        export const GetCustomer = query({
+                args:{email:v.string()},
+                handler:async(ctx,args)=>{
+                        const customer = await ctx.db.query("customers").filter((q)=> q.eq(q.field("email"), args.email)).first(); 
+                        return customer
+                }
+                
+        })

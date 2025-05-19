@@ -21,17 +21,14 @@ export const useSendMail = () => {
         }),
       });
 
-      const data = await response.json();
 
       if (response.ok) {
         // console.log("Email sent:", data.message);
       } else {
         setError(true);
-        console.error("Email sending failed:", data.message);
       }
     } catch (err) {
       setError(true);
-      console.error("An error occurred while sending the email.", err);
     } finally {
       setSending(false);
     }
