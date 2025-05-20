@@ -65,7 +65,7 @@ const SignUpForm = ({
                 phoneNumber:"",
                 profilePicture:"",
                 isVerified: false,
-                role: "",
+                role: "user",
                 reset_token: "",
                 reset_token_expires:0,
                 updatedAt: 0,

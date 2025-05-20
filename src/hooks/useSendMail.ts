@@ -28,6 +28,7 @@ export const useSendMail = () => {
         setError(true);
       }
     } catch (err) {
+        console.error(err)
       setError(true);
     } finally {
       setSending(false);

@@ -1,21 +1,21 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAction  } from "convex/react";
 import { api } from "../../convex/_generated/api";
 // import { action } from "../../convex/_generated/server";
-type User = {
-            username: string,
-            email: string,
-            passwordHash: string,
-            phoneNumber: string,
-            profilePicture: string,
-            isVerified: boolean,
-            role: string,
-            reset_token: string,
-            reset_token_expires:number,
-            updatedAt: number,
-            lastLogin: number,
-      };
+// type User = {
+//             username: string,
+//             email: string,
+//             passwordHash: string,
+//             phoneNumber: string,
+//             profilePicture: string,
+//             isVerified: boolean,
+//             role: string,
+//             reset_token: string,
+//             reset_token_expires:number,
+//             updatedAt: number,
+//             lastLogin: number,
+//       };
       type response={
         success:boolean
         message: string
@@ -24,7 +24,7 @@ type User = {
       
 const useAuthenticate = () => {
 //   const [user, setUser] = useState<User | null>(null);
-  const [data, setData] = useState<response | null>(null);
+//   const [data, setData] = useState<response | null>(null);
 //   const [error, setError] = useState<string | null>(null);
 
      const authenticate = useAction (api.users.AuthenticateUser);
@@ -33,7 +33,7 @@ const useAuthenticate = () => {
         
               const res = await authenticate({email,password})
         //       const data = res?.json();
-        setData(res);
+        // setData(res);
         if(!res.success){
                 if(res?.status===404){
                         return { success: false, message: res.message};
@@ -47,6 +47,7 @@ const useAuthenticate = () => {
         }
           return { success: true, message: res.message };
       } catch (err) {
+        console.error(err);
         return { success: false, message: "Internal Server Error" };
       } 
     };

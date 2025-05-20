@@ -4,7 +4,12 @@ import {v} from "convex/values"
 import { ConvexError } from "convex/values";
 import { api } from "../convex/_generated/api";
 import bcrypt from "bcryptjs";
-
+import {createSession} from "../src/lib/sessions"
+type Response = {
+  success: boolean;
+  message: string;
+  status: number;
+};
 export const CreateUser = mutation({
         args:{
                 username: v.string(),
@@ -33,14 +38,16 @@ export const CreateUser = mutation({
         export const GetCustomer = query({
                 args:{email:v.string()},
                 handler:async(ctx,args)=>{
-                        const customer = await ctx.db.query("customers").filter((q)=> q.eq(q.field("email"), args.email)).first(); 
+                        const customer = await ctx.db.query("customers")
+                        .withIndex("by_email", (q) => q.eq("email", args.email))
+                        .unique();
                         return customer
                 }
                 
         })
         export const AuthenticateUser = action({
                 args:{email:v.string(), password:v.string()},
-                handler:async(ctx,args)=>{
+                handler:async(ctx,args): Promise<Response>=>{
                         const user = await ctx.runQuery(api.users.GetCustomer, {
                                 email: args.email,
                         });
@@ -52,6 +59,7 @@ export const CreateUser = mutation({
                         if (!isMatch) {
                           return { success:false ,status: 401,message: "Invalid Password" };
                 }
+                        createSession(user._id,user.role,user.isVerified)
                    return { success:true ,status: 201,message: "Success" };
 }
 })

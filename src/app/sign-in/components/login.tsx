@@ -50,9 +50,9 @@ const LoginForm=({
                         return
                 }
                 setIsSubmitting(false)
-                router.push("/post")
+                router.push("/")
         }catch(error){
-                setSubmittingError(error instanceof Error ? error.message : String(error))
+                setSubmittingError("Error Logging in")
                 setIsSubmitting(false)
         }finally{
                 setIsSubmitting(false)
