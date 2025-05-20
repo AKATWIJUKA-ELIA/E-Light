@@ -9,7 +9,7 @@ import { useState } from "react";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import useAuthenticate from "@/hooks/useAuthenticate"
-import router from "next/router"
+import { useRouter } from "next/navigation";
 
 const LoginForm=({
   className,
@@ -18,10 +18,13 @@ const LoginForm=({
 
         const {Authenticate} = useAuthenticate()
         const[IsSubmitting,setIsSubmitting] = useState(false)
+        const[SubmittingError,setSubmittingError] = useState("")
         const[Email, setEmail] = useState('')
         const [view,setview] = useState(false)
         const [passwordtype,setpasswordtype] = useState("password")
         const[Password, setPassword] = useState('')
+
+        const router = useRouter();
 
                 const HandleView = ()=>{
                         setview(true)
@@ -38,10 +41,25 @@ const LoginForm=({
         const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
                 e.preventDefault();
                 setIsSubmitting(true);
+                try{
                 const Auth = await Authenticate(Email,Password)
-                if(Auth?.success){
-                        router.push("/post")
+                
+                if(!Auth?.success){
+                        setSubmittingError(Auth?.message)
+                        setIsSubmitting(false)
+                        return
                 }
+                setIsSubmitting(false)
+                router.push("/post")
+        }catch(error){
+                setSubmittingError(error instanceof Error ? error.message : String(error))
+                setIsSubmitting(false)
+        }finally{
+                setIsSubmitting(false)
+                setTimeout(()=>{
+                        setSubmittingError("")
+                },10000)
+        }
         }
 
   return (
@@ -51,6 +69,9 @@ const LoginForm=({
         <p className="text-balance text-sm text-muted-foreground">
           Enter your email below to login to your account
         </p>
+        {SubmittingError && SubmittingError.length>0 && <p className="text-balance text-sm text-red-500">
+          {SubmittingError}
+        </p>}
       </div>
       <div className="grid gap-6 border p-6 rounded-lg shadow-lg dark:bg-black bg-slate-100 ">
         <div className="grid gap-2">
@@ -89,8 +110,8 @@ const LoginForm=({
                 )}
           </div>
         </div>
-        <Button type="submit" className="w-full bg-dark dark:bg-gold ">
-          Login
+        <Button type="submit" disabled={Email.length < 0 || Password.length<8} className="w-full bg-dark dark:bg-gold ">
+          {IsSubmitting ? "Authenticating...":"Login"}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

@@ -1,5 +1,8 @@
 "use client"
 import { useEffect, useState } from "react";
+import { useAction  } from "convex/react";
+import { api } from "../../convex/_generated/api";
+// import { action } from "../../convex/_generated/server";
 type User = {
             username: string,
             email: string,
@@ -13,54 +16,43 @@ type User = {
             updatedAt: number,
             lastLogin: number,
       };
+      type response={
+        success:boolean
+        message: string
+        status:number
+      }
       
 const useAuthenticate = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+//   const [user, setUser] = useState<User | null>(null);
+  const [data, setData] = useState<response | null>(null);
+//   const [error, setError] = useState<string | null>(null);
 
-
-
+     const authenticate = useAction (api.users.AuthenticateUser);
     const Authenticate = async (email: string | "",password:string) => {
       try {
-        const res = await fetch('/api/auth', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  email: email,
-                  password: password
-                }),
-              } );
-              const data = await res.json();
-        setUser(data);
-        if(!res.ok){
-                if(res.status===400){
-                        return { success: false, message: data.message};
-                }
-                setError(data.message);
         
+              const res = await authenticate({email,password})
+        //       const data = res?.json();
+        setData(res);
+        if(!res.success){
+                if(res?.status===404){
+                        return { success: false, message: res.message};
+                }
+                // setError(data?.);
+                if (res?.status === 401) {
+                        return { success: false, message: res.message };
+                }
 
-        if (res.status === 401) {
-          return { success: false, message: data.message };
+        return { success: false, message:"Login failed" };
         }
-
-        if (res.status === 404) {
-          return { success: false, message: data.message };
-        }
-        if (res.status === 500) {
-                return { success: false, message: data.message };
-        }
-        return { success: false, message: data.message || "Login failed" };
-        }
-        return { success: true, message: data.message };
+          return { success: true, message: res.message };
       } catch (err) {
-        setError((err as Error).message);
+        return { success: false, message: "Internal Server Error" };
       } 
     };
 
 
-  return {Authenticate, user,  error };
+  return {Authenticate };
 };
 
 export default useAuthenticate;

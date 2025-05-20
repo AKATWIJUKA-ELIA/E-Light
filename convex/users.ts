@@ -1,6 +1,9 @@
 import {mutation, query} from "./_generated/server"
+import { action } from "./_generated/server";
 import {v} from "convex/values"
 import { ConvexError } from "convex/values";
+import { api } from "../convex/_generated/api";
+import bcrypt from "bcryptjs";
 
 export const CreateUser = mutation({
         args:{
@@ -35,3 +38,20 @@ export const CreateUser = mutation({
                 }
                 
         })
+        export const AuthenticateUser = action({
+                args:{email:v.string(), password:v.string()},
+                handler:async(ctx,args)=>{
+                        const user = await ctx.runQuery(api.users.GetCustomer, {
+                                email: args.email,
+                        });
+                        if (!user) {
+                               return { success:false ,status: 404,message: "User not Found" };
+                        }
+                        
+                        const isMatch = await bcrypt.compare(args.password, user.passwordHash);
+                        if (!isMatch) {
+                          return { success:false ,status: 401,message: "Invalid Password" };
+                }
+                   return { success:true ,status: 201,message: "Success" };
+}
+})
