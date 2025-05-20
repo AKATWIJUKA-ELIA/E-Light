@@ -4,11 +4,24 @@ import {v} from "convex/values"
 import { ConvexError } from "convex/values";
 import { api } from "../convex/_generated/api";
 import bcrypt from "bcryptjs";
-import {createSession} from "../src/lib/sessions"
 type Response = {
   success: boolean;
   message: string;
   status: number;
+  user:{
+        
+         username: string,
+            email: string,
+            passwordHash: string,
+            phoneNumber?: string,
+            profilePicture?: string,
+            isVerified: boolean,
+            role: string,
+            reset_token?: string,
+            reset_token_expires?:number,
+            updatedAt?: number,
+            lastLogin?: number,
+  }|null
 };
 export const CreateUser = mutation({
         args:{
@@ -52,14 +65,13 @@ export const CreateUser = mutation({
                                 email: args.email,
                         });
                         if (!user) {
-                               return { success:false ,status: 404,message: "User not Found" };
+                               return { success:false ,status: 404,message: "User not Found",user:user };
                         }
                         
                         const isMatch = await bcrypt.compare(args.password, user.passwordHash);
                         if (!isMatch) {
-                          return { success:false ,status: 401,message: "Invalid Password" };
+                          return { success:false ,status: 401,message: "Invalid Password",user:user };
                 }
-                        createSession(user._id,user.role,user.isVerified)
-                   return { success:true ,status: 201,message: "Success" };
+                   return { success:true ,status: 201,message: "Success",user:user };
 }
 })

@@ -1,36 +1,41 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+// import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from 'next/server'
+import { decrypt } from "../src/lib/sessions"
+import { cookies } from 'next/headers'
 
-const isProtected = createRouteMatcher([
-        '/post(.*)'
-])
-const isRoleProtected = createRouteMatcher([
-        '/administrator(.*)'
-])
-export default clerkMiddleware(async(auth, req)=>{
-        if(isProtected(req)){
-                await auth.protect()
+const isProtected = [
+        '/post',
+        '/profile',
+]
+const publicRoutes = ['/sign-in', '/sign-up']
+const RoleProtected = ['/administrator(.*)'];
+const Middleware = async (req: NextRequest) => {
+        
+        const path = req.nextUrl.pathname
+        const isProtectedPath = isProtected.includes(path)
+        const isPublicRoute = publicRoutes.includes(path)
+        const isRoleProtected = RoleProtected.some((pattern) => new RegExp(pattern).test(path));
+
+        const cookie = (await cookies()).get("session")?.value
+        // console.log("session",cookie)
+        const session = await decrypt(cookie)
+        
+
+        if(isProtectedPath && !session?.userId){
+                return NextResponse.redirect(new URL('/sign-in', req.url))
         }
-        if (isRoleProtected(req)) {
-                const { userId, sessionClaims } = await auth();
-            
-                if (!userId) {
-                  await auth.protect();
-                }
+        if(isRoleProtected && !session?.role){
+                return NextResponse.json({unauthorized:"You are Unauthorized to Access this page"})
+        }
 
-                // Define the type for publicMetadata
-                type PublicMetadata = {
-                  role?: string;
-                };
+        if (isPublicRoute && session?.userId && req.nextUrl.pathname != '/') {
+                return NextResponse.redirect(new URL('/', req.nextUrl))
+  }
+ 
+  return NextResponse.next()
+}
 
-                const publicMetadata = sessionClaims?.publicMetadata as PublicMetadata;
-                const userRole = publicMetadata?.role;
-            
-                if (userRole !== "admin") {
-                  // Redirect or throw custom error
-                  return new Response("Unauthorized", { status: 403 });
-                }
-              }
-});
+export default Middleware;
 
 export const config = {
   matcher: [

@@ -1,8 +1,7 @@
 "use client"
-import { useState } from "react";
 import { useAction  } from "convex/react";
 import { api } from "../../convex/_generated/api";
-// import { action } from "../../convex/_generated/server";
+import { Id } from "../../convex/_generated/dataModel";
 // type User = {
 //             username: string,
 //             email: string,
@@ -20,18 +19,28 @@ import { api } from "../../convex/_generated/api";
         success:boolean
         message: string
         status:number
+        user:{
+                _id?: Id<"customers">;
+                username: string,
+                email: string,
+                passwordHash: string,
+                phoneNumber?: string,
+                profilePicture?: string,
+                isVerified: boolean,
+                role: string,
+                reset_token?: string,
+                reset_token_expires?:number,
+                updatedAt?: number,
+                lastLogin?: number,
+        } | null
       }
       
 const useAuthenticate = () => {
-//   const [user, setUser] = useState<User | null>(null);
-//   const [data, setData] = useState<response | null>(null);
-//   const [error, setError] = useState<string | null>(null);
-
      const authenticate = useAction (api.users.AuthenticateUser);
     const Authenticate = async (email: string | "",password:string) => {
       try {
         
-              const res = await authenticate({email,password})
+              const res:response = await authenticate({email,password})
         //       const data = res?.json();
         // setData(res);
         if(!res.success){
@@ -45,7 +54,27 @@ const useAuthenticate = () => {
 
         return { success: false, message:"Login failed" };
         }
-          return { success: true, message: res.message };
+        const user = res.user
+                        try {
+                        const response = await fetch('/api/createsession', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                        userId: user?._id,
+                                        role: user?.role,
+                                        isVerified: user?.isVerified,
+                                }),
+                        });
+                        
+                        if (!response.ok) {
+                                throw new Error('Failed to create session');
+                        }
+                        
+                        return { success: true, status: 201, message: 'Success' };
+                } catch (error) {
+                        console.error('Error during session creation:', error);
+                        return { success: false, status: 500, message: `Internal Server Error ${error}` };
+                }
       } catch (err) {
         console.error(err);
         return { success: false, message: "Internal Server Error" };
