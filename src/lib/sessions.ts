@@ -1,4 +1,4 @@
-import 'server-only'
+// import 'server-only'
 import { SignJWT, jwtVerify } from 'jose'
 import { SessionPayload } from '../lib/definitions'
 import { cookies } from 'next/headers'

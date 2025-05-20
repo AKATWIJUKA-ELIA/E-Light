@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cart"
+import userReducer from "./customer"
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
@@ -13,7 +14,8 @@ import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist
 
 export const store = configureStore({
         reducer: {
-                cart: persistedCartReducer
+                cart: persistedCartReducer,
+                User:userReducer
         },
         middleware: (getDefaultMiddleware) =>
                 getDefaultMiddleware({

@@ -2,6 +2,7 @@
 import { useAction  } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import useSaveUser from "./useSaveUser";
 // type User = {
 //             username: string,
 //             email: string,
@@ -15,6 +16,13 @@ import { Id } from "../../convex/_generated/dataModel";
 //             updatedAt: number,
 //             lastLogin: number,
 //       };
+interface UsertoSave {
+        User_id: string|"";
+        Username: string|"";
+        role:string|"",
+        profilePicture:string|"",
+        isVerified:boolean,
+}
       type response={
         success:boolean
         message: string
@@ -36,6 +44,7 @@ import { Id } from "../../convex/_generated/dataModel";
       }
       
 const useAuthenticate = () => {
+ const saveUser = useSaveUser();
      const authenticate = useAction (api.users.AuthenticateUser);
     const Authenticate = async (email: string | "",password:string) => {
       try {
@@ -55,6 +64,16 @@ const useAuthenticate = () => {
         return { success: false, message:"Login failed" };
         }
         const user = res.user
+        const usertosave:UsertoSave = { 
+                User_id: user?._id||"",
+                Username:user?.username||"",
+                 role:user?.role||"",
+                 profilePicture:user?.profilePicture||"",
+                 isVerified:user?.isVerified||false, 
+                }
+        saveUser(usertosave)
+
+        
                         try {
                         const response = await fetch('/api/createsession', {
                                 method: 'POST',

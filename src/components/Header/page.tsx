@@ -20,6 +20,7 @@ import { usePathname } from 'next/navigation';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
+        const User = useAppSelector(state =>state.User.user)
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
@@ -115,9 +116,28 @@ const Header = () => {
                         {/* <div className='flex hover:cursor-pointer ' >EN /UG.</div> */}
                         </div>
                         <div className="flex items-center gap-2 py-1 hover:cursor-pointer">
-                        <SignedIn>
+                        {/* <SignedIn>
                         <div className="hidden lg:block bg-white rounded-3xl">
                         <UserButton showName  />
+                        </div>
+
+                        For small screens
+                        <div className="block lg:hidden">
+                        <UserButton />
+                        </div>
+                        <Link href="/profile">
+                        <button >
+                        Dashboard
+                        </button>
+                        </Link>
+                        
+                        </SignedIn> */}
+
+                        {User ? (
+                                <div>
+                                <div className="hidden lg:block bg-white rounded-3xl">
+                        <UserButton showName  />
+                        {User.Username}
                         </div>
 
                         {/* For small screens */}
@@ -127,11 +147,11 @@ const Header = () => {
                         <Link href="/profile">
                         <button >
                         Dashboard
-                        </button></Link>
-                        </SignedIn>
-
-                        <SignedOut>
-                        <div className="hidden md:flex items-center gap-1">
+                        </button>
+                        </Link>
+                        </div> ):(
+                                <div>
+                                        <div className="hidden md:flex items-center gap-1">
                         <VscAccount className="text-2xl" />
                         <SignInButton mode="modal"  />
                         </div>
@@ -144,7 +164,24 @@ const Header = () => {
                         </button>
                         </SignInButton>
                         </div>
-                        </SignedOut>
+                                </div>
+                        )}
+
+                        {/* <SignedOut>
+                        <div className="hidden md:flex items-center gap-1">
+                        <VscAccount className="text-2xl" />
+                        <SignInButton mode="modal"  />
+                        </div>
+                        <div className="flex md:hidden items-center gap-1">
+                        
+                        <SignInButton mode="modal"  >
+                        <button className="p-2 rounded bg-transparent ">
+                        Replace this with an icon or keep it empty for no text
+                        <VscAccount className="text-2xl" />
+                        </button>
+                        </SignInButton>
+                        </div>
+                        </SignedOut> */}
                         </div>
                         <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
                                 <div className="relative">
