@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { BsList } from "react-icons/bs";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+// import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';
@@ -16,15 +16,18 @@ import SearchModel from '../SearchModel/page';
 import { BiX } from 'react-icons/bi';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
+        const User = useAppSelector(state =>state.user.user)
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
         const { data: categories } = useGetCategories();
         const { data: products } = useGetApprovedProducts();
         const [Focused, setFocused] = useState(false)
+         const [showlowerBar, setshowlowerBar] = useState(true)
         const [searchTerm, setSearchTerm] = useState('');
         const [filteredProducts, setFilteredProducts] = useState(products);
         const [comingSoon, setcomingSoon] = useState(false)
@@ -33,7 +36,13 @@ const Header = () => {
         const truncateString = (text: string, maxLength: number): string => {
                 return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
               };
-        
+        const pathname = usePathname()
+        useEffect(()=>{
+                if(pathname ==="/sign-up" || pathname === "/sign-in"){
+                        setshowlowerBar(false)
+                }
+        })
+        console.log(pathname)
         const showDropDownMenu=()=>{
                 setHovered(true)
         }
@@ -107,22 +116,66 @@ const Header = () => {
                         {/* <div className='flex hover:cursor-pointer ' >EN /UG.</div> */}
                         </div>
                         <div className="flex items-center gap-2 py-1 hover:cursor-pointer">
-                        <SignedIn>
+                        {/* <SignedIn>
                         <div className="hidden lg:block bg-white rounded-3xl">
                         <UserButton showName  />
                         </div>
 
-                        {/* For small screens */}
+                        For small screens
                         <div className="block lg:hidden">
                         <UserButton />
                         </div>
                         <Link href="/profile">
                         <button >
                         Dashboard
-                        </button></Link>
-                        </SignedIn>
+                        </button>
+                        </Link>
+                        
+                        </SignedIn> */}
 
-                        <SignedOut>
+                        {User ? (
+                                <div className='flex' >
+                                        <div className="hidden lg:flex  bg-white hover:bg-gray-200 transition duration-100 border border-gray-300 rounded-3xl">
+                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' >
+                                                        {User.Username}
+                                                </div>
+                                                <div className='flex rounded-full' >
+                                                        <Image src="/images/logo2.png" width={35} height={35} alt='profile picture' className="rounded-full" />
+                                                </div>
+                                        </div>
+                                        {/* For small screens */}
+                                        <div className="flex lg:hidden">
+                                                <Link href="/sign-in" className='flex ' >
+                                                 <Image src="/images/logo2.png" width={100} height={50} alt='profile picture' className="rounded-full" />
+                                                </Link>
+                                        </div>
+
+                                        <Link href="/profile" className='flex p-1'>
+                                        <button >
+                                        Dashboard
+                                        </button>
+                                        </Link>
+                                </div> ):(
+                                <div>
+                                        <div className="hidden md:flex items-center gap-1">
+                                                <Link href="/sign-in" className='flex gap-3' >
+                                                <VscAccount className="text-2xl" />
+                                                <h1>Sign in</h1>
+                                                </Link>
+                                                {/* <SignInButton mode="modal"  /> */}
+                                        </div>
+
+                                        <div className="flex md:hidden items-center gap-1">
+                                                <Link href="/sign-in" className='flex gap-3' >
+                                        <button className="p-2 rounded bg-transparent ">
+                                        <VscAccount className="text-2xl" />
+                                        </button>
+                                        </Link>
+                                        </div>
+                                </div>
+                        )}
+
+                        {/* <SignedOut>
                         <div className="hidden md:flex items-center gap-1">
                         <VscAccount className="text-2xl" />
                         <SignInButton mode="modal"  />
@@ -131,12 +184,12 @@ const Header = () => {
                         
                         <SignInButton mode="modal"  >
                         <button className="p-2 rounded bg-transparent ">
-                        {/* Replace this with an icon or keep it empty for no text */}
+                        Replace this with an icon or keep it empty for no text
                         <VscAccount className="text-2xl" />
                         </button>
                         </SignInButton>
                         </div>
-                        </SignedOut>
+                        </SignedOut> */}
                         </div>
                         <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
                                 <div className="relative">
@@ -153,7 +206,9 @@ const Header = () => {
         </div>
         <Separator className='dark:bg-black'/>
         
-        <div className='flex md:hidden  w-[100%] p-auto '>
+        {showlowerBar ? (
+           <>
+           <div className='flex md:hidden  w-[100%] p-auto '>
         <Input value={searchTerm}
                                 id='inputsearchmobile'
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -163,6 +218,7 @@ const Header = () => {
                                   placeholder='Search Categories & product names'  />
                                   { searchTerm.length>1 && <BiX onClick={HandleClose} className="absolute border right-12  bg-gray-100 text-dark text-3xl   rounded-lg"/>}
         </div>
+
         <div className='flex ml-5  md:ml-32 ' >
                 
         <div className='flex flex-nowrap gap-4 ' >
@@ -204,6 +260,10 @@ const Header = () => {
                 </div>
 
         </div>
+           </>     
+        ):(<div>
+
+        </div>) }
        
 
 
