@@ -58,6 +58,16 @@ export const CreateUser = mutation({
                 }
                 
         })
+        
+        export const GetCustomerById = query({
+        args:{id: v.string(),},
+              handler: async (ctx, args) => {
+                     const Customer = await ctx.db.query("customers").filter((q)=> q.eq(q.field("_id"), args.id)).first() 
+                    return Customer
+                    },
+                    })
+
+                    
         export const AuthenticateUser = action({
                 args:{email:v.string(), password:v.string()},
                 handler:async(ctx,args): Promise<Response>=>{
