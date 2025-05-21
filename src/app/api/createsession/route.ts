@@ -13,6 +13,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function handler(req: NextRequest) {
+export async function handler() {
   return NextResponse.json({ success: false, message: 'Method not allowed' }, { status: 405 });
 }

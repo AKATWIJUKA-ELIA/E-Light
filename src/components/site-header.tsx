@@ -2,11 +2,11 @@ import { Separator } from "@/components/ui/separator"
 import { useAppSelector } from "@/hooks"
 // import { SidebarTrigger } from "@/components/ui/sidebar"
 import useLogout from '@/hooks/useLogout';
-import { useUser } from "@clerk/nextjs"
+// import { useUser } from "@clerk/nextjs"
 export function SiteHeader() {
         
         const logout = useLogout();
-        const { user } = useUser()
+        // const { user } = useUser()
         const User = useAppSelector(state =>state.user.user)
         console.log("User is: ", User ?? "No user")
   return (

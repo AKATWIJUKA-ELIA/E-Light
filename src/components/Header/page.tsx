@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { BsList } from "react-icons/bs";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+// import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';

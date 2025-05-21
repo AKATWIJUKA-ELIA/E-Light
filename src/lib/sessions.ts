@@ -2,7 +2,7 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { SessionPayload } from '../lib/definitions'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
  
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
@@ -23,7 +23,7 @@ export async function decrypt(session: string | undefined = '') {
     console.log("session",session)
     return payload
   } catch (error) {
-    console.log('Failed to verify session')
+    console.log('Failed to verify session',error)
   }
 }
 

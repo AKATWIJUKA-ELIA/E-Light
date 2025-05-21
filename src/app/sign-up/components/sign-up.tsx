@@ -247,6 +247,9 @@ clearForm()
         <p className="text-balance text-sm text-muted-foreground">
           Enter your your Details below to create to your account
         </p>
+        {Created && <p className="text-balance text-sm text-green-500">
+          Success !  You acount has been created, please verify your email
+        </p> }
       </div>
       <div className="grid gap-6 border p-6 rounded-lg shadow-lg dark:bg-black bg-slate-100 ">
 
