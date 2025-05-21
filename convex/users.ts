@@ -1,7 +1,28 @@
 import {mutation, query} from "./_generated/server"
+import { action } from "./_generated/server";
 import {v} from "convex/values"
 import { ConvexError } from "convex/values";
-
+import { api } from "../convex/_generated/api";
+import bcrypt from "bcryptjs";
+type Response = {
+  success: boolean;
+  message: string;
+  status: number;
+  user:{
+        
+         username: string,
+            email: string,
+            passwordHash: string,
+            phoneNumber?: string,
+            profilePicture?: string,
+            isVerified: boolean,
+            role: string,
+            reset_token?: string,
+            reset_token_expires?:number,
+            updatedAt?: number,
+            lastLogin?: number,
+  }|null
+};
 export const CreateUser = mutation({
         args:{
                 username: v.string(),
@@ -27,3 +48,40 @@ export const CreateUser = mutation({
                 
         }
         })
+        export const GetCustomer = query({
+                args:{email:v.string()},
+                handler:async(ctx,args)=>{
+                        const customer = await ctx.db.query("customers")
+                        .withIndex("by_email", (q) => q.eq("email", args.email))
+                        .unique();
+                        return customer
+                }
+                
+        })
+        
+        export const GetCustomerById = query({
+        args:{id: v.string(),},
+              handler: async (ctx, args) => {
+                     const Customer = await ctx.db.query("customers").filter((q)=> q.eq(q.field("_id"), args.id)).first() 
+                    return Customer
+                    },
+                    })
+
+                    
+        export const AuthenticateUser = action({
+                args:{email:v.string(), password:v.string()},
+                handler:async(ctx,args): Promise<Response>=>{
+                        const user = await ctx.runQuery(api.users.GetCustomer, {
+                                email: args.email,
+                        });
+                        if (!user) {
+                               return { success:false ,status: 404,message: "User not Found",user:user };
+                        }
+                        
+                        const isMatch = await bcrypt.compare(args.password, user.passwordHash);
+                        if (!isMatch) {
+                          return { success:false ,status: 401,message: "Invalid Password",user:user };
+                }
+                   return { success:true ,status: 201,message: "Success",user:user };
+}
+})

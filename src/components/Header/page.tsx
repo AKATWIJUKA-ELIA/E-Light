@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { BsList } from "react-icons/bs";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+// import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';
@@ -20,6 +20,7 @@ import { usePathname } from 'next/navigation';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
+        const User = useAppSelector(state =>state.user.user)
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
@@ -115,22 +116,68 @@ const Header = () => {
                         {/* <div className='flex hover:cursor-pointer ' >EN /UG.</div> */}
                         </div>
                         <div className="flex items-center gap-2 py-1 hover:cursor-pointer">
-                        <SignedIn>
+                        {/* <SignedIn>
                         <div className="hidden lg:block bg-white rounded-3xl">
                         <UserButton showName  />
                         </div>
 
-                        {/* For small screens */}
+                        For small screens
                         <div className="block lg:hidden">
                         <UserButton />
                         </div>
                         <Link href="/profile">
                         <button >
                         Dashboard
-                        </button></Link>
-                        </SignedIn>
+                        </button>
+                        </Link>
+                        
+                        </SignedIn> */}
 
-                        <SignedOut>
+                        {User ? (
+                                <div className='flex' >
+                                        <div className="hidden lg:flex  bg-white hover:bg-gray-200 transition duration-100 border border-gray-300 rounded-3xl">
+                                                <Link  href="/profile" className='gap-1  flex'>
+                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' >
+                                                        {User.Username}
+                                                </div>
+                                                <div className='flex rounded-full' >
+                                                        <Image src="/images/logo2.png" width={35} height={35} alt='profile picture' className="rounded-full" />
+                                                </div>
+                                                </Link>
+                                        </div>
+                                        {/* For small screens */}
+                                        <div className="block lg:hidden">
+                                                <Link href="/sign-in" className='flex gap-3' >
+                                                <Image src="/images/logo2.png" width={50} height={50} alt='profile picture' className="text-2xl" />
+                                                </Link>
+                                        </div>
+
+                                        <Link href="/api/logout" className='flex p-1'>
+                                        <button >
+                                        Logout
+                                        </button>
+                                        </Link>
+                                </div> ):(
+                                <div>
+                                        <div className="hidden md:flex items-center gap-1">
+                                                <Link href="/sign-in" className='flex gap-3' >
+                                                <VscAccount className="text-2xl" />
+                                                <h1>Sign in</h1>
+                                                </Link>
+                                                {/* <SignInButton mode="modal"  /> */}
+                                        </div>
+
+                                        <div className="flex md:hidden items-center gap-1">
+                                        
+                                        <button className="p-2 rounded bg-transparent ">
+                                        {/* Replace this with an icon or keep it empty for no text */}
+                                        <VscAccount className="text-2xl" />
+                                        </button>
+                                        </div>
+                                </div>
+                        )}
+
+                        {/* <SignedOut>
                         <div className="hidden md:flex items-center gap-1">
                         <VscAccount className="text-2xl" />
                         <SignInButton mode="modal"  />
@@ -139,12 +186,12 @@ const Header = () => {
                         
                         <SignInButton mode="modal"  >
                         <button className="p-2 rounded bg-transparent ">
-                        {/* Replace this with an icon or keep it empty for no text */}
+                        Replace this with an icon or keep it empty for no text
                         <VscAccount className="text-2xl" />
                         </button>
                         </SignInButton>
                         </div>
-                        </SignedOut>
+                        </SignedOut> */}
                         </div>
                         <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
                                 <div className="relative">

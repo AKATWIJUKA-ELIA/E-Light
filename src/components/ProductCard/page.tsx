@@ -31,9 +31,9 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         const[Copied,setCopied] = useState(false)
         const { user } = useGetUserById(product?.product_owner_id)
         console.log("User is ",user)
-        const UserEmail = user?.emailAddresses[0].emailAddress || ""
+        const UserEmail = user?.email||""
         const UserName = user?.username|| ""
-        // const PhoneNumbers = user?.phoneNumbers|| []
+        const PhoneNumber = user?.phoneNumber|| ""
   const HandleAddToCart = useAddToCart();
 
   const handleCopy = (link:string) => {
@@ -163,9 +163,9 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
                         <li>
                         <h1  > <span className="font-bold" > UserName </span> : {UserName}</h1>
                         </li>
-                        {/* <li>
-                        <h1 > <span className="font-bold" > Phone Number : </span>  {PhoneNumbers}  </h1>
-                        </li> */}
+                        <li>
+                        <h1 > <span className="font-bold" > Phone Number : </span>  <a href={`tel:${PhoneNumber}`}>{PhoneNumber}</a>  </h1>
+                        </li>
                         <li>
                         <h1   > <span className="font-bold" > Email : </span>  <a href={`mailto: ${UserEmail}`}>{UserEmail}</a></h1>
                         </li>

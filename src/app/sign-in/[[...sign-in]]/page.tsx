@@ -1,5 +1,5 @@
-import {SignIn} from "@clerk/nextjs"
-import {LoginForm} from "../components/login"
+// import {SignIn} from "@clerk/nextjs"
+import LoginForm from "../components/login"
 import React from 'react'
 import Image from "next/image"
 

@@ -6,13 +6,12 @@ import { Label } from "@/components/ui/label"
 import { FaGoogle } from "react-icons/fa";
 import { useEffect, useState } from "react"
 import { useSendMail } from '@/hooks/useSendMail';
-import { api } from "../../../../convex/_generated/api"
-import { useMutation } from "convex/react";
 import useValidateUsername from "@/hooks/useValidateUsername"
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import Link from "next/link"
 import bcrypt from "bcryptjs"
+import useCreateUser from "@/hooks/useCreateUser"
 
 interface user {
         username: string,
@@ -38,7 +37,8 @@ const SignUpForm = ({
   ...props
 }: React.ComponentPropsWithoutRef<"form">)=> {
 
-        const CreateUser = useMutation(api.users.CreateUser)
+        const [Created,setCreated] = useState(false)
+        const {CreateUser} = useCreateUser()
         const [view1,setview1] = useState(false)
         const [view2,setview2] = useState(false)
         const [isSubmitting, setIsSubmitting] = useState(false)
@@ -65,7 +65,7 @@ const SignUpForm = ({
                 phoneNumber:"",
                 profilePicture:"",
                 isVerified: false,
-                role: "",
+                role: "user",
                 reset_token: "",
                 reset_token_expires:0,
                 updatedAt: 0,
@@ -202,14 +202,17 @@ const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
                   e.preventDefault();
                   setIsSubmitting(true);
                   try {
-                        await CreateUser({
+                        const Res = await CreateUser({
                                 ...User,
                                 username: formdata.username,
                                 email: formdata.email,
                                 phoneNumber: formdata.phoneNumber,
                                 passwordHash: formdata.password
                         })
-
+                        if(!Res.success){
+                                return  
+                        }
+                        setCreated(true)
                       sendEmail( `${admin}` ,"New User Created", `User ${formdata.username}, was Created `);
                       sendEmail( `${formdata.email}`,"Welcome to ShopCheap", `Hello  ${formdata.username}, 
 
@@ -232,6 +235,9 @@ clearForm()
                       alert(error)
                   } finally {
                     setIsSubmitting(false);
+                    setTimeout(()=>{
+                        setCreated(false)
+                    },5000)
                   }}
 
   return (
@@ -241,6 +247,9 @@ clearForm()
         <p className="text-balance text-sm text-muted-foreground">
           Enter your your Details below to create to your account
         </p>
+        {Created && <p className="text-balance text-sm text-green-500">
+          Success !  You acount has been created, please verify your email
+        </p> }
       </div>
       <div className="grid gap-6 border p-6 rounded-lg shadow-lg dark:bg-black bg-slate-100 ">
 
@@ -287,17 +296,13 @@ clearForm()
         <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
           </div>
           <div className="relative" >
           <Input 
           id="password" 
           type={password1type}
+          maxLength={16}
+          minLength={8}
           onChange={handlePassword1Change}
           value={password1}
            required
@@ -318,6 +323,8 @@ clearForm()
                 <div className="relative">
                 <Input
                 id="confirmpassword"
+                minLength={8}
+                maxLength={16}
                 type={password2type}
                 onChange={handlePassword2Change}
                 value={password2}

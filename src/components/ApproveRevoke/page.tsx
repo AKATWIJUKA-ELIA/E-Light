@@ -24,7 +24,7 @@ const userId = Product?.product_owner_id || ""
 const { user } = useGetUserById(userId)
 // console.log("User :",user )
 // console.log("email Address",user?.emailAddresses[0].emailAddress)
-const UserEmail = user?.emailAddresses[0].emailAddress
+const UserEmail = user?.email
 
 useEffect(()=>{
         const HandleAction = () => {
