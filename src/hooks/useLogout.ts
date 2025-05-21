@@ -1,7 +1,9 @@
 import { useAppDispatch } from "@/hooks";
 import { DeleteUser } from "@/store/customer";
+import { useRouter } from "next/navigation";
 
 const useLogout = () => {
+        const router = useRouter();
   const dispatch = useAppDispatch();
    const LogOut = async ()=>{
                 try {
@@ -12,6 +14,7 @@ const useLogout = () => {
                         if (!response.ok) {
                                 throw new Error('Failed to delete session');
                         }
+                        router.push("/")
                 } catch (error) {
                         console.error('Error during session creation:', error);
                 }
