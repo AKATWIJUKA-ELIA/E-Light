@@ -146,15 +146,15 @@ const Header = () => {
                                                 </Link>
                                         </div>
                                         {/* For small screens */}
-                                        <div className="block lg:hidden">
-                                                <Link href="/sign-in" className='flex gap-3' >
-                                                <Image src="/images/logo2.png" width={50} height={50} alt='profile picture' className="text-2xl" />
+                                        <div className="flex lg:hidden">
+                                                <Link href="/sign-in" className='flex ' >
+                                                 <Image src="/images/logo2.png" width={100} height={50} alt='profile picture' className="rounded-full" />
                                                 </Link>
                                         </div>
 
-                                        <Link href="/api/logout" className='flex p-1'>
+                                        <Link href="/profile" className='flex p-1'>
                                         <button >
-                                        Logout
+                                        Dashboard
                                         </button>
                                         </Link>
                                 </div> ):(
@@ -168,11 +168,11 @@ const Header = () => {
                                         </div>
 
                                         <div className="flex md:hidden items-center gap-1">
-                                        
+                                                <Link href="/sign-in" className='flex gap-3' >
                                         <button className="p-2 rounded bg-transparent ">
-                                        {/* Replace this with an icon or keep it empty for no text */}
                                         <VscAccount className="text-2xl" />
                                         </button>
+                                        </Link>
                                         </div>
                                 </div>
                         )}
