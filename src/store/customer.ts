@@ -1,49 +1,32 @@
-import {createSlice} from "@reduxjs/toolkit"
+import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 
 interface User {
         User_id: string;
         Username: string;
-        role:string,
-        profilePicture:string,
-        isVerified:boolean,
-
+        email:string;
+        role:string;
+        profilePicture:string;
+        isVerified:boolean;
 }
 
 interface userState {
-        user: User;
+        user: User|null;
 }
 
 const initialState: userState={
-        user: {
-                User_id: "",
-                Username: "",
-                role: "",
-                profilePicture: "",
-                isVerified: false
-        }
+        user: null
 }
 
 const UserSlice = createSlice({
         name: 'user',
         initialState,
         reducers: {
-                SaveUser(state, action){
-                        const{User_id, Username,role,profilePicture,isVerified} =action.payload;
-                        state.user.User_id=  User_id,
-                        state.user.Username= Username,
-                        state.user.role=role,
-                        state.user.profilePicture=profilePicture,
-                        state.user.isVerified=isVerified
+                SaveUser(state, action: PayloadAction<User>){
+                        // const{User_id, Username,role,profilePicture,isVerified} =action.payload;
+                        state.user =action.payload;
                 },
-             
-                
                 DeleteUser(state ){
-                        state.user.User_id=  "",
-                        state.user.Username= "",
-                        state.user.role="",
-                        state.user.profilePicture="",
-                        state.user.isVerified=false
-    
+                        state.user= null
                 }
         }
 })

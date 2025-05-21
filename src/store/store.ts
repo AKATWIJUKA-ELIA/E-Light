@@ -5,17 +5,27 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 
-        const persistConfig = {
-        key: "root",
+//         const persistConfig = {
+//         key: "root",
+//         storage,
+//       };
+      const cartPersistConfig = {
+        key: "cart",
         storage,
-      };
+        };
 
-      const persistedCartReducer = persistReducer(persistConfig, cartReducer);
+        const userPersistConfig = {
+        key: "user",
+        storage,
+        };
+
+      const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+      const persistedUserReducer = persistReducer(userPersistConfig,userReducer)
 
 export const store = configureStore({
         reducer: {
                 cart: persistedCartReducer,
-                User:userReducer
+                user:persistedUserReducer
         },
         middleware: (getDefaultMiddleware) =>
                 getDefaultMiddleware({

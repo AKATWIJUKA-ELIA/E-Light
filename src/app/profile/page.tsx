@@ -7,11 +7,13 @@ import { SiteHeader } from "../../components/site-header"
 import { SidebarInset, SidebarProvider } from "../../components/ui/sidebar"
 import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
 import { useUser } from "@clerk/nextjs"
+import { useAppSelector } from "@/hooks"
 
 const Profile=()=> {
+        const User = useAppSelector((state)=>state.user.user)
         const user = useUser()
         // console.log("User id is: ", user.user?.id ?? "No user ID available")
-        const { data: products, } = useGetProductsByOwner(user.user?.id||'');
+        const { data: products, } = useGetProductsByOwner(User?.User_id||'');
         // console.log("Products are: ", products ?? "No Products")
         
   return (

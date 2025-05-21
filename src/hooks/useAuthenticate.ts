@@ -19,6 +19,7 @@ import useSaveUser from "./useSaveUser";
 interface UsertoSave {
         User_id: string|"";
         Username: string|"";
+         email:string|"";
         role:string|"",
         profilePicture:string|"",
         isVerified:boolean,
@@ -64,15 +65,6 @@ const useAuthenticate = () => {
         return { success: false, message:"Login failed" };
         }
         const user = res.user
-        const usertosave:UsertoSave = { 
-                User_id: user?._id||"",
-                Username:user?.username||"",
-                 role:user?.role||"",
-                 profilePicture:user?.profilePicture||"",
-                 isVerified:user?.isVerified||false, 
-                }
-        saveUser(usertosave)
-
         
                         try {
                         const response = await fetch('/api/createsession', {
@@ -84,6 +76,15 @@ const useAuthenticate = () => {
                                         isVerified: user?.isVerified,
                                 }),
                         });
+                        const usertosave:UsertoSave = { 
+                                User_id: user?._id||"",
+                                Username:user?.username||"",
+                                 email:user?.email||"",
+                                role:user?.role||"",
+                                profilePicture:user?.profilePicture||"",
+                                isVerified:user?.isVerified||false, 
+                        }
+                        saveUser(usertosave)
                         
                         if (!response.ok) {
                                 throw new Error('Failed to create session');

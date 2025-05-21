@@ -50,7 +50,7 @@ const LoginForm=({
                         return
                 }
                 setIsSubmitting(false)
-                router.push("/profile")
+                router.push("/")
         }catch(error){
                 setSubmittingError("Error Logging in")
                 setIsSubmitting(false)

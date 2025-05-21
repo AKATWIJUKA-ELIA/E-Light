@@ -5,6 +5,7 @@ import { api } from '../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
 import { useSendMail } from '@/hooks/useSendMail';
 import useGetCategories from '@/hooks/useGetCategories';
+import { useAppSelector } from '@/hooks';
 
 
 
@@ -22,9 +23,8 @@ const AddProduct =  () => {
 
       const createProduct = useMutation(api.products.createProduct)
 
-            const {user} = useUser();
-
-            const userid = user?.id || ''
+            const user = useAppSelector((state)=>state.user.user)
+            const userid = user?.User_id || ''
 
             interface Product {
                 approved: "",
@@ -175,8 +175,8 @@ const AddProduct =  () => {
                       cleanForm()
                       cleanImageField()
                       setImagePreview([])
-                      sendEmail( `${admin}` ,"New Product Created", `User ${user?.fullName}, Added a product`);
-                      sendEmail( `${user?.emailAddresses}`,"New Product Created", `Hello  ${user?.fullName}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
+                      sendEmail( `${admin}` ,"New Product Created", `User ${user?.Username}, Added a product`);
+                      sendEmail( `${user?.email}`,"New Product Created", `Hello  ${user?.Username}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
                 })(), TIMEOUT_MS);
                   } catch (error) {
                         setErrorProduct(true)
