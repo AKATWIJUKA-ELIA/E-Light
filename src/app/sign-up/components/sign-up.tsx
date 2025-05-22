@@ -81,16 +81,22 @@ const SignUpForm = ({
         const  {CheckUsername} = useValidateUsername()
         const admin = process.env.NEXT_PUBLIC_ADMIN
 
-        const HandleGoogleLogin=(response:CredentialResponse)=>{
+        const HandleGoogleLogin= async(response:CredentialResponse)=>{
                 // console.log(response)
                 try{
-                        SignUpWithGoogle(response)
+                        const res = await SignUpWithGoogle(response)
+                        const data = await res.json()
+                        if(!data?.success){
+                                setSubmittingError(data.message)
+                                return
+                        }
                         router.push("/sign-in")
                 }catch(error){
                         setSubmittingError(error instanceof Error ? error.message : String(error))
                 } finally{
                         setTimeout(()=>{
                                 setIsSubmitting(false)
+                                setSubmittingError("")
                         },5000)
                 }
                 
@@ -228,9 +234,13 @@ const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
                                 phoneNumber: formdata.phoneNumber,
                                 passwordHash: formdata.password
                         })
-                        if(!Res.success){
-                                return  
+                        const data = await Res.json()
+                        if(!data.success){
+                                setIsSubmitting(false);
+                                setSubmittingError(data.message)
+                                return
                         }
+                        
                         setCreated(true)
                       sendEmail( `${admin}` ,"New User Created", `User ${formdata.username}, was Created `);
                       sendEmail( `${formdata.email}`,"Welcome to ShopCheap", `Hello  ${formdata.username}, 
@@ -256,6 +266,7 @@ clearForm()
                     setIsSubmitting(false);
                     setTimeout(()=>{
                         setCreated(false)
+                         setSubmittingError("")
                     },5000)
                   }}
 

@@ -55,10 +55,12 @@ const useSignUpWithGoogle =()=>{
                                 updatedAt:0,
                                 lastLogin:0,
                         } 
-                        await CreateUser(user);
-                        console.log("user :",user)
-                        
-                    return NextResponse.json({ success: true, message: 'Your Account was created' }, { status: 200 });
+                        const res = await CreateUser(user);
+                        // console.log("user :",user)
+                        if(!res.success){
+                    return NextResponse.json({ success: false, message: res.message }, { status: 400 });
+                        }
+                        return NextResponse.json({ success: true, message:res.message }, { status: 200 });
                   } catch (error) {
                     console.error('Error creating Account:', error);
                     return NextResponse.json({ success: false, message: 'Error Creating your account try again Later' }, { status: 500 });
