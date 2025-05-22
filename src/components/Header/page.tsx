@@ -144,7 +144,7 @@ const Header = () => {
                                                 </div>
                                         </div>
                                         {/* For small screens */}
-                                        <div className="flex lg:hidden bg-red-700">
+                                        <div className="flex lg:hidden ">
                                                 <Link href="/sign-in" className='flex ' >
                                                  <Image src={User.profilePicture?User.profilePicture:"/images/images.png"} width={100} height={50} alt='profile picture' className="rounded-full" />
                                                 </Link>
