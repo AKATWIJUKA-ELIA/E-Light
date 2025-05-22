@@ -7,12 +7,13 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/Dark-light/page";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export const metadata: Metadata = {
   title: "ShopCheap",
   description: "ShopCheap Anytime Anywhere",
 };
-
+const CLIENT_ID = process.env.CLIENT_ID ?? "";
 export default function RootLayout({
   children,
 }: {
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ConvexClientProvider>
+        <GoogleOAuthProvider clientId={CLIENT_ID}>
           <ClerkProvider>
             <ReduxProvider>
               <ThemeProvider
@@ -37,8 +39,10 @@ export default function RootLayout({
               </ThemeProvider> 
             </ReduxProvider>
           </ClerkProvider>
+          </GoogleOAuthProvider>
         </ConvexClientProvider>
       </body>
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
     </html>
   );
 }

@@ -3,19 +3,21 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
 import { useState } from "react";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import useAuthenticate from "@/hooks/useAuthenticate"
+import useAuthByGoogle from "@/hooks/useAuthByGoogle"
 import { useRouter } from "next/navigation";
+// import { useSession } from "next-auth/react";
+import { GoogleLogin } from "@react-oauth/google"
 
 const LoginForm=({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">)=>{
-
+        const {AuthenticateByGoogle} = useAuthByGoogle()
         const {Authenticate} = useAuthenticate()
         const[IsSubmitting,setIsSubmitting] = useState(false)
         const[SubmittingError,setSubmittingError] = useState("")
@@ -25,6 +27,19 @@ const LoginForm=({
         const[Password, setPassword] = useState('')
 
         const router = useRouter();
+
+        const HandleGoogleLogin= async (response:any)=>{
+                const AuthRes = await AuthenticateByGoogle(response)
+                if(!AuthRes.success){
+                        setSubmittingError(AuthRes.message)
+                        setTimeout(()=>{
+                                setSubmittingError("")
+                        },5000)
+                        return
+                }
+                router.push('/')
+              
+        }
 
                 const HandleView = ()=>{
                         setview(true)
@@ -119,10 +134,11 @@ const LoginForm=({
             Or continue with
           </span>
         </div>
-        <Button variant="outline" className="w-full">
-          <FaGoogle />
-          Login with Google
-        </Button>
+
+
+        <div className="flex justify-center mt-2">
+          <GoogleLogin theme="outline" text="continue_with" onSuccess={(response) => {HandleGoogleLogin(response)}} onError={() => {router.push("/sign-up")}} />
+        </div>
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
