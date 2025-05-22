@@ -34,11 +34,7 @@ interface UsertoSave {
         } | null
       } | undefined
 
-      interface res{
-        clientId:string|""
-        credential:string|""
-        select_by:string|""
-}
+
 interface DecodedToken {
   iss?: string;
   aud?: string;

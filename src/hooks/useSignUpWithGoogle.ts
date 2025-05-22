@@ -31,11 +31,7 @@ interface DecodedToken {
   exp?: number;
   jti?: string;
 }
-interface res{
-        clientId:string|""
-        credential:string|""
-        select_by:string|""
-}
+
 const useSignUpWithGoogle =()=>{
         const CreateUser = useMutation(api.users.CreateUser);
         try{
