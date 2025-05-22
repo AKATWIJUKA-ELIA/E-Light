@@ -140,13 +140,13 @@ const Header = () => {
                                                         {User.Username}
                                                 </div>
                                                 <div className='flex rounded-full' >
-                                                        <Image src={User?User.profilePicture:""} width={35} height={35} alt='profile picture' className="rounded-full" />
+                                                        <Image src={User?User.profilePicture:"/images/images.png"} width={35} height={35} alt='profile picture' className="rounded-full" />
                                                 </div>
                                         </div>
                                         {/* For small screens */}
                                         <div className="flex lg:hidden">
                                                 <Link href="/sign-in" className='flex ' >
-                                                 <Image src={User?User.profilePicture:""} width={100} height={50} alt='profile picture' className="rounded-full" />
+                                                 <Image src={User?User.profilePicture:"/images/images.png"} width={100} height={50} alt='profile picture' className="rounded-full" />
                                                 </Link>
                                         </div>
 

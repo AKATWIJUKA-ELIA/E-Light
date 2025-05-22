@@ -38,6 +38,13 @@ export const CreateUser = mutation({
                 lastLogin: v.optional(v.number()),
         },handler:async(ctx,args)=>{
                 try{
+                        const existing = await ctx.db
+                        .query("customers")
+                        .withIndex("by_email", (q) => q.eq("email", args.email))
+                        .unique();
+                        if(existing){
+                                throw new ConvexError({error:"Error creating user",message:"This Email Already Exisits",status:400});
+                        }
                 const user = await ctx.db.insert("customers",{
                         ...args
                 }) 
