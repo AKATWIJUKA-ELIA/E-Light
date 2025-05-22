@@ -1,8 +1,9 @@
 
-import { NextRequest, NextResponse } from 'next/server';
+import {  NextResponse } from 'next/server';
 import {jwtDecode} from 'jwt-decode'
 import { api } from "../../convex/_generated/api"; 
 import { useMutation } from "convex/react";
+import { CredentialResponse } from "@react-oauth/google"; 
 interface user {
         username: string,
         email: string,
@@ -38,9 +39,12 @@ interface res{
 const useSignUpWithGoogle =()=>{
         const CreateUser = useMutation(api.users.CreateUser);
         try{
-        const SignUpWithGoogle = async (Response:res)=>{
+        const SignUpWithGoogle = async (Response:CredentialResponse)=>{
                   const  token  = Response
                   try {
+                         if (!token.credential) {
+                                throw new Error("Google credential is missing");
+        }
                         const decoded = jwtDecode<DecodedToken>(token.credential);
                         const user:user = {
                                 username:decoded.name||"",

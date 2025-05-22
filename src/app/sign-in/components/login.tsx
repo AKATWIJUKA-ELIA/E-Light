@@ -11,7 +11,8 @@ import useAuthenticate from "@/hooks/useAuthenticate"
 import useAuthByGoogle from "@/hooks/useAuthByGoogle"
 import { useRouter } from "next/navigation";
 // import { useSession } from "next-auth/react";
-import { GoogleLogin } from "@react-oauth/google"
+import { GoogleLogin,CredentialResponse } from "@react-oauth/google"
+
 
 const LoginForm=({
   className,
@@ -28,7 +29,7 @@ const LoginForm=({
 
         const router = useRouter();
 
-        const HandleGoogleLogin= async (response:any)=>{
+        const HandleGoogleLogin= async (response:CredentialResponse)=>{
                 const AuthRes = await AuthenticateByGoogle(response)
                 if(!AuthRes.success){
                         setSubmittingError(AuthRes.message)

@@ -4,6 +4,7 @@ import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import useSaveUser from "./useSaveUser";
 import {jwtDecode} from 'jwt-decode'
+import { CredentialResponse } from "@react-oauth/google"; 
 
 interface UsertoSave {
         User_id: string|"";
@@ -51,14 +52,17 @@ interface DecodedToken {
   iat?: number;
   exp?: number;
   jti?: string;
-}
+} 
       
 const useAuthByGoogle = () => {
  const saveUser = useSaveUser();
      const getCustomerByEmail = useAction(api.users.GetCustomerByEmail);
-    const AuthenticateByGoogle = async (response: res) => {
+    const AuthenticateByGoogle = async (response: CredentialResponse) => {
         
       try {
+        if (!response.credential) {
+          throw new Error("Google credential is missing");
+        }
         const decoded = jwtDecode<DecodedToken>(response.credential);
         const email = decoded.email || "";
 

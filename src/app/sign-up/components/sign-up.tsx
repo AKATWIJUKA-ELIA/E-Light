@@ -14,6 +14,7 @@ import useCreateUser from "@/hooks/useCreateUser"
 import { useRouter } from "next/navigation";
 import { GoogleLogin } from "@react-oauth/google"
 import useSignUpWithGoogle from "@/hooks/useSignUpWithGoogle"
+import { CredentialResponse } from "@react-oauth/google"; 
 
 interface user {
         username: string,
@@ -80,8 +81,8 @@ const SignUpForm = ({
         const  {CheckUsername} = useValidateUsername()
         const admin = process.env.NEXT_PUBLIC_ADMIN
 
-        const HandleGoogleLogin=(response:any)=>{
-                console.log(response)
+        const HandleGoogleLogin=(response:CredentialResponse)=>{
+                // console.log(response)
                 try{
                         SignUpWithGoogle(response)
                         router.push("/sign-in")
