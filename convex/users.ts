@@ -38,10 +38,17 @@ export const CreateUser = mutation({
                 lastLogin: v.optional(v.number()),
         },handler:async(ctx,args)=>{
                 try{
+                        const existing = await ctx.db
+                        .query("customers")
+                        .withIndex("by_email", (q) => q.eq("email", args.email))
+                        .unique();
+                        if(existing){
+                                return {success:false,message:"This Email Already Exisits",status:400};
+                        }
                 const user = await ctx.db.insert("customers",{
                         ...args
                 }) 
-                return user
+                return {success:true,message:"Success",status:200,user:user};
         }catch{
                         throw new ConvexError({error:"Error creating user",message:"Error creating user",status:500})
                 }
@@ -54,10 +61,27 @@ export const CreateUser = mutation({
                         const customer = await ctx.db.query("customers")
                         .withIndex("by_email", (q) => q.eq("email", args.email))
                         .unique();
-                        return customer
+                        if (!customer) {
+                               return { success:false ,status: 404,message: "User not Found",user:null };
+                        }
+                        return { success:true, status: 200, message: "User found", user: customer };
                 }
                 
         })
+
+export const GetCustomerByEmail = action({
+        args: { email: v.string() },
+        handler: async (ctx, args): Promise<Response> => {
+    // Call the registered query using ctx.runQuery
+    const customer = await ctx.runQuery(api.users.GetCustomer, { email: args.email });
+
+    if (!customer.user) {
+      return { success: false, status: 404, message: "User not Found", user: null };
+    }
+
+    return { success: true, status: 200, message: "User found", user: customer.user };
+  },
+});
         
         export const GetCustomerById = query({
         args:{id: v.string(),},
@@ -75,13 +99,13 @@ export const CreateUser = mutation({
                                 email: args.email,
                         });
                         if (!user) {
-                               return { success:false ,status: 404,message: "User not Found",user:user };
+                               return { success:false ,status: 404,message: "User not Found",user };
                         }
                         
-                        const isMatch = await bcrypt.compare(args.password, user.passwordHash);
+                        const isMatch = await bcrypt.compare(args.password, user.user?.passwordHash ?? "");
                         if (!isMatch) {
-                          return { success:false ,status: 401,message: "Invalid Password",user:user };
+                          return { success:false ,status: 401,message: "Invalid Password",user:user.user };
                 }
-                   return { success:true ,status: 201,message: "Success",user:user };
+                   return { success:true ,status: 201,message: "Success",user:user.user };
 }
 })
