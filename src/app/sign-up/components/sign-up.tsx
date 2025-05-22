@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { FaGoogle } from "react-icons/fa";
 import { useEffect, useState } from "react"
 import { useSendMail } from '@/hooks/useSendMail';
 import useValidateUsername from "@/hooks/useValidateUsername"
@@ -12,6 +11,10 @@ import { IoEye } from "react-icons/io5";
 import Link from "next/link"
 import bcrypt from "bcryptjs"
 import useCreateUser from "@/hooks/useCreateUser"
+import { useRouter } from "next/navigation";
+import { GoogleLogin } from "@react-oauth/google"
+import useSignUpWithGoogle from "@/hooks/useSignUpWithGoogle"
+import { CredentialResponse } from "@react-oauth/google"; 
 
 interface user {
         username: string,
@@ -42,6 +45,7 @@ const SignUpForm = ({
         const [view1,setview1] = useState(false)
         const [view2,setview2] = useState(false)
         const [isSubmitting, setIsSubmitting] = useState(false)
+        const[SubmittingError,setSubmittingError] = useState("")
         const [email, setEmail] = useState('');
         const [password1, setPassword1] = useState('');
         const [password1type, setpassword1type] = useState('password');
@@ -71,12 +75,33 @@ const SignUpForm = ({
                 updatedAt: 0,
                 lastLogin: 0
         })
-        
+        const {SignUpWithGoogle} = useSignUpWithGoogle()
+        const router = useRouter()
         const { sendEmail, } = useSendMail();
         const  {CheckUsername} = useValidateUsername()
         const admin = process.env.NEXT_PUBLIC_ADMIN
 
-        
+        const HandleGoogleLogin= async(response:CredentialResponse)=>{
+                // console.log(response)
+                try{
+                        const res = await SignUpWithGoogle(response)
+                        const data = await res.json()
+                        if(!data?.success){
+                                setSubmittingError(data.message)
+                                return
+                        }
+                        router.push("/sign-in")
+                }catch(error){
+                        setSubmittingError(error instanceof Error ? error.message : String(error))
+                } finally{
+                        setTimeout(()=>{
+                                setIsSubmitting(false)
+                                setSubmittingError("")
+                        },5000)
+                }
+                
+              
+        }
 
         const resetUser = () => {
                         setUser({
@@ -209,9 +234,13 @@ const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
                                 phoneNumber: formdata.phoneNumber,
                                 passwordHash: formdata.password
                         })
-                        if(!Res.success){
-                                return  
+                        const data = await Res.json()
+                        if(!data.success){
+                                setIsSubmitting(false);
+                                setSubmittingError(data.message)
+                                return
                         }
+                        
                         setCreated(true)
                       sendEmail( `${admin}` ,"New User Created", `User ${formdata.username}, was Created `);
                       sendEmail( `${formdata.email}`,"Welcome to ShopCheap", `Hello  ${formdata.username}, 
@@ -237,6 +266,7 @@ clearForm()
                     setIsSubmitting(false);
                     setTimeout(()=>{
                         setCreated(false)
+                         setSubmittingError("")
                     },5000)
                   }}
 
@@ -249,6 +279,9 @@ clearForm()
         </p>
         {Created && <p className="text-balance text-sm text-green-500">
           Success !  You acount has been created, please verify your email
+        </p> }
+        {SubmittingError  && SubmittingError.length>0  && <p className="text-balance text-sm text-red-500">
+          Error !  {SubmittingError}
         </p> }
       </div>
       <div className="grid gap-6 border p-6 rounded-lg shadow-lg dark:bg-black bg-slate-100 ">
@@ -352,10 +385,9 @@ clearForm()
             Or continue with
           </span>
         </div>
-        <Button variant="outline" className="w-full">
-          <FaGoogle />
-          Login with Google
-        </Button>
+        <div className="flex justify-center  mt-2">
+          <GoogleLogin theme="outline" shape="pill" text="signup_with" onSuccess={(response) => {HandleGoogleLogin(response)}} onError={() => {router.push("/sign-up")}} />
+        </div>
       </div>
       <div className="text-center text-sm">
         Already have an account?{" "}

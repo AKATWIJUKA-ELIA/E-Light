@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import { api } from "../../convex/_generated/api"; 
 import { useMutation } from "convex/react";
 interface user {
@@ -18,10 +19,13 @@ const useCreateUser = () => {
 
         const CreateUser = async (User:user) =>{
                 try{
-                await create(User);
-                return  { success: true };
+                const res = await create(User);
+                 if(!res.success){
+                        return NextResponse.json({ success: false, message: res.message }, { status: 400 });
+                }
+                return NextResponse.json({ success: true, message:res.message }, { status: 200 });
                 }catch(error){
-                        return { success: false, error: error };
+                        return NextResponse.json( { success: false, message: error });
                         
                 }
         }

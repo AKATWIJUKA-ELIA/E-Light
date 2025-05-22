@@ -1,0 +1,76 @@
+
+import {  NextResponse } from 'next/server';
+import {jwtDecode} from 'jwt-decode'
+import { api } from "../../convex/_generated/api"; 
+import { useMutation } from "convex/react";
+import { CredentialResponse } from "@react-oauth/google"; 
+interface user {
+        username: string,
+        email: string,
+        passwordHash: string,
+        phoneNumber: string,
+        profilePicture:string,
+        isVerified: false,
+        role: string,
+        reset_token: "",
+        reset_token_expires:0,
+        updatedAt: 0,
+        lastLogin: 0,
+}
+interface DecodedToken {
+  iss?: string;
+  aud?: string;
+  sub?: string;
+  email?: string;
+  email_verified?: boolean;
+  nbf?: number;
+  name?: string;
+  picture?: string;
+  given_name?: string;
+  iat?: number;
+  exp?: number;
+  jti?: string;
+}
+
+const useSignUpWithGoogle =()=>{
+        const CreateUser = useMutation(api.users.CreateUser);
+        try{
+        const SignUpWithGoogle = async (Response:CredentialResponse)=>{
+                  const  token  = Response
+                  try {
+                         if (!token.credential) {
+                                throw new Error("Google credential is missing");
+        }
+                        const decoded = jwtDecode<DecodedToken>(token.credential);
+                        const user:user = {
+                                username:decoded.name||"",
+                                email:decoded.email||"",
+                                profilePicture:decoded.picture||"",
+                                passwordHash:"",
+                                phoneNumber:"",
+                                isVerified:false,
+                                role:"user",
+                                reset_token:"",
+                                reset_token_expires:0,
+                                updatedAt:0,
+                                lastLogin:0,
+                        } 
+                        const res = await CreateUser(user);
+                        // console.log("user :",user)
+                        if(!res.success){
+                    return NextResponse.json({ success: false, message: res.message }, { status: 400 });
+                        }
+                        return NextResponse.json({ success: true, message:res.message }, { status: 200 });
+                  } catch (error) {
+                    console.error('Error creating Account:', error);
+                    return NextResponse.json({ success: false, message: 'Error Creating your account try again Later' }, { status: 500 });
+                  }
+        }
+        
+        return {SignUpWithGoogle};
+}catch(error){
+        throw new Error((error instanceof Error) ? error.message : String(error));
+}
+
+}
+export default useSignUpWithGoogle;
