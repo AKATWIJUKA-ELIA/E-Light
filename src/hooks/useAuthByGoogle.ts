@@ -19,7 +19,7 @@ interface UsertoSave {
         message: string
         status:number
         user:{
-                _id?: Id<"customers">;
+                _id?: string;
                 username: string,
                 email: string,
                 passwordHash: string,

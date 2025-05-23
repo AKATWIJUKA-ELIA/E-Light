@@ -30,7 +30,8 @@ export default defineSchema({
     updatedAt: v.number(),
     lastLogin: v.optional(v.number()),
   }).index("by_email", ["email"])
-  .index("by_username", ["username"]),
+  .index("by_username", ["username"])
+  .index("by_reset_token", ["reset_token"]),
 
   orders: defineTable({
     order_status: v.string(),
