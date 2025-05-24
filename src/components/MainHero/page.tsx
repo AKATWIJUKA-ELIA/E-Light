@@ -34,12 +34,12 @@ const MainHero = () => {
                 {
                 name:"Heror",
                 src:"https://cheery-cod-687.convex.cloud/api/storage/115cc2cd-79c0-4b3c-bb84-86df5f76e138",
-                overlay:"April Sales Here 😊 "
+                overlay:"Mid Year Sales Here 😊 "
                 },
                 {
                         name:"Hero1",
                         src:"https://cheery-cod-687.convex.cloud/api/storage/55199998-af85-4493-af98-d8c3aff3d8dd",
-                        overlay:"Grab April Discounts While Offers Last😁🤗"
+                        overlay:"Grab May Discounts While Offers Last😁🤗"
                 },
                 // {
                 //         name:"Heror",

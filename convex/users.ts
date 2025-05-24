@@ -9,7 +9,7 @@ type Response = {
   message: string;
   status: number;
   user:{
-        
+        _id: string,
          username: string,
             email: string,
             passwordHash: string,
@@ -69,6 +69,20 @@ export const CreateUser = mutation({
                 
         })
 
+                export const GetCustomerByToken = query({
+                args:{token:v.string()},
+                handler:async(ctx,args)=>{
+                        const customer = await ctx.db.query("customers")
+                        .withIndex("by_reset_token", (q) => q.eq("reset_token", args.token))
+                        .unique();
+                        if (!customer) {
+                               return { success:false ,status: 404,message: "User not Found",user:null };
+                        }
+                        return { success:true, status: 200, message: "User found", user: customer };
+                }
+                
+        })
+
 export const GetCustomerByEmail = action({
         args: { email: v.string() },
         handler: async (ctx, args): Promise<Response> => {
@@ -79,7 +93,21 @@ export const GetCustomerByEmail = action({
       return { success: false, status: 404, message: "User not Found", user: null };
     }
 
-    return { success: true, status: 200, message: "User found", user: customer.user };
+    return { success: true, status: 200, message: "Success !", user: customer.user };
+  },
+});
+
+export const GetCustomerByTokenAction = action({
+        args: { token: v.string() },
+        handler: async (ctx, args): Promise<Response> => {
+    // Call the registered query using ctx.runQuery
+    const customer = await ctx.runQuery(api.users.GetCustomerByToken, { token: args.token });
+
+    if (!customer.user) {
+      return { success: false, status: 404, message: "Token is Invalid", user: null };
+    }
+
+    return { success: true, status: 200, message: "Success !", user: customer.user };
   },
 });
         
@@ -109,3 +137,27 @@ export const GetCustomerByEmail = action({
                    return { success:true ,status: 201,message: "Success",user:user.user };
 }
 })
+
+      export const UpdateCustomer = mutation({
+         args:{User:v.object({
+                _id: v.id("customers"),
+                username: v.string(),
+                email: v.string(),
+                passwordHash: v.string(),
+                phoneNumber: v.optional(v.string()),
+                profilePicture: v.optional(v.string()),
+                isVerified: v.boolean(),
+                role: v.string(),
+                reset_token: v.optional(v.string()),
+                reset_token_expires:v.number(),
+                updatedAt: v.number(),
+                lastLogin: v.optional(v.number()),
+                _creationTime:v.optional(v.number()),
+         })},handler:async(ctx,args)=>{
+              if(args.User){
+              const NewUser = await ctx.db.patch(args.User._id, args.User);
+              return {succes:true, status: 20, message: "Success", user: NewUser};
+              }
+              
+              
+        }})
