@@ -12,7 +12,6 @@ import useChangePasswordWithToken from "@/hooks/useChangePasswordWithToken";
         
 const ChangePassword = ({  className,
   ...props}:React.ComponentPropsWithoutRef<"form">) => {
-  const [token, setToken] = useState<string>("");
   const router = useRouter();
 
           const [view1,setview1] = useState(false)
