@@ -38,7 +38,7 @@ const useForgotPassword = () => {
 
 
 
-                const send = sendEmail(user?.email||"","Password Reset",`http://localhost:3000/passwordChange?3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf=${token}`)
+                const send = sendEmail(user?.email||"","Password Reset",`https://shopcheap.vercel.app/passwordChange?3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf=${token}`)
                 const resp = await (await send).json()
                 if(!resp.success){
                 return NextResponse.json({ success: false, message:`${res.message}` }, { status: 200 });
