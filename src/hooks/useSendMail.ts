@@ -1,12 +1,8 @@
-import { useState } from 'react';
+import { NextResponse } from 'next/server';
 
 export const useSendMail = () => {
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState(false);
 
   const sendEmail = async (to:string, subject: string, message: string) => {
-    setSending(true);
-    setError(false);
 
     try {
       const response = await fetch('/send-email', {
@@ -21,23 +17,16 @@ export const useSendMail = () => {
         }),
       });
 
+      const res = await response.json()
 
-      if (response.ok) {
-        // console.log("Email sent:", data.message);
-      } else {
-        setError(true);
+      if (!res.success) {
+        return NextResponse.json({success:false, message: 'Email not sent'}, {status: 400});
       }
-    } catch (err) {
-        console.error(err)
-      setError(true);
-    } finally {
-      setSending(false);
-    }
+      return NextResponse.json({success:true, message: 'Email sent successfully'}, {status: 200});
+    } catch {
+        return NextResponse.json({success:false, message: 'Internal Server Error'}, {status: 500});
+    } 
   };
 
-  return {
-    sendEmail,
-    sending,
-    error,
-  };
+  return {sendEmail};
 };
