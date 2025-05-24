@@ -37,8 +37,68 @@ const useForgotPassword = () => {
                 await UpdateCustomer({ User: UserToUpdate })
 
 
-
-                const send = sendEmail(user?.email||"","Password Reset",`https://shopcheap.vercel.app/passwordChange?3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf=${token}`)
+                const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Password Reset</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    .button {
+      display: inline-block;
+      padding: 14px 28px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border-radius: 5px;
+      text-decoration: none;
+      margin: 20px 0;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .container {
+      max-width: 480px;
+      margin: auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 32px;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    .footer {
+      font-size: 12px;
+      color: #999;
+      margin-top: 32px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body style="background:#f4f4f4;">
+  <div class="container">
+    <h2>Password Reset Request</h2>
+    <p>Hello,</p>
+    <p>We received a request to reset your password for your ShopCheap account.</p>
+    <p>Click the button below to set a new password. If you did not request this, you can safely ignore this email.</p>
+    <a 
+      class="button"
+      href="https://shopcheap.vercel.app/passwordChange?token=YOUR_RESET_TOKEN"
+      target="_blank"
+    >Reset Password</a>
+    <p>If the button above does not work, copy and paste the following link into your browser:</p>
+    <p>
+      <a href="https://shopcheap.vercel.app/passwordChange?3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf=${token}" target="_blank">
+        https://shopcheap.vercel.app/passwordChange?3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf=${token}
+      </a>
+    </p>
+    <div class="footer">
+      &copy; 2025 ShopCheap. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>`
+                const send = sendEmail(user?.email||"","Password Reset",html)
                 const resp = await (await send).json()
                 if(!resp.success){
                 return NextResponse.json({ success: false, message:`${res.message}` }, { status: 200 });
