@@ -65,7 +65,7 @@ const useForgotPassword = () => {
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       padding: 32px;
       font-family: Arial, sans-serif;
-      color: #333;
+      color: black;
     }
     .footer {
       font-size: 12px;
@@ -76,14 +76,28 @@ const useForgotPassword = () => {
   </style>
 </head>
 <body style="background:#f4f4f4;">
+
   <div class="container">
-    <h2>Password Reset Request</h2>
-    <p>Hello,</p>
-    <p>We received a request to reset your password for your ShopCheap account.</p>
-    <p>Click the button below to set a new password. If you did not request this, you can safely ignore this email.</p>
+<a href="https://shopcheap.vercel.app/" > 
+<div 
+  style="
+    background-image: url('https://cheery-cod-687.convex.cloud/api/storage/143325e4-3c05-4b88-82ba-cbbfa7fcd594');
+    background-size: contain;  
+    background-repeat: no-repeat;
+    background-position: center; 
+    width: 200px;
+    height: 100px;
+  "
+>
+  
+</div></a>
+    <h2><strong>Password Reset Request</strong></h2>
+    <h1 class="" style="color:black" >Hello, <span style="color:blue"> ${user?.username} </span></h1>
+    <h3>We received a request to reset your password for your ShopCheap account.</h3>
+    <h4>Click the button below to set a new password. If you did not request this, you can safely ignore this email.</h4>
     <a 
-      class="button"
-      href="https://shopcheap.vercel.app/passwordChange?token=YOUR_RESET_TOKEN"
+      class=" button   " style="background-color:black; cursor:pointer; color:gold; border:1px solid black;"
+      href="https://shopcheap.vercel.app/passwordChange?3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf=${token}"
       target="_blank"
     >Reset Password</a>
     <p>If the button above does not work, copy and paste the following link into your browser:</p>
@@ -92,6 +106,7 @@ const useForgotPassword = () => {
         https://shopcheap.vercel.app/passwordChange?3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf=${token}
       </a>
     </p>
+    <h4> If you Did'nt  Request this Action, Please ignore this email </h4>
     <div class="footer">
       &copy; 2025 ShopCheap. All rights reserved.
     </div>

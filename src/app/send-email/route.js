@@ -10,15 +10,15 @@ export async function POST(request) {
       secure: true, // Use true for port 465, false for others
       auth: {
         user: process.env.SMTP_USER, // Add to your .env file
-        pass: process.env.SMTP_PASSWORD, // Add to your .env file
+        pass: process.env.SHOP_CHEAP_SMTP_PASSWORD, // Add to your .env file
       },
     });
 
     const mailOptions = {
-      from:"eliaakjtrnq@gmail.com",
+      from:process.env.SMTP_USER,
       to,
       subject,
-      text,
+      html:text,
     };
 
     const info = await transporter.sendMail(mailOptions);
