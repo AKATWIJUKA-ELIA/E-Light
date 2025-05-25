@@ -85,7 +85,7 @@ const SignUpForm = ({
                 // console.log(response)
                 try{
                         const res = await SignUpWithGoogle(response)
-                        const data = await res.json()
+                        const data = await res?.json()
                         if(!data?.success){
                                 setSubmittingError(data.message)
                                 return
