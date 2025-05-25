@@ -1,9 +1,10 @@
 "use client"
 import type React from "react"
 import { useSendMail } from "@/hooks/useSendMail"
-import { useUser } from "@clerk/nextjs"
+// import { useUser } from "@clerk/nextjs"
 import useGetProductById from "@/hooks/useGetProductById"
 import useDeleteProduct from "@/hooks/useDeleteProduct"
+import { useAppSelector } from "@/hooks"
 
 
 interface DeleteModalProps {
@@ -15,7 +16,7 @@ interface DeleteModalProps {
 const DeleteModal: React.FC<DeleteModalProps> = ({ isdelete, onClose, productId }) => {
   const { sendEmail } = useSendMail()
   const {data:Product} = useGetProductById(productId)
-  const { user } = useUser()
+  const user  = useAppSelector((state)=>state.user.user) 
   const admin = process.env.NEXT_PUBLIC_ADMIN
   const Delete = useDeleteProduct()
 
@@ -30,14 +31,14 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isdelete, onClose, productId 
                 return
         }
       if (admin) {
-        sendEmail(admin, "Product Deletion", `User ${user?.fullName}, Deleted product ${Product?.product_name}`)
+        sendEmail(admin, "Product Deletion", `User ${user?.Username}, Deleted product ${Product?.product_name}`)
       }
 
-      if (user?.emailAddresses?.[0]) {
+      if (user?.email) {
         sendEmail(
-          user.emailAddresses[0].emailAddress,
+          user?.email,
           "Product Deletion",
-          `Hello ${user.fullName}, Your product ${Product?.product_name} was Deleted \nyou can always add more products   \n Thank you for Doing Business with Us... \n Regards \n ShopCheap \n https://shopcheap.vercel.app/ .`,
+          `Hello ${user.Username}, Your product ${Product?.product_name} was Deleted \nyou can always add more products   \n Thank you for Doing Business with Us... \n Regards \n ShopCheap \n https://shopcheap.vercel.app/ .`,
         )
       }
 

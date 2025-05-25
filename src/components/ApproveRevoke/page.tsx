@@ -52,7 +52,74 @@ useEffect(()=>{
                 }
   const HandleSubmit=(id:string|undefined)=>{
         HandleEdit(id)
-        sendEmail(`${UserEmail}`,`${action}d`,`${message}`)
+        const html = ` <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Password Reset</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    .button {
+      display: inline-block;
+      padding: 14px 28px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border-radius: 5px;
+      text-decoration: none;
+      margin: 20px 0;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .container {
+      max-width: 480px;
+      margin: auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 32px;
+      font-family: Arial, sans-serif;
+      color: black;
+    }
+    .footer {
+      font-size: 12px;
+      color: #999;
+      margin-top: 32px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body style="background:#f4f4f4;">
+
+  <div class="container">
+<a href="https://shopcheap.vercel.app/" > 
+<div 
+  style="
+    background-image: url('https://cheery-cod-687.convex.cloud/api/storage/143325e4-3c05-4b88-82ba-cbbfa7fcd594');
+    background-size: contain;  
+    background-repeat: no-repeat;
+    background-position: center; 
+    width: 200px;
+    height: 100px;
+  "
+>
+  
+</div></a>
+    <h2><strong>Product ${action}d</strong></h2>
+    
+    <h3>Your Product Has Been ${action} \n
+        ${message}
+Best regards,\n
+ShopCheap\n
+https://shopcheap.vercel.app/</h3>
+    <div class="footer">
+      &copy; 2025 ShopCheap. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>`
+        sendEmail(`${UserEmail}`,`Product ${action}d`,html)
         setmessage("")
   }
 
