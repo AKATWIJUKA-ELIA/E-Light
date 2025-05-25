@@ -114,6 +114,7 @@ const useForgotPassword = () => {
 </body>
 </html>`
                 const send = sendEmail(user?.email||"","Password Reset",html)
+
                 const resp = await (await send).json()
                 if(!resp.success){
                 return NextResponse.json({ success: false, message:`${res.message}` }, { status: 200 });
