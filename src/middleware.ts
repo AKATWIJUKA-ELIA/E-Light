@@ -24,7 +24,7 @@ const Middleware = async (req: NextRequest) => {
         if(isProtectedPath && !session?.userId){
                 return NextResponse.redirect(new URL('/sign-in', req.url))
         }
-        if(isRoleProtected && !session?.role){
+        if(isRoleProtected && session?.role!="superuser"){
                 return NextResponse.json({unauthorized:"You are Unauthorized to Access this page"})
         }
 
