@@ -56,7 +56,6 @@ useEffect(()=>{
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Password Reset</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     .button {
@@ -108,11 +107,11 @@ useEffect(()=>{
 </div></a>
     <h2><strong>Product ${action}d</strong></h2>
     
-    <h3>Your Product Has Been ${action} \n
-        ${message}
-Best regards,\n
-ShopCheap\n
-https://shopcheap.vercel.app/</h3>
+    <h3>Your Product Has Been ${action}d \n</h3>
+        <h1> Reason: ${message}</h1>
+<h4>Best regards,\n</h4>
+<h4>ShopCheap\n : https://shopcheap.vercel.app/</h4>
+
     <div class="footer">
       &copy; 2025 ShopCheap. All rights reserved.
     </div>
