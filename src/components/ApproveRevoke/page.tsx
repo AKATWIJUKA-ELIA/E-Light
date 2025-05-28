@@ -50,7 +50,8 @@ useEffect(()=>{
                     setmessage(e.currentTarget.value)
                 //     console.log("message",message)
                 }
-  const HandleSubmit=(id:string|undefined)=>{
+  const HandleSubmit=(e: React.FormEvent<HTMLFormElement>,id:string|undefined)=>{
+        e.preventDefault()
         HandleEdit(id)
         const html = ` <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +130,7 @@ useEffect(()=>{
       <div className="  md:w-[60%] h-64 shadow-md shadow-black items-center justify-center my-auto mx-auto bg-gray-200 dark:bg-gray-600 rounded-lg">
         <h1 className="text-2xl font-bold text-center text-black"><span className="text-dark text-xl ">Are you sure you want to</span> {action}  -<span className="text-gold" >&apos;{Product?.product_name}&apos;</span></h1>
         <div className="flex space-x-3 justify-center mt-10  py-10">
-                <form onSubmit={()=>{HandleSubmit( Product?._id)}} className=" flex gap-2">
+                <form onSubmit={(e)=>{HandleSubmit(e, Product?._id)}} className=" flex gap-2">
                 <button
                 type="submit"
                 className=" w-48 inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"

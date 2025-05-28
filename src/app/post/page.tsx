@@ -309,7 +309,7 @@ https://shopcheap.vercel.app/</h3>
           name="product_cartegory"
           onChange={handleChange}
           required
-           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
+           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white dark:bg-dark"
         >
                 <option value=""  >Select category</option>
                 {categories?.map((category,index) => (
