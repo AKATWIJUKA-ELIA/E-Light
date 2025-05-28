@@ -15,7 +15,11 @@ export default defineSchema({
     quantity: v.string(),
     user_id: v.string(),
   }),
-  cartegories: defineTable({ cartegory: v.string() }),
+  cartegories: defineTable({ 
+        cartegory: v.string(),
+        // SubCategories: v.optional( v.array(v.object({subpic:v.string(),subname:v.string()})),)
+
+   }),
 
   customers: defineTable({
     username: v.string(),
