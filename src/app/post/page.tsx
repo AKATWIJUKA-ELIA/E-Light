@@ -35,6 +35,7 @@ const AddProduct =  () => {
                 product_name: "",
                 product_owner_id: "",
                 product_price: "",
+                product_embeddings: [],
                 }
             const [product, setProduct] = useState<Product>({
                 approved: "",
@@ -45,6 +46,7 @@ const AddProduct =  () => {
                 product_name: "",
                 product_owner_id: "",
                 product_price: "",
+                product_embeddings:[]
                 });
               
                 const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,6 +111,7 @@ const AddProduct =  () => {
                                 product_name: "",
                                 product_owner_id: "",
                                 product_price: "",
+                                product_embeddings:[]
                         });
                         setSelectedImage(null);
                         if (fileInputRef.current) {

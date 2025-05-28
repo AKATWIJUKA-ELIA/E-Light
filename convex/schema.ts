@@ -59,6 +59,7 @@ export default defineSchema({
     product_name: v.string(),
     product_owner_id: v.string(),
     product_price: v.string(),
+    product_embeddings:v.optional(v.array(v.number())),
      _creationTime: v.number()
   }),
 });
