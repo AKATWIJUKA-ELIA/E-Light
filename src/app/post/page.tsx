@@ -6,6 +6,8 @@ import { useMutation } from 'convex/react';
 import { useSendMail } from '@/hooks/useSendMail';
 import useGetCategories from '@/hooks/useGetCategories';
 import { useAppSelector } from '@/hooks';
+import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
+import useCreateProduct from '@/hooks/useCreateProduct';
 
 
 
@@ -16,28 +18,30 @@ const AddProduct =  () => {
       const fileInputRef = useRef<HTMLInputElement>(null);
       const { sendEmail, } = useSendMail();
       const { data: categories } = useGetCategories(); 
-      const[successProduct,setsuccessProduct] = useState(false)
-      const [ErrorProduct,setErrorProduct] = useState(false)
+      const[successProduct,setsuccessProduct] = useState("")
+      const [ErrorProduct,setErrorProduct] = useState("")
         const [imagePreview, setImagePreview] = useState<string[]>([])
       const admin = process.env.NEXT_PUBLIC_ADMIN
+      const {Embed} = useGenerateEmbeddings();
 
-      const createProduct = useMutation(api.products.createProduct)
+      const {CreateProduct} = useCreateProduct()
 
             const user = useAppSelector((state)=>state.user.user)
             const userid = user?.User_id || ''
 
             interface Product {
-                approved: "",
-                product_cartegory: "",
-                product_condition: "",
-                product_description: "",
+                approved: boolean,
+                product_cartegory: string,
+                product_condition: string,
+                product_description: string,
                 product_image: string[],
-                product_name: "",
-                product_owner_id: "",
-                product_price: "",
+                product_name: string,
+                product_owner_id: string,
+                product_price: string,
+                product_embeddings:number[],
                 }
             const [product, setProduct] = useState<Product>({
-                approved: "",
+                approved: false,
                 product_cartegory: "",
                 product_condition: "",
                 product_description: "",
@@ -45,6 +49,7 @@ const AddProduct =  () => {
                 product_name: "",
                 product_owner_id: "",
                 product_price: "",
+                product_embeddings:[]
                 });
               
                 const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,13 +100,9 @@ const AddProduct =  () => {
                   }));
                 };
 
-                const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-                  e.preventDefault();
-                  setIsSubmitting(true);
-                  const TIMEOUT_MS = 10000; // ⏱ 10 seconds
-                  const cleanForm = () => {
+                                  const cleanForm = () => {
                         setProduct({
-                                approved: "",
+                                approved: false,
                                 product_cartegory: "",
                                 product_condition: "",
                                 product_description: "",
@@ -109,18 +110,18 @@ const AddProduct =  () => {
                                 product_name: "",
                                 product_owner_id: "",
                                 product_price: "",
+                                product_embeddings:[]
                         });
                         setSelectedImage(null);
                         if (fileInputRef.current) {
                           fileInputRef.current.value = '';
                         }
                       };
-                const cleanImageField=()=>{
-                        setSelectedImage(null);
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = '';
-                        }
-                }
+
+                const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  setIsSubmitting(true);
+                  const TIMEOUT_MS = 10000; // ⏱ 10 seconds
 
                 const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
                         return Promise.race([
@@ -155,7 +156,15 @@ const AddProduct =  () => {
                         );
                         
                         const storageIds = responses.map((res) => res.storageId);
-                            
+                        const  embeds = await Embed(product.product_name + product.product_description + product.product_cartegory);
+                        if(!embeds.success){
+                                setErrorProduct("Error!  failed to generate embedings")
+                                setTimeout(()=>{
+                                        setErrorProduct('')
+                                },5000)
+                                return
+                        }
+                        
                         const updatedproduct = {
                                 ...product,
                                 product_image: [...storageIds], // Ensure new IDs are included
@@ -164,14 +173,17 @@ const AddProduct =  () => {
                                 product_owner_id: userid,
                                 product_cartegory: product.product_cartegory,
                                 approved: false,
+                                product_embeddings:embeds.data||[]
                         };
                             
                         // console.log("Updated Product: ", updatedproduct);
-                        await createProduct({ products: updatedproduct });
-                        setsuccessProduct(true)
-                        setTimeout(()=>{
-                                setsuccessProduct(false)
-                        },5000)
+                        const create =  await CreateProduct( updatedproduct);
+                        const res = await create.json()
+                        if(!res.success){
+                                setErrorProduct(res.message)
+                                return
+                        }
+                        setsuccessProduct(res.message)
                       cleanForm()
                       cleanImageField()
                       setImagePreview([])
@@ -251,23 +263,27 @@ https://shopcheap.vercel.app/</h3>
                       sendEmail( `${user?.email}`,"New Product Created", html);
                 })(), TIMEOUT_MS);
                   } catch (error) {
-                        setErrorProduct(true)
+                        setErrorProduct("Error creating product")
                     console.error("Error creating product:", error);
                     setTimeout(()=>{
-                        setErrorProduct(false)
+                        setErrorProduct("")
                     },4000)
                   } finally {
                     setIsSubmitting(false);
+                     setTimeout(()=>{
+                        setErrorProduct("")
+                        setsuccessProduct("")
+                    },4000)
                   }
                 };
 
   return (
      <div className=' mt-44 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 dark:bg-dark rounded-lg ' >
-        {successProduct 
-        ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁😁!!!,  your product  is pending for Approval</h1>)
+        {successProduct && successProduct.length > 0
+        ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁,  your product  is pending for Approval</h1>)
         :(<h1 className='text-2xl font-bold text-center text-black dark:text-white ' >Add  Products</h1>)
         }
-        {ErrorProduct && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔😔!!</h1>}
+        {ErrorProduct && ErrorProduct.length>0 && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔</h1>}
       
        <form onSubmit={handleSubmit} className="space-y-4 p-3 ">
       <div>
