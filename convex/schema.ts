@@ -61,5 +61,8 @@ export default defineSchema({
     product_price: v.string(),
     product_embeddings:v.optional(v.array(v.number())),
      _creationTime: v.number()
-  }),
+  }).vectorIndex("by_product_embeddings",{
+        vectorField:"product_embeddings",
+        dimensions:384
+  })
 });

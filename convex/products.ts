@@ -17,13 +17,18 @@ export const createProduct = mutation({
                 product_name: v.string(),
                 product_owner_id: v.string(),
                 product_price: v.string(),
+                product_embeddings:v.optional(v.array(v.number()))
                   }),
         },
         handler: async (ctx, args) => {
-        //       console.log(args.products)
+                try{
               await ctx.db.insert("products", {
                     ...args.products,
               });
+              return { success: true, message: "Product created successfully" };
+        }catch{
+                return { success: false, message: "Error creating product" };   
+        }
         },
   })
 
