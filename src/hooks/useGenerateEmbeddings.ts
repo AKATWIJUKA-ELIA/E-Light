@@ -2,9 +2,9 @@ import { generateEmbeddings } from "@/lib/generateEmbeddings";
 
 const  useGenerateEmbeddings = () =>{
         
-        const Embed = async (product_name:string,product_description:string,productCategory:string)=>{
+        const Embed = async (whatToEmbed:string)=>{
                 try{
-                        const embeddings = await generateEmbeddings(product_name,product_description,productCategory);
+                        const embeddings = await generateEmbeddings(whatToEmbed);
                         console.log("Embeds :",embeddings)
                         if(!embeddings.success){
                                 return {success:false,status:embeddings.status, data:embeddings.data}

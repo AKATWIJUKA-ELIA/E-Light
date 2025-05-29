@@ -156,7 +156,7 @@ const AddProduct =  () => {
                         );
                         
                         const storageIds = responses.map((res) => res.storageId);
-                        const  embeds = await Embed(product.product_name, product.product_description,product.product_cartegory);
+                        const  embeds = await Embed(product.product_name + product.product_description + product.product_cartegory);
                         if(!embeds.success){
                                 setErrorProduct("Error!  failed to generate embedings")
                                 setTimeout(()=>{

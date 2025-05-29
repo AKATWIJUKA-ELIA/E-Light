@@ -6,16 +6,14 @@
         embeddings:[]
       }
       
-export const generateEmbeddings = async (productName: string | "",productDescription:string|"",productCategory:string|"") => {
+export const generateEmbeddings = async (whatToEmbed:string) => {
 
      try {
         const response = await fetch('http://127.0.0.1:8000/embed/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                        productName: productName,
-                        productDescription: productDescription,
-                        productCategory: productCategory
+                        whatToEmbed: whatToEmbed,
                 }),
         }); 
         const res:response = await response.json();
