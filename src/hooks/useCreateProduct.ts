@@ -22,7 +22,7 @@ const useCreateProduct = () => {
                         return NextResponse.json({ success: false, message: response.message }, { status: 400 });
                 }
                 return NextResponse.json({ success: true, message:response.message }, { status: 200 });
-                }catch(error){
+                }catch{
                         return NextResponse.json( { success: false, message: "Sorry,  Can not upload at this time please try again later" });
                         
                 }

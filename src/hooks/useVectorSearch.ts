@@ -9,7 +9,7 @@ const useVectorSearch = () => {
         return response
     }
     return {vectorSearch};
-}catch(error){
+}catch{
 console.log("Error while Fetching Searches")
     }
 };
