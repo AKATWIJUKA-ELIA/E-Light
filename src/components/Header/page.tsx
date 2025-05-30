@@ -74,7 +74,6 @@ const Header = () => {
                         const data = results.data
                         if (vectorSearch) {
                                const searchResults = await vectorSearch(data??[]);
-                               console.log("Searchresults :" , searchResults)
                                setFilteredProducts(searchResults)
                         }
 
