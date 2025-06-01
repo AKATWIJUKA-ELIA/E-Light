@@ -283,7 +283,7 @@ https://shopcheap.vercel.app/</h3>
         ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁,  your product  is pending for Approval</h1>)
         :(<h1 className='text-2xl font-bold text-center text-black dark:text-white ' >Add  Products</h1>)
         }
-        {ErrorProduct && ErrorProduct.length>0 && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔</h1>}
+        {ErrorProduct && ErrorProduct.length>0 && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔 Please try again later or contact support</h1>}
       
        <form onSubmit={handleSubmit} className="space-y-4 p-3 ">
       <div>

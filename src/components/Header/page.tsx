@@ -46,7 +46,10 @@ const Header = () => {
                 if(pathname ==="/sign-up" || pathname === "/sign-in"){
                         setshowlowerBar(false)
                 }
-        })
+                else{
+                        setshowlowerBar(true)
+                }
+        },[pathname])
         console.log(pathname)
         const showDropDownMenu=()=>{
                 setHovered(true)

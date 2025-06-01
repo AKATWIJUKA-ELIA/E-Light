@@ -8,6 +8,7 @@ import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/Dark-light/page";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import FeedBack from "@/components/FeedBack/page";
 
 export const metadata: Metadata = {
   title: "ShopCheap",
@@ -34,6 +35,7 @@ export default function RootLayout({
               > 
                 <Header />
                 {children}
+                <FeedBack/>
                 <Footer/>
                 <ModeToggle />
               </ThemeProvider> 
