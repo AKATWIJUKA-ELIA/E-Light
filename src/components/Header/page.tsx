@@ -17,6 +17,8 @@ import { BiX } from 'react-icons/bi';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { usePathname } from 'next/navigation';
+// import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
+// import useVectorSearch from '@/hooks/useVectorSearch';
 
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
@@ -30,6 +32,9 @@ const Header = () => {
          const [showlowerBar, setshowlowerBar] = useState(true)
         const [searchTerm, setSearchTerm] = useState('');
         const [filteredProducts, setFilteredProducts] = useState(products);
+        // const {Embed} = useGenerateEmbeddings();
+        // const vectorSearchHook = useVectorSearch();
+        // const vectorSearch = vectorSearchHook?.vectorSearch;
         const [comingSoon, setcomingSoon] = useState(false)
         const carousel = Autoplay({ delay: 6000})
 
@@ -41,7 +46,10 @@ const Header = () => {
                 if(pathname ==="/sign-up" || pathname === "/sign-in"){
                         setshowlowerBar(false)
                 }
-        })
+                else{
+                        setshowlowerBar(true)
+                }
+        },[pathname])
         console.log(pathname)
         const showDropDownMenu=()=>{
                 setHovered(true)
@@ -65,8 +73,31 @@ const Header = () => {
                         setFilteredProducts(results);
                 }else
                 setFilteredProducts([]);
+                //  ============================================================
+                // VECTOR SEARCH IMPLEMENTATIOIN
+                // =============================================================
+                // const Search = async (search:string)=>{
+                //         // console.log("Searchresults :" , search)
+                //         const results = await Embed(search)
+                //         // console.log(results)
+                //         if(!results.success){
+                //                 setFilteredProducts([])
+                //                 return
+                //         }
+                //         const data = results.data
+                //         if (vectorSearch) {
+                //                const searchResults = await vectorSearch(data??[]);
+                //                setFilteredProducts(searchResults)
+                //         }
+
+                // }
+                // Search(searchTerm)
+                //  ============================================================
+                // VECTOR SEARCH IMPLEMENTATIOIN
+                // =============================================================
                 
               }, [searchTerm, products]);
+
         const handleStickyNavbar = () => {
                 if (window.scrollY >= 100) {
                   setSticky(true);
