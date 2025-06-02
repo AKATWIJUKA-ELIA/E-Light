@@ -7,6 +7,7 @@ import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
 // import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
+import ImageSearchModal from '../ImageSearchModal/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';
 import useGetCategories from '@/hooks/useGetCategories';
@@ -17,6 +18,7 @@ import { BiX } from 'react-icons/bi';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { usePathname } from 'next/navigation';
+import { MdPhotoCamera } from "react-icons/md";
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';
 
@@ -31,6 +33,7 @@ const Header = () => {
         const [Focused, setFocused] = useState(false)
          const [showlowerBar, setshowlowerBar] = useState(true)
         const [searchTerm, setSearchTerm] = useState('');
+        const [showImageModal, setShowImageModal] = useState(false);
         const [filteredProducts, setFilteredProducts] = useState(products);
         // const {Embed} = useGenerateEmbeddings();
         // const vectorSearchHook = useVectorSearch();
@@ -61,9 +64,14 @@ const Header = () => {
                 setSearchTerm("")
                 setFocused(false)
                 forceBlur()
+                setShowImageModal(false)
         }
         const HandleComing = ()=>{
                 setcomingSoon(true)
+        }
+
+        const handleImageSearch = () =>{
+                setShowImageModal(true)
         }
         useEffect(() => {
                 const results = products?.filter((product) =>
@@ -132,9 +140,9 @@ const Header = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                  onFocus={()=>{setFocused(true)}}
                                  type="text"
-                                  className=' flex p-5 h-10 rounded-full border border-3  border-gray-300 w-[100%] dark:bg-black dark:text-white ' 
+                                  className=' flex p-5 h-10 rounded-full border   border-gray-500 w-[100%] dark:bg-black dark:text-white ' 
                                   placeholder='Search Categories & product names'  />
-                                  { searchTerm.length>1 && <BiX onClick={HandleClose} className="absolute hover:cursor-pointer border right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>}
+                                  { searchTerm.length>1 ? (<BiX onClick={HandleClose} className="absolute hover:cursor-pointer border top-[16%] right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>):(<MdPhotoCamera onClick={handleImageSearch}  className="absolute hover:cursor-pointer top-[16%]   right-[41%]  bg-gray-100 text-black/70 text-3xl " />)}
                         </div>
                 </div>
 
@@ -301,6 +309,7 @@ const Header = () => {
     </div>
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     {  searchTerm.length>1 ? (<SearchModel Focused={Focused} products={filteredProducts ||[]} onClose={HandleClose} />):("")}
+    {  showImageModal ? (<ImageSearchModal  onClose={HandleClose} />):("")}
     </>
   )
 }
