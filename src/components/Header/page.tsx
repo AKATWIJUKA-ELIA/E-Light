@@ -66,24 +66,37 @@ const Header = () => {
                 setcomingSoon(true)
         }
         useEffect(() => {
-                const Search = async (search:string)=>{
-                        // console.log("Searchresults :" , search)
-                        const results = await Embed(search)
-                        // console.log(results)
-                        if(!results.success){
-                                setFilteredProducts([])
-                                return
-                        }
-                        const data = results.data
-                        if (vectorSearch) {
-                               const searchResults = await vectorSearch(data??[]);
-                               setFilteredProducts(searchResults)
-                        }
+                const results = products?.filter((product) =>
+                  product.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                if(results && results.length>0){
+                        setFilteredProducts(results);
+                }else
+                setFilteredProducts([]);
+                //  ============================================================
+                // VECTOR SEARCH IMPLEMENTATIOIN
+                // =============================================================
+                // const Search = async (search:string)=>{
+                //         // console.log("Searchresults :" , search)
+                //         const results = await Embed(search)
+                //         // console.log(results)
+                //         if(!results.success){
+                //                 setFilteredProducts([])
+                //                 return
+                //         }
+                //         const data = results.data
+                //         if (vectorSearch) {
+                //                const searchResults = await vectorSearch(data??[]);
+                //                setFilteredProducts(searchResults)
+                //         }
 
-                }
-                Search(searchTerm)
+                // }
+                // Search(searchTerm)
+                //  ============================================================
+                // VECTOR SEARCH IMPLEMENTATIOIN
+                // =============================================================
                 
-              }, [searchTerm]);
+              }, [searchTerm, products]);
 
         const handleStickyNavbar = () => {
                 if (window.scrollY >= 100) {

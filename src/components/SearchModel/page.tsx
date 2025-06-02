@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from "next/link";
 import { BiSearch } from 'react-icons/bi';
+import { Oval } from 'react-loader-spinner';
 
 interface Product {
         _id: string;
@@ -45,7 +46,18 @@ const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
                         </Link>
                         ))
                         ) : (
-                        <div className="vertical-line ml-2 fade-in"><h1 className='text-black dark:text-white' >  Sorry!!!, we could&apos;nt find any results for your search. . .</h1></div>
+                                <div className="flex gap-4 h-full">
+                                        <Oval
+                                        visible={true}
+                                        height="20"
+                                        width="20"
+                                        color="#0000FF"
+                                        secondaryColor="#ddd"
+                                        ariaLabel="oval-loading"
+                                />
+                                Loading . . .
+                                </div>
+                        // <div className="vertical-line ml-2 fade-in"><h1 className='text-black dark:text-white' >  Sorry!!!, we could&apos;nt find any results for your search. . .</h1></div>
                         )}
                 </div>
 
