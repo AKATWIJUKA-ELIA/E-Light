@@ -49,10 +49,10 @@ const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
                                 <div className="flex gap-4 h-full">
                                         <Oval
                                         visible={true}
-                                        height="20"
-                                        width="20"
+                                        height="40"
+                                        width="40"
                                         color="#0000FF"
-                                        secondaryColor="#ddd"
+                                        secondaryColor="#FFD700"
                                         ariaLabel="oval-loading"
                                 />
                                 Loading . . .

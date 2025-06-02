@@ -76,8 +76,8 @@ const HandleChange =(cart:string)=>{
                                                 visible={true}
                                                 height="20"
                                                 width="20"
-                                                color="#0000FF"
-                                                secondaryColor="#ddd"
+                                               color="#0000FF"
+                                                secondaryColor="#FFD700"
                                                 ariaLabel="oval-loading"
                                         />
                                         <h1 className='text-2xl text-gray-500 '>Hover an item to see related Categories</h1>
