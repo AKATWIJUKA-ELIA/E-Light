@@ -142,7 +142,7 @@ const Header = () => {
                                  type="text"
                                   className=' flex p-5 h-10 rounded-full border   border-gray-500 w-[100%] dark:bg-black dark:text-white ' 
                                   placeholder='Search Categories & product names'  />
-                                  { searchTerm.length>1 ? (<BiX onClick={HandleClose} className="absolute hover:cursor-pointer border top-[16%] right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>):(<MdPhotoCamera onClick={handleImageSearch}  className="absolute hover:cursor-pointer top-[16%]   right-[41%]  bg-gray-100 text-black/70 text-3xl " />)}
+                                  { searchTerm.length>1 ? (<BiX onClick={HandleClose} className="absolute hover:cursor-pointer border top-[16%] right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>):(<MdPhotoCamera onClick={handleImageSearch}  className="absolute hover:cursor-pointer top-[16%]   right-[41%]  bg-gray-100 text-black/70 dark:text-white/70 dark:bg-transparent text-3xl " />)}
                         </div>
                 </div>
 
@@ -253,9 +253,9 @@ const Header = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                  onFocus={()=>{setFocused(true)}}
                                  type="text"
-                                  className='flex p-5 h-10 rounded-full border border-3 border-gray-300 w-[100%]' 
+                                  className='flex p-5 h-10 rounded-full border border-gray-600 w-[100%]' 
                                   placeholder='Search Categories & product names'  />
-                                  { searchTerm.length>1 && <BiX onClick={HandleClose} className="absolute border right-12  bg-gray-100 text-dark text-3xl   rounded-lg"/>}
+                                  { searchTerm.length>1 ? (<BiX onClick={HandleClose} className="absolute border right-8  bg-gray-100 text-dark text-3xl   rounded-lg"/>):(<MdPhotoCamera onClick={handleImageSearch}  className="absolute hover:cursor-pointer top-[45%]   right-12  bg-gray-100 text-black/70 dark:text-white/70 dark:bg-transparent text-3xl " />)}
         </div>
 
         <div className='flex ml-5  md:ml-32 ' >
