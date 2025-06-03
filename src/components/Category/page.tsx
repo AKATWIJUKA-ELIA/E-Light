@@ -1,6 +1,5 @@
 "use client"
-import React, { use } from 'react'
-import useGetRelatedProducts from '@/hooks/useGetRelated'
+import React from 'react'
 import HeroCard from '@/components/HeroCards/page'
 import ProductsNotFound from '@/components/NoProductsFound/page'
 import { Id } from '../../../convex/_generated/dataModel'
@@ -24,7 +23,7 @@ interface PageProps {
 const Categories = ({relatedProducts,category}:PageProps) => {
         
   return (
-        <div className=' mt-36 md:mt-32' >
+        <div className=' mt-36 md:mt-32 z-40 inset-0' >
                 {
                         (relatedProducts ?? []).length > 0 ? (<div className='flex flex-col ' >
                         <div className='flex flex-col gap-4 mt-5'>
@@ -33,8 +32,6 @@ const Categories = ({relatedProducts,category}:PageProps) => {
                                 </div>
                         </div>
 
-               
-                
                 <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2'>
                 {relatedProducts?.map((product) => (
                 <HeroCard key={product._id} product={product} />

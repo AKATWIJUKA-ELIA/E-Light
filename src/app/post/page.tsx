@@ -7,6 +7,7 @@ import { useSendMail } from '@/hooks/useSendMail';
 import useGetCategories from '@/hooks/useGetCategories';
 import { useAppSelector } from '@/hooks';
 import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
+import useGenerateImageEmbeddings from '@/hooks/useGenerateImageEmbeddings';
 import useCreateProduct from '@/hooks/useCreateProduct';
 
 
@@ -23,6 +24,7 @@ const AddProduct =  () => {
         const [imagePreview, setImagePreview] = useState<string[]>([])
       const admin = process.env.NEXT_PUBLIC_ADMIN
       const {Embed} = useGenerateEmbeddings();
+      const {EmbedImage} = useGenerateImageEmbeddings();
 
       const {CreateProduct} = useCreateProduct()
 
@@ -39,6 +41,7 @@ const AddProduct =  () => {
                 product_owner_id: string,
                 product_price: string,
                 product_embeddings:number[],
+                product_image_embeddings:number[]
                 }
             const [product, setProduct] = useState<Product>({
                 approved: false,
@@ -49,7 +52,8 @@ const AddProduct =  () => {
                 product_name: "",
                 product_owner_id: "",
                 product_price: "",
-                product_embeddings:[]
+                product_embeddings:[],
+                product_image_embeddings:[]
                 });
               
                 const [isSubmitting, setIsSubmitting] = useState(false);
@@ -110,7 +114,8 @@ const AddProduct =  () => {
                                 product_name: "",
                                 product_owner_id: "",
                                 product_price: "",
-                                product_embeddings:[]
+                                product_embeddings:[],
+                                product_image_embeddings:[]
                         });
                         setSelectedImage(null);
                         if (fileInputRef.current) {
@@ -154,15 +159,24 @@ const AddProduct =  () => {
                                   return result.json(); 
                                 })
                         );
-                        
+                        const imageEmbeds = await EmbedImage(Array.from(selectedImage || []))
                         const storageIds = responses.map((res) => res.storageId);
                         const  embeds = await Embed(product.product_name + product.product_description + product.product_cartegory);
+                        
                         if(!embeds.success){
                                 setErrorProduct("Error!  failed to generate embedings")
                                 setTimeout(()=>{
                                         setErrorProduct('')
                                 },5000)
-                                return
+                                // return
+                        }
+
+                        if(!imageEmbeds.success){
+                                setErrorProduct("Error!  failed to generate Image embedings")
+                                setTimeout(()=>{
+                                        setErrorProduct('')
+                                },5000)
+                                // return
                         }
                         
                         const updatedproduct = {
@@ -173,7 +187,8 @@ const AddProduct =  () => {
                                 product_owner_id: userid,
                                 product_cartegory: product.product_cartegory,
                                 approved: false,
-                                product_embeddings:embeds.data||[]
+                                product_embeddings:embeds.data||[],
+                                product_image_embeddings:imageEmbeds.data? imageEmbeds.data[0] || [] :[]
                         };
                             
                         // console.log("Updated Product: ", updatedproduct);

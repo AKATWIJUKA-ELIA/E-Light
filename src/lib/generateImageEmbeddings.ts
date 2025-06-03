@@ -6,13 +6,15 @@
         embeddings:[]
       }
       
-export const generateImageEmbeddings = async (file:File) => {
+export const generateImageEmbeddings = async (files:File[]) => {
         const formData = new FormData();
-        formData.append('file', file); 
+        files.forEach((file) => {
+            formData.append('files', file);
+        });
      try {
         const response = await fetch('http://127.0.0.1:8000/embed/image', {
                 method: 'POST',
-                body: formData  
+                body: formData
         }); 
         const res:response = await response.json();
         if (res.status!=200) {

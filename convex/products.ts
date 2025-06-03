@@ -18,7 +18,8 @@ export const createProduct = mutation({
                 product_name: v.string(),
                 product_owner_id: v.string(),
                 product_price: v.string(),
-                product_embeddings:v.optional(v.array(v.number()))
+                product_embeddings:v.optional(v.array(v.number())),
+                product_image_embeddings:v.optional(v.array(v.number())),
                   }),
         },
         handler: async (ctx, args) => {
