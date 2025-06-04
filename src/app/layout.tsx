@@ -8,7 +8,7 @@ import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/Dark-light/page";
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import FeedBack from "@/components/FeedBack/page";
+import FeedBackButton from "@/components/FeedBackButton/page";
 import { FileProvider } from "./FileContext";
 
 export const metadata: Metadata = {
@@ -37,10 +37,10 @@ export default function RootLayout({
               <FileProvider>
                 <Header />
                 {children}
-                <FeedBack/>
+                <FeedBackButton/>
+                <ModeToggle />
                 <Footer/>
                 </FileProvider>
-                <ModeToggle />
               </ThemeProvider> 
             </ReduxProvider>
           </ClerkProvider>

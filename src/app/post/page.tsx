@@ -10,28 +10,7 @@ import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 import useGenerateImageEmbeddings from '@/hooks/useGenerateImageEmbeddings';
 import useCreateProduct from '@/hooks/useCreateProduct';
 
-
-
-const AddProduct =  () => {
-        
-      const generateUploadUrl = useMutation(api.products.generateUploadUrl);
-      const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
-      const fileInputRef = useRef<HTMLInputElement>(null);
-      const { sendEmail, } = useSendMail();
-      const { data: categories } = useGetCategories(); 
-      const[successProduct,setsuccessProduct] = useState("")
-      const [ErrorProduct,setErrorProduct] = useState("")
-        const [imagePreview, setImagePreview] = useState<string[]>([])
-      const admin = process.env.NEXT_PUBLIC_ADMIN
-      const {Embed} = useGenerateEmbeddings();
-      const {EmbedImage} = useGenerateImageEmbeddings();
-
-      const {CreateProduct} = useCreateProduct()
-
-            const user = useAppSelector((state)=>state.user.user)
-            const userid = user?.User_id || ''
-
-            interface Product {
+  interface Product {
                 approved: boolean,
                 product_cartegory: string,
                 product_condition: string,
@@ -43,7 +22,26 @@ const AddProduct =  () => {
                 product_embeddings:number[],
                 product_image_embeddings:number[]
                 }
-            const [product, setProduct] = useState<Product>({
+
+const AddProduct =  () => {
+        
+      const generateUploadUrl = useMutation(api.products.generateUploadUrl);
+      const [selectedImage, setSelectedImage] = useState<File[] | []>([]);
+      const fileInputRef = useRef<HTMLInputElement>(null);
+      const { sendEmail, } = useSendMail();
+      const { data: categories } = useGetCategories(); 
+      const[successProduct,setsuccessProduct] = useState("")
+      const [ErrorProduct,setErrorProduct] = useState("")
+      const [imagePreview, setImagePreview] = useState<string[]>([])
+      const admin = process.env.NEXT_PUBLIC_ADMIN
+      const {Embed} = useGenerateEmbeddings();
+      const {EmbedImage} = useGenerateImageEmbeddings();
+      const {CreateProduct} = useCreateProduct()
+      const [isSubmitting, setIsSubmitting] = useState(false);
+      const user = useAppSelector((state)=>state.user.user)
+      const userid = user?.User_id || ''
+
+        const [product, setProduct] = useState<Product>({
                 approved: false,
                 product_cartegory: "",
                 product_condition: "",
@@ -54,16 +52,16 @@ const AddProduct =  () => {
                 product_price: "",
                 product_embeddings:[],
                 product_image_embeddings:[]
-                });
-              
-                const [isSubmitting, setIsSubmitting] = useState(false);
-                const cleanImageField=()=>{
+        });
+        
+        const cleanImageField=()=>{
                         setSelectedImage([]);
+                        setImagePreview([])
                         if (fileInputRef.current) {
                           fileInputRef.current.value = '';
                         }
                 }
-                const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   if (e.target.files) {
                       const filesArray = Array.from(e.target.files)
                       const maxFileSize = 3 * 1024 * 1024; // 1MB in bytes
@@ -92,38 +90,37 @@ const AddProduct =  () => {
                     }
               
                     setSelectedImage(validFiles)
-              
                     // Create preview URLs for the selected images
                     const previewUrls = validFiles.map((file) => URL.createObjectURL(file))
                     setImagePreview(previewUrls)
                   }
                 }
-                const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
                   const { name, value } = e.target;
                   setProduct((prev) => ({...prev,[name]: value,
                   }));
                 };
 
-                                  const cleanForm = () => {
-                        setProduct({
-                                approved: false,
-                                product_cartegory: "",
-                                product_condition: "",
-                                product_description: "",
-                                product_image: [],
-                                product_name: "",
-                                product_owner_id: "",
-                                product_price: "",
-                                product_embeddings:[],
-                                product_image_embeddings:[]
-                        });
-                        setSelectedImage(null);
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = '';
+        const cleanForm = () => {
+                setProduct({
+                        approved: false,
+                        product_cartegory: "",
+                        product_condition: "",
+                        product_description: "",
+                        product_image: [],
+                        product_name: "",
+                        product_owner_id: "",
+                        product_price: "",
+                        product_embeddings:[],
+                        product_image_embeddings:[]
+                });
+                setSelectedImage([]);
+                if (fileInputRef.current) {
+                        fileInputRef.current.value = '';
                         }
-                      };
+        };
 
-                const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
                   const TIMEOUT_MS = 10000; // ⏱ 10 seconds
@@ -141,11 +138,6 @@ const AddProduct =  () => {
                         await withTimeout((async () => {
                          // Step 1: Get a short-lived upload URL
                         const postUrl = await generateUploadUrl();
-                        if(selectedImage && selectedImage.length > 5){
-                                alert("Error, You can only upload upto Five Images")
-                                cleanImageField()
-                                return
-                        }
                         const responses = await Promise.all(
                                 Array.from(selectedImage || []).map(async (image: File) => {
                                   const result = await fetch(postUrl, {
@@ -155,7 +147,6 @@ const AddProduct =  () => {
                                   });
                             
                                   if (!result.ok) throw new Error("Failed to upload image");
-                            
                                   return result.json(); 
                                 })
                         );
@@ -411,13 +402,6 @@ https://shopcheap.vercel.app/</h3>
                         alt={`Preview ${index + 1}`}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
                       />
-                      {/* <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                      >
-                        ×
-                      </button> */}
                     </div>
                   ))}
                 </div>

@@ -19,18 +19,25 @@ interface RelatedProduct {
 interface PageProps {
     relatedProducts: RelatedProduct[];
     category: string;
+    image?: File | null;
 }
-const Categories = ({relatedProducts,category}:PageProps) => {
+const Categories = ({relatedProducts,category,image}:PageProps) => {
         
   return (
         <div className=' mt-36 md:mt-32 z-40 inset-0' >
                 {
                         (relatedProducts ?? []).length > 0 ? (<div className='flex flex-col ' >
-                        <div className='flex flex-col gap-4 mt-5'>
-                                <div className='flex'>
-                                        <h1 className='text-dark dark:text-white ' >Best Match for &ldquo;<span className='font-bold' >{decodeURIComponent(category)}</span>&ldquo;</h1>
+                        <div className='flex flex-col  mt-5'>
+                                <div className='flex gap-4 '>
+                                        <h1 className='text-dark dark:text-white ' >Best Match for </h1>
+                                                {image ? (
+                                <div className=' flex  '>
+                                        <img src={URL.createObjectURL(image)} alt="Uploaded" className=' w-16 h-16 md:w-32 md:h-32 rounded-md object-cover' />
+                                </div>
+                        ):(<div><span className='font-bold' >{decodeURIComponent(category)}</span> &ldquo;</div>)} 
                                 </div>
                         </div>
+                        
 
                 <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2'>
                 {relatedProducts?.map((product) => (

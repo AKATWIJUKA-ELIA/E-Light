@@ -8,8 +8,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader,  } from "@/components/ui/card"
 import { TiTick } from "react-icons/ti";
 import { useSendMail } from "@/hooks/useSendMail"
-
-const  FeedBack = ()=> {
+interface FeedModel {
+  onClose: () => void;
+}
+const  FeedBack: React.FC<FeedModel> = ({onClose})=> {
         const[sending, setsending] = useState(false)
         const [Alert, setAlert] = useState(false)
         const [Error, setError] = useState(false)
@@ -48,6 +50,7 @@ const  FeedBack = ()=> {
                 setsending(false)
                 setAlert(false)
                 setError(false)
+                onClose()
         },5000)
 }
 
@@ -56,9 +59,16 @@ const  FeedBack = ()=> {
 
   return (
         
-    <div id="contact" className=" flex flex-col-reverse md:flex md:flex-row mx-auto mt-5 p-4 mb-10 gap-[10%] border dark:border-white shadow-md  bg-gray-100 dark:bg-black/10 rounded-lg" >
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 " onClick={onClose} >
+                <div id="contact" className ="rounded-lg"
+                onClick={(e) => e.stopPropagation()}
+                //  style={{ backgroundImage: `url("images/imgSearch.png")`,
+                //         backgroundSize: 'cover',
+                //         backgroundPosition: 'center' }}
+                        >
        
-        <Card className="  md:w-[50%] text-white  shadow-md border-none shadow-black/50">
+        <div className="flex flex-col-reverse md:flex md:flex-row  bg-opacity-80  bg-blend-lighten  p-4  gap-[10%] border dark:border-white shadow-md  bg-neutral-300 dark:bg-black/10 rounded-lg" >
+                <Card className="  md:w-[50%] text-white   shadow-md border-none  shadow-black/50">
       <CardHeader>
         <div className="flex mx-auto">
         <div className="flex"> { Alert?( <h1 className=" text-inline  font-semi-bold flex text-green-500"> Your message has been sent we will reply ASAP  <TiTick className=" mt-1 text-xl text-green-500"/> </h1>):( <div className=" flex text-2xl font-bold  text-black dark:text-white ">Leave Us a Feed Back</div>)} </div>
@@ -120,23 +130,26 @@ const  FeedBack = ()=> {
             />
           </div>
 
-          <Button type="submit" className="w-full bg-gold text-black dark:text-white hover:bg-yellow-500">
+          <Button type="submit" disabled={formData.message.length<0 || formData.subject.length<0 || formData.email.length<0} className="w-full bg-gold text-black dark:text-white hover:bg-yellow-500">
             {sending? ("Sending Message"):("Send Message")}
           </Button>
         </form>
       </CardContent>
     </Card>
-     <div className="flex flex-col mt-2  justify-center items-center ">
+     <div className="flex flex-col mt-2   justify-center items-center " 
+    >
                 <h1 className="flex text-xl">
                         Let&apos;s Chat
                 </h1>
                 <div className="flex mt-5">
-                        <h1 className="text-xl">
+                        <h1 className="text-md">
                                 Leave a message we&apos;ll Respond ASAP
                         </h1>
                 </div>
         </div>
+        </div>
     </div>
+        </div>
   )
 }
 export default FeedBack;

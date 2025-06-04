@@ -19,7 +19,6 @@ const ImageSearchModal: React.FC<SearchModel> = ({ onClose,  }) => {
     const files = e.dataTransfer.files;
     const file = files && files[0];
     if (file && file.type.startsWith('image/')) {
-      console.log('Dropped file:', file);
       setFile([file])
       router.push("/imageResults")
             onClose()
