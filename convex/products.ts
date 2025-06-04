@@ -18,7 +18,10 @@ export const createProduct = mutation({
                 product_name: v.string(),
                 product_owner_id: v.string(),
                 product_price: v.string(),
-                product_embeddings:v.optional(v.array(v.number()))
+
+                product_embeddings:v.optional(v.array(v.number())),
+                product_image_embeddings:v.optional(v.array(v.number())),
+
                   }),
         },
         handler: async (ctx, args) => {
@@ -264,6 +267,37 @@ export const getImageUrl = query({
                         return products.filter((b)=> b!= null && b.score > 0.256);
                 }
               })
+
+              export const ImagesearchResults = internalQuery({
+                args:{
+                        results: v.array(
+                                v.object({
+                                        _id: v.id("products"),
+                                        _score: v.number()
+                                }),
+                        ),
+                },
+                handler: async (ctx, {results}) =>{
+                        const products = await Promise.all(
+                                results.map(async ({_id,_score}) =>{
+                                        const product = await ctx.db.get(_id);
+                                        if(!product) return null;
+                                        product.product_image = (await Promise.all(
+                                                        product.product_image.map(async (image: string) => {
+                                                                return await ctx.storage.getUrl(image);
+                                                        }
+                                                ))).filter((url): url is string => url !== null);
+                                        return {
+                                                ...product,
+                                                score:_score,
+                                        }
+                                }
+                        ))
+                        return products.filter((b)=> b!= null && b.score > 0.256);
+                }
+              })
+
+
               export const vectorSearch: ReturnType<typeof action> = action({
                 args: { embeding: v.array(v.number()) },
                 handler: async (ctx, args) => {
@@ -275,4 +309,19 @@ export const getImageUrl = query({
                                 internal.products.searchResults, { results }
                         );
                 }
+
+              });
+
+              export const ImagevectorSearch: ReturnType<typeof action> = action({
+                args: { embeding: v.array(v.number()) },
+                handler: async (ctx, args) => {
+                        const results = await ctx.vectorSearch("products", "product_image_embeddings", {
+                                vector: args.embeding,
+                                limit: 6
+                        });
+                        return await ctx.runQuery(
+                                internal.products.ImagesearchResults, { results }
+                        );
+                }
+
               });

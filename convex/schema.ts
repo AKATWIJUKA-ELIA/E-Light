@@ -60,9 +60,18 @@ export default defineSchema({
     product_owner_id: v.string(),
     product_price: v.string(),
     product_embeddings:v.optional(v.array(v.number())),
+
+    product_image_embeddings:v.optional(v.array(v.number())),
+
      _creationTime: v.number()
   }).vectorIndex("by_product_embeddings",{
         vectorField:"product_embeddings",
         dimensions:384
   })
+
+  .vectorIndex("product_image_embeddings",{
+        vectorField:"product_image_embeddings",
+        dimensions:512
+  })
+
 });
