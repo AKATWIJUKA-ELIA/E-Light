@@ -7,17 +7,12 @@ import { useRouter } from 'next/navigation';
 import useImageSearch from '@/hooks/useImageSearch'
 
 const ImageResults =  () => {
-        const router = useRouter()
         const { file } = useFile();
-              if (file && file.length<0) 
-            return (
-                router.push("/")
-            );
         const [data,setData] = useState([])
         const {EmbedImage} = useGenerateImageEmbeddings()
+        const router = useRouter()
         const imageSearch = useImageSearch();
         const ImageVectorSearch = imageSearch?.ImageVectorSearch;
- 
         
 useEffect(() => {
          
