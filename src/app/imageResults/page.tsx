@@ -13,11 +13,11 @@ const ImageResults =  () => {
         const router = useRouter()
         const imageSearch = useImageSearch();
         const ImageVectorSearch = imageSearch?.ImageVectorSearch;
-       if (file && file.length<0) {
+       if (file && file.length<0) 
             return (
                 router.push("/")
             );
-        }
+        
 useEffect(() => {
          
                 const ImageEmbed = async(files:File[]) =>{

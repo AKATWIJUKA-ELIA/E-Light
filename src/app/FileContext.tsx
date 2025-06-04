@@ -9,7 +9,7 @@ const FileContext = createContext<{
   setFile: () => {}
 });
 
-export const FileProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+export const FileProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [file, setFile] = useState<File[]>([]);
   return (
     <FileContext.Provider value={{ file, setFile }}>
