@@ -49,8 +49,8 @@ const ImageSearchModal: React.FC<SearchModel> = ({ onClose,  }) => {
         <div
       className={`mx-auto  px-5   fade-in w-72 h-48 gap-4 mt-36 border-2 border-dashed bg-gray-200 border-gray-300 rounded-3xl text-center p-4 cursor-pointer`}
       onClick={(e)=>{ fileInputRef.current?.click();e.stopPropagation()}}
-       onDragOver={(e) => {e.preventDefault(),setDragged(true)}}
-       onDragLeave={(e) =>{e.preventDefault(),setDragged(false)}}
+       onDragOver={(e) => {setDragged(true),e.preventDefault()}}
+       onDragLeave={(e) =>{setDragged(false),e.preventDefault()}}
       onDrop={handleDrop}
       style={{ backgroundImage: `url("images/imgSearch.png")`, backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
