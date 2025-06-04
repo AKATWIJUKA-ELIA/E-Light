@@ -22,6 +22,7 @@ import { MdPhotoCamera } from "react-icons/md";
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';
 
+
 const Header = () => {
         const cartitem = useAppSelector(state => state.cart.items);
         const User = useAppSelector(state =>state.user.user)
@@ -38,6 +39,7 @@ const Header = () => {
         // const {Embed} = useGenerateEmbeddings();
         // const vectorSearchHook = useVectorSearch();
         // const vectorSearch = vectorSearchHook?.vectorSearch;
+
         const [comingSoon, setcomingSoon] = useState(false)
         const carousel = Autoplay({ delay: 6000})
 
@@ -105,6 +107,7 @@ const Header = () => {
                 // =============================================================
                 
               }, [searchTerm, products]);
+
 
         const handleStickyNavbar = () => {
                 if (window.scrollY >= 100) {
