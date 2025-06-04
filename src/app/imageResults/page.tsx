@@ -3,14 +3,14 @@ import React, { useEffect, useState }  from 'react'
 import { useFile } from '../FileContext'
 import Categories from '@/components/Category/page'
 import useGenerateImageEmbeddings from '@/hooks/useGenerateImageEmbeddings'
-import { useRouter } from 'next/navigation'; 
+// import { useRouter } from 'next/navigation'; 
 import useImageSearch from '@/hooks/useImageSearch'
 
 const ImageResults =  () => {
         const { file } = useFile();
         const [data,setData] = useState([])
         const {EmbedImage} = useGenerateImageEmbeddings()
-        const router = useRouter()
+        // const router = useRouter()
         const imageSearch = useImageSearch();
         const ImageVectorSearch = imageSearch?.ImageVectorSearch;
         
