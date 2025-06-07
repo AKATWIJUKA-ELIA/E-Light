@@ -42,6 +42,7 @@ interface HeaderProps {
 ;
 }
 
+
 const Header = () => {
         const { data} = useData();
         const cartitem = useAppSelector(state => state.cart.items);
@@ -60,6 +61,7 @@ const Header = () => {
         // const {Embed} = useGenerateEmbeddings();
         // const vectorSearchHook = useVectorSearch();
         // const vectorSearch = vectorSearchHook?.vectorSearch;
+
         const [comingSoon, setcomingSoon] = useState(false)
         const carousel = Autoplay({ delay: 6000})
 
@@ -128,6 +130,7 @@ const Header = () => {
                 // =============================================================
                 
               }, [searchTerm, data.Products.product]);
+
 
         const handleStickyNavbar = () => {
                 if (window.scrollY >= 100) {

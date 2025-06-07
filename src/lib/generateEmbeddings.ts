@@ -10,6 +10,7 @@ export const generateEmbeddings = async (whatToEmbed:string) => {
 
      try {
         const response = await fetch('https://searchapi-latest.onrender.com/embed', {
+
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

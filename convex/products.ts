@@ -18,8 +18,10 @@ export const createProduct = mutation({
                 product_name: v.string(),
                 product_owner_id: v.string(),
                 product_price: v.string(),
+
                 product_embeddings:v.optional(v.array(v.number())),
                 product_image_embeddings:v.optional(v.array(v.number())),
+
                   }),
         },
         handler: async (ctx, args) => {
@@ -295,6 +297,7 @@ export const getImageUrl = query({
                 }
               })
 
+
               export const vectorSearch: ReturnType<typeof action> = action({
                 args: { embeding: v.array(v.number()) },
                 handler: async (ctx, args) => {
@@ -306,6 +309,7 @@ export const getImageUrl = query({
                                 internal.products.searchResults, { results }
                         );
                 }
+
               });
 
               export const ImagevectorSearch: ReturnType<typeof action> = action({
@@ -319,4 +323,5 @@ export const getImageUrl = query({
                                 internal.products.ImagesearchResults, { results }
                         );
                 }
+
               });
