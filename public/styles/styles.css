@@ -45,3 +45,23 @@
                   transform: scaleY(0);
                 }
               }
+
+.fades-in {
+      opacity: 0; /* Initial opacity for hidden state */
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+.fades-out {
+      opacity: 1; /* Initial opacity for hidden state */
+      animation: fadeout 0.5s ease-in-out forwards;
+    }
+    
+    @keyframes fadeout {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }

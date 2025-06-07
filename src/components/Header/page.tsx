@@ -5,13 +5,10 @@ import { Separator } from "@/components/ui/separator"
 import { BsList } from "react-icons/bs";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
-// import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import DropDownMenu from '../DropDownMenu/page';
 import ImageSearchModal from '../ImageSearchModal/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';
-import useGetCategories from '@/hooks/useGetCategories';
-import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
 import { Input } from '../ui/input';
 import SearchModel from '../SearchModel/page';
 import { BiX } from 'react-icons/bi';
@@ -19,22 +16,47 @@ import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { usePathname } from 'next/navigation';
 import { MdPhotoCamera } from "react-icons/md";
+import UserModel from '../UserModel/page';
+import { Id } from '../../../convex/_generated/dataModel';
+import {useData} from  '../../app/DataContext';
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';
+interface HeaderProps {
+  products:  {
+        _id: string;
+        approved: boolean;
+        product_cartegory: string;
+        product_condition: string;
+        product_description: string;
+        product_image: string[];
+        product_name: string;
+        product_owner_id: string;
+        product_price: string;
+        _creationTime: number;
+}[] | [];
+  categories: {
+        _id: Id<"cartegories">;
+        _creationTime: number;
+        cartegory: string;
+}[] | []
+;
+}
 
 const Header = () => {
+        const { data} = useData();
         const cartitem = useAppSelector(state => state.cart.items);
         const User = useAppSelector(state =>state.user.user)
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
-        const { data: categories } = useGetCategories();
-        const { data: products } = useGetApprovedProducts();
         const [Focused, setFocused] = useState(false)
          const [showlowerBar, setshowlowerBar] = useState(true)
         const [searchTerm, setSearchTerm] = useState('');
         const [showImageModal, setShowImageModal] = useState(false);
-        const [filteredProducts, setFilteredProducts] = useState(products);
+        const [filteredProducts, setFilteredProducts] = useState(data.Products.product || []);
+        const [UserDrawer, setUserDrawer] = useState(false);
+        
+        console.log("Data from DataContext :",data.Products)
         // const {Embed} = useGenerateEmbeddings();
         // const vectorSearchHook = useVectorSearch();
         // const vectorSearch = vectorSearchHook?.vectorSearch;
@@ -46,7 +68,7 @@ const Header = () => {
               };
         const pathname = usePathname()
         useEffect(()=>{
-                if(pathname ==="/sign-up" || pathname === "/sign-in"){
+                if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname === "/profile"){
                         setshowlowerBar(false)
                 }
                 else{
@@ -65,6 +87,7 @@ const Header = () => {
                 setFocused(false)
                 forceBlur()
                 setShowImageModal(false)
+                setUserDrawer(false)
         }
         const HandleComing = ()=>{
                 setcomingSoon(true)
@@ -74,7 +97,7 @@ const Header = () => {
                 setShowImageModal(true)
         }
         useEffect(() => {
-                const results = products?.filter((product) =>
+                const results = data.Products.product?.filter((product) =>
                   product.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase())
                 );
                 if(results && results.length>0){
@@ -104,7 +127,7 @@ const Header = () => {
                 // VECTOR SEARCH IMPLEMENTATIOIN
                 // =============================================================
                 
-              }, [searchTerm, products]);
+              }, [searchTerm, data.Products.product]);
 
         const handleStickyNavbar = () => {
                 if (window.scrollY >= 100) {
@@ -175,7 +198,7 @@ const Header = () => {
                         {User ? (
                                 <div className='flex' >
                                         <div className="hidden lg:flex  bg-white hover:bg-gray-200 transition duration-100 border border-gray-300 rounded-3xl">
-                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' >
+                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' onClick={()=>setUserDrawer(true)} >
                                                         {User.Username}
                                                 </div>
                                                 <div className='flex rounded-full' >
@@ -258,7 +281,7 @@ const Header = () => {
                                   { searchTerm.length>1 ? (<BiX onClick={HandleClose} className="absolute border right-8  bg-gray-100 text-dark text-3xl   rounded-lg"/>):(<MdPhotoCamera onClick={handleImageSearch}  className="absolute hover:cursor-pointer top-[45%]   right-12  bg-gray-100 text-black/70 dark:text-white/70 dark:bg-transparent text-3xl " />)}
         </div>
 
-        <div className='flex ml-5  md:ml-32 ' >
+        <div className='flex ml-5  md:ml-32  ' >
                 
         <div className='flex flex-nowrap gap-4 ' >
                 <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 dark:bg-transparent dark:hover:bg-gray-700'   onMouseOver={showDropDownMenu} >
@@ -270,13 +293,34 @@ const Header = () => {
                 </div>
         </div >
 
-        <div className='hidden md:flex   ml-5 gap-14 ' >
-              { categories?.slice(0, 7)?.map((cartegory,index)=>
-                <div key={index}  className=' rounded-xl   p-2   hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700' >
-                <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap' >{cartegory.cartegory}</Link>
-                </div>
-        )}
-              </div>
+        
+  {data ? (
+    data.Categories.categories?.slice(0, 8)?.map((cartegory, index) =>
+        <div className='hidden md:flex ml-5 gap-14 '>
+      <div
+        key={index}
+        className='rounded-xl p-2 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition'
+      >
+        <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap'>
+          {cartegory.cartegory}
+        </Link>
+      </div>
+      </div>
+    )
+  ) : (
+       
+   <div className='bg-black flex flex-wrap gap-2 p-4'>
+         {/* Show 8 animated placeholders while loading */}
+         {Array.from({ length: 8 }).map((_, idx) => (
+            <div
+              key={idx}
+              className="hidden md:flex rounded-xl p-2 bg-red-600 dark:bg-gray-700 animate-pulse w-24 h-6 my-1 shadow-sm"
+            />
+         ))}
+   </div>
+  )}
+
+
               <div className="flex md:hidden ml-3 w-[27%] h-8  bg-gray-100 dark:bg-transparent rounded-lg items-center justify-center p-1 overflow-hidden">
                         <Carousel
                         opts={{ align: "start", loop: true }}
@@ -284,7 +328,7 @@ const Header = () => {
                         className="w-full max-w-full h-6 "
                         >
                         <CarouselContent className="w-full">
-                        {categories?.map((cartegory, index) => (
+                        { data ? (data.Categories.categories?.map((cartegory, index) => (
                                 <CarouselItem key={index} className="w-full flex-shrink-0">
                                 <Link
                                 href={`/category/${cartegory.cartegory}`}
@@ -293,7 +337,9 @@ const Header = () => {
                                 {truncateString(cartegory.cartegory,10)}
                                 </Link>
                                 </CarouselItem>
-                        ))}
+                        ))):(
+                                <div className='animate-pulse' />
+                        )}
                         </CarouselContent>
                         </Carousel>
                 </div>
@@ -301,7 +347,7 @@ const Header = () => {
         </div>
            </>     
         ):(<div>
-
+ 
         </div>) }
        
 
@@ -310,6 +356,7 @@ const Header = () => {
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     {  searchTerm.length>1 ? (<SearchModel Focused={Focused} products={filteredProducts ||[]} onClose={HandleClose} />):("")}
     {  showImageModal ? (<ImageSearchModal  onClose={HandleClose} />):("")}
+    {  UserDrawer ? (<UserModel  onClose={HandleClose} />):("")}
     </>
   )
 }

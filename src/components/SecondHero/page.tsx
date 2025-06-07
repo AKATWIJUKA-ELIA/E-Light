@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from 'convex/react'
-import { api } from '../../../convex/_generated/api'
 import {
   Carousel,
   CarouselContent,
@@ -23,23 +21,23 @@ interface Product {
          _creationTime: number;
          _id: string;
        }
-const SecondHero = () => {
+         interface Products {
+        product: Product[] | [];
+      }
+const SecondHero = ({product}:Products) => {
         const carousel = Autoplay({ delay: 5000}) // 3s delay, keep playing after user interaction
         const carousel1 = Autoplay({ delay: 3300})
         const carousel2 = Autoplay({ delay: 4000})
         const carousel3 = Autoplay({ delay: 6000})
 
         const [products, setproducts] = useState<Product[]>([]);
-                const product = useQuery(api.products.getProducts)
-                
                 useEffect(() => {
-                        if (product) {
+                        if (product && product.length > 0) {
                             setproducts(product)
                         }
                         //   console.log("data is ",products)
                 }, [product]);
 
-                
   return (
 
 <div className='flex flex-col dark:bg-black ' >

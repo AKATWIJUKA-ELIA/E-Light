@@ -15,10 +15,12 @@ interface Product {
   _creationTime: number;
   _id: string;
 }
+interface Products {
+        productsData: Product[] | [];
+      }
 
-const Main = () => {
+const Main =  ({productsData}:Products) => {
   const [products, setProducts] = useState<Product[]>([])
-  const {data:productsData} = useGetApprovedProducts()
 
 useEffect(() => {
                             if (productsData) {

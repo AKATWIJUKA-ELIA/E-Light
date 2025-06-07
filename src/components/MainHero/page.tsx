@@ -10,9 +10,8 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 import Link from 'next/link';
-import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
 
-interface Product {
+interface Products {
         approved: boolean;
          product_cartegory: string;
          product_condition: string;
@@ -24,13 +23,16 @@ interface Product {
          _creationTime: number;
          _id: string;
        }
+      interface Product {
+        product: Products[] | [];
+      }
 
-const MainHero = () => {
-        const carousel1 = Autoplay({ delay: 9000})
-        const carousel = Autoplay({ delay: 10000})
-        const [products, setproducts] = useState<Product[]>([]);
-        const {data:product} = useGetApprovedProducts()
-        const images = [
+const MainHero = ({ product }: Product) => {
+  const carousel1 = Autoplay({ delay: 9000 });
+  const carousel = Autoplay({ delay: 10000 });
+  const [products, setproducts] = useState<Products[]>([]);
+  // const {data:product} = useGetApprovedProducts()
+  const images = [
                 {
                 name:"Heror",
                 src:"https://cheery-cod-687.convex.cloud/api/storage/115cc2cd-79c0-4b3c-bb84-86df5f76e138",
@@ -51,10 +53,10 @@ const MainHero = () => {
         ]
                         
 useEffect(() => {
-                            if (product) {
-                                setproducts(product);
-                            }
-                        }, [product]);
+  if (product.length > 0) {
+    setproducts(product as Products[]);
+  }
+}, [product]);
         
   return (
         <div className= ' bg-pink-200   mt-32 grid grid-cols-1  '  >
@@ -98,20 +100,19 @@ useEffect(() => {
           <CardContent className="relative  bg-transparent flex rounded-lg items-center justify-center p-6 h-36 overflow-hidden w-full">
             {/* Image */}
             <Link href={`/category/${product.product_cartegory}`} >
-            <Image
-              src={product.product_image[0]??""}
-        //       height={100}
-        //       width={450}
-              alt={product.product_name}
-             fill
-             className='object-cover w-full h-full rounded-lg '
-            />
-            
+              <Image
+                src={product.product_image[0] ?? ""}
+                //       height={100}
+                //       width={450}
+                alt={product.product_name}
+                fill
+                className='object-cover w-full h-full rounded-lg '
+              />
 
-            {/* Text Overlay */}
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
-              {product.product_name}
-            </div>
+              {/* Text Overlay */}
+              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
+                {product.product_name}
+              </div>
             </Link>
           </CardContent>
         </Card>

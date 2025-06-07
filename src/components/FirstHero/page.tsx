@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
-import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
 
 
 interface Product {
@@ -25,11 +24,12 @@ interface Product {
          _creationTime: number;
          _id: string;
        }
-
-const FisrtHero = () => {
+       interface Products {
+        product: Product[] | [];
+      }
+const FisrtHero =  ({product}:Products) => {
         const carousel = Autoplay({ delay: 10000})
                 const [products, setproducts] = useState<Product[]>([]);
-                const {data:product} = useGetApprovedProducts()
                         
                         useEffect(() => {
                             if (product) {
