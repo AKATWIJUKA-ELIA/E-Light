@@ -21,27 +21,6 @@ import { Id } from '../../../convex/_generated/dataModel';
 import {useData} from  '../../app/DataContext';
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';
-interface HeaderProps {
-  products:  {
-        _id: string;
-        approved: boolean;
-        product_cartegory: string;
-        product_condition: string;
-        product_description: string;
-        product_image: string[];
-        product_name: string;
-        product_owner_id: string;
-        product_price: string;
-        _creationTime: number;
-}[] | [];
-  categories: {
-        _id: Id<"cartegories">;
-        _creationTime: number;
-        cartegory: string;
-}[] | []
-;
-}
-
 
 const Header = () => {
         const { data} = useData();
