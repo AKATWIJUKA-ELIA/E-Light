@@ -17,7 +17,6 @@ import Autoplay from 'embla-carousel-autoplay';
 import { usePathname } from 'next/navigation';
 import { MdPhotoCamera } from "react-icons/md";
 import UserModel from '../UserModel/page';
-import { Id } from '../../../convex/_generated/dataModel';
 import {useData} from  '../../app/DataContext';
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';

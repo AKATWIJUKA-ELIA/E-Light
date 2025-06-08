@@ -23,7 +23,7 @@ interface Products {
         _id: Id<"cartegories">;
         _creationTime: number;
         cartegory: string;
-}[]
+}
 interface Categories {
         categories: Category[] | [];
 }
