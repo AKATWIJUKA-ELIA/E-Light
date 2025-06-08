@@ -24,9 +24,6 @@ interface Product {
          _creationTime: number;
          _id: string;
        }
-         interface Products {
-        product: Product[] | [];
-      }
 const SecondHero = () => {
         const carousel = Autoplay({ delay: 5000}) // 3s delay, keep playing after user interaction
         const carousel1 = Autoplay({ delay: 3300})
@@ -38,7 +35,7 @@ const SecondHero = () => {
         const [products, setproducts] = useState<Product[]>([]);
                 useEffect(() => {
                         if (data.Products.product && data.Products.product.length > 0) {
-                            setproducts(data.Products.product as Product[]);
+                            setproducts(data.Products.product);
                         }
                         //   console.log("data is ",products)
                 }, [data.Products.product]);

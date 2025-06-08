@@ -26,9 +26,6 @@ interface Product {
          _creationTime: number;
          _id: string;
        }
-       interface Products {
-        product: Product[] | [];
-      }
 const FisrtHero =  () => {
         const { data} = useData();
         const carousel = Autoplay({ delay: 10000})

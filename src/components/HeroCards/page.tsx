@@ -3,8 +3,6 @@ import Image from 'next/image'
 import { MdAddShoppingCart } from "react-icons/md";
 import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
-import { CardContent } from '../ui/card';
-import { Oval } from 'react-loader-spinner';
 import { useEffect, useState } from 'react';
 interface Product {
         approved: boolean;

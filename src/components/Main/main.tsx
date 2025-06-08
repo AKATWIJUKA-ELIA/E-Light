@@ -16,9 +16,7 @@ interface Product {
   _creationTime: number;
   _id: string;
 }
-interface Products {
-        productsData: Product[] | [];
-      }
+
 
 const Main =  () => {
         const {data} = useData()
