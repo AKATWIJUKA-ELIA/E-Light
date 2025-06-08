@@ -30,7 +30,7 @@ interface Product {
 const SecondHero = () => {
         const carousel = Autoplay({ delay: 5000}) // 3s delay, keep playing after user interaction
         const carousel1 = Autoplay({ delay: 3300})
-        const carousel2 = Autoplay({ delay: 4000})
+        const carousel2 = Autoplay({ delay: 4500})
         const carousel3 = Autoplay({ delay: 6000})
         const { data } = useData();
                 // console.log("data is ",product)
@@ -67,7 +67,7 @@ const SecondHero = () => {
 
   <div className="flex-1 min-w-0 flex justify-center  ">
     {products && products.length>0 ?(
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
       <CarouselContent>
         {products.map((product) => (
           <CarouselItem key={product._id} >
@@ -81,7 +81,7 @@ const SecondHero = () => {
       <CarouselNext />
     </Carousel>
     ):(
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full">
       <CarouselContent>
         {Array.from({ length: 7 }).map((_, idx) => (
     <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
@@ -117,7 +117,7 @@ const SecondHero = () => {
         {/* Carousel 4 */}
  <div className="flex-1 min-w-0 flex justify-center  ">
     {products && products.length>0 ?(
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full">
       <CarouselContent>
         {products.map((product) => (
           <CarouselItem key={product._id} >
@@ -195,7 +195,7 @@ const SecondHero = () => {
       <CarouselNext />
     </Carousel>
     ):(
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel3]} className="w-full">
       <CarouselContent>
         {Array.from({ length: 7 }).map((_, idx) => (
     <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
@@ -231,7 +231,7 @@ const SecondHero = () => {
         {/* Carousel 4 */}
 <div className="flex-1 min-w-0 flex justify-center  ">
     {products && products.length>0 ?(
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
       <CarouselContent>
         {products.map((product) => (
           <CarouselItem key={product._id} >
@@ -245,7 +245,7 @@ const SecondHero = () => {
       <CarouselNext />
     </Carousel>
     ):(
-        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
       <CarouselContent>
         {Array.from({ length: 7 }).map((_, idx) => (
     <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">

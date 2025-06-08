@@ -25,9 +25,7 @@ interface Products {
          _creationTime: number;
          _id: string;
        }
-      interface Product {
-        product: Products[] | [];
-      }
+
 
 const MainHero = () => {
   const carousel1 = Autoplay({ delay: 9000 });
@@ -56,7 +54,7 @@ const MainHero = () => {
                         
 useEffect(() => {
   if (data.Products.product.length > 0) {
-    setproducts(data.Products.product as Products[]);
+    setproducts(data.Products.product );
   }
 }, [data.Products.product]);
         
@@ -133,7 +131,7 @@ useEffect(() => {
     <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
       <div className="p-1">
         <Card className="h-auto bg-transparent w-full">
-          <CardContent className="relative  bg-gray-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+          <CardContent className="relative  bg-blue-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
               <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
                         <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
                         <div className="flex">
