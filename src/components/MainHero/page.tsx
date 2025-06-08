@@ -10,6 +10,8 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 import Link from 'next/link';
+import {useData} from  '../../app/DataContext';
+import { Oval } from 'react-loader-spinner';
 
 interface Products {
         approved: boolean;
@@ -27,11 +29,11 @@ interface Products {
         product: Products[] | [];
       }
 
-const MainHero = ({ product }: Product) => {
+const MainHero = () => {
   const carousel1 = Autoplay({ delay: 9000 });
   const carousel = Autoplay({ delay: 10000 });
   const [products, setproducts] = useState<Products[]>([]);
-  // const {data:product} = useGetApprovedProducts()
+ const { data} = useData();
   const images = [
                 {
                 name:"Heror",
@@ -53,10 +55,10 @@ const MainHero = ({ product }: Product) => {
         ]
                         
 useEffect(() => {
-  if (product.length > 0) {
-    setproducts(product as Products[]);
+  if (data.Products.product.length > 0) {
+    setproducts(data.Products.product as Products[]);
   }
-}, [product]);
+}, [data.Products.product]);
         
   return (
         <div className= ' bg-pink-200   mt-32 grid grid-cols-1  '  >
@@ -91,7 +93,8 @@ useEffect(() => {
         <CarouselNext />
         </Carousel>
 
-        <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+        {products && products.length > 0 ? (
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
         <CarouselContent className=''>
   {products.map((product, index) => (
     <CarouselItem key={index} className=" basis-[200px] md:basis-[300px] shrink-0">
@@ -123,6 +126,38 @@ useEffect(() => {
         <CarouselPrevious />
         <CarouselNext />
         </Carousel>
+        ):(
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+        <CarouselContent className=''>
+  {Array.from({ length: 7 }).map((_, idx) => (
+    <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
+      <div className="p-1">
+        <Card className="h-auto bg-transparent w-full">
+          <CardContent className="relative  bg-gray-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+              <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
+                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex">
+                                <Oval
+                                        visible={true}
+                                        height="30"
+                                        width="30"
+                                        color="#0000FF"
+                                        secondaryColor="#FFD700"
+                                        ariaLabel="oval-loading"
+                                        />
+                        </div>
+                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                </div>
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
+  ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+        </Carousel>
+        )}
  
         </div>
   )

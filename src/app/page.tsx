@@ -6,19 +6,19 @@ import { Provider } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react";
 import {store,persistor} from "@/store/store"
 import MainHero from "@/components/MainHero/page";
-import Header from "@/components/Header/page";
-import useGetCategories from '@/hooks/useGetCategories';
 import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
-import { Oval } from "react-loader-spinner";
 export default function Home() {
-        const { data: categories } = useGetCategories();
         const { data: products } = useGetApprovedProducts();
   return (
         <Provider store={store}>
                 <PersistGate persistor={persistor}>
-                {categories && products ? (
+                        <MainHero />
+                        <SecondHero />
+                        <FisrtHero />
+                        <Main />
+                {/* {categories && products ? (
                         <div className="bg-white dark:bg-black overflow-x-hidden fades-in">
-                                <MainHero  product={products||[]}/>
+                                <MainHero />
                                 <SecondHero product={products||[]}/>
                                 <FisrtHero product={products||[]}/>
                                 <Main productsData={products||[]}/>
@@ -49,7 +49,7 @@ export default function Home() {
                                 </div>
                         </div>
                         )
-                }
+                } */}
                 </PersistGate>
  </Provider>
   );

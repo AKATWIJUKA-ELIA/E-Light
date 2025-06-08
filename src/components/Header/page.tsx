@@ -297,31 +297,27 @@ const Header = () => {
         </div >
 
         
-  {data ? (
-    data.Categories.categories?.slice(0, 8)?.map((cartegory, index) =>
-        <div className='hidden md:flex ml-5 gap-14 '>
+<div className='hidden md:flex ml-5 gap-14'>
+  {data.Categories.categories && data.Categories.categories.length>0 ? (
+    data.Categories.categories?.slice(0, 7).map((cartegory, index) =>
       <div
         key={index}
-        className='rounded-xl p-2 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition'
+        className='rounded-xl p-2 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700'
       >
         <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap'>
           {cartegory.cartegory}
         </Link>
       </div>
-      </div>
     )
   ) : (
-       
-   <div className='bg-black flex flex-wrap gap-2 p-4'>
-         {/* Show 8 animated placeholders while loading */}
-         {Array.from({ length: 8 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="hidden md:flex rounded-xl p-2 bg-red-600 dark:bg-gray-700 animate-pulse w-24 h-6 my-1 shadow-sm"
-            />
-         ))}
-   </div>
+    Array.from({ length: 7 }).map((_, idx) => (
+      <div
+        key={idx}
+        className=" cursor-pointer rounded-xl p-2 bg-gray-200 dark:bg-gray-700 animate-pulse w-24 h-6 my-1"
+      />
+    ))
   )}
+</div>
 
 
               <div className="flex md:hidden ml-3 w-[27%] h-8  bg-gray-100 dark:bg-transparent rounded-lg items-center justify-center p-1 overflow-hidden">

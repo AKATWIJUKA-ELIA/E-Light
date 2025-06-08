@@ -1,7 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import HeroCard from '../HeroCards/page'
-import useGetApprovedProducts from '@/hooks/useGetApprovedProducts'
+import { useData } from '@/app/DataContext'
+import ProductSkeleton from '../ProductsSkeleton/page';
 
 interface Product {
   approved: boolean;
@@ -19,20 +20,27 @@ interface Products {
         productsData: Product[] | [];
       }
 
-const Main =  ({productsData}:Products) => {
+const Main =  () => {
+        const {data} = useData()
   const [products, setProducts] = useState<Product[]>([])
 
 useEffect(() => {
-                            if (productsData) {
-                                setProducts(productsData);
+                            if (data.Products.product && data.Products.product.length>0 ) {
+                                setProducts(data.Products.product);
                             }
-                        }, [productsData]);
+                        }, [data.Products.product]);
 
   return (
     <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2 dark:bg-black '>
-      {products.map((product) => (
+      {products&&products.length>0?( products.map((product) => (
         <HeroCard key={product._id} product={product} />
-      ))}
+      ))):(
+        Array.from({ length: 15 }).map((_, idx) => (
+    <div key={idx}>
+        <ProductSkeleton/>
+    </div>
+  ))
+      )}
     </div>
   )
 }
