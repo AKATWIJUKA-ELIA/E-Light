@@ -10,12 +10,10 @@ export default function Home() {
   return (
         <Provider store={store}>
                 <PersistGate persistor={persistor}>
-                <div className="bg-white dark:bg-black overflow-x-hidden">
-                <MainHero/>
-                <SecondHero/>
-                <FisrtHero/>
-                <Main/>
-                </div>
+                        <MainHero />
+                        <SecondHero />
+                        <FisrtHero />
+                        <Main />
                 </PersistGate>
  </Provider>
   );

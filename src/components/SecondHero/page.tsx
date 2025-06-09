@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from 'convex/react'
-import { api } from '../../../convex/_generated/api'
 import {
   Carousel,
   CarouselContent,
@@ -11,6 +9,9 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import '../../../public/styles/styles.css'
 import HeroCard from '../HeroCards/page'
+import {useData} from  '../../app/DataContext';
+import { Card, CardContent } from '../ui/card'
+import { Oval } from 'react-loader-spinner'
 interface Product {
         approved: boolean;
          product_cartegory: string;
@@ -26,20 +27,19 @@ interface Product {
 const SecondHero = () => {
         const carousel = Autoplay({ delay: 5000}) // 3s delay, keep playing after user interaction
         const carousel1 = Autoplay({ delay: 3300})
-        const carousel2 = Autoplay({ delay: 4000})
+        const carousel2 = Autoplay({ delay: 4500})
         const carousel3 = Autoplay({ delay: 6000})
+        const { data } = useData();
+                // console.log("data is ",product)
 
         const [products, setproducts] = useState<Product[]>([]);
-                const product = useQuery(api.products.getProducts)
-                
                 useEffect(() => {
-                        if (product) {
-                            setproducts(product)
+                        if (data.Products.product && data.Products.product.length > 0) {
+                            setproducts(data.Products.product);
                         }
                         //   console.log("data is ",products)
-                }, [product]);
+                }, [data.Products.product]);
 
-                
   return (
 
 <div className='flex flex-col dark:bg-black ' >
@@ -61,8 +61,10 @@ const SecondHero = () => {
     </div>
  <div className=' flex  gap-4  justify-center  w-full '>
           {/* Carousel 1 */}
+
   <div className="flex-1 min-w-0 flex justify-center  ">
-    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full ">
+    {products && products.length>0 ?(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
       <CarouselContent>
         {products.map((product) => (
           <CarouselItem key={product._id} >
@@ -75,11 +77,44 @@ const SecondHero = () => {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
+    ):(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full">
+      <CarouselContent>
+        {Array.from({ length: 7 }).map((_, idx) => (
+    <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
+      <div className="p-1">
+        <Card className="h-auto bg-transparent w-full">
+          <CardContent className="relative  bg-gray-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+              <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
+                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex">
+                                <Oval
+                                        visible={true}
+                                        height="30"
+                                        width="30"
+                                        color="#0000FF"
+                                        secondaryColor="#FFD700"
+                                        ariaLabel="oval-loading"
+                                        />
+                        </div>
+                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                </div>
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
+  ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+    )}
   </div>
 
         {/* Carousel 4 */}
  <div className="flex-1 min-w-0 flex justify-center  ">
-    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+    {products && products.length>0 ?(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel]} className="w-full">
       <CarouselContent>
         {products.map((product) => (
           <CarouselItem key={product._id} >
@@ -92,6 +127,38 @@ const SecondHero = () => {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
+    ):(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+      <CarouselContent>
+        {Array.from({ length: 7 }).map((_, idx) => (
+    <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
+      <div className="p-1">
+        <Card className="h-auto bg-transparent w-full">
+          <CardContent className="relative  bg-gray-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+              <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
+                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex">
+                                <Oval
+                                        visible={true}
+                                        height="30"
+                                        width="30"
+                                        color="#0000FF"
+                                        secondaryColor="#FFD700"
+                                        ariaLabel="oval-loading"
+                                        />
+                        </div>
+                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                </div>
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
+  ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+    )}
   </div>
  </div>
 
@@ -109,9 +176,10 @@ const SecondHero = () => {
 
 <div className='flex gap-4  justify-center  w-full'>
           {/* Carousel 1 */}
-  <div className="flex-1 min-w-0 flex justify-center ">
-    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
-    <CarouselContent>
+  <div className="flex-1 min-w-0 flex justify-center  ">
+    {products && products.length>0 ?(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel1]} className="w-full">
+      <CarouselContent>
         {products.map((product) => (
           <CarouselItem key={product._id} >
             <div className="p-1">
@@ -123,12 +191,45 @@ const SecondHero = () => {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
+    ):(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel3]} className="w-full">
+      <CarouselContent>
+        {Array.from({ length: 7 }).map((_, idx) => (
+    <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
+      <div className="p-1">
+        <Card className="h-auto bg-transparent w-full">
+          <CardContent className="relative  bg-gray-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+              <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
+                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex">
+                                <Oval
+                                        visible={true}
+                                        height="30"
+                                        width="30"
+                                        color="#0000FF"
+                                        secondaryColor="#FFD700"
+                                        ariaLabel="oval-loading"
+                                        />
+                        </div>
+                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                </div>
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
+  ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+    )}
   </div>
 
         {/* Carousel 4 */}
-<div className="flex-1 min-w-0 flex justify-center ">
-    <Carousel opts={{ align: "center", loop: true }} plugins={[carousel3]}  className="w-full">
-    <CarouselContent>
+<div className="flex-1 min-w-0 flex justify-center  ">
+    {products && products.length>0 ?(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
+      <CarouselContent>
         {products.map((product) => (
           <CarouselItem key={product._id} >
             <div className="p-1">
@@ -140,6 +241,38 @@ const SecondHero = () => {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
+    ):(
+        <Carousel opts={{ align: "center", loop: true }} plugins={[carousel2]} className="w-full">
+      <CarouselContent>
+        {Array.from({ length: 7 }).map((_, idx) => (
+    <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
+      <div className="p-1">
+        <Card className="h-auto bg-transparent w-full">
+          <CardContent className="relative  bg-gray-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+              <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
+                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex">
+                                <Oval
+                                        visible={true}
+                                        height="30"
+                                        width="30"
+                                        color="#0000FF"
+                                        secondaryColor="#FFD700"
+                                        ariaLabel="oval-loading"
+                                        />
+                        </div>
+                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                </div>
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
+  ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+    )}
   </div>
 </div>
 

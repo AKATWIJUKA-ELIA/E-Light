@@ -10,9 +10,10 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 import Link from 'next/link';
-import useGetApprovedProducts from '@/hooks/useGetApprovedProducts';
+import {useData} from  '../../app/DataContext';
+import { Oval } from 'react-loader-spinner';
 
-interface Product {
+interface Products {
         approved: boolean;
          product_cartegory: string;
          product_condition: string;
@@ -25,12 +26,13 @@ interface Product {
          _id: string;
        }
 
+
 const MainHero = () => {
-        const carousel1 = Autoplay({ delay: 9000})
-        const carousel = Autoplay({ delay: 10000})
-        const [products, setproducts] = useState<Product[]>([]);
-        const {data:product} = useGetApprovedProducts()
-        const images = [
+  const carousel1 = Autoplay({ delay: 9000 });
+  const carousel = Autoplay({ delay: 10000 });
+  const [products, setproducts] = useState<Products[]>([]);
+ const { data} = useData();
+  const images = [
                 {
                 name:"Heror",
                 src:"https://cheery-cod-687.convex.cloud/api/storage/115cc2cd-79c0-4b3c-bb84-86df5f76e138",
@@ -51,10 +53,10 @@ const MainHero = () => {
         ]
                         
 useEffect(() => {
-                            if (product) {
-                                setproducts(product);
-                            }
-                        }, [product]);
+  if (data.Products.product.length > 0) {
+    setproducts(data.Products.product );
+  }
+}, [data.Products.product]);
         
   return (
         <div className= ' bg-pink-200   mt-32 grid grid-cols-1  '  >
@@ -89,7 +91,8 @@ useEffect(() => {
         <CarouselNext />
         </Carousel>
 
-        <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+        {products && products.length > 0 ? (
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
         <CarouselContent className=''>
   {products.map((product, index) => (
     <CarouselItem key={index} className=" basis-[200px] md:basis-[300px] shrink-0">
@@ -98,20 +101,19 @@ useEffect(() => {
           <CardContent className="relative  bg-transparent flex rounded-lg items-center justify-center p-6 h-36 overflow-hidden w-full">
             {/* Image */}
             <Link href={`/category/${product.product_cartegory}`} >
-            <Image
-              src={product.product_image[0]??""}
-        //       height={100}
-        //       width={450}
-              alt={product.product_name}
-             fill
-             className='object-cover w-full h-full rounded-lg '
-            />
-            
+              <Image
+                src={product.product_image[0] ?? ""}
+                //       height={100}
+                //       width={450}
+                alt={product.product_name}
+                fill
+                className='object-cover w-full h-full rounded-lg '
+              />
 
-            {/* Text Overlay */}
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
-              {product.product_name}
-            </div>
+              {/* Text Overlay */}
+              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-xl font-semibold p-4">
+                {product.product_name}
+              </div>
             </Link>
           </CardContent>
         </Card>
@@ -122,6 +124,38 @@ useEffect(() => {
         <CarouselPrevious />
         <CarouselNext />
         </Carousel>
+        ):(
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+        <CarouselContent className=''>
+  {Array.from({ length: 7 }).map((_, idx) => (
+    <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
+      <div className="p-1">
+        <Card className="h-auto bg-transparent w-full">
+          <CardContent className="relative  bg-blue-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+              <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
+                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex">
+                                <Oval
+                                        visible={true}
+                                        height="30"
+                                        width="30"
+                                        color="#0000FF"
+                                        secondaryColor="#FFD700"
+                                        ariaLabel="oval-loading"
+                                        />
+                        </div>
+                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                </div>
+          </CardContent>
+        </Card>
+      </div>
+    </CarouselItem>
+  ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+        </Carousel>
+        )}
  
         </div>
   )

@@ -1,24 +1,24 @@
+import { Oval } from "react-loader-spinner";
+import { CardContent } from "../ui/card";
+
 const ProductSkeleton = () => {
         return (
-          <div className="bg-white flex flex-col rounded-lg shadow-md overflow-hidden animate-pulse">
-            {/* Image Skeleton */}
-            <div className="relative w-full h-64 bg-gray-200"></div>
-      
-            {/* Product Details Skeleton */}
-            <div className="p-4 flex flex-col gap-2">
-              {/* Product Name */}
-              <div className="h-5 bg-gray-300 rounded w-3/4"></div>
-      
-              {/* Product Description */}
-              <div className="h-4 bg-gray-300 rounded w-full"></div>
-      
-              {/* Footer (Price & Date) */}
-              <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
-                <div className="h-5 bg-gray-300 rounded w-1/3"></div>
-                <div className="h-5 bg-gray-300 rounded w-1/4"></div>
-              </div>
-            </div>
-          </div>
+          <CardContent className="relative  bg-gray-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
+              <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
+                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex">
+                                <Oval
+                                        visible={true}
+                                        height="30"
+                                        width="30"
+                                        color="#0000FF"
+                                        secondaryColor="#FFD700"
+                                        ariaLabel="oval-loading"
+                                        />
+                        </div>
+                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                </div>
+          </CardContent>
         );
       };
       export default ProductSkeleton;
