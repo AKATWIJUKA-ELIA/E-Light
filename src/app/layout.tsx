@@ -9,8 +9,8 @@ import { FileProvider } from "./FileContext";
 import { DataProvider } from "./DataContext";
 import { ModeToggle } from "@/components/Dark-light/page";
 import FeedBackButton from "@/components/FeedBackButton/page";
-import { Footer } from "@/components/Footer/page";
 import Header from "@/components/Header/page";
+import ConditionalFooter from "@/components/ConditionalFooter/page"
 
 export const metadata: Metadata = {
   title: "ShopCheap",
@@ -41,7 +41,7 @@ export default function RootLayout({
                 {children}
                 <FeedBackButton/>
                 <ModeToggle />
-                <Footer/>
+                <ConditionalFooter/>
                 </FileProvider>
                   </DataProvider>
               </ThemeProvider> 

@@ -123,7 +123,7 @@ const AddProduct =  () => {
         const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
-                  const TIMEOUT_MS = 10000; // ⏱ 10 seconds
+                  const TIMEOUT_MS = 30000; // ⏱ 10 seconds
 
                 const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
                         return Promise.race([
