@@ -21,10 +21,8 @@ const DeleteAllModal: React.FC<DeleteModalProps> = ({ isdeleteall, onClose, prod
 
         const productNames = Products?.map(product => product?.product_name).join(" , ") || "Products"
           const HandleDeleteAll=(checked:string[])=>{
-                console.log(checked)
                 try{
                 checked.forEach(element => {
-                        
                         Delete(element)
                 });
                 onClose()
@@ -43,8 +41,6 @@ const DeleteAllModal: React.FC<DeleteModalProps> = ({ isdeleteall, onClose, prod
                 alert(error)
                 return
         }}
-
-
 
 
   if (!isdeleteall) return null

@@ -48,7 +48,7 @@ const Header = () => {
               };
         const pathname = usePathname()
         useEffect(()=>{
-                if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname === "/profile"){
+                if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname === "/profile" || pathname.includes("administrator")){
                         setshowlowerBar(false)
                 }
                 else{

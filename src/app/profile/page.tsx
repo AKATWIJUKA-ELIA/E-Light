@@ -7,7 +7,7 @@ import { SectionCards } from "../../components/section-cards"
 import { SiteHeader } from "../../components/site-header"
 import { SidebarInset, SidebarProvider } from "../../components/ui/sidebar"
 import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
-// import { useUser } from "@clerk/nextjs"
+import PendingDataTable  from "@/components/pendingDataTable"
 import { useAppSelector } from "@/hooks"
 
 const Profile=()=> {
@@ -30,9 +30,17 @@ const Profile=()=> {
                 <ChartAreaInteractive />
                 <PieChart approved={approved} pending={pending} />
               </div>
-              <div className=" px-4 " id="all" >
+
+              <div className="flex flex-col gap-4 px-4 lg:px-6">
+                <div className=" px-4 " id="all" >
                 <DataTable  products={products ?? [] } />
               </div>
+
+              <div className=" px-4 " id="pending" >
+                <PendingDataTable  products={products ?? [] } />
+              </div>
+              </div>
+              
             </div>
           </div>
         </div>

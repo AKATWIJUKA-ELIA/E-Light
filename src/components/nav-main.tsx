@@ -36,7 +36,7 @@ export function NavMain() {
                 {
                         title: "Pending",
                         icon: MdOutlinePending as LucideIcon,
-                        link:"/",
+                        link:"#pending",
                 },
                 {
                         title: "Failed",

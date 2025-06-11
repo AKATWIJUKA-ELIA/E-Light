@@ -161,7 +161,7 @@ export function ChartAreaInteractive() {
   })
 
   return (
-    <Card className="@container/card">
+    <Card className="@container/card dark:bg-dark w-full ">
       <CardHeader className="relative">
         <CardTitle>Total Visitors</CardTitle>
         <CardDescription>
