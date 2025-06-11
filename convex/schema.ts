@@ -59,13 +59,6 @@ export default defineSchema({
     product_name: v.string(),
     product_owner_id: v.string(),
     product_price: v.string(),
-    product_likes:v.optional(v.number()),
-    product_dislikes:v.optional(v.number()),
-    product_comments:v.optional(v.array(v.object({
-        user_id: v.string(),
-        comment: v.string(),
-        _creationTime: v.number()
-    }))),
     product_embeddings:v.optional(v.array(v.number())),
     product_image_embeddings:v.optional(v.array(v.number())),
 
@@ -78,6 +71,15 @@ export default defineSchema({
   .vectorIndex("product_image_embeddings",{
         vectorField:"product_image_embeddings",
         dimensions:512
-  })
-
+  }),
+reviews : defineTable({
+    product_id: v.string(),
+    reviewer_id: v.string(),
+    title: v.string(),
+    rating: v.number(),
+    review: v.string(),
+     verified: v.optional(v.boolean()),
+    _creationTime: v.number()
+}).index("by_product_id", ["product_id"])
+.index("by_reviewer_id", ["reviewer_id"])
 });

@@ -16,8 +16,6 @@ interface Product {
          product_owner_id: string;
          product_price: string;
          _creationTime: number;
-         product_likes?: number | 0;
-         product_dislikes?: number | 0;
          _id: string;
        }
        interface HeroCardProps {
