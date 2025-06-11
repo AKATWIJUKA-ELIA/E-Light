@@ -12,7 +12,7 @@ export const generateImageEmbeddings = async (files:File[]) => {
             formData.append('files', file);
         });
      try {
-        const response = await fetch('https://searchapi2.onrender.com/image', {
+        const response = await fetch('http://127.0.0.1:8000/embed/image', {
                 method: 'POST',
                 body: formData
         }); 

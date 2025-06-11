@@ -1,12 +1,12 @@
 "use client"
 
-import { MailIcon, PlusCircleIcon, type LucideIcon } from "lucide-react"
+import {type LucideIcon } from "lucide-react"
+import { IoAddCircle } from "react-icons/io5";
 import {LayoutDashboardIcon} from "lucide-react"
 import { HomeIcon } from "lucide-react"
 import { FcApproval,FcCancel  } from "react-icons/fc";
 import { MdAlignHorizontalLeft,MdOutlinePending  } from "react-icons/md";
 
-import { Button } from "@/components/ui/button"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -42,6 +42,11 @@ export function NavMain() {
                         title: "Failed",
                         icon: FcCancel as LucideIcon,
                         link:"/",
+                },
+                {
+                        title: "Sell",
+                        icon: IoAddCircle  as LucideIcon,
+                        link:"/post",
                 }
         ]
   return (

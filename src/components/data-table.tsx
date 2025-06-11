@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 import EditModal from "./EditModal/page";
 import DeleteModal from "./DeleteModal/page";
 import { useEffect, useState } from "react";
+import DeleteAllModal from "./DeleteAll/page";
 interface Product {
         _id:string,
   approved: boolean,
@@ -32,9 +33,11 @@ interface DataTableProps {
 const DataTable: React.FC<DataTableProps> = ({ products }) => {
         const [isvisible, setisvisible] = useState(false);
         const [isdelete, setisdelete] = useState(false);
+        const [isdeleteall, setisdeleteall] = useState(false);
         const [productId, setproductId] = useState("");
         const [checked, setchecked] = useState<string[]>([]);
         const [allchecked, setallchecked] = useState(false);
+
 
         const HandleCheckboxChange=(ProductId:string)=>{
                 if(!checked.includes(ProductId)){
@@ -71,16 +74,11 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                 setproductId(ProductId)
                 setisdelete(true)
         }
+
         const HandelDeleteAll=(checked:string[])=>{
                 console.log(checked)
-                checked.forEach(element => {
-                        
-                        HandleDelete(element)
-                });
-                setchecked([]);
-                setallchecked(false);
+                setisdeleteall(true)
         }
-
 
 
         return (
@@ -168,6 +166,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
               </div>
                 <EditModal isvisible={isvisible} onClose={() => setisvisible(false)} productId={productId} />
                 <DeleteModal isdelete={isdelete} onClose={() => setisdelete(false)} productId={productId} />
+                        <DeleteAllModal isdeleteall={isdeleteall} onClose={() => setisdeleteall(false)} productIds={checked} />
                 </>
               
         )
