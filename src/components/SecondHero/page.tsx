@@ -23,6 +23,9 @@ interface Product {
          product_price: string;
          _creationTime: number;
          _id: string;
+         product_likes?: number | 0;
+         product_dislikes?: number | 0;
+         product_comments?: { user_id: string; comment: string; _creationTime: number }[];
        }
 const SecondHero = () => {
         const carousel = Autoplay({ delay: 5000}) // 3s delay, keep playing after user interaction

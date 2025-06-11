@@ -59,8 +59,14 @@ export default defineSchema({
     product_name: v.string(),
     product_owner_id: v.string(),
     product_price: v.string(),
+    product_likes:v.optional(v.number()),
+    product_dislikes:v.optional(v.number()),
+    product_comments:v.optional(v.array(v.object({
+        user_id: v.string(),
+        comment: v.string(),
+        _creationTime: v.number()
+    }))),
     product_embeddings:v.optional(v.array(v.number())),
-
     product_image_embeddings:v.optional(v.array(v.number())),
 
      _creationTime: v.number()

@@ -4,6 +4,8 @@ import { MdAddShoppingCart } from "react-icons/md";
 import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
 import { useEffect, useState } from 'react';
+// import { AiTwotoneLike,AiTwotoneDislike  } from "react-icons/ai";
+import { CiBookmark } from "react-icons/ci";
 interface Product {
         approved: boolean;
          product_cartegory: string;
@@ -14,6 +16,8 @@ interface Product {
          product_owner_id: string;
          product_price: string;
          _creationTime: number;
+         product_likes?: number | 0;
+         product_dislikes?: number | 0;
          _id: string;
        }
        interface HeroCardProps {
@@ -39,6 +43,13 @@ const HeroCard = ({ product }: HeroCardProps) => {
             key={productData._id}
             className="bg-transparent flex flex-col rounded-md shadow-m overflow-hidden shadow-xl hover:bg-yellow-100 border  transition-transform duration-500   dark:hover:bg-gray-900 dark:border-black"
           >
+
+                <div className="fixed z-50 items-center justify-between p-4">
+                  <div className="flex items-">
+                    <CiBookmark className="text-3xl bg-gray-500 rounded-md  text-green-500 hover:text-gray-700 cursor-pointer" />
+                    share
+                  </div>
+                </div>
             {/* Product Image */}
             <Link href={`/product/${productData._id}`} className="w-full">
               <div className="relative w-full h-48 flex items-center justify-center bg-transparent transition-transform duration-200 hover:scale-105">

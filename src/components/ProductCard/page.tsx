@@ -200,6 +200,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         </div>
 
       </div>
+      
     </div>
   );
 };

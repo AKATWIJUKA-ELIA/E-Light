@@ -15,6 +15,8 @@ interface Product {
   product_price: string;
   _creationTime: number;
   _id: string;
+  product_likes?: number | 0;
+  product_dislikes?: number | 0;
 }
 
 
