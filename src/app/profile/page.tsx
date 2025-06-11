@@ -9,24 +9,36 @@ import { SidebarInset, SidebarProvider } from "../../components/ui/sidebar"
 import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
 import PendingDataTable  from "@/components/pendingDataTable"
 import { useAppSelector } from "@/hooks"
+import { useState } from "react"
+
+import { FaAngleRight,FaAngleLeft  } from "react-icons/fa6";
 
 const Profile=()=> {
         const User = useAppSelector((state)=>state.user.user)
         const { data: products, } = useGetProductsByOwner(User?.User_id||'');
         const approved = products?.filter((product) => product.approved).length || 0;
         const pending = products?.filter((product) => !product.approved).length || 0;
+        const [isopen, setisOpen] = useState(true);
 
-        
+        const toggleSidebar = () => {
+          setisOpen(prev => !prev);
+        };
   return (
-    <SidebarProvider  >
+    <SidebarProvider open={isopen} onOpenChange={setisOpen}  >
       <AppSidebar   />
+        <button
+          className={`fixed hidden md:flex  top-24 ${isopen? "left-60":"left-4"} z-50 p-2 bg-blue-400  text-white rounded-full shadow-lg shadow-black/50 border  hover:bg-blue-600 dark:bg-white dark:text-black transition-colors`}
+          onClick={toggleSidebar}
+        >
+          {isopen ? <FaAngleLeft /> : <FaAngleRight />}
+        </button>
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
-              <div className=" flex gap-3 px-4 lg:px-6">
+              <div className=" flex flex-col md:flex-row @2xl:flex  gap-3 px-4 lg:px-6">
                 <ChartAreaInteractive />
                 <PieChart approved={approved} pending={pending} />
               </div>
