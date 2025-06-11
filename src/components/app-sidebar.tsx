@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {
-  ArrowUpCircleIcon,
   BarChartIcon,
   CameraIcon,
   ClipboardListIcon,
@@ -19,7 +18,7 @@ import {
   UsersIcon,
 } from "lucide-react"
 
-import { NavDocuments } from "@/components/nav-documents"
+// import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
@@ -29,7 +28,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
+//   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
