@@ -3,7 +3,7 @@ import { api } from "../../convex/_generated/api";
 
 const useGetUserById = (id: string) => {
     const Customer = useQuery(api.users.GetCustomerById, id ? { id } : "skip"); // Prevent calling hook with an empty ID
-
+    console.log("Customer data:", id);
     return {
         user: Customer, 
         loading: Customer === undefined, // Convex returns `undefined` while loading

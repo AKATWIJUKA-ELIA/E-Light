@@ -9,7 +9,9 @@ export const createReview = mutation({
     title: v.string(),
     rating: v.number(),
     review: v.string(),
-    verified: v.optional(v.boolean()), // Optional field for verification status
+    verified: v.optional(v.boolean()), 
+    helpful: v.optional(v.number()), 
+    notHelpful: v.optional(v.number()), 
   },
   handler: async (ctx, args) => {
         try {

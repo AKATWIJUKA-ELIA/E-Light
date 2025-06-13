@@ -23,7 +23,7 @@ interface Product {
       }
 
 const HeroCard = ({ product }: HeroCardProps) => {
-        console.log("product", product)
+        // console.log("product", product)
          const addToCart = useAddToCart()
          const [productData, setProductData] = useState<Product | null>(product)
         const truncateString = (text: string, maxLength: number): string => {

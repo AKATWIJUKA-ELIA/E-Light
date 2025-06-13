@@ -51,7 +51,7 @@ export const DataProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         Products: { product: products },
         Categories: { categories: categories }
       });
-      console.log("Products fetched:", products);
+//       console.log("Products fetched:", products);
     }
   }, [products, categories]);
 

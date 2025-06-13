@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,16 +9,16 @@ import { Star, ThumbsUp, ThumbsDown, ChevronDown, ChevronUp, Check } from "lucid
 import { Separator } from "@/components/ui/separator"
 
 interface Review {
-  id: string
+  _id: string
   rating: number
+  reviewer_id: string
   title: string
-  content: string
-  author: string
-  date: string
-  verified: boolean
-  helpful: number
-  notHelpful: number
-  images?: string[]
+  review: string
+  author?: string
+  _creationTime: number
+  verified?: boolean
+  helpful?: number
+  notHelpful?: number
 }
 
 interface ReviewsListProps {
@@ -28,8 +27,10 @@ interface ReviewsListProps {
 }
 
 export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
+        // console.log("ReviewsList", reviews)
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({})
   const [votedReviews, setVotedReviews] = useState<Record<string, boolean>>({})
+
 
   const toggleExpand = (reviewId: string) => {
     setExpandedReviews((prev) => ({
@@ -48,9 +49,9 @@ export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
     }))
   }
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateValue: string | number) => {
     const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
-    return new Date(dateString).toLocaleDateString(undefined, options)
+    return new Date(dateValue).toLocaleDateString(undefined, options)
   }
 
   const getInitials = (name: string) => {
@@ -73,16 +74,16 @@ export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
   return (
     <div className="space-y-6">
       {reviews.map((review) => {
-        const isExpanded = expandedReviews[review.id]
-        const hasVoted = votedReviews[review.id]
-        const isLongContent = review.content.length > 300
+        const isExpanded = expandedReviews[review._id]
+        const hasVoted = votedReviews[review._id]
+        const isLongContent = review.review.length > 300
 
         return (
-          <Card key={review.id} className="overflow-hidden">
+          <Card key={review._id} className="overflow-hidden dark:bg-gray-800">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
                 <Avatar className="h-10 w-10">
-                  <AvatarFallback>{getInitials(review.author)}</AvatarFallback>
+                  <AvatarFallback>{getInitials(review?.author ?? "")}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -94,7 +95,7 @@ export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
                       </Badge>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                  <div className="flex items-center gap-2 text-sm text-gray-500  mb-3">
                     <div className="flex">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
@@ -105,31 +106,31 @@ export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
                         />
                       ))}
                     </div>
-                    <span>{formatDate(review.date)}</span>
+                    <span>{formatDate(review._creationTime)}</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{review.title}</h3>
                   <div className="prose prose-sm max-w-none">
                     {isLongContent && !isExpanded ? (
                       <>
-                        <p>{review.content.slice(0, 300)}...</p>
+                        <p>{review.review.slice(0, 300)}...</p>
                         <Button
                           variant="ghost"
                           size="sm"
                           className="mt-1 h-auto p-0 font-medium"
-                          onClick={() => toggleExpand(review.id)}
+                          onClick={() => toggleExpand(review._id)}
                         >
                           Read more <ChevronDown className="ml-1 h-4 w-4" />
                         </Button>
                       </>
                     ) : (
                       <>
-                        <p>{review.content}</p>
+                        <p>{review.review}</p>
                         {isLongContent && (
                           <Button
                             variant="ghost"
                             size="sm"
                             className="mt-1 h-auto p-0 font-medium"
-                            onClick={() => toggleExpand(review.id)}
+                            onClick={() => toggleExpand(review._id)}
                           >
                             Show less <ChevronUp className="ml-1 h-4 w-4" />
                           </Button>
@@ -141,28 +142,10 @@ export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
                   <Separator className="my-4" />
 
                   <div className="flex items-center gap-6">
-                    <div className="text-sm">Was this review helpful?</div>
-                    <div className="flex items-center gap-3">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className={`flex items-center gap-1 ${hasVoted ? "opacity-50 cursor-not-allowed" : ""}`}
-                        onClick={() => handleVote(review.id, true)}
-                        disabled={hasVoted}
-                      >
-                        <ThumbsUp className="h-4 w-4" />
-                        <span>{review.helpful}</span>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className={`flex items-center gap-1 ${hasVoted ? "opacity-50 cursor-not-allowed" : ""}`}
-                        onClick={() => handleVote(review.id, false)}
-                        disabled={hasVoted}
-                      >
-                        <ThumbsDown className="h-4 w-4" />
-                        <span>{review.notHelpful}</span>
-                      </Button>
+                    <div className="text-sm">
+                        <h1 className="flex items-center gap-1  text-gray-400">
+                                 <span className="text-gray-500 font-semibold ">Note: </span>Reviews are based on user feedback and may not reflect the overall product quality.
+                        </h1>
                     </div>
                   </div>
                 </div>

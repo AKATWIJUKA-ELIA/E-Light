@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Star, } from "lucide-react"
 import useCreateReview from "@/hooks/useCreateReview"
 import { Label } from "../ui/label"
+import { useAppSelector } from "@/hooks"
 
 interface ReviewFormProps {
   productId: string
@@ -19,19 +20,21 @@ export function ReviewForm({ productId, productName }: ReviewFormProps) {
   const [review, setReview] = useState("")
   const [hoveredRating, setHoveredRating] = useState(0)
   const { CreateReview } = useCreateReview()
+  const user = useAppSelector((state) => state.user.user)
 
-  const handleSubmit = () => {
-        if (rating === 0 || !reviewTitle || !review) {
-          alert("Please fill in all fields and select a rating.")
-          return
-        }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (rating === 0 || !reviewTitle || !review) {
+      alert("Please fill in all fields and select a rating.")
+      return
+    }
         const reviewData = {
           product_id: productId,
           rating: rating,
           title: reviewTitle,
           review: review,
-          reviewer_id: "user-id-placeholder", // Replace with actual user ID
-          verified: true, // Set based on your logic
+          reviewer_id: user?.User_id || "",
+          verified: true,
         }
         CreateReview(reviewData)
         // Reset form fields
@@ -39,12 +42,9 @@ export function ReviewForm({ productId, productName }: ReviewFormProps) {
         setReviewTitle("")
         setReview("")       
   }
-  
-
-
 
   return (
-    <div className="bg-white p-6 rounded-lg border">
+    <div className="bg-white dark:bg-gray-700 p-6 rounded-lg border">
       <h3 className="text-xl  font-medium mb-6">Review <span className="font-semibold">{productName}</span></h3>
       <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -95,7 +95,7 @@ export function ReviewForm({ productId, productName }: ReviewFormProps) {
       
           <div className="flex justify-end gap-3">
             <Button type="submit"
-            disabled={!reviewTitle || !review}
+            disabled={!reviewTitle || !review|| rating === 0}
             >Submit Review
             </Button>
           </div>

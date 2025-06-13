@@ -45,7 +45,7 @@ export function ReviewsSummary({ productName,averageRating, totalReviews, distri
       </div>
 
       <div className="space-y-3">
-        <h4 className="font-medium">Rating Distribution</h4>
+        <h4 className="font-medium">Rating </h4>
         {distribution.map((item) => (
           <div key={item.rating} className="flex items-center gap-2">
             <Button
