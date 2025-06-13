@@ -40,7 +40,7 @@ const ImageSearchModal: React.FC<SearchModel> = ({ onClose,  }) => {
     const files = e.target.files;
     const file = files && files[0];
     if (file && file.type.startsWith('image/')) {
-      console.log('Selected file:', file);
+//       console.log('Selected file:', file);
       setFile([file])
        router.push("/imageResults")
       onClose()

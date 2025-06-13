@@ -14,7 +14,7 @@ const useValidateUsername = () => {
 
   const CheckUsername = async (username: string):Promise<Result>=> {
     try {
-        console.log("username",username)
+        // console.log("username",username)
        await CheckUserName({username});
       setUsernameError(false); // Clear any previous error
       return { success: true };

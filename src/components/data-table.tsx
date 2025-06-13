@@ -76,7 +76,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
         }
 
         const HandelDeleteAll=(checked:string[])=>{
-                console.log(checked)
+                // console.log(checked)
                 setisdeleteall(true)
         }
 

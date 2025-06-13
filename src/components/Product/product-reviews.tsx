@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PenLine } from "lucide-react"
 import useGetReviewsByProduct from "@/hooks/useGetReviewsByProduct"
 import useGetAllCustomers from "@/hooks/useGetAllCustomers"
+import { useAppSelector } from "@/hooks"
 
 // Mock review data - in a real app, this would come from your API
 // export const mockReviews = [
@@ -125,6 +126,8 @@ interface ProductReviewsProps {
 
 export function ProductReview({ productId, productName }: ProductReviewsProps) {
   const {data:Reviews} = useGetReviewsByProduct(productId)
+  const user = useAppSelector((state) => state.user.user)
+  console.log(user)
 //   console.log("Reviews", Reviews)
     type Review = {
         author?: string
@@ -141,6 +144,7 @@ export function ProductReview({ productId, productName }: ProductReviewsProps) {
 
     }
     const [reviews, setReviews] = useState<Review[]>([])
+        const [loggedIn, setLoggedIn] = useState(false)
     const {data:Customers} = useGetAllCustomers()
     useEffect(()=>{
          if (Reviews && Reviews.length > 0) {
@@ -204,6 +208,12 @@ export function ProductReview({ productId, productName }: ProductReviewsProps) {
   const handleSortChange = (sortBy: string) => {
     setReviews(sortReviews(reviews, sortBy) || [])
   }
+useEffect(()=>{
+         if (!user) {
+          setLoggedIn(false)
+        }
+        setLoggedIn(true)
+},[user])
 
   const handleReviewSubmit = (newReview: any) => {
     // In a real app, you would send this to your API
@@ -241,7 +251,8 @@ export function ProductReview({ productId, productName }: ProductReviewsProps) {
         <div className="flex flex-col gap-3 sm:flex-row justify-between items-center mb-6 ">
           <TabsList className="flex gap-4 mx-auto">
             <TabsTrigger value="all-reviews">All Reviews</TabsTrigger>
-            <TabsTrigger value="write-review"><PenLine className="mr-2 h-4 w-4" /> Write a Review</TabsTrigger>
+            {loggedIn ? (<TabsTrigger value="write-review"><PenLine className="mr-2 h-4 w-4" /> Write a Review</TabsTrigger>):(
+            <TabsTrigger className="text-red-700 border border-red-700"  value="login"> Login to write a review</TabsTrigger>)}
           </TabsList>
         </div>
 

@@ -76,7 +76,7 @@ const pendingDataTable: React.FC<pendingDataTable> = ({ products }) => {
         }
 
         const HandelDeleteAll=(checked:string[])=>{
-                console.log(checked)
+                // console.log(checked)
                 setisdeleteall(true)
         }
 
