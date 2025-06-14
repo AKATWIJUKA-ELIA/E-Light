@@ -11,7 +11,7 @@ interface User {
 const useSaveUser = ()=>{
         const dispatch = useAppDispatch();
         return (user:User)=>{
-                console.log("user",user)
+                // console.log("user",user)
                 dispatch(SaveUser(user))
         }
 }

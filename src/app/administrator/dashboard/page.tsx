@@ -1,5 +1,5 @@
 "use client"
-// import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/admin-chart-area-interactive"
 import DataTable  from "@/components/admin-data-table"
 import SectionCards  from "../../../components/admin-section-cards"
@@ -9,6 +9,7 @@ import { SidebarInset, SidebarProvider } from "../../../components/ui/sidebar"
 import useGetAllProducts from "@/hooks/useGetAllProducts"
 // import { useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
+import PieChart from "@/components/pie-chart"
 interface Product {
         _id:string,
   approved: boolean,
@@ -32,7 +33,8 @@ const Profile=()=> {
         const [ApprovedProducts, setApprovedProducts] = useState<products>([])
         const [PendingProducts, setPendingProducts] = useState<products>([])
         const [currentcard,setcurrentcard] = useState("")
-        // console.log("Products are: ", products ?? "No Products")
+        const approved = Allproducts?.filter((product) => product.approved).length || 0;
+        const pending = Allproducts?.filter((product) => !product.approved).length || 0;
         useEffect(()=>{
                 setProducts(Allproducts ? Allproducts : [])
 
@@ -64,15 +66,16 @@ const Profile=()=> {
         
   return (
     <SidebarProvider >
-      {/* <AppSidebar variant="inset" /> */}
+      <AppSidebar  />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards ClickedCard={(value)=>setcurrentcard(value)} />
-              <div className="px-4 lg:px-6">
+              <div className="  flex gap-3 px-4 lg:px-6">
                 <ChartAreaInteractive />
+                <PieChart approved={approved} pending={pending} />
               </div>
               <div className="border-2 rounded-lg">
                 <DataTable  products={Products ?? [] } />

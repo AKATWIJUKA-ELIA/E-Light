@@ -155,6 +155,7 @@ export const getImageUrl = query({
         handler: async (ctx, args) => {
           const products = await ctx.db
             .query("products")
+            .withIndex("by_product_category", q => q.eq("product_cartegory", args.category))
             .filter((q) => q.and(
                 q.eq(q.field("product_cartegory"), args.category),
                 q.eq(q.field("approved"),true)

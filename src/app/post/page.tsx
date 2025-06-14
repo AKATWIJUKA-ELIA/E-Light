@@ -123,13 +123,16 @@ const AddProduct =  () => {
         const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
-                  const TIMEOUT_MS = 10000; // ⏱ 10 seconds
+                  setErrorProduct("");
+                  setsuccessProduct("");
+                  const TIMEOUT_MS = 20000; 
 
                 const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
                         return Promise.race([
                           promise,
                           new Promise<T>((_, reject) =>
                             setTimeout(() => reject(new Error("Request timed out")), ms)
+                          
                           ),
                         ]);
                       };
@@ -280,6 +283,7 @@ https://shopcheap.vercel.app/</h3>
                         setErrorProduct("")
                         setsuccessProduct("")
                     },4000)
+                    return;
                   }
                 };
 

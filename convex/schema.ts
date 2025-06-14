@@ -60,11 +60,11 @@ export default defineSchema({
     product_owner_id: v.string(),
     product_price: v.string(),
     product_embeddings:v.optional(v.array(v.number())),
-
     product_image_embeddings:v.optional(v.array(v.number())),
 
      _creationTime: v.number()
-  }).vectorIndex("by_product_embeddings",{
+  }).index("by_product_category", ["product_cartegory"])
+  .vectorIndex("by_product_embeddings",{
         vectorField:"product_embeddings",
         dimensions:384
   })
@@ -72,6 +72,17 @@ export default defineSchema({
   .vectorIndex("product_image_embeddings",{
         vectorField:"product_image_embeddings",
         dimensions:512
-  })
-
+  }),
+reviews : defineTable({
+    product_id: v.string(),
+    reviewer_id: v.string(),
+    title: v.string(),
+    rating: v.number(),
+    review: v.string(),
+     verified: v.optional(v.boolean()),
+    _creationTime: v.number(),
+    helpful: v.optional(v.number()),
+    notHelpful: v.optional(v.number()),
+}).index("by_product_id", ["product_id"])
+.index("by_reviewer_id", ["reviewer_id"])
 });

@@ -9,7 +9,7 @@
 export const generateEmbeddings = async (whatToEmbed:string) => {
 
      try {
-        const response = await fetch('https://searchapi-latest.onrender.com/embed', {
+        const response = await fetch('http://127.0.0.1:8000/embed/text', {
 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -21,7 +21,7 @@ export const generateEmbeddings = async (whatToEmbed:string) => {
         if (res.status!=200) {
                 throw new Error('Failed to generate Embeddings');
         }
-        console.log("Embeddings are :",res.embeddings ) 
+        // console.log("Embeddings are :",res.embeddings ) 
         return { success: true, status: res.status, data: res.embeddings };
 } catch (error) {
         console.error('An Error occurred while generating Embeddings:', error);

@@ -27,17 +27,17 @@ interface Product {
   product_price: string,
   _creationTime:number
 }
-interface DataTableProps {
+interface pendingDataTable {
   products: Product[];
 }
-const DataTable: React.FC<DataTableProps> = ({ products }) => {
+const pendingDataTable: React.FC<pendingDataTable> = ({ products }) => {
         const [isvisible, setisvisible] = useState(false);
         const [isdelete, setisdelete] = useState(false);
         const [isdeleteall, setisdeleteall] = useState(false);
         const [productId, setproductId] = useState("");
         const [checked, setchecked] = useState<string[]>([]);
         const [allchecked, setallchecked] = useState(false);
-
+        const newProducts = products.filter(product => !product.approved);
 
         const HandleCheckboxChange=(ProductId:string)=>{
                 if(!checked.includes(ProductId)){
@@ -47,7 +47,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                 }
         }
 
-        const allIds = products.map(product => product._id);
+        const allIds = newProducts.map(product => product._id);
         const allSelected = allIds.every(id => checked.includes(id));
         useEffect(()=>{
                         if (allSelected) {
@@ -83,9 +83,9 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
 
         return (
                 <>
-                <div className="w-full  overflow-x-auto   rounded-lg border px-2 ">
+                <div className="w-full  overflow-x-auto rounded-lg border px-2 ">
                         <div className="flex items-center justify-between p-4 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
-                                <TableCaption className="text-lg font-semibold">All Products</TableCaption>
+                                <TableCaption className="text-lg font-semibold">Pending Products</TableCaption>
                                 <Button 
                                 className="bg-red-400 hover:bg-red-700 transition-transform duration-500" 
                                 onClick={() => HandelDeleteAll(checked)}
@@ -93,7 +93,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                                         Delete Selected
                                 </Button>
                         </div>
-                {products?( 
+                {newProducts?( 
                         <Table className="min-w-[800px]">
                   
                   <TableHeader>
@@ -115,7 +115,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {products.map((product) => (
+                    {newProducts.map((product) => (
                         
                       <TableRow key={product._id}>
                         <TableCell className="font-medium"><Checkbox
@@ -171,4 +171,4 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
               
         )
       }
-      export default DataTable;
+      export default pendingDataTable;

@@ -7,6 +7,7 @@ import useGetProductsByOwnerApproved from '@/hooks/useGetProductsByOwnerApproved
 import useGetRelatedProducts from '@/hooks/useGetRelated';
 import HeroCard from '@/components/HeroCards/page';
 import { CardContent } from "@/components/ui/card"
+import ProductReviews from '@/components/ProductReviews/page';
 import {
   Carousel,
   CarouselContent,
@@ -46,6 +47,7 @@ const Product = ({params}:PageProps) => {
   return (
 <div className='mt-32'>
         <ProductCard product={product} />
+        <ProductReviews product={product} />
         <div className='md:ml-10 '>
                 <div className='ml-10 font-bold text-2xl'>
                         <h2>Related Products</h2>

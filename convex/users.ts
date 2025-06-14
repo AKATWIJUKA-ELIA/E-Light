@@ -119,7 +119,12 @@ export const GetCustomerByTokenAction = action({
                     },
                     })
 
-                    
+export const GetAllCustomers = query({
+              handler: async (ctx, ) => {
+                     const Customers = await ctx.db.query("customers").collect() 
+                    return Customers
+                    },
+                    })
         export const AuthenticateUser = action({
                 args:{email:v.string(), password:v.string()},
                 handler:async(ctx,args): Promise<Response>=>{
