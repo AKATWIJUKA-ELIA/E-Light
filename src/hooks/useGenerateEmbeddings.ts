@@ -5,7 +5,7 @@ const  useGenerateEmbeddings = () =>{
         const Embed = async (whatToEmbed:string)=>{
                 try{
                         const embeddings = await generateEmbeddings(whatToEmbed);
-                        console.log("Embeds :",embeddings)
+                        // console.log("Embeds :",embeddings)
                         if(!embeddings.success){
                                 return {success:false,status:embeddings.status, data:embeddings.data}
                         }

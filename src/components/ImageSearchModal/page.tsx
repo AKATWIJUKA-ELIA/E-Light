@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation'; 
 import { useFile } from '@/app/FileContext';
+import { Oval } from 'react-loader-spinner';
 
 interface SearchModel {
   onClose: () => void;
@@ -19,7 +20,15 @@ const ImageSearchModal: React.FC<SearchModel> = ({ onClose,  }) => {
     const files = e.dataTransfer.files;
     const file = files && files[0];
     if (file && file.type.startsWith('image/')) {
-      setFile([file])
+      setFile([file]);
+      <Oval
+                visible={true}
+                height="70"
+                width="70"
+                color="#0000FF"
+                secondaryColor="#FFD700"
+                ariaLabel="oval-loading"
+                />
       router.push("/imageResults")
             onClose()
       
@@ -31,7 +40,7 @@ const ImageSearchModal: React.FC<SearchModel> = ({ onClose,  }) => {
     const files = e.target.files;
     const file = files && files[0];
     if (file && file.type.startsWith('image/')) {
-      console.log('Selected file:', file);
+//       console.log('Selected file:', file);
       setFile([file])
        router.push("/imageResults")
       onClose()

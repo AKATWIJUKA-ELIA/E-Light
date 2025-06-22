@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header/page";
-import { Footer } from "@/components/Footer/page";
 import ReduxProvider from "./ReduxProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/Dark-light/page";
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import FeedBackButton from "@/components/FeedBackButton/page";
 import { FileProvider } from "./FileContext";
+import { DataProvider } from "./DataContext";
+import { ModeToggle } from "@/components/Dark-light/page";
+import FeedBackButton from "@/components/FeedBackButton/page";
+import Header from "@/components/Header/page";
+import ConditionalFooter from "@/components/ConditionalFooter/page"
 
 export const metadata: Metadata = {
   title: "ShopCheap",
@@ -34,13 +35,15 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               > 
+              <DataProvider>
               <FileProvider>
-                <Header />
+                <Header  />
                 {children}
                 <FeedBackButton/>
                 <ModeToggle />
-                <Footer/>
+                <ConditionalFooter/>
                 </FileProvider>
+                  </DataProvider>
               </ThemeProvider> 
             </ReduxProvider>
           </ClerkProvider>

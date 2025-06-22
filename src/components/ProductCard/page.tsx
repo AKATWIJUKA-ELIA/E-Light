@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         const carousel = Autoplay({ delay: 10000})
         const[Copied,setCopied] = useState(false)
         const { user } = useGetUserById(product?.product_owner_id)
-        console.log("User is ",user)
+        // console.log("User is ",user)
         const UserEmail = user?.email||""
         const UserName = user?.username|| ""
         const PhoneNumber = user?.phoneNumber|| ""
@@ -200,6 +200,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         </div>
 
       </div>
+      
     </div>
   );
 };
