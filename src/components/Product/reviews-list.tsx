@@ -29,7 +29,6 @@ interface ReviewsListProps {
 export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
         // console.log("ReviewsList", reviews)
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({})
-  const [votedReviews, setVotedReviews] = useState<Record<string, boolean>>({})
 
 
   const toggleExpand = (reviewId: string) => {
@@ -39,15 +38,7 @@ export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
     }))
   }
 
-  const handleVote = (reviewId: string, isHelpful: boolean) => {
-    if (votedReviews[reviewId]) return
 
-    onVote(reviewId, isHelpful)
-    setVotedReviews((prev) => ({
-      ...prev,
-      [reviewId]: true,
-    }))
-  }
 
   const formatDate = (dateValue: string | number) => {
     const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
@@ -75,7 +66,6 @@ export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
     <div className="space-y-6">
       {reviews.map((review) => {
         const isExpanded = expandedReviews[review._id]
-        const hasVoted = votedReviews[review._id]
         const isLongContent = review.review.length > 300
 
         return (

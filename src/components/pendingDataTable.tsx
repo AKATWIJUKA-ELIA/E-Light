@@ -75,7 +75,7 @@ const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
                 setisdelete(true)
         }
 
-        const HandelDeleteAll=(checked:string[])=>{
+        const HandelDeleteAll=()=>{
                 // console.log(checked)
                 setisdeleteall(true)
         }
@@ -88,7 +88,7 @@ const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
                                 <TableCaption className="text-lg font-semibold">Pending Products</TableCaption>
                                 <Button 
                                 className="bg-red-400 hover:bg-red-700 transition-transform duration-500" 
-                                onClick={() => HandelDeleteAll(checked)}
+                                onClick={() => HandelDeleteAll()}
                                 disabled={checked.length === 0}>
                                         Delete Selected
                                 </Button>
