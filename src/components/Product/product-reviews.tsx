@@ -10,6 +10,7 @@ import { PenLine } from "lucide-react"
 import useGetReviewsByProduct from "@/hooks/useGetReviewsByProduct"
 import useGetAllCustomers from "@/hooks/useGetAllCustomers"
 import { useAppSelector } from "@/hooks"
+import Link from "next/link"
 
 
 interface ProductReviewsProps {
@@ -20,7 +21,7 @@ interface ProductReviewsProps {
 export function ProductReview({ productId, productName }: ProductReviewsProps) {
   const {data:Reviews} = useGetReviewsByProduct(productId)
   const user = useAppSelector((state) => state.user.user)
-  console.log(user)
+//   console.log(user)
 //   console.log("Reviews", Reviews)
     type Review = {
         author?: string
@@ -101,12 +102,13 @@ export function ProductReview({ productId, productName }: ProductReviewsProps) {
   const handleSortChange = (sortBy: string) => {
     setReviews(sortReviews(reviews, sortBy) || [])
   }
-useEffect(()=>{
-         if (!user) {
-          setLoggedIn(false)
-        }
-        setLoggedIn(true)
-},[user])
+useEffect(() => {
+  if (!user || !user.User_id || user.User_id.length === 0) {
+    setLoggedIn(false)
+  } else {
+    setLoggedIn(true)
+  }
+}, [user])
 
 
   return (
@@ -116,7 +118,7 @@ useEffect(()=>{
           <TabsList className="flex gap-4 mx-auto">
             <TabsTrigger value="all-reviews">All Reviews</TabsTrigger>
             {loggedIn ? (<TabsTrigger value="write-review"><PenLine className="mr-2 h-4 w-4" /> Write a Review</TabsTrigger>):(
-            <TabsTrigger className="text-red-700 border border-red-700"  value="login"> Login to write a review</TabsTrigger>)}
+            <TabsTrigger className="text-red-700 border border-red-700"  value="login"> <Link href="/sign-in" >Login to write a review</Link></TabsTrigger>)}
           </TabsList>
         </div>
 
