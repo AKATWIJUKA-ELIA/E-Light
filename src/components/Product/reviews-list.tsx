@@ -23,10 +23,9 @@ interface Review {
 
 interface ReviewsListProps {
   reviews: Review[]
-  onVote: (reviewId: string, isHelpful: boolean) => void
 }
 
-export function ReviewsList({ reviews, onVote }: ReviewsListProps) {
+export function ReviewsList({ reviews, }: ReviewsListProps) {
         // console.log("ReviewsList", reviews)
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({})
 

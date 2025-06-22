@@ -109,22 +109,6 @@ useEffect(()=>{
 },[user])
 
 
-
-  const handleHelpfulVote = (reviewId: string, isHelpful: boolean) => {
-    setReviews(
-      reviews.map((review) => {
-        if (review._id === reviewId) {
-          return {
-            ...review,
-            helpful: isHelpful ? review? review.helpful:0 + 1 : review.helpful,
-            notHelpful: !isHelpful ? review? review.notHelpful:0 + 1 : review.notHelpful,
-          }
-        }
-        return review
-      }),
-    )
-  }
-
   return (
     <div className="w-full max-w-6xl mx-auto">
       <Tabs defaultValue="all-reviews" >
@@ -151,7 +135,7 @@ useEffect(()=>{
               </div>
             </div>
             <div className="lg:col-span-2">
-              <ReviewsList reviews={reviews||[]} onVote={handleHelpfulVote} />
+              <ReviewsList reviews={reviews||[]}  />
             </div>
           </div>
         </TabsContent>
