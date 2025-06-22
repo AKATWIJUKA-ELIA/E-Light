@@ -30,7 +30,7 @@ interface Product {
 interface pendingTable {
   products: Product[];
 }
-const pendingDataTable: React.FC<pendingTable> = ({ products }) => {
+const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
         const [isvisible, setisvisible] = useState(false);
         const [isdelete, setisdelete] = useState(false);
         const [isdeleteall, setisdeleteall] = useState(false);
@@ -171,4 +171,4 @@ const pendingDataTable: React.FC<pendingTable> = ({ products }) => {
               
         )
       }
-      export default pendingDataTable;
+      export default PendingDataTable;
