@@ -35,7 +35,7 @@ const Header = () => {
         const [filteredProducts, setFilteredProducts] = useState(data.Products.product || []);
         const [UserDrawer, setUserDrawer] = useState(false);
         
-        console.log("Data from DataContext :",data.Products)
+        // console.log("Data from DataContext :",data.Products)
         // const {Embed} = useGenerateEmbeddings();
         // const vectorSearchHook = useVectorSearch();
         // const vectorSearch = vectorSearchHook?.vectorSearch;
@@ -48,14 +48,14 @@ const Header = () => {
               };
         const pathname = usePathname()
         useEffect(()=>{
-                if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname === "/profile"){
+                if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname === "/profile" || pathname.includes("administrator")){
                         setshowlowerBar(false)
                 }
                 else{
                         setshowlowerBar(true)
                 }
         },[pathname])
-        console.log(pathname)
+        // console.log(pathname)
         const showDropDownMenu=()=>{
                 setHovered(true)
         }

@@ -12,7 +12,7 @@ export const generateImageEmbeddings = async (files:File[]) => {
             formData.append('files', file);
         });
      try {
-        const response = await fetch('https://searchapi2.onrender.com/image', {
+        const response = await fetch('http://127.0.0.1:8000/embed/image', {
                 method: 'POST',
                 body: formData
         }); 
@@ -20,7 +20,7 @@ export const generateImageEmbeddings = async (files:File[]) => {
         if (res.status!=200) {
                 throw new Error('Failed to generate Embeddings');
         }
-        console.log("Embeddings are :",res.embeddings ) 
+        // console.log("Embeddings are :",res.embeddings ) 
         return { success: true, status: res.status, data: res.embeddings };
 } catch (error) {
         console.error('An Error occurred while generating Embeddings:', error);

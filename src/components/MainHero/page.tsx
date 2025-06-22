@@ -87,8 +87,8 @@ useEffect(() => {
     </CarouselItem>
   ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        {/* <CarouselPrevious />
+        <CarouselNext /> */}
         </Carousel>
 
         {products && products.length > 0 ? (
