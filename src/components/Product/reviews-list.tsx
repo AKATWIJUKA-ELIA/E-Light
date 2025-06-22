@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Star, ThumbsUp, ThumbsDown, ChevronDown, ChevronUp, Check } from "lucide-react"
+import { Star, ChevronDown, ChevronUp, Check } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 
 interface Review {

@@ -27,10 +27,10 @@ interface Product {
   product_price: string,
   _creationTime:number
 }
-interface pendingDataTable {
+interface pendingTable {
   products: Product[];
 }
-const pendingDataTable: React.FC<pendingDataTable> = ({ products }) => {
+const pendingDataTable: React.FC<pendingTable> = ({ products }) => {
         const [isvisible, setisvisible] = useState(false);
         const [isdelete, setisdelete] = useState(false);
         const [isdeleteall, setisdeleteall] = useState(false);

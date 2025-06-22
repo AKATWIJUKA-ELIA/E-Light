@@ -1,14 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Oval } from 'react-loader-spinner'
 import { ProductReview } from "@/components/Product/product-reviews"
-// import {
-//   Carousel,
-//   CarouselContent,
-//   CarouselItem,
-//   CarouselNext,
-//   CarouselPrevious,
-// } from "@/components/ui/carousel"
-// import Autoplay from "embla-carousel-autoplay"
 
 
 interface ProductProps {
@@ -26,7 +18,16 @@ const ProductReviews: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-2 bg-white mt-5 shadow-md overflow-hidden p-4 dark:bg-dark ">
-      <ProductReview productId={product._id} productName={product.product_name} />
+      {product ?(<ProductReview productId={product._id} productName={product.product_name} />):(
+        <Oval
+                                                visible={true}
+                                                height="30"
+                                                width="30"
+                                                color="#0000FF"
+                                                secondaryColor="#FFD700"
+                                                ariaLabel="oval-loading"
+                                                />
+      )}
     </div>
   );
 };

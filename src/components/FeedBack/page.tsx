@@ -62,9 +62,9 @@ const  FeedBack: React.FC<FeedModel> = ({onClose})=> {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 " onClick={onClose} >
                 <div id="contact" className ="rounded-lg"
                 onClick={(e) => e.stopPropagation()}
-                //  style={{ backgroundImage: `url("images/imgSearch.png")`,
-                //         backgroundSize: 'cover',
-                //         backgroundPosition: 'center' }}
+                        //  style={{ backgroundImage: `url("images/imgSearch.png")`,
+                        //         backgroundSize: 'cover',
+                        //         backgroundPosition: 'center' }}
                         >
        
         <div className="flex flex-col-reverse md:flex md:flex-row  bg-opacity-80  bg-blend-lighten  p-4  gap-[10%] border dark:border-white shadow-md  bg-neutral-300 dark:bg-black/10 rounded-lg" >
