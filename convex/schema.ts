@@ -4,21 +4,13 @@ import { v } from "convex/values";
 export default defineSchema({
   NewsLetter: defineTable({ email: v.string() }).index("by_email", ["email"]),
   cart: defineTable({
-    product_cartegory: v.string(),
-    product_condition: v.string(),
-    product_description: v.string(),
     product_id: v.string(),
-    product_image: v.string(),
-    product_name: v.string(),
     product_owner_id: v.string(),
-    product_price: v.string(),
-    quantity: v.string(),
-    user_id: v.string(),
+    quantity: v.number(),
   }),
   cartegories: defineTable({ 
         cartegory: v.string(),
         // SubCategories: v.optional( v.array(v.object({subpic:v.string(),subname:v.string()})),)
-
    }),
 
   customers: defineTable({
@@ -81,8 +73,6 @@ reviews : defineTable({
     review: v.string(),
      verified: v.optional(v.boolean()),
     _creationTime: v.number(),
-    helpful: v.optional(v.number()),
-    notHelpful: v.optional(v.number()),
 }).index("by_product_id", ["product_id"])
 .index("by_reviewer_id", ["reviewer_id"])
 });

@@ -6,8 +6,8 @@ import { useMutation } from 'convex/react';
 import { useSendMail } from '@/hooks/useSendMail';
 import useGetCategories from '@/hooks/useGetCategories';
 import { useAppSelector } from '@/hooks';
-import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
-import useGenerateImageEmbeddings from '@/hooks/useGenerateImageEmbeddings';
+// import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
+// import useGenerateImageEmbeddings from '@/hooks/useGenerateImageEmbeddings';
 import useCreateProduct from '@/hooks/useCreateProduct';
 
   interface Product {
@@ -34,8 +34,8 @@ const AddProduct =  () => {
       const [ErrorProduct,setErrorProduct] = useState("")
       const [imagePreview, setImagePreview] = useState<string[]>([])
       const admin = process.env.NEXT_PUBLIC_ADMIN
-      const {Embed} = useGenerateEmbeddings();
-      const {EmbedImage} = useGenerateImageEmbeddings();
+//       const {Embed} = useGenerateEmbeddings();
+//       const {EmbedImage} = useGenerateImageEmbeddings();
       const {CreateProduct} = useCreateProduct()
       const [isSubmitting, setIsSubmitting] = useState(false);
       const user = useAppSelector((state)=>state.user.user)
@@ -153,25 +153,25 @@ const AddProduct =  () => {
                                   return result.json(); 
                                 })
                         );
-                        const imageEmbeds = await EmbedImage(Array.from(selectedImage || []))
+                        // const imageEmbeds = await EmbedImage(Array.from(selectedImage || []))
                         const storageIds = responses.map((res) => res.storageId);
-                        const  embeds = await Embed(product.product_name + product.product_description + product.product_cartegory);
+                        // const  embeds = await Embed(product.product_name + product.product_description + product.product_cartegory);
                         
-                        if(!embeds.success){
-                                setErrorProduct("Error!  failed to generate embedings")
-                                setTimeout(()=>{
-                                        setErrorProduct('')
-                                },5000)
-                                // return
-                        }
+                        // if(!embeds.success){
+                        //         setErrorProduct("Error!  failed to generate embedings")
+                        //         setTimeout(()=>{
+                        //                 setErrorProduct('')
+                        //         },5000)
+                        //         // return
+                        // }
 
-                        if(!imageEmbeds.success){
-                                setErrorProduct("Error!  failed to generate Image embedings")
-                                setTimeout(()=>{
-                                        setErrorProduct('')
-                                },5000)
-                                // return
-                        }
+                        // if(!imageEmbeds.success){
+                        //         setErrorProduct("Error!  failed to generate Image embedings")
+                        //         setTimeout(()=>{
+                        //                 setErrorProduct('')
+                        //         },5000)
+                        //         // return
+                        // }
                         
                         const updatedproduct = {
                                 ...product,
@@ -181,8 +181,8 @@ const AddProduct =  () => {
                                 product_owner_id: userid,
                                 product_cartegory: product.product_cartegory,
                                 approved: false,
-                                product_embeddings:embeds.data||[],
-                                product_image_embeddings:imageEmbeds.data? imageEmbeds.data[0] || [] :[]
+                                // product_embeddings:embeds.data||[],
+                                // product_image_embeddings:imageEmbeds.data? imageEmbeds.data[0] || [] :[]
                         };
                             
                         // console.log("Updated Product: ", updatedproduct);

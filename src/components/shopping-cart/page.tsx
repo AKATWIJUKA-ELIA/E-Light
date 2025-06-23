@@ -27,7 +27,7 @@ interface Product {
        }
 
 const ShoppingCart= ()=> {
-        const cart = useAppSelector((state) => state.cart.items)
+        const cart = useAppSelector((state) => state.cheapcart.items)
         const ReduceCart = useReduceCart()
         const IncreaseCart = useIncreaseCart()
         const Delete = useDeleteCart()

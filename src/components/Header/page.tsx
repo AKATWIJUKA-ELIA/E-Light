@@ -18,12 +18,19 @@ import { usePathname } from 'next/navigation';
 import { MdPhotoCamera } from "react-icons/md";
 import UserModel from '../UserModel/page';
 import {useData} from  '../../app/DataContext';
+import useCart from '@/hooks/useCart';
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';
+interface cart{
+        product_id:string,
+        product_owner_id:string,
+        quantity:number
+}
 
 const Header = () => {
         const { data} = useData();
-        const cartitem = useAppSelector(state => state.cart.items);
+        const { CreateCart } = useCart();
+        const cartitem = useAppSelector(state => state.cheapcart.items)
         const User = useAppSelector(state =>state.user.user)
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
@@ -34,11 +41,15 @@ const Header = () => {
         const [showImageModal, setShowImageModal] = useState(false);
         const [filteredProducts, setFilteredProducts] = useState(data.Products.product || []);
         const [UserDrawer, setUserDrawer] = useState(false);
+        const pathname = usePathname()
         
+
         // console.log("Data from DataContext :",data.Products)
         // const {Embed} = useGenerateEmbeddings();
         // const vectorSearchHook = useVectorSearch();
         // const vectorSearch = vectorSearchHook?.vectorSearch;
+
+
 
         const [comingSoon, setcomingSoon] = useState(false)
         const carousel = Autoplay({ delay: 6000})
@@ -46,7 +57,23 @@ const Header = () => {
         const truncateString = (text: string, maxLength: number): string => {
                 return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
               };
-        const pathname = usePathname()
+
+              
+        useEffect(()=>{
+                const ItemToSave =  cartitem.map(item => ({
+                        ...item,
+                        product_owner_id:User?.User_id ||''
+                }));
+                ItemToSave.forEach(item => {
+                        CreateCart({
+                                product_id: item.product_id,
+                                product_owner_id: item.product_owner_id,
+                                quantity: item.quantity,
+                        });
+                });
+        console.log("Item to save :",cartitem)        
+        },[cartitem])
+
         useEffect(()=>{
                 if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname === "/profile" || pathname.includes("administrator")){
                         setshowlowerBar(false)
@@ -129,8 +156,8 @@ const Header = () => {
     <div className={` fixed  top-0 left-0 z-40 flex flex-col py-3 w-full  bg-white text-black gap-1 dark:bg-dark dark:text-white
             ${sticky ? "bg-transparent  !fixed !z-[9999] ! bg-opacity-100 shadow-sticky backdrop-blur-lg fade-in !transition ": "absolute" }`
       }>
-        <div className='flex w-[100%] gap-18 ' >
-                <div className='flex gap-12 w-[60%]' >
+        <div className='flex w-[100%] gap-28  ' >
+                <div className='flex gap-12 md:ml-28 w-[60%]' >
                         <div className='flex rounded-md ml-5'>
                                 <Link href="/">
                                 <Image className='rounded-md h-10' src="/images/Logo1.png" alt='logo' width='200' height="100">
@@ -146,7 +173,9 @@ const Header = () => {
                                  type="text"
                                   className=' flex p-5 h-10 rounded-full border   border-gray-500 w-[100%] dark:bg-black dark:text-white ' 
                                   placeholder='Search Categories & product names'  />
-                                  { searchTerm.length>1 ? (<BiX onClick={HandleClose} className="absolute hover:cursor-pointer border top-[16%] right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>):(<MdPhotoCamera onClick={handleImageSearch}  className="absolute hover:cursor-pointer top-[16%]   right-[41%]  bg-gray-100 text-black/70 dark:text-white/70 dark:bg-transparent text-3xl " />)}
+                                  { searchTerm.length>1 && (<BiX onClick={HandleClose} className="absolute hover:cursor-pointer border top-[16%] right-[41%]  bg-gray-100 text-dark text-3xl   rounded-lg"/>)
+                                //   :(<MdPhotoCamera onClick={handleImageSearch}  className="absolute hover:cursor-pointer top-[16%]   right-[41%]  bg-gray-100 text-black/70 dark:text-white/70 dark:bg-transparent text-3xl " />)
+                                }
                         </div>
                 </div>
 
