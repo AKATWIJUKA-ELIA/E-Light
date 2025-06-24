@@ -8,7 +8,7 @@ const useIncreaseCart = ()=>{
                 return (id:string)=> {dispatch(IncreaseCart({
                         product_id: id,
                         quantity: 1
-                })),
+                }))
                 increaseCart(id) ;
         }
         }
