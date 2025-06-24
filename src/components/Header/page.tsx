@@ -18,7 +18,8 @@ import { usePathname } from 'next/navigation';
 import { MdPhotoCamera } from "react-icons/md";
 import UserModel from '../UserModel/page';
 import {useData} from  '../../app/DataContext';
-import useCart from '@/hooks/useCart';
+import useGetCart from '@/hooks/useGetCart';
+import useCart from '@/hooks/useCart';  
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';
 interface cart{
@@ -29,9 +30,10 @@ interface cart{
 
 const Header = () => {
         const { data} = useData();
-        const { CreateCart } = useCart();
         const cartitem = useAppSelector(state => state.cheapcart.items)
         const User = useAppSelector(state =>state.user.user)
+         const { cart } = useGetCart(User?.User_id || "");
+        const { SynchronizeCart } = useCart();
         const Cart = cartitem?.reduce((total, item) => total + (item.quantity || 0), 0)
         const [Hovered,setHovered] = useState(false)
         const [sticky, setSticky] = useState(false);
@@ -39,7 +41,6 @@ const Header = () => {
          const [showlowerBar, setshowlowerBar] = useState(true)
         const [searchTerm, setSearchTerm] = useState('');
         const [showImageModal, setShowImageModal] = useState(false);
-        const [filteredProducts, setFilteredProducts] = useState(data.Products.product || []);
         const [UserDrawer, setUserDrawer] = useState(false);
         const pathname = usePathname()
         
@@ -58,21 +59,11 @@ const Header = () => {
                 return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
               };
 
-              
         useEffect(()=>{
-                const ItemToSave =  cartitem.map(item => ({
-                        ...item,
-                        product_owner_id:User?.User_id ||''
-                }));
-                ItemToSave.forEach(item => {
-                        CreateCart({
-                                product_id: item.product_id,
-                                product_owner_id: item.product_owner_id,
-                                quantity: item.quantity,
-                        });
-                });
-        console.log("Item to save :",cartitem)        
-        },[cartitem])
+                if (User && User.User_id.length > 0) {
+                        SynchronizeCart();
+                }
+        }, [User]);
 
         useEffect(()=>{
                 if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname === "/profile" || pathname.includes("administrator")){
@@ -104,13 +95,7 @@ const Header = () => {
                 setShowImageModal(true)
         }
         useEffect(() => {
-                const results = data.Products.product?.filter((product) =>
-                  product.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                if(results && results.length>0){
-                        setFilteredProducts(results);
-                }else
-                setFilteredProducts([]);
+               
                 //  ============================================================
                 // VECTOR SEARCH IMPLEMENTATIOIN
                 // =============================================================
@@ -208,7 +193,9 @@ const Header = () => {
                         {User ? (
                                 <div className='flex' >
                                         <div className="hidden lg:flex  bg-white hover:bg-gray-200 transition duration-100 border border-gray-300 rounded-3xl">
-                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' onClick={()=>setUserDrawer(true)} >
+                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' 
+                                                // onClick={()=>setUserDrawer(true)}
+                                                 >
                                                         {User.Username}
                                                 </div>
                                                 <div className='flex rounded-full' >
@@ -266,11 +253,13 @@ const Header = () => {
                         <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
                                 <div className="relative">
                                 <CiShoppingCart className="text-2xl font-bold" />
-                                {Cart ? (
+                                {cart && cart.length >0 ? (
                                 <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                                        {Cart}
+                                        {cart.length}
                                 </span>
-                                ) : null}
+                                ) : <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                                        {Cart}
+                                </span>}
                                 </div>
                                 <h1 className="font-bold hidden md:flex  ">Cart</h1>
                         </Link>
@@ -360,7 +349,7 @@ const Header = () => {
 
     </div>
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
-    {  searchTerm.length>1 ? (<SearchModel Focused={Focused} products={filteredProducts ||[]} onClose={HandleClose} />):("")}
+    {  searchTerm.length>1 ? (<SearchModel Focused={Focused}searchTerm={searchTerm} onClose={HandleClose} />):("")}
     {  showImageModal ? (<ImageSearchModal  onClose={HandleClose} />):("")}
     {  UserDrawer ? (<UserModel  onClose={HandleClose} />):("")}
     </>

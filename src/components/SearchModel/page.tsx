@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import { BiSearch } from 'react-icons/bi';
 import { Oval } from 'react-loader-spinner';
+import {useData} from  '../../app/DataContext';
 
 interface Product {
         _id: string;
@@ -12,14 +13,27 @@ interface Product {
 
 interface SearchModel {
   onClose: () => void;
-  products:Product[];
   Focused:boolean
+  searchTerm: string;
 }
 
 
-const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
+const SearchModel: React.FC<SearchModel> = ({ onClose,searchTerm,Focused  }) => {
+        const { data } = useData();
+        const [filteredProducts, setFilteredProducts] = useState(data.Products.product || []);
 
         if (!Focused) return null;
+
+        useEffect(() => {
+                        const results = data.Products.product?.filter((product) =>
+                                product.product_cartegory?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                product.product_description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+                        );
+                        if(results && results.length>0){
+                                setFilteredProducts(results);
+                        }else
+                        setFilteredProducts([]);}, [searchTerm, data.Products.product]);
 
   return (
         <div className="  fade-in fixed md:ml-[10%] z-40 inset-0 backdrop-blur-lg shadow-lg shadow-gray-400 flex rounded-3xl md:w-[70%] h-[50%] mt-[38%] md:mt-[7%]   overflow-auto overflow-x-hidden bg-slate-100 dark:bg-dark dark:shadow-gray-800 " onMouseLeave={onClose} >                  
@@ -31,8 +45,8 @@ const SearchModel: React.FC<SearchModel> = ({ onClose,products,Focused  }) => {
                                 </h1>
                         </div>
                 <div className='flex flex-col w-full '>
-                {products && products.length>0 ? (
-                        products.map((product) => (
+                {filteredProducts && filteredProducts.length>0 ? (
+                        filteredProducts.map((product) => (
                                 <Link key={product._id} href={`/category/${encodeURIComponent(String(product.product_cartegory))}`} onClick={onClose}  className='flex gap-2' >
                         <div className="flex cursor-pointer w-full rounded-lg mr-2 p-2  slider slide--fast hover:bg-gray-200 dark:hover:bg-gray-700"
                         >

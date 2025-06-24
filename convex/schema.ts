@@ -5,9 +5,10 @@ export default defineSchema({
   NewsLetter: defineTable({ email: v.string() }).index("by_email", ["email"]),
   cart: defineTable({
     product_id: v.string(),
-    product_owner_id: v.string(),
+    cart_Owner_id: v.string(),
     quantity: v.number(),
-  }),
+  }).index("by_cart_Owner_id", ["cart_Owner_id"])
+  .index("by_product_id", ["product_id"]),
   cartegories: defineTable({ 
         cartegory: v.string(),
         // SubCategories: v.optional( v.array(v.object({subpic:v.string(),subname:v.string()})),)
