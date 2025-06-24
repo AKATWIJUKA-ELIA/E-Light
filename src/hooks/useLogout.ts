@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@/hooks";
 import { DeleteUser } from "@/store/customer";
+import { ClearCart } from "@/store/cart";
 import { useRouter } from "next/navigation";
 
 const useLogout = () => {
@@ -23,6 +24,7 @@ const useLogout = () => {
         
   return () => {
     dispatch(DeleteUser());
+    dispatch(ClearCart());
     LogOut()
   };
 };

@@ -1,7 +1,6 @@
 import {
         Table,
         TableBody,
-        TableCaption,
         TableCell,
         TableHead,
         TableHeader,
@@ -85,7 +84,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                 <>
                 <div className="w-full  overflow-x-auto   rounded-lg border px-2 ">
                         <div className="flex items-center justify-between p-4 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
-                                <TableCaption className="text-lg font-semibold">All Products</TableCaption>
+                                <div className="text-lg font-semibold">All Products</div>
                                 <Button 
                                 className="bg-red-400 hover:bg-red-700 transition-transform duration-500" 
                                 onClick={() => HandelDeleteAll(checked)}

@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as LiveValidation from "../LiveValidation.js";
 import type * as NewsLetter from "../NewsLetter.js";
+import type * as cart from "../cart.js";
 import type * as cartegories from "../cartegories.js";
 import type * as products from "../products.js";
 import type * as reviews from "../reviews.js";
@@ -31,6 +32,7 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   LiveValidation: typeof LiveValidation;
   NewsLetter: typeof NewsLetter;
+  cart: typeof cart;
   cartegories: typeof cartegories;
   products: typeof products;
   reviews: typeof reviews;

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import useGetApprovedProducts from "@/hooks/useGetApprovedProducts"
 import useGetCategories from "@/hooks/useGetCategories"
 import SearchModel from "../SearchModel/page"
@@ -18,7 +18,6 @@ const ProductsNotFound= ({category}: ProductsNotFoundProps)=> {
           const { data: products } = useGetApprovedProducts();
           const [Focused, setFocused] = useState(false)
           const [searchTerm, setSearchTerm] = useState('');
-          const [filteredProducts, setFilteredProducts] = useState(products);
 
           const forceBlur = () => {
                 document.getElementById("inputsearchnomatches")?.blur();
@@ -27,12 +26,6 @@ const ProductsNotFound= ({category}: ProductsNotFoundProps)=> {
                 setFocused(false)
                 forceBlur()
         }
-               useEffect(() => {
-                        const results = products?.filter((product) =>
-                          product.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase())
-                        );
-                        setFilteredProducts(results);
-                      }, [searchTerm, products]);
 
   const recentSearches = ["wireless headphones", "summer dresses", "kitchen gadgets"]
 
@@ -159,7 +152,7 @@ const ProductsNotFound= ({category}: ProductsNotFoundProps)=> {
           </Card>
         </div>
       </div>
-      {  searchTerm.length>1 ? (<SearchModel Focused={Focused} products={filteredProducts||[]} onClose={HandleClose} />):("")}
+      {  searchTerm.length>1 ? (<SearchModel Focused={Focused} searchTerm={searchTerm||""} onClose={HandleClose} />):("")}
     </div>
     
   )
