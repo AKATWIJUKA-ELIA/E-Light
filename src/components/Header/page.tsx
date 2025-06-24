@@ -22,11 +22,6 @@ import useGetCart from '@/hooks/useGetCart';
 import useCart from '@/hooks/useCart';  
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useVectorSearch from '@/hooks/useVectorSearch';
-interface cart{
-        product_id:string,
-        product_owner_id:string,
-        quantity:number
-}
 
 const Header = () => {
         const { data} = useData();
