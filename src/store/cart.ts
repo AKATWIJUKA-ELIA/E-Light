@@ -3,6 +3,7 @@ import {createSlice} from "@reduxjs/toolkit"
 interface CartItem {
         product_id: string;
         quantity: number;
+        cart_Owner_id?: string;
 }
 
 interface CartState {
@@ -18,12 +19,12 @@ const CartSlice = createSlice({
         initialState,
         reducers: {
                 addToCart(state, action){
-                        const{product_id, quantity} =action.payload;
+                        const{product_id, quantity, cart_Owner_id} =action.payload;
                         const indexproduct_id = state.items.find(item => item.product_id ===product_id);
                         if(indexproduct_id){
                                 indexproduct_id.quantity += quantity;
                         }else{
-                                state.items.push({product_id, quantity});
+                                state.items.push({product_id, quantity, cart_Owner_id});
                         }
                 },
                 ReduceCart(state, action){
@@ -43,12 +44,12 @@ const CartSlice = createSlice({
                         }
                 },
                 IncreaseCart(state, action){
-                        const{product_id, quantity} =action.payload;
+                        const{product_id, quantity, cart_Owner_id} =action.payload;
                         const indexproduct_id = state.items.find(item => item.product_id ===product_id);
                         if(indexproduct_id){
                                 indexproduct_id.quantity += quantity;
                         }else{
-                                state.items.push({product_id, quantity});
+                                state.items.push({product_id, quantity, cart_Owner_id});
                         }
                 },
                 DeleteCart(state, action){
@@ -58,8 +59,11 @@ const CartSlice = createSlice({
                         state.items.splice(index, 1);
                         // console.log("Current State",state.items)
     }
+                },
+                ClearCart(state ){
+                        state.items = [];
                 }
         }
 })
-export const {addToCart,ReduceCart,IncreaseCart,DeleteCart } = CartSlice.actions
+export const {addToCart,ReduceCart,IncreaseCart,DeleteCart,ClearCart } = CartSlice.actions
 export default CartSlice.reducer;

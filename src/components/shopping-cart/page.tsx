@@ -12,6 +12,7 @@ import useGetProductsByIds from "@/hooks/useGetProductsByIds";
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Id } from "../../../convex/_generated/dataModel"
+import useGetCart from '@/hooks/useGetCart';
 interface Product {
         total:number;
          _id: Id<"products">;
@@ -27,17 +28,21 @@ interface Product {
        }
 
 const ShoppingCart= ()=> {
-        const cart = useAppSelector((state) => state.cart.items)
+        const User = useAppSelector(state =>state.user.user)
+         const { cart:UpstreamCart } = useGetCart(User?.User_id || "");
+        const cart = useAppSelector((state) => state.cheapcart.items)
         const ReduceCart = useReduceCart()
         const IncreaseCart = useIncreaseCart()
         const Delete = useDeleteCart()
-        const itemCount = cart?.reduce((total, item) => total + (item.quantity || 0), 0)
+        const itemCount = User && User.User_id && User.User_id.length > 0 ? UpstreamCart?.reduce((total, item) => total + (item.quantity || 0), 0) : cart?.reduce((total, item) => total + (item.quantity || 0), 0)
         const[Copied,setCopied] = useState(false)
 
         // console.log("Cart is ", cart)
-        const productIds = cart.map((item) => item.product_id);
+        const productIds = User && User.User_id && User.User_id.length > 0
+                ? UpstreamCart?.map((item) => item.product_id)
+                : cart.map((item) => item.product_id);
         // console.log("product ids", productIds)
-        const { data: products, loading: isLoading } = useGetProductsByIds(productIds.flatMap(id=>id));
+        const { data: products, loading: isLoading } = useGetProductsByIds((productIds?.flatMap(id => id)) || []);
         const [loading,setLoading] = useState(isLoading)
         // console.log("Products : ",products)
         useEffect(() => {
@@ -47,7 +52,8 @@ const ShoppingCart= ()=> {
         }, [cart]);
         
         const itemQuantity = (id: string) => {
-                const item = cart.find((item) => item.product_id === id);
+                const item = User && User?.User_id.length>0 ? UpstreamCart?.find((item) => item.product_id === id)
+                : cart.find((item) => item.product_id === id);
                 return item ? item.quantity : 0; // Return 0 if not found
             };
 
@@ -65,7 +71,9 @@ const ShoppingCart= ()=> {
             };
         // Retrieve the Quantity of individual Products
         const HandleQuantity = (id:string)=>{
-                const CartQuantity = cart.map((item) => item.product_id === id ? item.quantity:"")
+                const CartQuantity = User && User.User_id && User.User_id.length > 0 
+                ? UpstreamCart?.map((item) => item.product_id === id ? item.quantity:"")
+                : cart.map((item) => item.product_id === id ? item.quantity:"")
                 return CartQuantity
         }
 
@@ -84,7 +92,7 @@ const ShoppingCart= ()=> {
         if (navigator.share) {
           navigator
             .share({
-              title: `"Check out  ${name} on ShopCheap!`,
+              title: `Check out  ${name} on ShopCheap!`,
               text: "Hey, take a look at this:",
               url: link,
             })
@@ -109,7 +117,7 @@ const ShoppingCart= ()=> {
         <Separator className="mb-6" />
 
         
-        {cart.length === 0 ?(
+        {cart.length === 0 && UpstreamCart?.length=== 0 ?(
                 <div className="text-center text-gray-500">Your cart is empty</div>
         ):loading ? (
                 <Oval
