@@ -8,7 +8,7 @@ const useDeleteCart = ()=>{
         const dispatch = useAppDispatch();
                 return (id:string)=> {dispatch(DeleteCart({
                         product_id: id,
-                })),
+                }))
                 deleteCart(id as Id<"cart">) ;
         }
         }
