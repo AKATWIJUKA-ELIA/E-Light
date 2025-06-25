@@ -1,5 +1,4 @@
 "use client"
-import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import PieChart  from "@/components/pie-chart"
 import DataTable  from "@/components/data-table"
@@ -8,16 +7,13 @@ import { SiteHeader } from "../../components/site-header"
 import { SidebarInset,  } from "../../components/ui/sidebar"
 import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
 import { useAppSelector } from "@/hooks"
-import { useState } from "react"
-import useGetOrders from "@/hooks/usegetOrders"
 
 const Profile=()=> {
         const User = useAppSelector((state)=>state.user.user)
         const { data: products, } = useGetProductsByOwner(User?.User_id||'');
-        const { data: Orders } = useGetOrders();
         const approved = products?.filter((product) => product.approved).length || 0;
         const pending = products?.filter((product) => !product.approved).length || 0;
-        const [isopen, setisOpen] = useState(true);   
+        
         
   return (
     

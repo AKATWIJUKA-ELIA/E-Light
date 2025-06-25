@@ -82,7 +82,7 @@ export default function OrdersTracking() {
 
     return matchesSearch && matchesStatus && matchesTab
   })
-
+  
   const getStatusBadge = (
     status: keyof typeof statusConfig
   ) => {
