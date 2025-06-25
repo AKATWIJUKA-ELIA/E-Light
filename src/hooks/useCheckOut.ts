@@ -3,7 +3,7 @@ import { api } from "../../convex/_generated/api";
 import { useMutation } from "convex/react";
 
 
-const usecheckOutCart = () =>{
+const useCheckOutCart = () =>{
         const checkOut  = useMutation(api.cart.checkOutCart)
         const User = useAppSelector(state=> state.user.user)
         const handleCheckOut = async()=>{
@@ -22,4 +22,4 @@ const usecheckOutCart = () =>{
 
         return {handleCheckOut}
 }
-export default usecheckOutCart
+export default useCheckOutCart
