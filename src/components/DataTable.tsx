@@ -9,7 +9,6 @@ import {
       } from "@/components/ui/table"
       import { Checkbox } from "./ui/checkbox";
       import Image from "next/image";
-import { Oval } from "react-loader-spinner";
 import { Button } from "./ui/button";
 import EditModal from "./EditModal/page";
 import DeleteModal from "./DeleteModal/page";
@@ -27,17 +26,18 @@ interface Product {
   product_price: string,
   _creationTime:number
 }
-interface pendingTable {
+interface DataTable {
   products: Product[];
+  status?: string; 
 }
-const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
+const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
         const [isvisible, setisvisible] = useState(false);
         const [isdelete, setisdelete] = useState(false);
         const [isdeleteall, setisdeleteall] = useState(false);
         const [productId, setproductId] = useState("");
         const [checked, setchecked] = useState<string[]>([]);
         const [allchecked, setallchecked] = useState(false);
-        const newProducts = products.filter(product => !product.approved);
+        // const newProducts = products.filter(product => !product.approved);
 
         const HandleCheckboxChange=(ProductId:string)=>{
                 if(!checked.includes(ProductId)){
@@ -47,7 +47,7 @@ const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
                 }
         }
 
-        const allIds = newProducts.map(product => product._id);
+        const allIds = products.map(product => product._id);
         const allSelected = allIds.every(id => checked.includes(id));
         useEffect(()=>{
                         if (allSelected) {
@@ -85,7 +85,7 @@ const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
                 <>
                 <div className="w-full  overflow-x-auto rounded-lg border px-2 ">
                         <div className="flex items-center justify-between p-4 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
-                                <TableCaption className="text-lg font-semibold">Pending Products</TableCaption>
+                                <TableCaption className="text-lg font-semibold">{status} Products</TableCaption>
                                 <Button 
                                 className="bg-red-400 hover:bg-red-700 transition-transform duration-500" 
                                 onClick={() => HandelDeleteAll()}
@@ -93,7 +93,7 @@ const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
                                         Delete Selected
                                 </Button>
                         </div>
-                {newProducts?( 
+                {products && products.length > 0 ?( 
                         <Table className="min-w-[800px]">
                   
                   <TableHeader>
@@ -115,7 +115,7 @@ const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {newProducts.map((product) => (
+                    {products.map((product) => (
                         
                       <TableRow key={product._id}>
                         <TableCell className="font-medium"><Checkbox
@@ -153,15 +153,10 @@ const PendingDataTable: React.FC<pendingTable> = ({ products }) => {
                     ))}
                   </TableBody>
                 </Table>):(
-                        <Oval
-                        visible={true}
-                                    height="80"
-                                    width="80"
-                                    color="#0000FF"
-                                    secondaryColor="#ddd"
-                                    ariaLabel="oval-loading"
-                                    wrapperClass=""
-                        />
+                        <div>
+                                <h1 className="text-2xl font-bold text-center mt-10">No Pending Products</h1>
+                                <p className="text-center text-gray-500">You have no products pending approval.</p>
+                        </div>
                 )}
               </div>
                 <EditModal isvisible={isvisible} onClose={() => setisvisible(false)} productId={productId} />

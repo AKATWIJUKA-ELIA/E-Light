@@ -92,3 +92,35 @@ export const IncreaseCart = mutation({
                   return cart;
                 }       
               });
+              export const checkOutCart = mutation({
+                args: { userId: v.string() },
+                handler: async (ctx, args) => {
+                  const cart = await ctx.db.query("cart")
+                    .withIndex("by_cart_Owner_id", (q) => q.eq("cart_Owner_id", args.userId))
+                    .collect();
+                  if (!cart || cart.length === 0) {
+                    return { message: "Cart is empty", success: false };
+                  }
+                  cart.forEach(async (item) => {
+                        await ctx.db.insert("orders", {
+                              user_id: args.userId,
+                              product_id: item.product_id,
+                              quantity: item.quantity,
+                              order_status: "pending",
+                        });
+                        await ctx.db.delete(item._id);
+                  })
+                  
+                  return { message: "Checkout successful", success: true };
+                }
+              })
+
+              export const getOrders = query({
+                args: { userId: v.string() },
+                handler: async (ctx, args) => {
+                  const orders = await ctx.db.query("orders")
+                    .withIndex("by_user_id", (q) => q.eq("user_id", args.userId))
+                    .collect();
+                  return orders;
+                }
+                });

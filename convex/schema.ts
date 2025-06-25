@@ -32,17 +32,12 @@ export default defineSchema({
 
   orders: defineTable({
     order_status: v.string(),
-    product_cartegory: v.string(),
-    product_condition: v.string(),
-    product_description: v.string(),
     product_id: v.string(),
-    product_image: v.string(),
-    product_name: v.string(),
-    product_owner_id: v.string(),
-    product_price: v.string(),
-    quantity: v.string(),
+    quantity: v.number(),
     user_id: v.string(),
-  }),
+  }).index("by_user_id", ["user_id"])
+  .index("by_product_id", ["product_id"]),
+  
   products: defineTable({
     approved: v.boolean(),
     product_cartegory: v.string(),
