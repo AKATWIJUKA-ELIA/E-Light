@@ -28,8 +28,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-//   SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
 const data = {
@@ -154,9 +152,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props} className="h-[90%] mt-14 bg-blue-400" >
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
-          
-          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
