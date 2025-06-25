@@ -48,7 +48,7 @@ interface Order {
                 product_price: string;
                 product_description: string;
                 product_owner_id:string
-  };
+  }|null;
 }
 
 
@@ -82,7 +82,7 @@ export default function OrdersTracking() {
 
     return matchesSearch && matchesStatus && matchesTab
   })
-  
+
   const getStatusBadge = (
     status: keyof typeof statusConfig
   ) => {
