@@ -1,5 +1,6 @@
-import {mutation, query} from "./_generated/server"
+import {action, internalQuery, mutation, query} from "./_generated/server"
 import {v} from "convex/values"
+import { api, internal } from "../convex/_generated/api";
 
 export const generateUploadUrl = mutation(async (ctx)=>{
       return await ctx.storage.generateUploadUrl()
@@ -17,13 +18,21 @@ export const createProduct = mutation({
                 product_name: v.string(),
                 product_owner_id: v.string(),
                 product_price: v.string(),
+
+                product_embeddings:v.optional(v.array(v.number())),
+                product_image_embeddings:v.optional(v.array(v.number())),
+
                   }),
         },
         handler: async (ctx, args) => {
-        //       console.log(args.products)
+                try{
               await ctx.db.insert("products", {
                     ...args.products,
               });
+              return { success: true, message: "Product created successfully" };
+        }catch{
+                return { success: false, message: "Error creating product" };   
+        }
         },
   })
 
@@ -146,6 +155,7 @@ export const getImageUrl = query({
         handler: async (ctx, args) => {
           const products = await ctx.db
             .query("products")
+            .withIndex("by_product_category", q => q.eq("product_cartegory", args.category))
             .filter((q) => q.and(
                 q.eq(q.field("product_cartegory"), args.category),
                 q.eq(q.field("approved"),true)
@@ -233,4 +243,86 @@ export const getImageUrl = query({
               
                   return updatedProduct;
                 },
+              });
+
+              export const searchResults = internalQuery({
+                args:{
+                        results: v.array(
+                                v.object({
+                                        _id: v.id("products"),
+                                        _score: v.number()
+                                }),
+                        ),
+                },
+                handler: async (ctx, {results}) =>{
+                        const products = await Promise.all(
+                                results.map(async ({_id,_score}) =>{
+                                        const product = await ctx.db.get(_id);
+                                        if(!product) return null;
+                                        return {
+                                                ...product,
+                                                score:_score,
+                                        }
+                                }
+                        ))
+                        return products.filter((b)=> b!= null && b.score > 0.256);
+                }
+              })
+
+              export const ImagesearchResults = internalQuery({
+                args:{
+                        results: v.array(
+                                v.object({
+                                        _id: v.id("products"),
+                                        _score: v.number()
+                                }),
+                        ),
+                },
+                handler: async (ctx, {results}) =>{
+                        const products = await Promise.all(
+                                results.map(async ({_id,_score}) =>{
+                                        const product = await ctx.db.get(_id);
+                                        if(!product) return null;
+                                        product.product_image = (await Promise.all(
+                                                        product.product_image.map(async (image: string) => {
+                                                                return await ctx.storage.getUrl(image);
+                                                        }
+                                                ))).filter((url): url is string => url !== null);
+                                        return {
+                                                ...product,
+                                                score:_score,
+                                        }
+                                }
+                        ))
+                        return products.filter((b)=> b!= null && b.score > 0.256);
+                }
+              })
+
+
+              export const vectorSearch: ReturnType<typeof action> = action({
+                args: { embeding: v.array(v.number()) },
+                handler: async (ctx, args) => {
+                        const results = await ctx.vectorSearch("products", "by_product_embeddings", {
+                                vector: args.embeding,
+                                limit: 6
+                        });
+                        return await ctx.runQuery(
+                                internal.products.searchResults, { results }
+                        );
+                }
+
+              });
+
+              export const ImagevectorSearch: ReturnType<typeof action> = action({
+                args: { embeding: v.array(v.number()) },
+                handler: async (ctx, args) => {
+                        const results = await ctx.vectorSearch("products", "product_image_embeddings", {
+                                vector: args.embeding,
+                                limit: 6
+                        });
+                        return await ctx.runQuery(
+                                internal.products.ImagesearchResults, { results }
+                        );
+                }
+
               });

@@ -1,8 +1,12 @@
 "use client"
 
-import { MailIcon, PlusCircleIcon, type LucideIcon } from "lucide-react"
+import {type LucideIcon } from "lucide-react"
+import { IoAddCircle,IoBagCheckOutline  } from "react-icons/io5";
+import {LayoutDashboardIcon,UserCircleIcon} from "lucide-react"
+import { HomeIcon } from "lucide-react"
+import { FcApproval  } from "react-icons/fc";
+import { MdAlignHorizontalLeft,MdOutlinePending,  } from "react-icons/md";
 
-import { Button } from "@/components/ui/button"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -10,45 +14,70 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-  }[]
-}) {
+export function NavMain() {
+        const items = [
+                {
+                        title: "Home",
+                        icon: HomeIcon as LucideIcon,
+                        link:"/profile",
+                },
+                {
+                        title: "All Products",
+                        icon: MdAlignHorizontalLeft as LucideIcon,
+                        link:"/profile/#all",
+                },
+                {
+                        title: "Approved Products",
+                        icon: FcApproval as LucideIcon,
+                        link:"/profile/approved",
+                },
+                {
+                        title: "Pending",
+                        icon: MdOutlinePending as LucideIcon,
+                        link:"/profile/pending",
+                },
+                {
+                        title: "Orders",
+                        icon: IoBagCheckOutline as LucideIcon,
+                        link:"/profile/orders",
+                },
+                {
+                        title: "Sell",
+                        icon: IoAddCircle  as LucideIcon,
+                        link:"/post",
+                },
+                 {
+                        title: "Account",
+                        icon: UserCircleIcon  as LucideIcon,
+                        link:"/profile/account",
+                }
+        ]
   return (
     <SidebarGroup>
-      <SidebarGroupContent className="flex flex-col gap-2">
+      <SidebarGroupContent className="flex flex-col gap-2 mt-4">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
-              tooltip="Quick Create"
+              tooltip="Dashboard"
               className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
             >
-              <PlusCircleIcon />
-              <span>Quick Create</span>
+              <LayoutDashboardIcon />
+              <span>Dashboard</span>
             </SidebarMenuButton>
-            <Button
-              size="icon"
-              className="h-9 w-9 shrink-0 group-data-[collapsible=icon]:opacity-0"
-              variant="outline"
-            >
-              <MailIcon />
-              <span className="sr-only">Inbox</span>
-            </Button>
+          
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarMenu>
+        <SidebarMenu className="font-semibold">
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
+            <SidebarMenuItem key={item.title} className="flex items-center gap-2">
+              <Link href={item.link} className="w-full">
+                <SidebarMenuButton tooltip={item.title}>
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
               </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>

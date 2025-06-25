@@ -10,22 +10,22 @@ export async function POST(request) {
       secure: true, // Use true for port 465, false for others
       auth: {
         user: process.env.SMTP_USER, // Add to your .env file
-        pass: process.env.SMTP_PASSWORD, // Add to your .env file
+        pass: process.env.SHOP_CHEAP_SMTP_PASSWORD, // Add to your .env file
       },
     });
 
     const mailOptions = {
-      from:"eliaakjtrnq@gmail.com",
+      from:process.env.SMTP_USER,
       to,
       subject,
-      text,
+      html:text,
     };
 
     const info = await transporter.sendMail(mailOptions);
-
-    return new Response(JSON.stringify({ message: 'Email sent successfully!', info }), { status: 200 });
+//     console.log("Result", info);
+    return new Response(JSON.stringify({ success:true, message: 'Email sent successfully!', info }), { status: 200 });
   } catch (error) {
     console.error('Error sending email:', error);
-    return new Response(JSON.stringify({ message: 'Failed to send email', error }), { status: 500 });
+    return new Response(JSON.stringify({success:false, message: 'Failed to send email', error }), { status: 500 });
   }
 }

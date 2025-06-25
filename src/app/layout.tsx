@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header/page";
-import { Footer } from "@/components/Footer/page";
 import ReduxProvider from "./ReduxProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { FileProvider } from "./FileContext";
+import { DataProvider } from "./DataContext";
 import { ModeToggle } from "@/components/Dark-light/page";
+import FeedBackButton from "@/components/FeedBackButton/page";
+import Header from "@/components/Header/page";
+import ConditionalFooter from "@/components/ConditionalFooter/page"
 
 export const metadata: Metadata = {
   title: "ShopCheap",
   description: "ShopCheap Anytime Anywhere",
 };
-
+const CLIENT_ID = process.env.CLIENT_ID ?? "";
 export default function RootLayout({
   children,
 }: {
@@ -22,6 +26,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ConvexClientProvider>
+        <GoogleOAuthProvider clientId={CLIENT_ID}>
           <ClerkProvider>
             <ReduxProvider>
               <ThemeProvider
@@ -30,15 +35,22 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               > 
-                <Header />
+              <DataProvider>
+              <FileProvider>
+                <Header  />
                 {children}
-                <Footer/>
+                <FeedBackButton/>
                 <ModeToggle />
+                <ConditionalFooter/>
+                </FileProvider>
+                  </DataProvider>
               </ThemeProvider> 
             </ReduxProvider>
           </ClerkProvider>
+          </GoogleOAuthProvider>
         </ConvexClientProvider>
       </body>
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
     </html>
   );
 }

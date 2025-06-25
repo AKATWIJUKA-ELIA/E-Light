@@ -1,43 +1,48 @@
 "use client"
-import { useUser } from '@clerk/nextjs';
+// import { useUser } from '@clerk/nextjs';
 import React, { useRef, useState } from 'react'
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
 import { useSendMail } from '@/hooks/useSendMail';
 import useGetCategories from '@/hooks/useGetCategories';
+import { useAppSelector } from '@/hooks';
+// import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
+// import useGenerateImageEmbeddings from '@/hooks/useGenerateImageEmbeddings';
+import useCreateProduct from '@/hooks/useCreateProduct';
 
-
+  interface Product {
+                approved: boolean,
+                product_cartegory: string,
+                product_condition: string,
+                product_description: string,
+                product_image: string[],
+                product_name: string,
+                product_owner_id: string,
+                product_price: string,
+                product_embeddings:number[],
+                product_image_embeddings:number[]
+                }
 
 const AddProduct =  () => {
         
       const generateUploadUrl = useMutation(api.products.generateUploadUrl);
-      const [selectedImage, setSelectedImage] = useState<Array<File> | null>(null);
+      const [selectedImage, setSelectedImage] = useState<File[] | []>([]);
       const fileInputRef = useRef<HTMLInputElement>(null);
       const { sendEmail, } = useSendMail();
       const { data: categories } = useGetCategories(); 
-      const[successProduct,setsuccessProduct] = useState(false)
-      const [ErrorProduct,setErrorProduct] = useState(false)
-        const [imagePreview, setImagePreview] = useState<string[]>([])
+      const[successProduct,setsuccessProduct] = useState("")
+      const [ErrorProduct,setErrorProduct] = useState("")
+      const [imagePreview, setImagePreview] = useState<string[]>([])
       const admin = process.env.NEXT_PUBLIC_ADMIN
+//       const {Embed} = useGenerateEmbeddings();
+//       const {EmbedImage} = useGenerateImageEmbeddings();
+      const {CreateProduct} = useCreateProduct()
+      const [isSubmitting, setIsSubmitting] = useState(false);
+      const user = useAppSelector((state)=>state.user.user)
+      const userid = user?.User_id || ''
 
-      const createProduct = useMutation(api.products.createProduct)
-
-            const {user} = useUser();
-
-            const userid = user?.id || ''
-
-            interface Product {
-                approved: "",
-                product_cartegory: "",
-                product_condition: "",
-                product_description: "",
-                product_image: string[],
-                product_name: "",
-                product_owner_id: "",
-                product_price: "",
-                }
-            const [product, setProduct] = useState<Product>({
-                approved: "",
+        const [product, setProduct] = useState<Product>({
+                approved: false,
                 product_cartegory: "",
                 product_condition: "",
                 product_description: "",
@@ -45,16 +50,18 @@ const AddProduct =  () => {
                 product_name: "",
                 product_owner_id: "",
                 product_price: "",
-                });
-              
-                const [isSubmitting, setIsSubmitting] = useState(false);
-                const cleanImageField=()=>{
+                product_embeddings:[],
+                product_image_embeddings:[]
+        });
+        
+        const cleanImageField=()=>{
                         setSelectedImage([]);
+                        setImagePreview([])
                         if (fileInputRef.current) {
                           fileInputRef.current.value = '';
                         }
                 }
-                const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   if (e.target.files) {
                       const filesArray = Array.from(e.target.files)
                       const maxFileSize = 3 * 1024 * 1024; // 1MB in bytes
@@ -83,50 +90,49 @@ const AddProduct =  () => {
                     }
               
                     setSelectedImage(validFiles)
-              
                     // Create preview URLs for the selected images
                     const previewUrls = validFiles.map((file) => URL.createObjectURL(file))
                     setImagePreview(previewUrls)
                   }
                 }
-                const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
                   const { name, value } = e.target;
                   setProduct((prev) => ({...prev,[name]: value,
                   }));
                 };
 
-                const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        const cleanForm = () => {
+                setProduct({
+                        approved: false,
+                        product_cartegory: "",
+                        product_condition: "",
+                        product_description: "",
+                        product_image: [],
+                        product_name: "",
+                        product_owner_id: "",
+                        product_price: "",
+                        product_embeddings:[],
+                        product_image_embeddings:[]
+                });
+                setSelectedImage([]);
+                if (fileInputRef.current) {
+                        fileInputRef.current.value = '';
+                        }
+        };
+
+        const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setIsSubmitting(true);
-                  const TIMEOUT_MS = 10000; // ⏱ 10 seconds
-                  const cleanForm = () => {
-                        setProduct({
-                                approved: "",
-                                product_cartegory: "",
-                                product_condition: "",
-                                product_description: "",
-                                product_image: [],
-                                product_name: "",
-                                product_owner_id: "",
-                                product_price: "",
-                        });
-                        setSelectedImage(null);
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = '';
-                        }
-                      };
-                const cleanImageField=()=>{
-                        setSelectedImage(null);
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = '';
-                        }
-                }
+                  setErrorProduct("");
+                  setsuccessProduct("");
+                  const TIMEOUT_MS = 20000; 
 
                 const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
                         return Promise.race([
                           promise,
                           new Promise<T>((_, reject) =>
                             setTimeout(() => reject(new Error("Request timed out")), ms)
+                          
                           ),
                         ]);
                       };
@@ -135,11 +141,6 @@ const AddProduct =  () => {
                         await withTimeout((async () => {
                          // Step 1: Get a short-lived upload URL
                         const postUrl = await generateUploadUrl();
-                        if(selectedImage && selectedImage.length > 5){
-                                alert("Error, You can only upload upto Five Images")
-                                cleanImageField()
-                                return
-                        }
                         const responses = await Promise.all(
                                 Array.from(selectedImage || []).map(async (image: File) => {
                                   const result = await fetch(postUrl, {
@@ -149,13 +150,29 @@ const AddProduct =  () => {
                                   });
                             
                                   if (!result.ok) throw new Error("Failed to upload image");
-                            
                                   return result.json(); 
                                 })
                         );
-                        
+                        // const imageEmbeds = await EmbedImage(Array.from(selectedImage || []))
                         const storageIds = responses.map((res) => res.storageId);
-                            
+                        // const  embeds = await Embed(product.product_name + product.product_description + product.product_cartegory);
+                        
+                        // if(!embeds.success){
+                        //         setErrorProduct("Error!  failed to generate embedings")
+                        //         setTimeout(()=>{
+                        //                 setErrorProduct('')
+                        //         },5000)
+                        //         // return
+                        // }
+
+                        // if(!imageEmbeds.success){
+                        //         setErrorProduct("Error!  failed to generate Image embedings")
+                        //         setTimeout(()=>{
+                        //                 setErrorProduct('')
+                        //         },5000)
+                        //         // return
+                        // }
+                        
                         const updatedproduct = {
                                 ...product,
                                 product_image: [...storageIds], // Ensure new IDs are included
@@ -164,38 +181,119 @@ const AddProduct =  () => {
                                 product_owner_id: userid,
                                 product_cartegory: product.product_cartegory,
                                 approved: false,
+                                // product_embeddings:embeds.data||[],
+                                // product_image_embeddings:imageEmbeds.data? imageEmbeds.data[0] || [] :[]
                         };
                             
                         // console.log("Updated Product: ", updatedproduct);
-                        await createProduct({ products: updatedproduct });
-                        setsuccessProduct(true)
-                        setTimeout(()=>{
-                                setsuccessProduct(false)
-                        },5000)
+                        const create =  await CreateProduct( updatedproduct);
+                        const res = await create.json()
+                        if(!res.success){
+                                setErrorProduct(res.message)
+                                return
+                        }
+                        setsuccessProduct(res.message)
                       cleanForm()
                       cleanImageField()
                       setImagePreview([])
-                      sendEmail( `${admin}` ,"New Product Created", `User ${user?.fullName}, Added a product`);
-                      sendEmail( `${user?.emailAddresses}`,"New Product Created", `Hello  ${user?.fullName}, Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved`);
+                      const html = `
+                       <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Password Reset</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    .button {
+      display: inline-block;
+      padding: 14px 28px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border-radius: 5px;
+      text-decoration: none;
+      margin: 20px 0;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .container {
+      max-width: 480px;
+      margin: auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 32px;
+      font-family: Arial, sans-serif;
+      color: black;
+    }
+    .footer {
+      font-size: 12px;
+      color: #999;
+      margin-top: 32px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body style="background:#f4f4f4;">
+
+  <div class="container">
+<a href="https://shopcheap.vercel.app/" > 
+<div 
+  style="
+    background-image: url('https://cheery-cod-687.convex.cloud/api/storage/143325e4-3c05-4b88-82ba-cbbfa7fcd594');
+    background-size: contain;  
+    background-repeat: no-repeat;
+    background-position: center; 
+    width: 200px;
+    height: 100px;
+  "
+>
+  
+</div></a>
+    <h2><strong>New Product Created !</strong></h2>
+    <h1 class="" style="color:black" >Hello, <span style="color:blue"> ${user?.Username}</span></h1>
+    <h3>
+    Your Product was Created Successfully and is pending for Approval You will Be Notified Once Your Product is Approved\n
+
+If you ever have questions or feedback, just reply to this email—we'd love to hear from you!\n
+
+Best regards,\n
+ShopCheap\n
+https://shopcheap.vercel.app/</h3>
+    <div class="footer">
+      &copy; 2025 ShopCheap. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>
+                      `
+                      sendEmail( `${admin}` ,"New Product Created", `User ${user?.Username}, Added a product`);
+                      sendEmail( `${user?.email}`,"New Product Created", html);
                 })(), TIMEOUT_MS);
                   } catch (error) {
-                        setErrorProduct(true)
+                        setErrorProduct("Error creating product")
                     console.error("Error creating product:", error);
                     setTimeout(()=>{
-                        setErrorProduct(false)
+                        setErrorProduct("")
                     },4000)
                   } finally {
                     setIsSubmitting(false);
+                     setTimeout(()=>{
+                        setErrorProduct("")
+                        setsuccessProduct("")
+                    },4000)
+                    return;
                   }
                 };
 
   return (
      <div className=' mt-44 md:mt-32 md:w-[50%]  items-center justify-center  mx-auto bg-gray-200 dark:bg-dark rounded-lg ' >
-        {successProduct 
-        ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁😁!!!,  your product  is pending for Approval</h1>)
+        {successProduct && successProduct.length > 0
+        ? (<h1 className='text-xl  text-center text-green-500 ' > Success😁,  your product  is pending for Approval</h1>)
         :(<h1 className='text-2xl font-bold text-center text-black dark:text-white ' >Add  Products</h1>)
         }
-        {ErrorProduct && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔😔!!</h1>}
+        {ErrorProduct && ErrorProduct.length>0 && <h1 className='text-2xl font-bold text-center text-red-500 ' >Error creating product 😔 Please try again later or contact support</h1>}
       
        <form onSubmit={handleSubmit} className="space-y-4 p-3 ">
       <div>
@@ -237,7 +335,7 @@ const AddProduct =  () => {
           name="product_cartegory"
           onChange={handleChange}
           required
-           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white"
+           className="bg-transparent rounded-lg relative block w-full px-3 py-2 border border-double border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:border-4  focus:border-gray-500 focus:z-10 sm:text-sm dark:text-white dark:bg-dark"
         >
                 <option value=""  >Select category</option>
                 {categories?.map((category,index) => (
@@ -308,13 +406,6 @@ const AddProduct =  () => {
                         alt={`Preview ${index + 1}`}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
                       />
-                      {/* <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                      >
-                        ×
-                      </button> */}
                     </div>
                   ))}
                 </div>

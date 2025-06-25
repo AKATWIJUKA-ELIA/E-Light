@@ -47,7 +47,7 @@ const DataTable: React.FC<DataTableProps> = ({ products }) => {
                         if(product){
                                 setaction(product.approved)
                         }
-                })
+                },[])
         const HandleEdit=(ProductId:string)=>{
                 setproductId(ProductId)
                 setisvisible(true)
