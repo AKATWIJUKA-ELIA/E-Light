@@ -13,6 +13,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
+import { Id } from "../../../convex/_generated/dataModel";
 
 
 interface ProductProps {
@@ -29,7 +30,7 @@ interface ProductProps {
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
         const carousel = Autoplay({ delay: 10000})
         const[Copied,setCopied] = useState(false)
-        const { user } = useGetUserById(product?.product_owner_id)
+        const { user } = useGetUserById(product?.product_owner_id as  Id<"customers">)
         // console.log("User is ",user)
         const UserEmail = user?.email||""
         const UserName = user?.username|| ""
