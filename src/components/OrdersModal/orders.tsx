@@ -30,7 +30,6 @@ import {
   XCircle,
   Search,
   Calendar,
-  MapPin,
   Phone,
   Star,
   RotateCcw,
@@ -85,7 +84,7 @@ export default function OrdersTracking() {
         const [activeTab, setActiveTab] = useState("all")
           const [sellerInfo, setSellerInfo] = useState<SellerInfo | null>(null);
         const filteredOrders = orders?.filter((order) => {
-        const matchesSearch = order.product?.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+        const matchesSearch = order.product?.product_name.toLowerCase().includes(searchTerm.toLowerCase())||
         order.product?.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.product?.product_description.toLowerCase().includes(searchTerm.toLowerCase()) 
     const matchesStatus = statusFilter === "all" || order.order_status === statusFilter
