@@ -5,6 +5,7 @@ import useApproveRevoke from "@/hooks/useApproveRevoke"
 import { useSendMail } from "@/hooks/useSendMail"
 import { useEffect, useState } from "react"
 import useGetUserById from "@/hooks/useGetUserById"
+import { Id } from "../../../convex/_generated/dataModel"
 
 interface ApproveRevokeModalProps {
         ischange: boolean
@@ -21,7 +22,7 @@ const ApproveRevokeModal: React.FC<ApproveRevokeModalProps> = ({ ischange, onClo
   const[message,setmessage] = useState("")
 const userId = Product?.product_owner_id || ""
 // console.log("UserId  :",userId )
-const { user } = useGetUserById(userId)
+const { user } = useGetUserById(userId as Id<"customers">)
 // console.log("User :",user )
 // console.log("email Address",user?.emailAddresses[0].emailAddress)
 const UserEmail = user?.email
