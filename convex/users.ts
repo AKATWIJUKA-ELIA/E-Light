@@ -112,7 +112,7 @@ export const GetCustomerByTokenAction = action({
 });
         
         export const GetCustomerById = query({
-        args:{id: v.string(),},
+        args:{id: v.id("customers")},
               handler: async (ctx, args) => {
                      const Customer = await ctx.db.query("customers").filter((q)=> q.eq(q.field("_id"), args.id)).first() 
                     return Customer
@@ -160,7 +160,10 @@ export const GetAllCustomers = query({
                 _creationTime:v.optional(v.number()),
          })},handler:async(ctx,args)=>{
               if(args.User){
-              const NewUser = await ctx.db.patch(args.User._id, args.User);
+              const NewUser = await ctx.db.patch(args.User._id, {
+                ...args.User,
+                updatedAt: Date.now(),
+              });
               return {succes:true, status: 20, message: "Success", user: NewUser};
               }
               
