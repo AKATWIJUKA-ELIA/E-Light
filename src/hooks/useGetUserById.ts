@@ -1,7 +1,8 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
 
-const useGetUserById = (id: string) => {
+const useGetUserById = (id:  Id<"customers">) => {
     const Customer = useQuery(api.users.GetCustomerById, id ? { id } : "skip"); // Prevent calling hook with an empty ID
 //     console.log("Customer data:", id);
     return {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +17,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { TbListDetails } from "react-icons/tb";
+import { FaUser } from "react-icons/fa";
+import { MdOutlineEmail } from "react-icons/md";
+import { getUserById } from "@/lib/convex"
+import useAddToCart from "@/hooks/useAddToCart"
 import {
   Clock,
   Package,
@@ -25,7 +30,6 @@ import {
   XCircle,
   Search,
   Calendar,
-  MapPin,
   Phone,
   Star,
   RotateCcw,
@@ -33,6 +37,7 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import useGetOrders from "@/hooks/usegetOrders"
+import { Id } from "../../../convex/_generated/dataModel"
 
 
 interface Order {
@@ -42,39 +47,47 @@ interface Order {
         user_id: string
         _creationTime: number
         product?: {
-                _id: string;
-                product_name: string;
-                product_image: string[];
-                product_price: string;
+                approved: boolean;
+                product_cartegory: string;
+                product_condition: string;
                 product_description: string;
-                product_owner_id:string
+                product_image: string[];
+                product_name: string;
+                product_owner_id: string;
+                product_price: string;
+                _creationTime: number;
+                _id: string;
   }|null;
+}
+interface SellerInfo {
+  phoneNumber?: string;
+  email?: string;
+  username?: string;
+  address?: string;
 }
 
 
 const statusConfig = {
-  pending: { color: "bg-yellow-500", icon: Clock, label: "Pending" },
+  pending: { color: "bg-orange-500", icon: Clock, label: "Pending" },
   confirmed: { color: "bg-blue-500", icon: CheckCircle, label: "Confirmed" },
-  preparing: { color: "bg-orange-500", icon: Package, label: "Preparing" },
-  ready: { color: "bg-purple-500", icon: CheckCircle, label: "Ready" },
   "out-for-delivery": { color: "bg-indigo-500", icon: Truck, label: "Out for Delivery" },
   delivered: { color: "bg-green-500", icon: CheckCircle, label: "Delivered" },
   cancelled: { color: "bg-red-500", icon: XCircle, label: "Cancelled" },
 }
 
 export default function OrdersTracking() {
-        
+        const HandleAddToCart = useAddToCart();
         const { data: orders } = useGetOrders()
         const [selectedOrder, setSelectedOrder] = useState<Order |null>(null)
         const [searchTerm, setSearchTerm] = useState("")
         const [statusFilter, setStatusFilter] = useState<string>("all")
         const [activeTab, setActiveTab] = useState("all")
+          const [sellerInfo, setSellerInfo] = useState<SellerInfo | null>(null);
         const filteredOrders = orders?.filter((order) => {
-        const matchesSearch = order._id.toLowerCase().includes(searchTerm.toLowerCase())
-// order.restaurant.toLowerCase().includes(searchTerm.toLowerCase()) ||
-// order.items.some((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        const matchesSearch = order.product?.product_name.toLowerCase().includes(searchTerm.toLowerCase())||
+        order.product?.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.product?.product_description.toLowerCase().includes(searchTerm.toLowerCase()) 
     const matchesStatus = statusFilter === "all" || order.order_status === statusFilter
-
     const matchesTab =
       activeTab === "all" ||
       (activeTab === "active" && !["delivered", "cancelled"].includes(order.order_status)) ||
@@ -82,6 +95,19 @@ export default function OrdersTracking() {
 
     return matchesSearch && matchesStatus && matchesTab
   })
+
+    useEffect(() => {
+    const fetchSeller = async () => {
+      if (selectedOrder?.product?.product_owner_id) {
+        const userResult = await getUserById(selectedOrder.product.product_owner_id as  Id<"customers">);
+        // userResult could be { user: {...}, ... } or { user: null, ... }
+        setSellerInfo(userResult.user || null);
+      } else {
+        setSellerInfo(null);
+      }
+    };
+    fetchSeller();
+  }, [selectedOrder]);
 
   const getStatusBadge = (
     status: keyof typeof statusConfig
@@ -113,16 +139,16 @@ export default function OrdersTracking() {
 //   }
 
   return (
-    <div className="min-h-screen mt-20 bg-gray-50 p-4">
+    <div className="min-h-screen mt-20 bg-gray-50 dark:bg-gray-800 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2"> Orders</h1>
-          <p className="text-gray-600">Track your current orders and view order history</p>
+          <p className="text-gray-500">Track your current orders and view order history</p>
         </div>
 
         {/* Search and Filters */}
-        <Card className="mb-6">
+        <Card className="mb-6 dark:bg-gray-600">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
@@ -148,8 +174,6 @@ export default function OrdersTracking() {
                     <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="confirmed">Confirmed</SelectItem>
-                    <SelectItem value="preparing">Preparing</SelectItem>
-                    <SelectItem value="ready">Ready</SelectItem>
                     <SelectItem value="out-for-delivery">Out for Delivery</SelectItem>
                     <SelectItem value="delivered">Delivered</SelectItem>
                     <SelectItem value="cancelled">Cancelled</SelectItem>
@@ -168,11 +192,11 @@ export default function OrdersTracking() {
             <TabsTrigger value="completed">Order History</TabsTrigger>
           </TabsList>
 
-          <TabsContent value={activeTab} className="mt-6">
+          <TabsContent value={activeTab} className="mt-6 ">
             {/* Orders List */}
             <div className="space-y-4">
               {filteredOrders?.length === 0 ? (
-                <Card>
+                <Card className="dark:bg-gray-700" >
                   <CardContent className="p-12 text-center">
                     <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">No orders found</h3>
@@ -185,7 +209,7 @@ export default function OrdersTracking() {
                 </Card>
               ) : (
                 filteredOrders?.map((order) => (
-                  <Card key={order._id} className="hover:shadow-md transition-shadow">
+                  <Card key={order._id} className="hover:shadow-md transition-shadow dark:bg-gray-900 ">
                     <CardContent className="p-6">
                       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                         <div className="flex-1">
@@ -199,8 +223,8 @@ export default function OrdersTracking() {
                               {formatDate(order._creationTime)}
                             </div>
                             <div className="flex items-center gap-2">
-                              <MapPin className="w-4 h-4" />
-                              {/* {order.restaurant.name} */}
+                              <TbListDetails className="w-4 h-4" />
+                              {order.product?.product_description || "No description available"}
                             </div>
                             <div className="flex items-center gap-2">
                               <Package className="w-4 h-4" />
@@ -269,18 +293,15 @@ export default function OrdersTracking() {
 
                                     <Separator />
 
-                                    {/* Order Summary */}
+                                    {/* Order Details */}
                                     <div>
-                                      <h4 className="font-semibold mb-3">Order Summary</h4>
+                                      <h4 className="font-semibold mb-3">Order Details</h4>
                                       <div className="space-y-2 text-sm">
-                                        <div className="flex justify-between">
-                                          <span>Subtotal</span>
-                                          {/* <span>${selectedOrder.subtotal.toFixed(2)}</span> */}
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span>Tax</span>
-                                          {/* <span>${selectedOrder.tax.toFixed(2)}</span> */}
-                                        </div>
+                                     <div>
+                                        <h1>
+                                                {selectedOrder.product?.product_description}
+                                        </h1>
+                                     </div>
                                         <div className="flex justify-between">
                                           <span>Delivery Fee</span>
                                           {/* <span>${selectedOrder.deliveryFee.toFixed(2)}</span> */}
@@ -288,7 +309,7 @@ export default function OrdersTracking() {
                                         <Separator />
                                         <div className="flex justify-between font-semibold text-base">
                                           <span>Total</span>
-                                          {/* <span>${selectedOrder.total.toFixed(2)}</span> */}
+                                          Ugx: {(Number(selectedOrder.product?.product_price) * selectedOrder.quantity).toLocaleString()}
                                         </div>
                                       </div>
                                     </div>
@@ -309,18 +330,25 @@ export default function OrdersTracking() {
 
                                     <Separator />
 
-                                    {/* Restaurant Info */}
+                                    {/* About Seller Info */}
                                     <div>
-                                      <h4 className="font-semibold mb-2">Restaurant</h4>
+                                      <h4 className="font-semibold mb-2">About Seller </h4>
                                       <div className="text-sm text-gray-600 space-y-1">
                                         {/* <p className="font-medium">{selectedOrder.restaurant.name}</p> */}
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-4">
+                                          <FaUser  className="w-4 h-4" />
+                                           {selectedOrder.product?.product_owner_id ? (sellerInfo?.username || "Anonymus") : "Anonymus"}
+                                        </div>
+
+                                        <div className="flex items-center gap-4">
                                           <Phone className="w-4 h-4" />
-                                          {/* {selectedOrder.restaurant.phone} */}
+                                           <a href={`tel:${selectedOrder.product?.product_owner_id ? ( sellerInfo?.phoneNumber || "") : 
+                                                ""}`}>{selectedOrder.product?.product_owner_id ? ( sellerInfo?.phoneNumber || "No phone number available") : "No phone number available"}</a> 
                                         </div>
                                         <div className="flex items-center gap-2">
-                                          <MapPin className="w-4 h-4" />
-                                          {/* {selectedOrder.restaurant.address} */}
+                                          <MdOutlineEmail className="w-4 h-4" />
+                                           <a href={`mailto: ${selectedOrder.product?.product_owner_id ? (sellerInfo?.email || "") : ""}`}>
+                                                {selectedOrder.product?.product_owner_id ? (sellerInfo?.email || "No email available") : "No email available"}</a>
                                         </div>
                                       </div>
                                     </div>
@@ -331,7 +359,12 @@ export default function OrdersTracking() {
 
                             {order.order_status === "delivered" && (
                               <Button variant="outline" size="sm" 
-                        //       onClick={() => reorderItems(order)}
+                              onClick={() => {
+                                  if (order.product && typeof order.product._id === "string") {
+                                    HandleAddToCart(order.product)
+                                  }
+                                }}
+                                disabled={!order.product}
                               >
                                 <RotateCcw className="w-4 h-4 mr-1" />
                                 Reorder

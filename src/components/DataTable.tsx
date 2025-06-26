@@ -154,8 +154,8 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                   </TableBody>
                 </Table>):(
                         <div>
-                                <h1 className="text-2xl font-bold text-center mt-10">No Pending Products</h1>
-                                <p className="text-center text-gray-500">You have no products pending approval.</p>
+                                <h1 className="text-2xl font-bold text-center mt-10">No {status} Products</h1>
+                                <p className="text-center text-gray-500">You have no products {status} .</p>
                         </div>
                 )}
               </div>

@@ -191,7 +191,9 @@ const Header = () => {
                                                 <div className='flex mt-1 font-sans dark:text-dark px-2 ' 
                                                 // onClick={()=>setUserDrawer(true)}
                                                  >
+                                                        <Link href={"/profile/account"} >
                                                         {User.Username}
+                                                        </Link>
                                                 </div>
                                                 <div className='flex rounded-full' >
                                                         <Image src={User.profilePicture?User.profilePicture:"/images/images.png"} width={35} height={35} alt='profile picture' className="rounded-full" />
