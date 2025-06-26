@@ -1,11 +1,11 @@
 "use client"
 
 import {type LucideIcon } from "lucide-react"
-import { IoAddCircle } from "react-icons/io5";
-import {LayoutDashboardIcon} from "lucide-react"
+import { IoAddCircle,IoBagCheckOutline  } from "react-icons/io5";
+import {LayoutDashboardIcon,UserCircleIcon} from "lucide-react"
 import { HomeIcon } from "lucide-react"
-import { FcApproval,FcCancel  } from "react-icons/fc";
-import { MdAlignHorizontalLeft,MdOutlinePending  } from "react-icons/md";
+import { FcApproval  } from "react-icons/fc";
+import { MdAlignHorizontalLeft,MdOutlinePending,  } from "react-icons/md";
 
 import {
   SidebarGroup,
@@ -21,32 +21,37 @@ export function NavMain() {
                 {
                         title: "Home",
                         icon: HomeIcon as LucideIcon,
-                        link:"/",
+                        link:"/profile",
                 },
                 {
                         title: "All Products",
                         icon: MdAlignHorizontalLeft as LucideIcon,
-                        link:"#all",
+                        link:"/profile/#all",
                 },
                 {
                         title: "Approved Products",
                         icon: FcApproval as LucideIcon,
-                        link:"/",
+                        link:"/profile/approved",
                 },
                 {
                         title: "Pending",
                         icon: MdOutlinePending as LucideIcon,
-                        link:"#pending",
+                        link:"/profile/pending",
                 },
                 {
-                        title: "Failed",
-                        icon: FcCancel as LucideIcon,
-                        link:"/",
+                        title: "Orders",
+                        icon: IoBagCheckOutline as LucideIcon,
+                        link:"/profile/orders",
                 },
                 {
                         title: "Sell",
                         icon: IoAddCircle  as LucideIcon,
                         link:"/post",
+                },
+                 {
+                        title: "Account",
+                        icon: UserCircleIcon  as LucideIcon,
+                        link:"/profile/account",
                 }
         ]
   return (

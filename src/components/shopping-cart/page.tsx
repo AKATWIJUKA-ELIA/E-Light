@@ -13,6 +13,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Id } from "../../../convex/_generated/dataModel"
 import useGetCart from '@/hooks/useGetCart';
+import useCheckOut from "@/hooks/useCheckOut"
 interface Product {
         total:number;
          _id: Id<"products">;
@@ -36,20 +37,28 @@ const ShoppingCart= ()=> {
         const Delete = useDeleteCart()
         const itemCount = User && User.User_id && User.User_id.length > 0 ? UpstreamCart?.reduce((total, item) => total + (item.quantity || 0), 0) : cart?.reduce((total, item) => total + (item.quantity || 0), 0)
         const[Copied,setCopied] = useState(false)
-
-        // console.log("Cart is ", cart)
         const productIds = User && User.User_id && User.User_id.length > 0
                 ? UpstreamCart?.map((item) => item.product_id)
                 : cart.map((item) => item.product_id);
         // console.log("product ids", productIds)
         const { data: products, loading: isLoading } = useGetProductsByIds((productIds?.flatMap(id => id)) || []);
         const [loading,setLoading] = useState(isLoading)
-        // console.log("Products : ",products)
+        const { handleCheckOut } = useCheckOut();
+
         useEffect(() => {
                 if (cart.length === 0 ||cart.length > 0) {
                         setLoading(false);
                 }
         }, [cart]);
+
+        const CheckOut = async () => {
+    const result = await handleCheckOut();
+    if (result.success) {
+      console.log("Order placed!");
+    } else {
+      console.error(result.message);
+    }
+  };
         
         const itemQuantity = (id: string) => {
                 const item = User && User?.User_id.length>0 ? UpstreamCart?.find((item) => item.product_id === id)
@@ -203,7 +212,10 @@ const ShoppingCart= ()=> {
              ({itemCount} items) Shs:{subtotal().toFixed(2)}
           </div>
 
-          <Button className="w-full bg-gold hover:bg-yellow-500 text-dark font-medium rounded-full">
+          <Button
+           className="w-full bg-gold hover:bg-yellow-500 text-dark font-medium rounded-full"
+           onClick={()=>CheckOut()}
+           >
             Proceed to checkout
           </Button>
         </div>
