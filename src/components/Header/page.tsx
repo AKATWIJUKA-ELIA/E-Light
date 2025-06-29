@@ -159,7 +159,7 @@ const Header = () => {
                         </div>
                 </div>
 
-                <div className='flex gap-4 md:gap-8 ml-10 '>
+                <div className='flex gap-4 md:gap-5 ml-10 '>
                         <div className='flex gap-4  items-center ' >
                         <div className='flex hover:cursor-pointer' onMouseEnter={HandleComing} onMouseLeave={()=>setcomingSoon(false)} > {comingSoon
                         ?(<h1 className=" hidden md:flex whitespace-nowrap text-gold font-bold overflow-hidden text-ellipsis">Coming Soon</h1>)

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState,useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,52 +11,33 @@ import useAddToCart from "@/hooks/useAddToCart"
 import {
   Package,
   Search,
-  Calendar,
+  Group ,
+  Award 
 } from "lucide-react"
 import Image from "next/image"
 import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import useBookmark from "@/hooks/useBookmark"
-import {Bookmark} from "@/lib/utils"
-
+import { Id } from "../../../convex/_generated/dataModel"
 
 export default function BookMarks() {
-        const {DeleteBookmark, ListBookmarks} = useBookmark()
+        const {DeleteBookmark, List:bookmarks} = useBookmark()
         const HandleAddToCart = useAddToCart();
-        const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
         const productIds = bookmarks?.map((bookmark) => bookmark.product_id);
-        console.log("productIds", productIds)
         const { data: products, loading: isLoading } = useGetProductsByIds((productIds?.flatMap(id => id)) || []);
-        console.log("products", products)
         const [searchTerm, setSearchTerm] = useState("")
-        const Bookmarks = products?.filter((product) => {
-        const matchesSearch = product?.product_name.toLowerCase().includes(searchTerm.toLowerCase())||
-        product?.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product?.product_description.toLowerCase().includes(searchTerm.toLowerCase()) 
+        const Bookmarks = bookmarks?.map((bookmark)=>{
+                const final = products?.find((product) => product?._id === bookmark.product_id) || null;
+                return {
+                        ...bookmark,
+                        product: final
+                }
+        }) .filter((product) => {
+        const matchesSearch = product.product?.product_name.toLowerCase().includes(searchTerm.toLowerCase())||
+        product.product?.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.product?.product_description.toLowerCase().includes(searchTerm.toLowerCase()) 
         return matchesSearch
 })
     
-
-  useEffect(()=>{
-        const fetchBookmarks = async () => {
-            const bookmarksData = await ListBookmarks();
-                setBookmarks(bookmarksData || []);
-        }
-        fetchBookmarks();
-  },[ListBookmarks])
-
-
-
-  const formatDate = (dateString: number) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  }
-
-
 
   return (
     <div className="min-h-screen mt-20 bg-gray-50 dark:bg-gray-800 p-4">
@@ -116,8 +97,8 @@ export default function BookMarks() {
                       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                         <div className="flex-shrink-0">
                           <Image
-                            src={bookmark?.product_image[0] || ""}
-                            alt={bookmark?.product_name || ""}
+                            src={bookmark.product?.product_image[0] || ""}
+                            alt={bookmark.product?.product_name || ""}
                             width={100}
                             height={100}
                             className="rounded-md"
@@ -125,20 +106,42 @@ export default function BookMarks() {
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-semibold">{bookmark?.product_name}</h3>
+                            <h3 className="text-lg font-semibold">{bookmark.product?.product_name}</h3>
                           </div>
                           <div className="text-sm text-gray-600 space-y-1">
                             <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4" />
-                              {formatDate(bookmark?._creationTime ?? 0)}
+                              <Award  className="w-4 h-4" />
+                              <h1 className="text-lg font-semibold">
+                                Ugx: {(parseFloat(bookmark.product?.product_price ?? "0") || 0).toLocaleString()  || "NaN"}
+                              </h1>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Group   className="w-4 h-4" />
+                              <h1 className="text-lg ">
+                                {bookmark.product?.product_cartegory || "No category available"}
+                              </h1>
                             </div>
                             <div className="flex items-center gap-2">
                               <TbListDetails className="w-4 h-4" />
-                              {bookmark?.product_description || "No description available"}
+                              {bookmark.product?.product_description || "No description available"}
                             </div>
                             
                           </div>
                         </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => bookmark.product && HandleAddToCart(bookmark.product)}
+                          >
+                            Add to Cart
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            onClick={() => bookmark._id && DeleteBookmark(bookmark.product?._id || "")}
+                          >
+                            Remove
+                          </Button>
+                      </div>
                       </div>
                     </CardContent>
                   </Card>

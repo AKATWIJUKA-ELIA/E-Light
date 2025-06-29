@@ -41,13 +41,13 @@ export const ListBookmarks = query({
     export const DeleteBookmark = mutation({
                 args: { id: v.string() },
                 handler: async (ctx, args) => {
-                  const cart = await ctx.db.query("bookmarks")
+                  const bookmark = await ctx.db.query("bookmarks")
                     .withIndex("by_product_id", (q) => q.eq("product_id", args.id))
                     .first();
-                  if (!cart) {
-                    return {message:"Bookmark product not found", success: false } 
+                  if (!bookmark) {
+                    return {message:"Bookmark  not found", success: false } 
                   }
-                  await ctx.db.delete(cart._id);
+                  await ctx.db.delete(bookmark._id);
                   return {message:"success", success: true };
                 },
               });

@@ -1,7 +1,6 @@
 import { api } from "../../convex/_generated/api"; 
 import { useMutation,useQuery } from "convex/react";
 import { useAppSelector } from "@/hooks";
-import { Id } from "../../convex/_generated/dataModel";
 
 
 const useBookmark = () => {
@@ -27,11 +26,10 @@ const useBookmark = () => {
                         
                 }
         }
-        const ListBookmarks = async () => {
-                return List;
-        }
 
-        const DeleteBookmark = async (product_id: Id<"bookmarks">) => {
+
+        const DeleteBookmark = async (product_id: string) => {
+                console.log("Product_id", product_id);  
                 try {
                         const response = await Delete({ id:product_id });
                         if (!response?.success) {
@@ -45,7 +43,7 @@ const useBookmark = () => {
 
         return { 
                 createBookmark,
-                ListBookmarks,
+                List,
                 DeleteBookmark,
          };
  }

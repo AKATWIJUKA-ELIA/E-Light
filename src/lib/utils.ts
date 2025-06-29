@@ -21,8 +21,20 @@ export interface User {
         _creationTime:number,
 }
 export interface Bookmark {
-        _id: Id<"bookmarks">,
-        product_id: string,
-        user_id: string,
-        _creationTime: number,
+        _id?: Id<"bookmarks">,
+        product_id?: string,
+        user_id?: string,
+        _creationTime?: number,
+        product?: {
+                approved: boolean;
+                product_cartegory: string;
+                product_condition: string;
+                product_description: string;
+                product_image: string[];
+                product_name: string;
+                product_owner_id: string;
+                product_price: string;
+                _creationTime: number;
+                _id: string;
+  }|null;
 }
