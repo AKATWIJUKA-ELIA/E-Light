@@ -17,13 +17,12 @@ import {
 import Image from "next/image"
 import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import useBookmark from "@/hooks/useBookmark"
-import { Id } from "../../../convex/_generated/dataModel"
 
 export default function BookMarks() {
         const {DeleteBookmark, List:bookmarks} = useBookmark()
         const HandleAddToCart = useAddToCart();
         const productIds = bookmarks?.map((bookmark) => bookmark.product_id);
-        const { data: products, loading: isLoading } = useGetProductsByIds((productIds?.flatMap(id => id)) || []);
+        const { data: products, } = useGetProductsByIds((productIds?.flatMap(id => id)) || []);
         const [searchTerm, setSearchTerm] = useState("")
         const Bookmarks = bookmarks?.map((bookmark)=>{
                 const final = products?.find((product) => product?._id === bookmark.product_id) || null;

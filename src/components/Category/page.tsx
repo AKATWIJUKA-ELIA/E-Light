@@ -3,6 +3,7 @@ import React from 'react'
 import HeroCard from '@/components/HeroCards/page'
 import ProductsNotFound from '@/components/NoProductsFound/page'
 import { Id } from '../../../convex/_generated/dataModel'
+import Image from 'next/image'
 interface RelatedProduct {
     _id: Id<"products">;
     _creationTime: number;
@@ -32,7 +33,10 @@ const Categories = ({relatedProducts,category,image}:PageProps) => {
                                         <h1 className='text-dark dark:text-white ' >Best Match for </h1>
                                                 {image ? (
                                 <div className=' flex  '>
-                                        <img src={URL.createObjectURL(image)} alt="Uploaded" className=' w-16 h-16 md:w-32 md:h-32 rounded-md object-cover' />
+                                        <Image
+                                         src={URL.createObjectURL(image)}
+                                          alt="Uploaded"
+                                           className=' w-16 h-16 md:w-32 md:h-32 rounded-md object-cover' />
                                 </div>
                         ):(<div><span className='font-bold' >{decodeURIComponent(category)}</span> &ldquo;</div>)} 
                                 </div>

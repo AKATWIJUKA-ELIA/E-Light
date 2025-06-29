@@ -9,6 +9,7 @@ import { useAppSelector } from '@/hooks';
 // import useGenerateEmbeddings from '@/hooks/useGenerateEmbeddings';
 // import useGenerateImageEmbeddings from '@/hooks/useGenerateImageEmbeddings';
 import useCreateProduct from '@/hooks/useCreateProduct';
+import Image from 'next/image';
 
   interface Product {
                 approved: boolean,
@@ -401,7 +402,7 @@ https://shopcheap.vercel.app/</h3>
                 <div className="flex flex-wrap gap-2">
                   {imagePreview.map((src, index) => (
                     <div key={index} className="relative">
-                      <img
+                      <Image
                         src={src || "/placeholder.svg"}
                         alt={`Preview ${index + 1}`}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
