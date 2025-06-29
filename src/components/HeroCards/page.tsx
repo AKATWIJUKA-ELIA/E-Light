@@ -39,9 +39,9 @@ const HeroCard = ({ product }: HeroCardProps) => {
                 if (!product_id) return;
                 const response = await createBookmark(product_id);
                 if (response.success) {
-                        console.log("Bookmark created successfully");
+                        alert("Bookmark created successfully!");
                 } else {
-                        console.error("Failed to create bookmark:", response.message);
+                        alert(`Failed to create bookmark: ${response.message}`);
                 }
         }
   return (
