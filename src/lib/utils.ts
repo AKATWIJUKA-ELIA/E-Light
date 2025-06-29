@@ -20,3 +20,9 @@ export interface User {
         lastLogin?: number,
         _creationTime:number,
 }
+export interface Bookmark {
+        _id: Id<"bookmarks">,
+        product_id: string,
+        user_id: string,
+        _creationTime: number,
+}
