@@ -4,8 +4,8 @@ import { MdAddShoppingCart } from "react-icons/md";
 import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
 import { useEffect, useState } from 'react';
-// import { AiTwotoneLike,AiTwotoneDislike  } from "react-icons/ai";
-import { CiBookmark } from "react-icons/ci";
+import useBookmark from '@/hooks/useBookmark';
+import { Bookmark  } from 'lucide-react';
 interface Product {
         approved: boolean;
          product_cartegory: string;
@@ -23,7 +23,8 @@ interface Product {
       }
 
 const HeroCard = ({ product }: HeroCardProps) => {
-        // console.log("product", product)
+        
+        const { createBookmark } = useBookmark()
          const addToCart = useAddToCart()
          const [productData, setProductData] = useState<Product | null>(product)
         const truncateString = (text: string, maxLength: number): string => {
@@ -34,6 +35,15 @@ const HeroCard = ({ product }: HeroCardProps) => {
                         setProductData(product)
                 }
               }, [product])
+        const handleBookmark = async (product_id:string) => {
+                if (!product_id) return;
+                const response = await createBookmark(product_id);
+                if (response.success) {
+                        console.log("Bookmark created successfully");
+                } else {
+                        console.error("Failed to create bookmark:", response.message);
+                }
+        }
   return (
         <div  >
         {productData  ? (
@@ -43,9 +53,8 @@ const HeroCard = ({ product }: HeroCardProps) => {
           >
 
                 <div className="fixed z-50 items-center justify-between p-4">
-                  <div className="flex items-">
-                    <CiBookmark className="text-3xl bg-gray-500 rounded-md  text-green-500 hover:text-gray-700 cursor-pointer" />
-                    share
+                  <div className="flex ">
+                    <Bookmark   size={40} color='#FFD700'  className="text-3xl  rounded-md   hover:text-gray-700 cursor-pointer" onClick={() => {handleBookmark(productData._id)}} />
                   </div>
                 </div>
             {/* Product Image */}

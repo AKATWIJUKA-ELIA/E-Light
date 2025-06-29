@@ -2,7 +2,7 @@
 
 import {type LucideIcon } from "lucide-react"
 import { IoAddCircle,IoBagCheckOutline  } from "react-icons/io5";
-import {LayoutDashboardIcon,UserCircleIcon} from "lucide-react"
+import {LayoutDashboardIcon,UserCircleIcon,Bookmark} from "lucide-react"
 import { HomeIcon } from "lucide-react"
 import { FcApproval  } from "react-icons/fc";
 import { MdAlignHorizontalLeft,MdOutlinePending,  } from "react-icons/md";
@@ -52,7 +52,13 @@ export function NavMain() {
                         title: "Account",
                         icon: UserCircleIcon  as LucideIcon,
                         link:"/profile/account",
-                }
+                },
+                {
+                        title: "Bookmarks",
+                        icon: Bookmark  as LucideIcon,
+                        link:"/profile/bookmarks",
+                },
+
         ]
   return (
     <SidebarGroup>

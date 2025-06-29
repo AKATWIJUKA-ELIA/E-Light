@@ -9,6 +9,7 @@ import { useSendMail } from "@/hooks/useSendMail"
 import useGetProductById from "@/hooks/useGetProductById"
 import type { Id } from "../../../convex/_generated/dataModel"
 import { useAppSelector } from "@/hooks"
+import Image from "next/image"
 interface Product {
   _id: string
   product_cartegory?: string
@@ -386,7 +387,7 @@ https://shopcheap.vercel.app/</h3>
                 <div className="flex flex-wrap gap-2">
                   {imagePreview.map((src, index) => (
                     <div key={index} className="relative">
-                      <img
+                      <Image
                         src={src || "/placeholder.svg"}
                         alt={`Preview ${index + 1}`}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
@@ -410,7 +411,7 @@ https://shopcheap.vercel.app/</h3>
                 <div className="flex flex-wrap gap-2">
                   {product.product_image.map((src:string,) => (
                     <div key={src} className="relative">
-                      <img
+                      <Image
                         src={src || "/placeholder.svg"}
                         alt={`Preview `}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
