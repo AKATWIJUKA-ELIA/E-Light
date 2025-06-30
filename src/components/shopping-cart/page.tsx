@@ -227,7 +227,7 @@ const ShoppingCart= ()=> {
         </div>
 
         <div className="bg-white p-4 rounded border border-gray-200 dark:bg-gray-500 dark:border-gray-500 ">
-          <h2 className="text-lg font-bold mb-4">New international customers purchased</h2>
+          <h2 className="text-lg font-bold mb-4">Your may also Like </h2>
 
           <div className="space-y-6">
             <div className="flex gap-3">
