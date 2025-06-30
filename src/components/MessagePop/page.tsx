@@ -4,12 +4,6 @@ import { useNotification } from "@/app/NotificationContext"
 import { IoMdClose } from "react-icons/io";
 import { useEffect } from "react";
 
-interface MessagePopProps {
-  isvisible: boolean
-  onClose: () => void
-  message: string
-  status: string
-}
 
 const MessagePop: React.FC= () => {
         const { notification, setNotification } = useNotification()
