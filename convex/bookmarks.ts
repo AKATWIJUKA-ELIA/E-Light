@@ -15,13 +15,14 @@ export const createBookmark = mutation({
                         .query("bookmarks")
                         .withIndex("by_product_id", (q) => q.eq("product_id", args.Bookmark.product_id))
                         .unique();
-                  if(existing){
-                        return { success: true, message: "success" };
-                  }
-              await ctx.db.insert("bookmarks", {
+                  if(!existing){
+                        await ctx.db.insert("bookmarks", {
                     ...args.Bookmark,
               });
-              return { success: true, message: "success" };
+                        return { success: true, message: "success" };
+                  }
+              
+              return { success: false, message: "Item already bookmarked!" };
         }catch{
                 return { success: false, message: "Error creating Bookmark" };
         }
