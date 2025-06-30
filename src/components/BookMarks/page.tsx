@@ -17,6 +17,7 @@ import {
 import Image from "next/image"
 import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import useBookmark from "@/hooks/useBookmark"
+import Link from "next/link"
 
 export default function BookMarks() {
         const {DeleteBookmark, List:bookmarks} = useBookmark()
@@ -93,6 +94,7 @@ export default function BookMarks() {
                 Bookmarks?.map((bookmark) => (
                   <Card key={bookmark?._id} className="hover:shadow-md transition-shadow dark:bg-gray-900 ">
                     <CardContent className="p-6">
+                      <Link href={`/product/${bookmark.product?._id}`} >
                       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                         <div className="flex-shrink-0">
                           <Image
@@ -142,6 +144,7 @@ export default function BookMarks() {
                           </Button>
                       </div>
                       </div>
+                      </Link>
                     </CardContent>
                   </Card>
                 ))
