@@ -14,6 +14,7 @@ import { useEffect, useState } from "react"
 import { Id } from "../../../convex/_generated/dataModel"
 import useGetCart from '@/hooks/useGetCart';
 import useCheckOut from "@/hooks/useCheckOut"
+import { useNotification } from "@/app/NotificationContext"
 interface Product {
         total:number;
          _id: Id<"products">;
@@ -40,7 +41,7 @@ const ShoppingCart= ()=> {
         const productIds = User && User.User_id && User.User_id.length > 0
                 ? UpstreamCart?.map((item) => item.product_id)
                 : cart.map((item) => item.product_id);
-        // console.log("product ids", productIds)
+        const { setNotification } = useNotification();
         const { data: products, loading: isLoading } = useGetProductsByIds((productIds?.flatMap(id => id)) || []);
         const [loading,setLoading] = useState(isLoading)
         const { handleCheckOut } = useCheckOut();
@@ -53,11 +54,16 @@ const ShoppingCart= ()=> {
 
         const CheckOut = async () => {
     const result = await handleCheckOut();
-    if (result.success) {
-      console.log("Order placed!");
-    } else {
-      console.error(result.message);
-    }
+    if (!result.success) {
+      setNotification({
+        message: result.message,
+        status: "error"
+      })
+    } else{
+        setNotification({
+        message:result.message,
+        status: "success"
+      })}
   };
         
         const itemQuantity = (id: string) => {
