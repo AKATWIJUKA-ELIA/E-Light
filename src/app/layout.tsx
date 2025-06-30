@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ReduxProvider from "./ReduxProvider";
-import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { FileProvider } from "./FileContext";
 import { DataProvider } from "./DataContext";
+import { NotificationProvider } from "./NotificationContext";
 import { ModeToggle } from "@/components/Dark-light/page";
 import FeedBackButton from "@/components/FeedBackButton/page";
 import Header from "@/components/Header/page";
 import ConditionalFooter from "@/components/ConditionalFooter/page"
+import MessagePop from "@/components/MessagePop/page";
 
 export const metadata: Metadata = {
   title: "ShopCheap",
@@ -26,28 +27,29 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ConvexClientProvider>
-        <GoogleOAuthProvider clientId={CLIENT_ID}>
-          <ClerkProvider>
-            <ReduxProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              > 
-              <DataProvider>
-              <FileProvider>
-                <Header  />
-                {children}
-                <FeedBackButton/>
-                <ModeToggle />
-                <ConditionalFooter/>
-                </FileProvider>
-                  </DataProvider>
-              </ThemeProvider> 
-            </ReduxProvider>
-          </ClerkProvider>
-          </GoogleOAuthProvider>
+                <GoogleOAuthProvider clientId={CLIENT_ID}>
+                        <NotificationProvider>
+                                <ReduxProvider>
+                                        <ThemeProvider
+                                                attribute="class"
+                                                defaultTheme="system"
+                                                enableSystem
+                                                disableTransitionOnChange
+                                        >
+                                                <DataProvider>
+                                                        <FileProvider>
+                                                                <Header  />
+                                                                <MessagePop />
+                                                                {children}
+                                                                <FeedBackButton/>
+                                                                <ModeToggle />
+                                                                <ConditionalFooter/>
+                                                        </FileProvider>
+                                                </DataProvider>
+                                        </ThemeProvider> 
+                                </ReduxProvider>
+                        </NotificationProvider>
+                </GoogleOAuthProvider>
         </ConvexClientProvider>
       </body>
       <script src="https://accounts.google.com/gsi/client" async defer></script>

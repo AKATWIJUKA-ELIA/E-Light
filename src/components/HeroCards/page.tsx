@@ -6,6 +6,7 @@ import useAddToCart  from '../../hooks/useAddToCart';
 import { useEffect, useState } from 'react';
 import useBookmark from '@/hooks/useBookmark';
 import { Bookmark  } from 'lucide-react';
+import { useNotification } from '@/app/NotificationContext';
 interface Product {
         approved: boolean;
          product_cartegory: string;
@@ -24,6 +25,7 @@ interface Product {
 
 const HeroCard = ({ product }: HeroCardProps) => {
         
+        const { setNotification } = useNotification();
         const { createBookmark } = useBookmark()
          const addToCart = useAddToCart()
          const [productData, setProductData] = useState<Product | null>(product)
@@ -39,9 +41,15 @@ const HeroCard = ({ product }: HeroCardProps) => {
                 if (!product_id) return;
                 const response = await createBookmark(product_id);
                 if (response.success) {
-                        alert("Bookmark created successfully!");
+                        setNotification({
+                                message: "Bookmark created successfully!",
+                                status: "success",
+                        });
                 } else {
-                        alert(`Failed to create bookmark: ${response.message}`);
+                        setNotification({
+                                message: response.message || "Failed to create bookmark",
+                                status: "error",
+                        });
                 }
         }
   return (
