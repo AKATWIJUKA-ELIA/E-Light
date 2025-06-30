@@ -19,7 +19,11 @@ import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import useBookmark from "@/hooks/useBookmark"
 import Link from "next/link"
 
-export default function BookMarks() {
+interface BookmarkProps {
+        search: boolean;     
+}
+
+export default function BookMarks({ search }: BookmarkProps) {
         const {DeleteBookmark, List:bookmarks} = useBookmark()
         const HandleAddToCart = useAddToCart();
         const productIds = bookmarks?.map((bookmark) => bookmark.product_id);
@@ -49,7 +53,7 @@ export default function BookMarks() {
         </div>
 
         {/* Search and Filters */}
-        <Card className="mb-6 dark:bg-gray-600">
+        { search && <Card className="mb-6 dark:bg-gray-600">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
@@ -67,7 +71,7 @@ export default function BookMarks() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card>}
 
         {/* Tabs */}
         <Tabs className="mb-6">
@@ -94,8 +98,9 @@ export default function BookMarks() {
                 Bookmarks?.map((bookmark) => (
                   <Card key={bookmark?._id} className="hover:shadow-md transition-shadow dark:bg-gray-900 ">
                     <CardContent className="p-6">
-                      <Link href={`/product/${bookmark.product?._id}`} >
+                      
                       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <Link href={`/product/${bookmark.product?._id}`} >
                         <div className="flex-shrink-0">
                           <Image
                             src={bookmark.product?.product_image[0] || ""}
@@ -105,6 +110,7 @@ export default function BookMarks() {
                             className="rounded-md"
                           />
                         </div>
+                        </Link>
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="text-lg font-semibold">{bookmark.product?.product_name}</h3>
@@ -144,7 +150,7 @@ export default function BookMarks() {
                           </Button>
                       </div>
                       </div>
-                      </Link>
+                      
                     </CardContent>
                   </Card>
                 ))
