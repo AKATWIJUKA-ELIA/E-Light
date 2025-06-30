@@ -190,8 +190,8 @@ export const getImageUrl = query({
           },
         handler: async (ctx, args) => {
               if(args.product){
-              const job = await ctx.db.patch(args._id, args.product);
-              return job
+              const product = await ctx.db.patch(args._id, args.product);
+              return product
               }
               
         }})
