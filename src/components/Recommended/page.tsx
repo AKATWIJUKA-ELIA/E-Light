@@ -5,7 +5,7 @@ import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
 import { useEffect, useState } from 'react';
 import useBookmark from '@/hooks/useBookmark';
-import { Bookmark  } from 'lucide-react';
+// import { Bookmark  } from 'lucide-react';
 import { useNotification } from '@/app/NotificationContext';
 import useGetRecommendations from '@/hooks/useGetRecommendations';
 interface Product {
@@ -39,21 +39,21 @@ const Recommended = ({ type }: RecommendedProps) => {
                         setProductData(products)
                 }
               }, [products])
-        const handleBookmark = async (product_id:string) => {
-                if (!product_id) return;
-                const response = await createBookmark(product_id);
-                if (response.success) {
-                        setNotification({
-                                message: "Bookmark created successfully!",
-                                status: "success",
-                        });
-                } else {
-                        setNotification({
-                                message: response.message || "Failed to create bookmark",
-                                status: "error",
-                        });
-                }
-        }
+        // const handleBookmark = async (product_id:string) => {
+        //         if (!product_id) return;
+        //         const response = await createBookmark(product_id);
+        //         if (response.success) {
+        //                 setNotification({
+        //                         message: "Bookmark created successfully!",
+        //                         status: "success",
+        //                 });
+        //         } else {
+        //                 setNotification({
+        //                         message: response.message || "Failed to create bookmark",
+        //                         status: "error",
+        //                 });
+        //         }
+        // }
   return (
         <div className=''  >
         {productData  ? productData.map((productData) => (
