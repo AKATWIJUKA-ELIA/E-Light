@@ -4,9 +4,9 @@ import { MdAddShoppingCart } from "react-icons/md";
 import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
 import { useEffect, useState } from 'react';
-import useBookmark from '@/hooks/useBookmark';
+// import useBookmark from '@/hooks/useBookmark';
 // import { Bookmark  } from 'lucide-react';
-import { useNotification } from '@/app/NotificationContext';
+// import { useNotification } from '@/app/NotificationContext';
 import useGetRecommendations from '@/hooks/useGetRecommendations';
 interface Product {
         approved: boolean;
