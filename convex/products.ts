@@ -428,3 +428,30 @@ export const getImageUrl = query({
                         return topRatedProducts;
                 }
         })
+
+        export const getSponsoredProducts = query({
+                handler: async (ctx) => {
+                        const premium = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "premium")).collect();
+                        const medium = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "medium")).collect();
+                        const starter = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "starter")).collect();
+                        const sponsored = [...premium, ...medium, ...starter];
+                        return await Promise.all(
+                                sponsored.map(async (product) => {
+                                        if (!product) return null; // Handle case where product is not found
+                                        return {
+                                                ...product,
+                                                product_image: (product.product_image && product.product_image.length > 0)
+                                                        ? (await Promise.all(
+                                                                product.product_image.map(async (image: string) => {
+                                                                        return await ctx.storage.getUrl(image);
+                                                                })
+                                                        )).filter((url): url is string => url !== null)
+                                                        : []
+                                        };
+                                })
+                        );
+                          
+        }})
