@@ -10,7 +10,6 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 import Link from 'next/link';
-import {useData} from  '../../app/DataContext';
 import useGetSponsored from '@/hooks/useGetSponsored';
 import { Oval } from 'react-loader-spinner';
 import { Id } from '../../../convex/_generated/dataModel';
@@ -34,7 +33,7 @@ const MainHero = () => {
   const carousel = Autoplay({ delay: 10000 });
   const [products, setproducts] = useState<Product[]>([]);
   const { sponsored: sponsored } = useGetSponsored();
- const { data} = useData();
+
   const images = [
                 {
                 name:"Heror",
