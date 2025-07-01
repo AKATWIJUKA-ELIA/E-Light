@@ -1,8 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import HeroCard from '../HeroCards/page'
-import { useData } from '@/app/DataContext'
 import ProductSkeleton from '../ProductsSkeleton/page';
+import useGetTopRatings from '@/hooks/useGetTopRatings';
 
 interface Product {
   approved: boolean;
@@ -19,23 +19,20 @@ interface Product {
 
 
 const Main =  () => {
-        const {data} = useData()
+        const { TopRatings:data } = useGetTopRatings();
   const [products, setProducts] = useState<Product[]>([])
 
 useEffect(() => {
-                            if (data.Products.product && data.Products.product.length>0 ) {
-                                setProducts(data.Products.product);
+                            if (data && data.length>0 ) {
+                                setProducts(data);
                             }
-                        }, [data.Products.product]);
+                        }, [data]);
 
   return (
- <div className='flex flex-col' >
-        <div className='mx-auto' >
-                <h1 className='text-3xl' >
-                Other Products
-                </h1>
-        </div>
-           <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2 dark:bg-black '>
+    <div className=' dark:bg-black'>
+        <h1 className='font-bold text-3xl text-center'>Top Rated Products</h1>
+        <div className='grid grid-cols-2 md:grid-cols-5 p-2 gap-2 dark:bg-black '>
+       
       {products&&products.length>0?( products.map((product) => (
         <HeroCard key={product._id} product={product} />
       ))):(
@@ -46,7 +43,7 @@ useEffect(() => {
   ))
       )}
     </div>
- </div>
+    </div>
   )
 }
 

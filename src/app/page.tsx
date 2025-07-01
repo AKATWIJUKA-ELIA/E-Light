@@ -6,15 +6,19 @@ import { Provider } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react";
 import {store,persistor} from "@/store/store"
 import MainHero from "@/components/MainHero/page";
+import TopRatings from "@/components/TopRatings/main";
 export default function Home() {
   return (
-        <Provider store={store}>
+        <div className="px-6" >
+                <Provider store={store}>
                 <PersistGate persistor={persistor}>
                         <MainHero />
                         <SecondHero />
                         <FisrtHero />
+                        <TopRatings />
                         <Main />
                 </PersistGate>
  </Provider>
+        </div>
   );
 }

@@ -47,12 +47,10 @@ const FisrtHero =  () => {
 <div className=' hidden md:grid grid-cols-1 md:grid-cols-1'>
 {
         products && products.length>0 ?(
-                <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="  w-full">
-        <CarouselContent className=''>
-  {products.map((product, index) => (
-    <CarouselItem key={index} className='basis-[300px] shrink-0'>
-      <div className="p-1">
-        <Card className="h-auto bg-transparent">
+               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' >
+                  {products.map((product) => (
+      <div className="p-1 " >
+        <Card  key={product._id} className="  h-auto bg-transparent">
           <Link href={`/category/${product.product_cartegory}`} >
           <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
@@ -73,12 +71,9 @@ const FisrtHero =  () => {
           </Link>
         </Card>
       </div>
-    </CarouselItem>
+  
   ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-</Carousel>
+               </div>
         ):(
                 <Carousel opts={{align: "start",loop: true,}} plugins={[carousel]} className="  w-full">
         <CarouselContent className=''>
