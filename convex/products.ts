@@ -208,10 +208,10 @@ export const getImageUrl = query({
                   await ctx.db.delete(args.id);
                   return { success: true };
                 },
-              });
+        });
 
         
-              export const getAllProducts = query({
+        export const getAllProducts = query({
                 handler: async (ctx) => {
               const products = await ctx.db.query("products").collect(); 
         //       console.log(products)
@@ -226,9 +226,9 @@ export const getImageUrl = query({
               
             },
             
-          })
+        })
 
-          export const ApproveRevoke = mutation({
+        export const ApproveRevoke = mutation({
                 args: { id: v.id("products") },
                 handler: async (ctx, args) => {
                   const product = await ctx.db.get(args.id);
@@ -243,9 +243,9 @@ export const getImageUrl = query({
               
                   return updatedProduct;
                 },
-              });
+        });
 
-              export const searchResults = internalQuery({
+        export const searchResults = internalQuery({
                 args:{
                         results: v.array(
                                 v.object({
@@ -267,9 +267,9 @@ export const getImageUrl = query({
                         ))
                         return products.filter((b)=> b!= null && b.score > 0.256);
                 }
-              })
+        })
 
-              export const ImagesearchResults = internalQuery({
+        export const ImagesearchResults = internalQuery({
                 args:{
                         results: v.array(
                                 v.object({
@@ -296,10 +296,10 @@ export const getImageUrl = query({
                         ))
                         return products.filter((b)=> b!= null && b.score > 0.256);
                 }
-              })
+        })
 
 
-              export const vectorSearch: ReturnType<typeof action> = action({
+        export const vectorSearch: ReturnType<typeof action> = action({
                 args: { embeding: v.array(v.number()) },
                 handler: async (ctx, args) => {
                         const results = await ctx.vectorSearch("products", "by_product_embeddings", {
@@ -311,9 +311,9 @@ export const getImageUrl = query({
                         );
                 }
 
-              });
+        });
 
-              export const ImagevectorSearch: ReturnType<typeof action> = action({
+        export const ImagevectorSearch: ReturnType<typeof action> = action({
                 args: { embeding: v.array(v.number()) },
                 handler: async (ctx, args) => {
                         const results = await ctx.vectorSearch("products", "product_image_embeddings", {
@@ -325,4 +325,28 @@ export const getImageUrl = query({
                         );
                 }
 
-              });
+        });
+              
+        export const recordInteraction = mutation({
+                args: {
+                user_id: v.string(),
+                product_id: v.string(),
+                count:v.number(),
+                type: v.string(), // "view" | "cart" | "purchase"
+                },
+                handler: async (ctx, args) => {
+                        const exists =  await ctx.db.query("interactions")
+                        .filter((q) => q.and(
+                                q.eq(q.field("user_id"), args.user_id),
+                                q.eq(q.field("product_id"),args.product_id)
+                        ))
+                        .collect();
+                        if(exists){
+                                
+                        }
+                        await ctx.db.insert("interactions", {
+                                ...args,
+                        });
+                        return { success: true, message: "Interaction recorded successfully" };
+                },
+        });
