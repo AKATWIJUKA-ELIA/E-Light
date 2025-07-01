@@ -15,6 +15,7 @@ import { Id } from "../../../convex/_generated/dataModel"
 import useGetCart from '@/hooks/useGetCart';
 import useCheckOut from "@/hooks/useCheckOut"
 import { useNotification } from "@/app/NotificationContext"
+import Recommended from "../Recommended/page"
 interface Product {
         total:number;
          _id: Id<"products">;
@@ -228,64 +229,7 @@ const ShoppingCart= ()=> {
 
         <div className="bg-white p-4 rounded border border-gray-200 dark:bg-gray-500 dark:border-gray-500 ">
           <h2 className="text-lg font-bold mb-4">Your may also Like </h2>
-
-          <div className="space-y-6">
-            <div className="flex gap-3">
-              <div className="w-24 h-24 flex-shrink-0">
-                <Image
-                  src="/placeholder.svg?height=100&width=100"
-                  alt="FUJIFILM Instax Mini"
-                  width={100}
-                  height={100}
-                  className="object-contain"
-                />
-              </div>
-              <div>
-                <p className="text-sm text-blue-500 hover:underline cursor-pointer">FUJIFILM Instax Mini...</p>
-                <div className="flex text-yellow-400 text-sm">★★★★★</div>
-                <p className="text-xs">106,453</p>
-                <div>
-                  <span className="text-red-600">-30%</span>
-                  <span className="text-lg font-bold ml-1">
-                    $14<sup>74</sup>
-                  </span>
-                </div>
-                <p className="text-xs">($0.74/Count)</p>
-                <p className="text-xs">List: $20.99</p>
-                <p className="text-xs">Get it Apr 23 - May 6</p>
-                <button className="text-xs text-blue-500 hover:underline mt-1">See all buying options</button>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="flex gap-3">
-              <div className="w-24 h-24 flex-shrink-0">
-                <Image
-                  src="/placeholder.svg?height=100&width=100"
-                  alt="Pokemon TCG"
-                  width={100}
-                  height={100}
-                  className="object-contain"
-                />
-              </div>
-              <div>
-                <p className="text-sm text-blue-500 hover:underline cursor-pointer">Pokemon TCG: Scarlet...</p>
-                <div className="flex text-yellow-400 text-sm">★★★★☆</div>
-                <p className="text-xs">396</p>
-                <div>
-                  <span className="text-lg font-bold">
-                    $169<sup>99</sup>
-                  </span>
-                </div>
-                <p className="text-xs">Get it as soon as Tuesday, Apr 22</p>
-                <p className="text-xs">$50.41 shipping</p>
-                <button className="text-xs bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-full px-3 py-1 mt-1">
-                  Add to cart
-                </button>
-              </div>
-            </div>
-          </div>
+               <Recommended type="view" />
         </div>
       </div>
     </div>

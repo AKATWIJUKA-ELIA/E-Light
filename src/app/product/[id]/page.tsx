@@ -1,5 +1,5 @@
 "use client"
-import React, { use } from 'react'
+import React, { use, useEffect } from 'react'
 import ProductCard from '@/components/ProductCard/page';
 import { Oval } from 'react-loader-spinner'
 import useGetProductById from '@/hooks/useGetProductById';
@@ -16,17 +16,27 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
+import useRecordInteraction from '@/hooks/useRecordInteraction';
 
 interface PageProps {
         params: Promise<{ id: string }>
       }
 
 const Product = ({params}:PageProps) => {
+        const { record } = useRecordInteraction();
         const { id } = use(params); 
         const { data: product } = useGetProductById(id); 
         const { data: relatedProducts } = useGetRelatedProducts(product?.product_cartegory??"");
         const { data: SameSellerProducts } = useGetProductsByOwnerApproved(product?.product_owner_id??"");
         const carousel = Autoplay({ delay: 10000})
+        
+        // Record the interaction when the product is loaded
+        useEffect(()=>{
+                if (product) {
+                        record(product._id, "view");
+                }
+        }, [product])
+
   if (!product) {
     return  <Oval
                             visible={true}
@@ -44,7 +54,7 @@ const Product = ({params}:PageProps) => {
                             wrapperClass=""
                             />
   }
-  
+
   return (
 <div className='mt-32'>
         <ProductCard product={product} />

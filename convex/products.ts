@@ -331,7 +331,6 @@ export const getImageUrl = query({
                 args: {
                 user_id: v.string(),
                 product_id: v.string(),
-                count:v.number(),
                 type: v.string(), // "view" | "cart" | "purchase"
                 },
                 handler: async (ctx, args) => {
@@ -344,6 +343,7 @@ export const getImageUrl = query({
                         if (!existingInteraction) {
                                 await ctx.db.insert("interactions", {
                                 ...args,
+                                count: 1, // Initialize count to 1 for new interaction
                         });
                         return { success: true, message: "Interaction recorded successfully" };
                         }
@@ -362,14 +362,41 @@ export const getImageUrl = query({
                         .query("interactions")
                         .withIndex("by_user_and_type", (q) => q.eq("user_id", args.user_id).eq("type", args.type))
                         .take(10) // Limit to 10 interactions for performance
-                        if (recommendations.length === 0) {
-                        return await ctx.db.query("products").take(5); // show top 10 for Now, But should be top rated  products
+                        if (!recommendations  || recommendations.length === 0) {
+                        return await ctx.db.query("products").take(3).then(async (products) => {
+                                 if (!products || products.length === 0) return []; // Handle case where no products are found
+                                 return await Promise.all(products.map(async (product) => ({
+                                        ...product,
+                                        product_image: (product.product_image && product.product_image.length > 0) ?
+                                                (await Promise.all(
+                                                        product.product_image.map(async (image: string) => {
+                                                                return await ctx.storage.getUrl(image);
+                                                        })
+                                                )).filter((url): url is string => url !== null) : []
+                                 })));
+                        }); // show top 10 for Now, But should be top rated  products
                         }
+                                       
+                                       
                         const recommendedProductIds = [...new Set(recommendations.map((v) => v.product_id))];
 
                         const recommendedProducts = await Promise.all(
-                                recommendedProductIds.map((id) => ctx.db.query("products").filter((q) => q.eq(q.field("_id"), id)).first())
-                        );
+                                recommendedProductIds.map((id) => ctx.db.query("products").filter((q) => q.eq(q.field("_id"), id)).first()
+                                .then(async (product) => {
+                                        if (!product) return null; // Handle case where product is not found
+                                        return {
+                                                ...product,
+                                                product_image: (product.product_image && product.product_image.length > 0) ? 
+                                                (await Promise.all(
+                                                        product.product_image.map(async (image: string) => {
+                                                                return await ctx.storage.getUrl(image);
+                                                        })
+                                                )).filter((url): url is string => url !== null) : []
+                                        };
+                                }
+                        )
+                                
+                        ));
                         return recommendedProducts.filter((product) => product !== null); // Filter out any null products
                         }
                         
