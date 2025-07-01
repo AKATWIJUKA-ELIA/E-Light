@@ -51,8 +51,14 @@ export default defineSchema({
     product_price: v.string(),
     product_embeddings:v.optional(v.array(v.number())),
     product_image_embeddings:v.optional(v.array(v.number())),
+    product_sponsorship:v.optional(v.union(
+    v.literal("premium"),
+    v.literal("medium"),
+    v.literal("starter"),
+  )),
      _creationTime: v.number()
   }).index("by_product_category", ["product_cartegory"])
+  .index("by_sponsorship", ["product_sponsorship"])
   .vectorIndex("by_product_embeddings",{
         vectorField:"product_embeddings",
         dimensions:384

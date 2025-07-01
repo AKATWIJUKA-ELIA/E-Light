@@ -355,7 +355,7 @@ export const getImageUrl = query({
                 },
         });
 
-        export const recommendProducts = query({
+        export const recommendProducts: ReturnType<typeof query> = query({
                 args: { user_id: v.string(), type: v.string() }, // type can be "view", "cart", "purchase"
                 handler: async (ctx, args) => {
                         const recommendations = await ctx.db
@@ -363,18 +363,10 @@ export const getImageUrl = query({
                         .withIndex("by_user_and_type", (q) => q.eq("user_id", args.user_id).eq("type", args.type))
                         .take(10) // Limit to 10 interactions for performance
                         if (!recommendations  || recommendations.length === 0) {
-                        return await ctx.db.query("products").take(3).then(async (products) => {
-                                 if (!products || products.length === 0) return []; // Handle case where no products are found
-                                 return await Promise.all(products.map(async (product) => ({
-                                        ...product,
-                                        product_image: (product.product_image && product.product_image.length > 0) ?
-                                                (await Promise.all(
-                                                        product.product_image.map(async (image: string) => {
-                                                                return await ctx.storage.getUrl(image);
-                                                        })
-                                                )).filter((url): url is string => url !== null) : []
-                                 })));
-                        }); // show top 10 for Now, But should be top rated  products
+                                return await ctx.runQuery(
+                                        internal.products.getTopRated ).then(
+                                                results => results.slice(0, 3) 
+                                        ) // show  top rated  products
                         }
                                        
                                        
@@ -400,4 +392,39 @@ export const getImageUrl = query({
                         return recommendedProducts.filter((product) => product !== null); // Filter out any null products
                         }
                         
+        })
+
+        export const getTopRated = internalQuery({
+                handler: async (ctx) => {
+                        const TopRatedIds = [
+                                ...new Set((await ctx.db.query("reviews")
+                                .collect())
+                                .filter((review) => review.rating > 2)
+                                .map((review) => review.product_id)
+                        )];
+                        return await Promise.all(
+                                TopRatedIds.map((id) => ctx.db.query("products").filter((q) => q.eq(q.field("_id"), id)).first()
+                                .then(async (product) => {
+                                        if (!product) return null; // Handle case where product is not found
+                                        return {
+                                                ...product,
+                                                product_image: (product.product_image && product.product_image.length > 0) ? 
+                                                (await Promise.all(
+                                                        product.product_image.map(async (image: string) => {
+                                                                return await ctx.storage.getUrl(image);
+                                                        })
+                                                )).filter((url): url is string => url !== null) : []
+                                        };
+                                }
+                        )
+                        ));
+                        // return TopRatedProducts
+                }
+        })
+
+        export const getTopRatedProducts: ReturnType<typeof query> = query({
+                handler: async (ctx) => {       
+                        const topRatedProducts = await ctx.runQuery(internal.products.getTopRated);
+                        return topRatedProducts;
+                }
         })
