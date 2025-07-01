@@ -49,8 +49,8 @@ const FisrtHero =  () => {
         products && products.length>0 ?(
                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' >
                   {products.map((product) => (
-      <div className="p-1 " >
-        <Card  key={product._id} className="  h-auto bg-transparent">
+      <div key={product._id}  className="p-1 " >
+        <Card   className="  h-auto bg-transparent">
           <Link href={`/category/${product.product_cartegory}`} >
           <CardContent className="relative  bg-transparent flex items-center justify-center p-6 h-64 overflow-hidden rounded-lg">
             {/* Image */}
