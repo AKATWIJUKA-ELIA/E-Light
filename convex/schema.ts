@@ -87,4 +87,5 @@ interactions:defineTable( {
   type: v.string(), // e.g. "view", "cart", "purchase"
 }).index("by_user", ["user_id"])
 .index("by_product_id", ["product_id"])
+.index("by_user_and_type", ["user_id", "type"])
 });

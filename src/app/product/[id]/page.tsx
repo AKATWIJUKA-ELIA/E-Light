@@ -44,6 +44,7 @@ const Product = ({params}:PageProps) => {
                             wrapperClass=""
                             />
   }
+  
   return (
 <div className='mt-32'>
         <ProductCard product={product} />

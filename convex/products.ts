@@ -335,18 +335,42 @@ export const getImageUrl = query({
                 type: v.string(), // "view" | "cart" | "purchase"
                 },
                 handler: async (ctx, args) => {
-                        const exists =  await ctx.db.query("interactions")
-                        .filter((q) => q.and(
-                                q.eq(q.field("user_id"), args.user_id),
-                                q.eq(q.field("product_id"),args.product_id)
-                        ))
-                        .collect();
-                        if(exists){
-                                
-                        }
-                        await ctx.db.insert("interactions", {
+                        const existingInteractions =  await ctx.db.query("interactions").collect();
+                        const existingInteraction = existingInteractions.find(interaction => 
+                                interaction.user_id === args.user_id && 
+                                interaction.product_id === args.product_id &&
+                                interaction.type === args.type
+                        );
+                        if (!existingInteraction) {
+                                await ctx.db.insert("interactions", {
                                 ...args,
                         });
                         return { success: true, message: "Interaction recorded successfully" };
+                        }
+                        const interaction =  existingInteraction.count + 1;
+                        await ctx.db.patch(existingInteraction._id, {
+                                count: interaction,
+                        });
+                        return { success: true, message: "Interaction updated successfully" };
                 },
         });
+
+        export const recommendProducts = query({
+                args: { user_id: v.string(), type: v.string() }, // type can be "view", "cart", "purchase"
+                handler: async (ctx, args) => {
+                        const recommendations = await ctx.db
+                        .query("interactions")
+                        .withIndex("by_user_and_type", (q) => q.eq("user_id", args.user_id).eq("type", args.type))
+                        .take(10) // Limit to 10 interactions for performance
+                        if (recommendations.length === 0) {
+                        return await ctx.db.query("products").take(5); // show top 10 for Now, But should be top rated  products
+                        }
+                        const recommendedProductIds = [...new Set(recommendations.map((v) => v.product_id))];
+
+                        const recommendedProducts = await Promise.all(
+                                recommendedProductIds.map((id) => ctx.db.query("products").filter((q) => q.eq(q.field("_id"), id)).first())
+                        );
+                        return recommendedProducts.filter((product) => product !== null); // Filter out any null products
+                        }
+                        
+        })
