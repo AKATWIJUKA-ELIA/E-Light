@@ -396,8 +396,12 @@ export const getImageUrl = query({
 
         export const getTopRated = internalQuery({
                 handler: async (ctx) => {
-                        const TopRated = (await ctx.db.query("reviews").collect()).filter((review) => review.rating > 2).sort((a, b) => b.rating - a.rating);
-                        const TopRatedIds = TopRated.map((review) => review.product_id);
+                        const TopRatedIds = [
+                                ...new Set((await ctx.db.query("reviews")
+                                .collect())
+                                .filter((review) => review.rating > 2)
+                                .map((review) => review.product_id)
+                        )];
                         return await Promise.all(
                                 TopRatedIds.map((id) => ctx.db.query("products").filter((q) => q.eq(q.field("_id"), id)).first()
                                 .then(async (product) => {
@@ -415,5 +419,12 @@ export const getImageUrl = query({
                         )
                         ));
                         // return TopRatedProducts
+                }
+        })
+
+        export const getTopRatedProducts: ReturnType<typeof query> = query({
+                handler: async (ctx) => {       
+                        const topRatedProducts = await ctx.runQuery(internal.products.getTopRated);
+                        return topRatedProducts;
                 }
         })
