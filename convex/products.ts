@@ -190,8 +190,8 @@ export const getImageUrl = query({
           },
         handler: async (ctx, args) => {
               if(args.product){
-              const job = await ctx.db.patch(args._id, args.product);
-              return job
+              const product = await ctx.db.patch(args._id, args.product);
+              return product
               }
               
         }})
@@ -208,10 +208,10 @@ export const getImageUrl = query({
                   await ctx.db.delete(args.id);
                   return { success: true };
                 },
-              });
+        });
 
         
-              export const getAllProducts = query({
+        export const getAllProducts = query({
                 handler: async (ctx) => {
               const products = await ctx.db.query("products").collect(); 
         //       console.log(products)
@@ -226,9 +226,9 @@ export const getImageUrl = query({
               
             },
             
-          })
+        })
 
-          export const ApproveRevoke = mutation({
+        export const ApproveRevoke = mutation({
                 args: { id: v.id("products") },
                 handler: async (ctx, args) => {
                   const product = await ctx.db.get(args.id);
@@ -243,9 +243,9 @@ export const getImageUrl = query({
               
                   return updatedProduct;
                 },
-              });
+        });
 
-              export const searchResults = internalQuery({
+        export const searchResults = internalQuery({
                 args:{
                         results: v.array(
                                 v.object({
@@ -267,9 +267,9 @@ export const getImageUrl = query({
                         ))
                         return products.filter((b)=> b!= null && b.score > 0.256);
                 }
-              })
+        })
 
-              export const ImagesearchResults = internalQuery({
+        export const ImagesearchResults = internalQuery({
                 args:{
                         results: v.array(
                                 v.object({
@@ -296,10 +296,10 @@ export const getImageUrl = query({
                         ))
                         return products.filter((b)=> b!= null && b.score > 0.256);
                 }
-              })
+        })
 
 
-              export const vectorSearch: ReturnType<typeof action> = action({
+        export const vectorSearch: ReturnType<typeof action> = action({
                 args: { embeding: v.array(v.number()) },
                 handler: async (ctx, args) => {
                         const results = await ctx.vectorSearch("products", "by_product_embeddings", {
@@ -311,9 +311,9 @@ export const getImageUrl = query({
                         );
                 }
 
-              });
+        });
 
-              export const ImagevectorSearch: ReturnType<typeof action> = action({
+        export const ImagevectorSearch: ReturnType<typeof action> = action({
                 args: { embeding: v.array(v.number()) },
                 handler: async (ctx, args) => {
                         const results = await ctx.vectorSearch("products", "product_image_embeddings", {
@@ -325,4 +325,79 @@ export const getImageUrl = query({
                         );
                 }
 
-              });
+        });
+              
+        export const recordInteraction = mutation({
+                args: {
+                user_id: v.string(),
+                product_id: v.string(),
+                type: v.string(), // "view" | "cart" | "purchase"
+                },
+                handler: async (ctx, args) => {
+                        const existingInteractions =  await ctx.db.query("interactions").collect();
+                        const existingInteraction = existingInteractions.find(interaction => 
+                                interaction.user_id === args.user_id && 
+                                interaction.product_id === args.product_id &&
+                                interaction.type === args.type
+                        );
+                        if (!existingInteraction) {
+                                await ctx.db.insert("interactions", {
+                                ...args,
+                                count: 1, // Initialize count to 1 for new interaction
+                        });
+                        return { success: true, message: "Interaction recorded successfully" };
+                        }
+                        const interaction =  existingInteraction.count + 1;
+                        await ctx.db.patch(existingInteraction._id, {
+                                count: interaction,
+                        });
+                        return { success: true, message: "Interaction updated successfully" };
+                },
+        });
+
+        export const recommendProducts = query({
+                args: { user_id: v.string(), type: v.string() }, // type can be "view", "cart", "purchase"
+                handler: async (ctx, args) => {
+                        const recommendations = await ctx.db
+                        .query("interactions")
+                        .withIndex("by_user_and_type", (q) => q.eq("user_id", args.user_id).eq("type", args.type))
+                        .take(10) // Limit to 10 interactions for performance
+                        if (!recommendations  || recommendations.length === 0) {
+                        return await ctx.db.query("products").take(3).then(async (products) => {
+                                 if (!products || products.length === 0) return []; // Handle case where no products are found
+                                 return await Promise.all(products.map(async (product) => ({
+                                        ...product,
+                                        product_image: (product.product_image && product.product_image.length > 0) ?
+                                                (await Promise.all(
+                                                        product.product_image.map(async (image: string) => {
+                                                                return await ctx.storage.getUrl(image);
+                                                        })
+                                                )).filter((url): url is string => url !== null) : []
+                                 })));
+                        }); // show top 10 for Now, But should be top rated  products
+                        }
+                                       
+                                       
+                        const recommendedProductIds = [...new Set(recommendations.map((v) => v.product_id))];
+
+                        const recommendedProducts = await Promise.all(
+                                recommendedProductIds.map((id) => ctx.db.query("products").filter((q) => q.eq(q.field("_id"), id)).first()
+                                .then(async (product) => {
+                                        if (!product) return null; // Handle case where product is not found
+                                        return {
+                                                ...product,
+                                                product_image: (product.product_image && product.product_image.length > 0) ? 
+                                                (await Promise.all(
+                                                        product.product_image.map(async (image: string) => {
+                                                                return await ctx.storage.getUrl(image);
+                                                        })
+                                                )).filter((url): url is string => url !== null) : []
+                                        };
+                                }
+                        )
+                                
+                        ));
+                        return recommendedProducts.filter((product) => product !== null); // Filter out any null products
+                        }
+                        
+        })

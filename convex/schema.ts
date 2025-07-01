@@ -3,12 +3,14 @@ import { v } from "convex/values";
 
 export default defineSchema({
   NewsLetter: defineTable({ email: v.string() }).index("by_email", ["email"]),
+
   cart: defineTable({
     product_id: v.string(),
     cart_Owner_id: v.string(),
     quantity: v.number(),
   }).index("by_cart_Owner_id", ["cart_Owner_id"])
   .index("by_product_id", ["product_id"]),
+
   cartegories: defineTable({ 
         cartegory: v.string(),
         // SubCategories: v.optional( v.array(v.object({subpic:v.string(),subname:v.string()})),)
@@ -49,18 +51,17 @@ export default defineSchema({
     product_price: v.string(),
     product_embeddings:v.optional(v.array(v.number())),
     product_image_embeddings:v.optional(v.array(v.number())),
-
      _creationTime: v.number()
   }).index("by_product_category", ["product_cartegory"])
   .vectorIndex("by_product_embeddings",{
         vectorField:"product_embeddings",
         dimensions:384
   })
-
   .vectorIndex("product_image_embeddings",{
         vectorField:"product_image_embeddings",
         dimensions:512
   }),
+
 reviews : defineTable({
     product_id: v.string(),
     reviewer_id: v.string(),
@@ -71,10 +72,20 @@ reviews : defineTable({
     _creationTime: v.number(),
 }).index("by_product_id", ["product_id"])
 .index("by_reviewer_id", ["reviewer_id"]),
+
 bookmarks: defineTable({
     user_id: v.string(),
     product_id: v.string(),
     _creationTime: v.number(),
 }).index("by_user_id", ["user_id"])
+.index("by_product_id", ["product_id"]),
+
+interactions:defineTable( {
+  user_id: v.string(),
+  product_id: v.string(),
+  count:v.number(),
+  type: v.string(), // e.g. "view", "cart", "purchase"
+}).index("by_user", ["user_id"])
 .index("by_product_id", ["product_id"])
+.index("by_user_and_type", ["user_id", "type"])
 });
