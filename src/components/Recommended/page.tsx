@@ -27,8 +27,8 @@ interface Product {
 const Recommended = ({ type }: RecommendedProps) => {
         
         const { recommeded: products } = useGetRecommendations(type);
-        const { setNotification } = useNotification();
-        const { createBookmark } = useBookmark()
+        // const { setNotification } = useNotification();
+        // const { createBookmark } = useBookmark()
          const addToCart = useAddToCart()
          const [productData, setProductData] = useState<Product[] | null>([])
         const truncateString = (text: string, maxLength: number): string => {
