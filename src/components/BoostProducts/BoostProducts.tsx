@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// import { Textarea } from "@/components/ui/textarea"
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   TrendingUp,
-  Target,
+//   Target,
   Clock,
   DollarSign,
   Eye,
@@ -161,13 +161,13 @@ export default function ProductBoost() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [selectedBoost, setSelectedBoost] = useState<BoostOption>(boostOptions[0])
   const [duration, setDuration] = useState("weekly")
-  const [budget, setBudget] = useState([100])
-  const [targetAudience, setTargetAudience] = useState({
-    ageRange: "25-45",
-    location: "nationwide",
-    interests: "",
-    gender: "all",
-  })
+//   const [budget, setBudget] = useState([100])
+//   const [targetAudience, setTargetAudience] = useState({
+//     ageRange: "25-45",
+//     location: "nationwide",
+//     interests: "",
+//     gender: "all",
+//   })
   const [autoRenew, setAutoRenew] = useState(false)
 
   const calculateTotalCost = () => {
@@ -189,8 +189,8 @@ export default function ProductBoost() {
       product: selectedProduct,
       boost: selectedBoost,
       duration,
-      budget: budget[0],
-      targetAudience,
+//       budget: budget[0],
+//       targetAudience,
       autoRenew,
     })
     // Handle boost logic here
