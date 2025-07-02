@@ -40,8 +40,7 @@ export interface Bookmark {
 }
 export interface Boost {
         product_id: Id<"products">,
-        user_id: string,
         boost_type:string,
         duration: string,
-        status: "active" | "pending" | "expired" | undefined
+        status: "active" | "expired" | undefined
 }

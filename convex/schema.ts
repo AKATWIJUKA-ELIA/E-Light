@@ -101,7 +101,6 @@ boosts: defineTable({
     duration: v.number(),
     status: v.union(
         v.literal("active"),
-        v.literal("pending"),
         v.literal("expired")),
 }).index("by_product_id", ["product_id"])
 .index("by_boost_type", ["boost_type"])

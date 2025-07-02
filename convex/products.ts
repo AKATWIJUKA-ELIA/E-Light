@@ -5,6 +5,25 @@ import { api, internal } from "../convex/_generated/api";
 export const generateUploadUrl = mutation(async (ctx)=>{
       return await ctx.storage.generateUploadUrl()
 })
+function getFutureDate(duration: string): string {
+  const now = new Date();
+
+  if (duration === "weekly") {
+    now.setDate(now.getDate() + 7);
+    return now.toISOString();
+  }
+  if (duration === "monthly") {
+    now.setMonth(now.getMonth() + 1);
+    return now.toISOString();
+  }
+  if (duration === "quarterly") {
+    now.setMonth(now.getMonth() + 3);
+    return now.toISOString();
+  }
+  // Default: 7 days
+  now.setDate(now.getDate() + 7);
+  return now.toISOString();
+}
 
 
 export const createProduct = mutation({
@@ -461,10 +480,9 @@ export const getImageUrl = query({
                         product_id: v.id("products"),
                         user_id: v.string(),
                         boost_type:v.string(),
-                        duration: v.optional(v.string()), 
+                        duration: v.string(), // Duration in milliseconds
                         status: v.optional(v.union(
                                 v.literal("active"),
-                                v.literal("pending"),
                                 v.literal("expired"),))
                 },
                 handler: async (ctx, args) => {
@@ -486,8 +504,8 @@ export const getImageUrl = query({
                         // Insert the boost record
                         await ctx.db.insert("boosts", {
                                 ...args,
-                                status: args.status || "pending",
-                                duration: args.duration? Date.now() + new Date(args.duration).getTime() : 7 * 24 * 60 * 60 * 1000, // Default to 7 days from now
+                                status: args.status ? args.status : "active", // Default to "active" if not provided
+                                duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                         });
                         return { success: true, message: "Boost prepared successfully" };
                 }
