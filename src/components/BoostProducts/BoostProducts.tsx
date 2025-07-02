@@ -5,7 +5,6 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 // import { Textarea } from "@/components/ui/textarea"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -34,27 +33,6 @@ import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import { Id } from "../../../convex/_generated/dataModel"
 
 
-interface Product {
-  id: string
-  name: string
-  price: number
-  image: string
-  category: string
-  views: number
-  likes: number
-  sales: number
-  rating: number
-  isActive: boolean
-  currentBoost?: {
-    type: string
-    endDate: string
-    performance: {
-      impressions: number
-      clicks: number
-      conversions: number
-    }
-  }
-}
 
 interface BoostOption {
   id: string

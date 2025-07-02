@@ -2,11 +2,6 @@
 import { createContext, useState,useContext } from "react";
 
 
-interface Boost {
-        product_ids: string[];
-}
-
-
 export const BoostContext = createContext<{
         boost: string[];
         setBoost: React.Dispatch<React.SetStateAction<string[]>>;
