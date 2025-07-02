@@ -85,7 +85,14 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                 <>
                 <div className="w-full  overflow-x-auto rounded-lg border px-2 ">
                         <div className="flex items-center justify-between p-4 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
-                                <TableCaption className="text-lg font-semibold">{status} Products</TableCaption>
+                                <div className="text-lg font-semibold">{status} Products</div>
+                                <Button 
+                                className="bg-green-400 hover:bg-green-700 transition-transform duration-500" 
+                                onClick={() => HandelDeleteAll()}
+                                disabled={checked.length === 0}>
+                                        Boost Selected
+                                </Button>
+                                
                                 <Button 
                                 className="bg-red-400 hover:bg-red-700 transition-transform duration-500" 
                                 onClick={() => HandelDeleteAll()}
