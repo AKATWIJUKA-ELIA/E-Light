@@ -31,6 +31,8 @@ import Link from "next/link"
 import { useBoostContext } from "@/app/BoostContext"
 import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import { Id } from "../../../convex/_generated/dataModel"
+import useBoost from "@/hooks/useBoost"
+import { useNotification } from "@/app/NotificationContext"
 
 
 
@@ -57,27 +59,27 @@ interface BoostOption {
 const boostOptions: BoostOption[] = [
   {
     id: "basic",
-    name: "Basic Boost",
+    name: "Basic",
     description: "Increase visibility in search results",
     icon: TrendingUp,
     features: ["Higher search ranking", "Category page placement", "Basic analytics"],
-    pricing: { weekly: 5, monthly: 30, quarterly: 100 },
+    pricing: { weekly: 5, monthly: 15, quarterly: 65 },
     estimatedReach: { min: 500, max: 1000 },
     color: "bg-blue-500",
   },
   {
     id: "premium",
-    name: "Premium Boost",
+    name: "Premium",
     description: "Featured placement and enhanced visibility",
     icon: Star,
     features: ["Featured product placement", "Homepage visibility", "Advanced analytics", "Priority customer support"],
-    pricing: { weekly: 15, monthly: 90, quarterly: 300 },
+    pricing: { weekly: 10, monthly: 35, quarterly: 150 },
     estimatedReach: { min: 2000, max: 5000 },
     color: "bg-purple-500",
   },
   {
     id: "elite",
-    name: "Elite Boost",
+    name: "Elite ",
     description: "Maximum exposure with premium features",
     icon: Crown,
     features: [
@@ -87,20 +89,20 @@ const boostOptions: BoostOption[] = [
       "Dedicated account manager",
       "Custom marketing materials",
     ],
-    pricing: { weekly: 35, monthly: 210, quarterly: 700 },
+    pricing: { weekly: 25, monthly: 75, quarterly: 350 },
     estimatedReach: { min: 10000, max: 25000 },
-    color: "bg-gold-500",
+    color: "bg-gold",
   },
 ]
 
 export default function ProductBoost() {
         const { boost,setBoost } = useBoostContext()
-        console.log("Current Boost Context:", boost)
         const { data: products, } = useGetProductsByIds((boost?.flatMap(id => id)) || []);
-  const [selectedBoost, setSelectedBoost] = useState<BoostOption>(boostOptions[0])
-  const [duration, setDuration] = useState("weekly")
-
-  const [autoRenew, setAutoRenew] = useState(false)
+        const [selectedBoost, setSelectedBoost] = useState<BoostOption>(boostOptions[0])
+        const [duration, setDuration] = useState("weekly")
+        const [autoRenew, setAutoRenew] = useState(false)
+        const { boostProduct } = useBoost()
+        const { setNotification } = useNotification()
 
   const calculateTotalCost = () => {
     const baseCost = selectedBoost.pricing[duration as keyof typeof selectedBoost.pricing]
@@ -108,7 +110,7 @@ export default function ProductBoost() {
   }
 
   const getEstimatedReach = () => {
-    const multiplier = duration === "daily" ? 1 : duration === "weekly" ? 5 : 20
+    const multiplier = duration === "weekly" ? 1 : duration === "monthly" ? 5 : 20
     return {
       min: selectedBoost.estimatedReach.min * multiplier,
       max: selectedBoost.estimatedReach.max * multiplier,
@@ -118,8 +120,20 @@ export default function ProductBoost() {
        setBoost((prev) => prev.filter((id) => id !== productId))
   }
   const handleBoostProduct = () => {
-  
-    
+        if (boost.length === 0) {
+                return
+        }
+        boost.forEach((product_id) => {
+          boostProduct({
+            product_id: product_id as Id<"products">,
+            boost_type: selectedBoost.id,
+            duration:duration,
+            status: "active",
+        //     autoRenew,
+          })
+        })
+        setNotification({ status: "success", message: "Products boosted successfully!" })
+        setBoost([]) // Clear selected products after boosting
   }
 
   return (
@@ -434,7 +448,7 @@ export default function ProductBoost() {
                       </div>
                       <div className="flex justify-between">
                         <span>Platform Fee</span>
-                        <span className="font-semibold">${(calculateTotalCost() * 0.1).toFixed(2)}</span>
+                        <span className="font-semibold">${(calculateTotalCost() * 0.05).toFixed(2)}</span>
                       </div>
                       <Separator />
                       <div className="flex justify-between text-lg font-bold">
