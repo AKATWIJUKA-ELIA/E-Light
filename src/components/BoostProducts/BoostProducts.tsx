@@ -14,11 +14,10 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   TrendingUp,
-//   Target,
   Clock,
+  Trash2, 
   DollarSign,
   Eye,
-  Heart,
   ShoppingCart,
   Star,
   Zap,
@@ -29,6 +28,7 @@ import {
   CheckCircle,
 } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 interface Product {
   id: string
@@ -201,14 +201,15 @@ export default function ProductBoost() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-2">Boost Your Products</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-2">Boost <span className="text-gold" >Your</span> Products</h1>
           <p className="text-gray-600">Increase visibility and sales with our promotion tools</p>
         </div>
 
         <Tabs defaultValue="boost" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="boost">Create Boost</TabsTrigger>
             <TabsTrigger value="active">Active Boosts</TabsTrigger>
+            <TabsTrigger value="expired">Expired</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
@@ -221,19 +222,18 @@ export default function ProductBoost() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <ShoppingCart className="w-5 h-5" />
-                      Select Product to Boost
+                      <Link href="/profile/approved" className=" border text-gold rounded-md p-2 hover:bg-gray-300 transition-all " >
+                      Select Products <span className="text-dark" >you would like to Boost Here</span>
+                      </Link>
                     </CardTitle>
-                    <CardDescription>Choose which product you want to promote</CardDescription>
+                    <CardDescription>Your Selected products will appear Here</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-2 gap-4">
                       {mockProducts.map((product) => (
                         <Card
                           key={product.id}
-                          className={`cursor-pointer transition-all ${
-                            selectedProduct?.id === product.id ? "ring-2 ring-blue-500 bg-blue-50" : "hover:shadow-md"
-                          }`}
-                          onClick={() => setSelectedProduct(product)}
+                          className={`cursor-pointer transition-all hover:ring-2 ring-gold hover:bg-amber-50 hover:shadow-md`}
                         >
                           <CardContent className="p-4">
                             <div className="flex gap-3">
@@ -244,24 +244,18 @@ export default function ProductBoost() {
                                 height={80}
                                 className="rounded-lg object-cover"
                               />
-                              <div className="flex-1">
-                                <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
+                              <div className="flex   ">
+                               <div className="flex flex-col " >
+                                 <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
                                 <p className="text-lg font-bold text-green-600 mb-2">${product.price}</p>
+                               </div>
                                 <div className="flex items-center gap-4 text-sm text-gray-600">
-                                  <div className="flex items-center gap-1">
-                                    <Eye className="w-4 h-4" />
-                                    {product.views}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Heart className="w-4 h-4" />
-                                    {product.likes}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <ShoppingCart className="w-4 h-4" />
-                                    {product.sales}
+                                  
+                                  <div className="flex items-center gap-1 hover:text-red-600 transition-colors">
+                                        <span className="text-sm ">Remove</span>
+                                    <Trash2  className="w-8 h-8" />
                                   </div>
                                 </div>
-                                {product.currentBoost && <Badge className="mt-2 bg-green-500">Currently Boosted</Badge>}
                               </div>
                             </div>
                           </CardContent>
@@ -279,6 +273,7 @@ export default function ProductBoost() {
                       Choose Boost Type
                     </CardTitle>
                     <CardDescription>Select the level of promotion for your product</CardDescription>
+                    <CardDescription className="text-lg font-semibold text-red-500 " >Note: The Boost type will apply for all the Selected products</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-4">
@@ -538,6 +533,68 @@ export default function ProductBoost() {
               <CardHeader>
                 <CardTitle>Active Boost Campaigns</CardTitle>
                 <CardDescription>Monitor and manage your current product boosts</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {mockProducts
+                    .filter((product) => product.currentBoost)
+                    .map((product) => (
+                      <Card key={product.id} className="hover:shadow-md dark:bg-gray-800">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <Image
+                                src={product.image || "/placeholder.svg"}
+                                alt={product.name}
+                                width={60}
+                                height={60}
+                                className="rounded-lg object-cover"
+                              />
+                              <div>
+                                <h3 className="font-semibold">{product.name}</h3>
+                                <div className="flex items-center gap-4 text-sm text-gray-600">
+                                  <Badge className="bg-purple-500">{product.currentBoost?.type} Boost</Badge>
+                                  <span>Ends: {product.currentBoost?.endDate}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                  <div className="text-lg font-bold">
+                                    {product.currentBoost?.performance.impressions.toLocaleString()}
+                                  </div>
+                                  <div className="text-xs text-gray-600">Impressions</div>
+                                </div>
+                                <div>
+                                  <div className="text-lg font-bold">
+                                    {product.currentBoost?.performance.clicks.toLocaleString()}
+                                  </div>
+                                  <div className="text-xs text-gray-600">Clicks</div>
+                                </div>
+                                <div>
+                                  <div className="text-lg font-bold">
+                                    {product.currentBoost?.performance.conversions}
+                                  </div>
+                                  <div className="text-xs text-gray-600">Sales</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+              {/* Expired Boosts Tab */}
+          <TabsContent value="expired" className="space-y-6">
+            <Card className="dark:bg-gray-900" >
+              <CardHeader>
+                <CardTitle>Your Previous Boost Campaigns</CardTitle>
+                <CardDescription>Monitor and manage your previous product boosts</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
