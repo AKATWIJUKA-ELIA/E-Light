@@ -4,9 +4,7 @@ import { MdAddShoppingCart } from "react-icons/md";
 import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
 import { useEffect, useState } from 'react';
-import useBookmark from '@/hooks/useBookmark';
-import { Bookmark  } from 'lucide-react';
-import { useNotification } from '@/app/NotificationContext';
+
 interface Product {
         approved: boolean;
          product_cartegory: string;
@@ -25,8 +23,7 @@ interface Product {
 
 const HeroCard = ({ product }: HeroCardProps) => {
         
-        const { setNotification } = useNotification();
-        const { createBookmark } = useBookmark()
+
          const addToCart = useAddToCart()
          const [productData, setProductData] = useState<Product | null>(product)
         const truncateString = (text: string, maxLength: number): string => {
@@ -37,21 +34,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
                         setProductData(product)
                 }
               }, [product])
-        const handleBookmark = async (product_id:string) => {
-                if (!product_id) return;
-                const response = await createBookmark(product_id);
-                if (response.success) {
-                        setNotification({
-                                message: "Bookmark created successfully!",
-                                status: "success",
-                        });
-                } else {
-                        setNotification({
-                                message: response.message || "Failed to create bookmark",
-                                status: "error",
-                        });
-                }
-        }
+
   return (
         <div  >
         {productData  ? (
@@ -60,11 +43,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
             className="bg-transparent flex flex-col rounded-md shadow-m overflow-hidden shadow-xl hover:bg-yellow-100 border  transition-transform duration-500   dark:hover:bg-gray-900 dark:border-black"
           >
 
-                <div className="fixed z-50 items-center justify-between p-4">
-                  <div className="flex ">
-                    <Bookmark   size={40} color='#FFD700'  className="text-3xl  rounded-md   hover:text-gray-700 cursor-pointer" onClick={() => {handleBookmark(productData._id)}} />
-                  </div>
-                </div>
+           
             {/* Product Image */}
             <Link href={`/product/${productData._id}`} className="w-full">
               <div className="relative w-full h-48 flex items-center justify-center bg-transparent transition-transform duration-200 hover:scale-105">

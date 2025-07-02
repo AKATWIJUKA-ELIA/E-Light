@@ -10,28 +10,30 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 import Link from 'next/link';
-import {useData} from  '../../app/DataContext';
+import useGetSponsored from '@/hooks/useGetSponsored';
 import { Oval } from 'react-loader-spinner';
+import { Id } from '../../../convex/_generated/dataModel';
 
-interface Products {
-        approved: boolean;
-         product_cartegory: string;
-         product_condition: string;
-         product_description: string;
-         product_image: string[];
-         product_name: string;
-         product_owner_id: string;
-         product_price: string;
-         _creationTime: number;
-         _id: string;
-       }
+interface Product {
+  approved: boolean;
+  product_cartegory: string;
+  product_condition: string;
+  product_description: string;
+  product_image: string[];
+  product_name: string;
+  product_owner_id: string;
+  product_price: string;
+  _creationTime: number;
+  _id: Id<"products">;
+}
 
 
 const MainHero = () => {
   const carousel1 = Autoplay({ delay: 9000 });
   const carousel = Autoplay({ delay: 10000 });
-  const [products, setproducts] = useState<Products[]>([]);
- const { data} = useData();
+  const [products, setproducts] = useState<Product[]>([]);
+  const { sponsored: sponsored } = useGetSponsored();
+
   const images = [
                 {
                 name:"Heror",
@@ -53,10 +55,10 @@ const MainHero = () => {
         ]
                         
 useEffect(() => {
-  if (data.Products.product.length > 0) {
-    setproducts(data.Products.product );
+  if (sponsored && sponsored.length > 0) {
+    setproducts(sponsored.filter((item): item is Product => item !== null));
   }
-}, [data.Products.product]);
+}, [sponsored]);
         
   return (
         <div className= ' bg-pink-200   mt-32 grid grid-cols-1  '  >

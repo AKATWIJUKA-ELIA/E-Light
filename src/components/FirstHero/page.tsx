@@ -33,15 +33,14 @@ const FisrtHero =  () => {
                         
                         useEffect(() => {
                             if (data.Products.product.length>0) {
-                                setproducts(data.Products.product);
+                                setproducts(data.Products.product.slice(0, 8));
                             }
                         }, [data.Products.product]);
 
-        
   return (
         <div className='md:bg-gradient-to-r from-indigo-100 via-purple-100 to-gold mb-10 ' >
 <div>
-<h1 className='hidden md:flex font-bold'>Categories</h1>
+<h1 className='hidden md:flex font-bold'>Sample Categories</h1>
 <h1 className='flex md:hidden font-bold'>More to like</h1>
 </div>
 <div className=' hidden md:grid grid-cols-1 md:grid-cols-1'>
