@@ -74,53 +74,7 @@ interface BoostOption {
   color: string
 }
 
-const mockProducts: Product[] = [
-  {
-    id: "1",
-    name: "Wireless Bluetooth Headphones",
-    price: 89.99,
-    image: "/placeholder.svg?height=200&width=200",
-    category: "Electronics",
-    views: 1250,
-    likes: 89,
-    sales: 23,
-    rating: 4.5,
-    isActive: true,
-    currentBoost: {
-      type: "Premium",
-      endDate: "2024-01-20",
-      performance: {
-        impressions: 5420,
-        clicks: 234,
-        conversions: 12,
-      },
-    },
-  },
-  {
-    id: "2",
-    name: "Organic Cotton T-Shirt",
-    price: 24.99,
-    image: "/placeholder.svg?height=200&width=200",
-    category: "Clothing",
-    views: 890,
-    likes: 45,
-    sales: 67,
-    rating: 4.8,
-    isActive: true,
-  },
-  {
-    id: "3",
-    name: "Smart Fitness Watch",
-    price: 199.99,
-    image: "/placeholder.svg?height=200&width=200",
-    category: "Electronics",
-    views: 2100,
-    likes: 156,
-    sales: 34,
-    rating: 4.3,
-    isActive: false,
-  },
-]
+
 
 const boostOptions: BoostOption[] = [
   {
@@ -165,7 +119,6 @@ export default function ProductBoost() {
         const { boost,setBoost } = useBoostContext()
         console.log("Current Boost Context:", boost)
         const { data: products, } = useGetProductsByIds((boost?.flatMap(id => id)) || []);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [selectedBoost, setSelectedBoost] = useState<BoostOption>(boostOptions[0])
   const [duration, setDuration] = useState("weekly")
 
@@ -187,16 +140,8 @@ export default function ProductBoost() {
        setBoost((prev) => prev.filter((id) => id !== productId))
   }
   const handleBoostProduct = () => {
-    if (!selectedProduct) return
-    console.log("Boosting product:", {
-      product: selectedProduct,
-      boost: selectedBoost,
-      duration,
-//       budget: budget[0],
-//       targetAudience,
-      autoRenew,
-    })
-    // Handle boost logic here
+  
+    
   }
 
   return (
@@ -463,27 +408,24 @@ export default function ProductBoost() {
                       Boost Summary
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    {selectedProduct && (
-                      <div>
-                        <Label className="text-sm font-semibold text-gray-600">Selected Product</Label>
+                  <CardContent className="space-y-4 ">
+                    {products && products.length>0? (
+                        products.map((prod) => (
+                                <div key={prod?._id}>
                         <div className="flex items-center gap-3 mt-1">
-                          <Image
-                            src={selectedProduct.image || "/placeholder.svg"}
-                            alt={selectedProduct.name}
-                            width={40}
-                            height={40}
-                            className="rounded object-cover"
-                          />
                           <div>
-                            <div className="font-medium text-sm">{selectedProduct.name}</div>
-                            <div className="text-xs text-gray-600">${selectedProduct.price}</div>
+                            <div className=" text-md font-semibold">{prod?.product_name}</div>
+                            <div className="text-xs text-gray-600">${prod?.product_price}</div>
                           </div>
                         </div>
                       </div>
+                        ))
+                      
+                    ):(
+                            <div className="text-gray-500 text-sm">No products selected for boosting</div>
                     )}
 
-                    <Separator />
+                    <Separator  />
 
                     <div>
                       <Label className="text-sm font-semibold text-gray-600">Boost Type</Label>
@@ -546,22 +488,22 @@ export default function ProductBoost() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockProducts
-                    .filter((product) => product.currentBoost)
+                  {/* {products
+                    .filter((product) => product?.currentBoost)
                     .map((product) => (
-                      <Card key={product.id} className="hover:shadow-md dark:bg-gray-800">
+                      <Card key={product?._id} className="hover:shadow-md dark:bg-gray-800">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
                               <Image
-                                src={product.image || "/placeholder.svg"}
-                                alt={product.name}
+                                src={product?.product_image[0] || "/placeholder.svg"}
+                                alt={product?.product_name || "Product Image"}
                                 width={60}
                                 height={60}
                                 className="rounded-lg object-cover"
                               />
                               <div>
-                                <h3 className="font-semibold">{product.name}</h3>
+                                <h3 className="font-semibold">{product?.product_name}</h3>
                                 <div className="flex items-center gap-4 text-sm text-gray-600">
                                   <Badge className="bg-purple-500">{product.currentBoost?.type} Boost</Badge>
                                   <span>Ends: {product.currentBoost?.endDate}</span>
@@ -593,7 +535,7 @@ export default function ProductBoost() {
                           </div>
                         </CardContent>
                       </Card>
-                    ))}
+                    ))} */}
                 </div>
               </CardContent>
             </Card>
@@ -607,7 +549,7 @@ export default function ProductBoost() {
                 <CardDescription>Monitor and manage your previous product boosts</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                {/* <div className="space-y-4">
                   {mockProducts
                     .filter((product) => product.currentBoost)
                     .map((product) => (
@@ -656,7 +598,7 @@ export default function ProductBoost() {
                         </CardContent>
                       </Card>
                     ))}
-                </div>
+                </div> */}
               </CardContent>
             </Card>
           </TabsContent>
