@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import useRecordInteraction from '@/hooks/useRecordInteraction';
+import ProductsNotFound from '@/components/NoProductsFound/page';
 
 interface PageProps {
         params: Promise<{ id: string }>
@@ -38,21 +39,7 @@ const Product = ({params}:PageProps) => {
         }, [product])
 
   if (!product) {
-    return  <Oval
-                            visible={true}
-                            height="80"
-                            width="80"
-                            color="#0000FF"
-                            secondaryColor="#ddd"
-                            ariaLabel="oval-loading"
-                            wrapperStyle={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: "100vh",
-                            }}
-                            wrapperClass=""
-                            />
+    return  <ProductsNotFound />
   }
 
   return (

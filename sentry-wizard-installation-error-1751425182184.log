@@ -1,0 +1,30 @@
+npm warn cleanup Failed to remove some directories [
+npm warn cleanup   [
+npm warn cleanup     'E:\\GITHUB\\E-Light\\e-commerce\\node_modules\\@opentelemetry\\context-async-hooks',
+npm warn cleanup     [Error: EPERM: operation not permitted, unlink 'E:\GITHUB\E-Light\e-commerce\node_modules\@opentelemetry\context-async-hooks\package.json'] {
+npm warn cleanup       errno: -4048,
+npm warn cleanup       code: 'EPERM',
+npm warn cleanup       syscall: 'unlink',
+npm warn cleanup       path: 'E:\\GITHUB\\E-Light\\e-commerce\\node_modules\\@opentelemetry\\context-async-hooks\\package.json'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     'E:\\GITHUB\\E-Light\\e-commerce\\node_modules\\@opentelemetry',
+npm warn cleanup     [Error: EPERM: operation not permitted, unlink 'E:\GITHUB\E-Light\e-commerce\node_modules\@opentelemetry\context-async-hooks\package.json'] {
+npm warn cleanup       errno: -4048,
+npm warn cleanup       code: 'EPERM',
+npm warn cleanup       syscall: 'unlink',
+npm warn cleanup       path: 'E:\\GITHUB\\E-Light\\e-commerce\\node_modules\\@opentelemetry\\context-async-hooks\\package.json'
+npm warn cleanup     }
+npm warn cleanup   ]
+npm warn cleanup ]
+npm error code ECONNRESET
+npm error syscall read
+npm error errno -4077
+npm error network read ECONNRESET
+npm error network This is a problem related to network connectivity.
+npm error network In most cases you are behind a proxy or have bad network settings.
+npm error network
+npm error network If you are behind a proxy, please make sure that the
+npm error network 'proxy' config is set properly.  See: 'npm help config'
+npm error A complete log of this run can be found in: C:\Users\LIGHT\AppData\Local\npm-cache\_logs\2025-07-02T02_57_35_386Z-debug-0.log

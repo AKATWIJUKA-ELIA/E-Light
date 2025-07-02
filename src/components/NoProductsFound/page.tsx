@@ -10,7 +10,7 @@ import useGetCategories from "@/hooks/useGetCategories"
 import SearchModel from "../SearchModel/page"
 import HeroCard from "../HeroCards/page"
 type ProductsNotFoundProps = {
-        category: string;
+        category?: string;
       };
 const ProductsNotFound= ({category}: ProductsNotFoundProps)=> {
 
@@ -41,9 +41,9 @@ const ProductsNotFound= ({category}: ProductsNotFoundProps)=> {
           </div>
         </div>
 
-        <h1 className="text-3xl text-dark font-bold mb-4">No Matches Found for &ldquo;<span className='font-bold text-gold' >{decodeURIComponent(category) }</span>&ldquo;</h1>
+        <h1 className="text-3xl text-dark font-bold mb-4">No Matches Found for &ldquo;<span className='font-bold text-gold' >{decodeURIComponent(category??"") }</span>&ldquo;</h1>
         <p className="text-gray-600 max-w-lg mb-8">
-          We couldn&apos;t find any products matching your search criteria. Try adjusting your filters or search terms.
+          We couldn&apos;t find any  matches for your search criteria. Try adjusting your filters or search terms.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg mb-8">
