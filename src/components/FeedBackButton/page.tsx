@@ -3,13 +3,12 @@
 import * as React from "react"
 import { MdFeedback } from "react-icons/md";
 import FeedBack from "@/components/FeedBack/page";
-import { Button } from "@/components/ui/button"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useState } from "react";
 
 const FeedBackButton=()=> {
@@ -20,20 +19,20 @@ const FeedBackButton=()=> {
 
   return (
     <>
-    <div className="fixed bottom-20 right-6 z-50" >
-        <DropdownMenu  >
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <MdFeedback />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setshowfeedBack(true)}>
-          Send Us FeedBack
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="fixed bottom-20 right-7 z-50" >
+       
+        <TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger>
+          <MdFeedback className="border rounded-md  bg-gray-100 dark:bg-black dark:fill-white " fill="black" size="32" onClick={() => setshowfeedBack(true)} />
+
+        </TooltipTrigger>
+
+    <TooltipContent>
+      <p>Send us feedBack</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>
     </div>
     {feedBack && <FeedBack onClose={onClose} />}
     </>
