@@ -413,6 +413,8 @@ https://shopcheap.vercel.app/</h3>
                     <div key={src} className="relative">
                       <Image
                         src={src || "/placeholder.svg"}
+                        width={80}
+                        height={80}
                         alt={`Preview `}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
                       />
