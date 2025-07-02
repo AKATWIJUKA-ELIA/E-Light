@@ -15,7 +15,6 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import { Id } from "../../../convex/_generated/dataModel";
 import useBookmark from '@/hooks/useBookmark';
-import { Bookmark  } from 'lucide-react';
 import { useNotification } from '@/app/NotificationContext';
 
 interface ProductProps {
