@@ -93,5 +93,16 @@ interactions:defineTable( {
   type: v.string(), // e.g. "view", "cart", "purchase"
 }).index("by_user", ["user_id"])
 .index("by_product_id", ["product_id"])
-.index("by_user_and_type", ["user_id", "type"])
+.index("by_user_and_type", ["user_id", "type"]),
+boosts: defineTable({
+    product_id: v.string(),
+    user_id: v.string(),
+    boost_type: v.string(),
+    duration: v.number(),
+    status: v.union(
+        v.literal("active"),
+        v.literal("pending"),
+        v.literal("expired")),
+}).index("by_product_id", ["product_id"])
+.index("by_boost_type", ["boost_type"])
 });

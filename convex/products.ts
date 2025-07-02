@@ -455,3 +455,40 @@ export const getImageUrl = query({
                         );
                           
         }})
+
+        export const BoostProducts = mutation({
+                args: {
+                        product_id: v.id("products"),
+                        user_id: v.string(),
+                        boost_type:v.string(),
+                        duration: v.optional(v.string()), 
+                        status: v.optional(v.union(
+                                v.literal("active"),
+                                v.literal("pending"),
+                                v.literal("expired"),))
+                },
+                handler: async (ctx, args) => {
+                        const product = await ctx.db.get(args.product_id);
+                        if (!product) {
+                                return { success: false, message: "Product not found" };
+                        }
+                        // Check if the user is the owner of the product
+                        if (product.product_owner_id !== args.user_id) {
+                                return { success: false, message: "You are not the owner of this product" };
+                        }
+                        // Check if the product is already boosted
+                        const existingBoost = await ctx.db.query("boosts")
+                                .filter((q) => q.eq(q.field("product_id"), args.product_id))
+                                .first();
+                        if (existingBoost) {
+                                return { success: false, message: "Product is already boosted" };
+                        }
+                        // Insert the boost record
+                        await ctx.db.insert("boosts", {
+                                ...args,
+                                status: args.status || "pending",
+                                duration: args.duration? Date.now() + new Date(args.duration).getTime() : 7 * 24 * 60 * 60 * 1000, // Default to 7 days from now
+                        });
+                        return { success: true, message: "Boost prepared successfully" };
+                }
+        })

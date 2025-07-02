@@ -5,7 +5,6 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 // import { Textarea } from "@/components/ui/textarea"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -14,11 +13,10 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   TrendingUp,
-//   Target,
   Clock,
+  Trash2, 
   DollarSign,
   Eye,
-  Heart,
   ShoppingCart,
   Star,
   Zap,
@@ -29,28 +27,12 @@ import {
   CheckCircle,
 } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
+import { useBoostContext } from "@/app/BoostContext"
+import useGetProductsByIds from "@/hooks/useGetProductsByIds"
+import { Id } from "../../../convex/_generated/dataModel"
 
-interface Product {
-  id: string
-  name: string
-  price: number
-  image: string
-  category: string
-  views: number
-  likes: number
-  sales: number
-  rating: number
-  isActive: boolean
-  currentBoost?: {
-    type: string
-    endDate: string
-    performance: {
-      impressions: number
-      clicks: number
-      conversions: number
-    }
-  }
-}
+
 
 interface BoostOption {
   id: string
@@ -59,7 +41,7 @@ interface BoostOption {
   icon: React.ComponentType<{ className?: string }>
   features: string[]
   pricing: {
-    daily: number
+    quarterly: number
     weekly: number
     monthly: number
   }
@@ -70,53 +52,7 @@ interface BoostOption {
   color: string
 }
 
-const mockProducts: Product[] = [
-  {
-    id: "1",
-    name: "Wireless Bluetooth Headphones",
-    price: 89.99,
-    image: "/placeholder.svg?height=200&width=200",
-    category: "Electronics",
-    views: 1250,
-    likes: 89,
-    sales: 23,
-    rating: 4.5,
-    isActive: true,
-    currentBoost: {
-      type: "Premium",
-      endDate: "2024-01-20",
-      performance: {
-        impressions: 5420,
-        clicks: 234,
-        conversions: 12,
-      },
-    },
-  },
-  {
-    id: "2",
-    name: "Organic Cotton T-Shirt",
-    price: 24.99,
-    image: "/placeholder.svg?height=200&width=200",
-    category: "Clothing",
-    views: 890,
-    likes: 45,
-    sales: 67,
-    rating: 4.8,
-    isActive: true,
-  },
-  {
-    id: "3",
-    name: "Smart Fitness Watch",
-    price: 199.99,
-    image: "/placeholder.svg?height=200&width=200",
-    category: "Electronics",
-    views: 2100,
-    likes: 156,
-    sales: 34,
-    rating: 4.3,
-    isActive: false,
-  },
-]
+
 
 const boostOptions: BoostOption[] = [
   {
@@ -125,7 +61,7 @@ const boostOptions: BoostOption[] = [
     description: "Increase visibility in search results",
     icon: TrendingUp,
     features: ["Higher search ranking", "Category page placement", "Basic analytics"],
-    pricing: { daily: 5, weekly: 30, monthly: 100 },
+    pricing: { weekly: 5, monthly: 30, quarterly: 100 },
     estimatedReach: { min: 500, max: 1000 },
     color: "bg-blue-500",
   },
@@ -135,7 +71,7 @@ const boostOptions: BoostOption[] = [
     description: "Featured placement and enhanced visibility",
     icon: Star,
     features: ["Featured product placement", "Homepage visibility", "Advanced analytics", "Priority customer support"],
-    pricing: { daily: 15, weekly: 90, monthly: 300 },
+    pricing: { weekly: 15, monthly: 90, quarterly: 300 },
     estimatedReach: { min: 2000, max: 5000 },
     color: "bg-purple-500",
   },
@@ -151,23 +87,19 @@ const boostOptions: BoostOption[] = [
       "Dedicated account manager",
       "Custom marketing materials",
     ],
-    pricing: { daily: 35, weekly: 210, monthly: 700 },
+    pricing: { weekly: 35, monthly: 210, quarterly: 700 },
     estimatedReach: { min: 10000, max: 25000 },
     color: "bg-gold-500",
   },
 ]
 
 export default function ProductBoost() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+        const { boost,setBoost } = useBoostContext()
+        console.log("Current Boost Context:", boost)
+        const { data: products, } = useGetProductsByIds((boost?.flatMap(id => id)) || []);
   const [selectedBoost, setSelectedBoost] = useState<BoostOption>(boostOptions[0])
   const [duration, setDuration] = useState("weekly")
-//   const [budget, setBudget] = useState([100])
-//   const [targetAudience, setTargetAudience] = useState({
-//     ageRange: "25-45",
-//     location: "nationwide",
-//     interests: "",
-//     gender: "all",
-//   })
+
   const [autoRenew, setAutoRenew] = useState(false)
 
   const calculateTotalCost = () => {
@@ -182,18 +114,12 @@ export default function ProductBoost() {
       max: selectedBoost.estimatedReach.max * multiplier,
     }
   }
-
+  const handleRemove = (productId:Id<"products">) => {
+       setBoost((prev) => prev.filter((id) => id !== productId))
+  }
   const handleBoostProduct = () => {
-    if (!selectedProduct) return
-    console.log("Boosting product:", {
-      product: selectedProduct,
-      boost: selectedBoost,
-      duration,
-//       budget: budget[0],
-//       targetAudience,
-      autoRenew,
-    })
-    // Handle boost logic here
+  
+    
   }
 
   return (
@@ -201,14 +127,15 @@ export default function ProductBoost() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-2">Boost Your Products</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-2">Boost <span className="text-gold" >Your</span> Products</h1>
           <p className="text-gray-600">Increase visibility and sales with our promotion tools</p>
         </div>
 
         <Tabs defaultValue="boost" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="boost">Create Boost</TabsTrigger>
             <TabsTrigger value="active">Active Boosts</TabsTrigger>
+            <TabsTrigger value="expired">Expired</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
@@ -221,52 +148,52 @@ export default function ProductBoost() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <ShoppingCart className="w-5 h-5" />
-                      Select Product to Boost
+                      <Link href="/profile/approved" className=" border text-gold rounded-md p-2 hover:bg-gray-300 transition-all " >
+                      Select Products <span className="text-dark" >you would like to Boost Here</span>
+                      </Link>
                     </CardTitle>
-                    <CardDescription>Choose which product you want to promote</CardDescription>
+                    <CardDescription>Your Selected products will appear Here</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-2 gap-4">
-                      {mockProducts.map((product) => (
+                      { products && products.length>0? (products.map((product) => (
                         <Card
-                          key={product.id}
-                          className={`cursor-pointer transition-all ${
-                            selectedProduct?.id === product.id ? "ring-2 ring-blue-500 bg-blue-50" : "hover:shadow-md"
-                          }`}
-                          onClick={() => setSelectedProduct(product)}
+                          key={product?._id}
+                          className={`cursor-pointer transition-all hover:ring-2 ring-gold hover:bg-amber-50 hover:shadow-md`}
                         >
                           <CardContent className="p-4">
                             <div className="flex gap-3">
                               <Image
-                                src={product.image || "/placeholder.svg"}
-                                alt={product.name}
+                                src={product?.product_image[0] || "/placeholder.svg"}
+                                alt={product?.product_name ||"Product Image"}
                                 width={80}
                                 height={80}
                                 className="rounded-lg object-cover"
                               />
-                              <div className="flex-1">
-                                <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
-                                <p className="text-lg font-bold text-green-600 mb-2">${product.price}</p>
+                              <div className="flex   ">
+                               <div className="flex flex-col " >
+                                 <h3 className="font-semibold text-gray-900 mb-1">{product?.product_name}</h3>
+                                <p className="text-lg font-bold text-green-600 mb-2">${product?.product_price}</p>
+                               </div>
                                 <div className="flex items-center gap-4 text-sm text-gray-600">
-                                  <div className="flex items-center gap-1">
-                                    <Eye className="w-4 h-4" />
-                                    {product.views}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Heart className="w-4 h-4" />
-                                    {product.likes}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <ShoppingCart className="w-4 h-4" />
-                                    {product.sales}
+                                  <div className="flex items-center gap-1 hover:text-red-600 transition-colors" 
+                                  onClick={() => handleRemove(product?._id as Id<"products">)}>
+                                        <span className="text-sm ">Remove</span>
+                                    <Trash2  className="w-8 h-8" />
                                   </div>
                                 </div>
-                                {product.currentBoost && <Badge className="mt-2 bg-green-500">Currently Boosted</Badge>}
                               </div>
                             </div>
                           </CardContent>
                         </Card>
-                      ))}
+                      ))) : (
+                        <Card className="dark:bg-gray-800">
+                          <CardContent className="p-12 text-center">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Products Selected</h3>
+                            <p className="text-gray-600">Please select products to boost from your approved products list.</p>
+                          </CardContent>
+                        </Card>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -279,6 +206,7 @@ export default function ProductBoost() {
                       Choose Boost Type
                     </CardTitle>
                     <CardDescription>Select the level of promotion for your product</CardDescription>
+                    <CardDescription className="text-lg font-semibold text-red-500 " >Note: The Boost type will apply for all the Selected products</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-4">
@@ -303,7 +231,7 @@ export default function ProductBoost() {
                                     <div className="text-right">
                                       <div className="text-sm text-gray-600">Starting at</div>
                                       <div className="text-lg font-bold text-green-600">
-                                        ${option.pricing.daily}/day
+                                        ${option.pricing.weekly}/week
                                       </div>
                                     </div>
                                   </div>
@@ -344,9 +272,9 @@ export default function ProductBoost() {
                       <Label className="text-base font-semibold mb-3 block">Campaign Duration</Label>
                       <div className="grid grid-cols-3 gap-3">
                         {[
-                          { value: "daily", label: "1 Day", price: selectedBoost.pricing.daily },
-                          { value: "weekly", label: "1 Week", price: selectedBoost.pricing.weekly },
-                          { value: "monthly", label: "1 Month", price: selectedBoost.pricing.monthly },
+                          { value: "weekly", label: "weekly", price: selectedBoost.pricing.weekly },
+                          { value: "monthly", label: "monthly", price: selectedBoost.pricing.monthly },
+                          { value: "quarterly", label: "quarterly", price: selectedBoost.pricing.quarterly },
                         ].map((option) => (
                           <Card
                             key={option.value}
@@ -458,27 +386,24 @@ export default function ProductBoost() {
                       Boost Summary
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    {selectedProduct && (
-                      <div>
-                        <Label className="text-sm font-semibold text-gray-600">Selected Product</Label>
+                  <CardContent className="space-y-4 ">
+                    {products && products.length>0? (
+                        products.map((prod) => (
+                                <div key={prod?._id}>
                         <div className="flex items-center gap-3 mt-1">
-                          <Image
-                            src={selectedProduct.image || "/placeholder.svg"}
-                            alt={selectedProduct.name}
-                            width={40}
-                            height={40}
-                            className="rounded object-cover"
-                          />
                           <div>
-                            <div className="font-medium text-sm">{selectedProduct.name}</div>
-                            <div className="text-xs text-gray-600">${selectedProduct.price}</div>
+                            <div className=" text-md font-semibold">{prod?.product_name}</div>
+                            <div className="text-xs text-gray-600">${prod?.product_price}</div>
                           </div>
                         </div>
                       </div>
+                        ))
+                      
+                    ):(
+                            <div className="text-gray-500 text-sm">No products selected for boosting</div>
                     )}
 
-                    <Separator />
+                    <Separator  />
 
                     <div>
                       <Label className="text-sm font-semibold text-gray-600">Boost Type</Label>
@@ -518,7 +443,7 @@ export default function ProductBoost() {
                       </div>
                     </div>
 
-                    <Button className="w-full" size="lg" onClick={handleBoostProduct} disabled={!selectedProduct}>
+                    <Button className="w-full" size="lg" onClick={handleBoostProduct} >
                       <Zap className="w-4 h-4 mr-2" />
                       Start Boost Campaign
                     </Button>
@@ -541,6 +466,68 @@ export default function ProductBoost() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
+                  {/* {products
+                    .filter((product) => product?.currentBoost)
+                    .map((product) => (
+                      <Card key={product?._id} className="hover:shadow-md dark:bg-gray-800">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <Image
+                                src={product?.product_image[0] || "/placeholder.svg"}
+                                alt={product?.product_name || "Product Image"}
+                                width={60}
+                                height={60}
+                                className="rounded-lg object-cover"
+                              />
+                              <div>
+                                <h3 className="font-semibold">{product?.product_name}</h3>
+                                <div className="flex items-center gap-4 text-sm text-gray-600">
+                                  <Badge className="bg-purple-500">{product.currentBoost?.type} Boost</Badge>
+                                  <span>Ends: {product.currentBoost?.endDate}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                  <div className="text-lg font-bold">
+                                    {product.currentBoost?.performance.impressions.toLocaleString()}
+                                  </div>
+                                  <div className="text-xs text-gray-600">Impressions</div>
+                                </div>
+                                <div>
+                                  <div className="text-lg font-bold">
+                                    {product.currentBoost?.performance.clicks.toLocaleString()}
+                                  </div>
+                                  <div className="text-xs text-gray-600">Clicks</div>
+                                </div>
+                                <div>
+                                  <div className="text-lg font-bold">
+                                    {product.currentBoost?.performance.conversions}
+                                  </div>
+                                  <div className="text-xs text-gray-600">Sales</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))} */}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+              {/* Expired Boosts Tab */}
+          <TabsContent value="expired" className="space-y-6">
+            <Card className="dark:bg-gray-900" >
+              <CardHeader>
+                <CardTitle>Your Previous Boost Campaigns</CardTitle>
+                <CardDescription>Monitor and manage your previous product boosts</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* <div className="space-y-4">
                   {mockProducts
                     .filter((product) => product.currentBoost)
                     .map((product) => (
@@ -589,7 +576,7 @@ export default function ProductBoost() {
                         </CardContent>
                       </Card>
                     ))}
-                </div>
+                </div> */}
               </CardContent>
             </Card>
           </TabsContent>
