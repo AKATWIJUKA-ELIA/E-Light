@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Id } from "../../../convex/_generated/dataModel";
-
+import useBookmark from '@/hooks/useBookmark';
+import { useNotification } from '@/app/NotificationContext';
 
 interface ProductProps {
   product: {
@@ -28,6 +29,9 @@ interface ProductProps {
 }
 
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
+
+        const { setNotification } = useNotification();
+        const { createBookmark } = useBookmark()
         const carousel = Autoplay({ delay: 10000})
         const[Copied,setCopied] = useState(false)
         const { user } = useGetUserById(product?.product_owner_id as  Id<"customers">)
@@ -47,6 +51,22 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
               
                 
       };
+              const handleBookmark = async (product_id:string) => {
+                if (!product_id) return;
+                const response = await createBookmark(product_id);
+                if (response.success) {
+                        setNotification({
+                                message: "Bookmark created successfully!",
+                                status: "success",
+                        });
+                } else {
+                        setNotification({
+                                message: response.message || "Failed to create bookmark",
+                                status: "error",
+                        });
+                }
+        }
+
       const handleShare = (link: string,name:string) => {
         if (navigator.share) {
           navigator
@@ -185,7 +205,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
 
         </div>
 
-        <div className="flex  space-x-2">
+        <div className="flex flex-col md:flex-row  space-x-2 space-y-2 md:space-y-0">
                 <button
           onClick={() => HandleAddToCart(product)}
           className="bg-gold text-white w-full px-4 py-2 rounded-3xl hover:bg-yellow-500 transition"
@@ -198,7 +218,14 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         >
           {Copied?"Link copied successfully":"Share "}
         </button>
+        <button
+          onClick={() => {handleBookmark(product._id)}}
+          className=" text-black border border-black w-full px-4 py-2 rounded-3xl hover:border-blue-600 hover:text-white hover:bg-blue-700 transition"
+        >
+          Add to bookmarks
+        </button>
         </div>
+       
 
       </div>
       
