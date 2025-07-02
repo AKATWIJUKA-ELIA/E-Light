@@ -38,3 +38,10 @@ export interface Bookmark {
                 _id: string;
   }|null;
 }
+export interface Boost {
+        product_id: Id<"products">,
+        user_id: string,
+        boost_type:string,
+        duration: string,
+        status: "active" | "pending" | "expired" | undefined
+}

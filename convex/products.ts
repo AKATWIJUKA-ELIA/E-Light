@@ -456,11 +456,11 @@ export const getImageUrl = query({
                           
         }})
 
-        export const prepareForBoost = mutation({
+        export const BoostProducts = mutation({
                 args: {
                         product_id: v.id("products"),
                         user_id: v.string(),
-                        boost_type:v.string(), 
+                        boost_type:v.string(),
                         duration: v.optional(v.string()), 
                         status: v.optional(v.union(
                                 v.literal("active"),

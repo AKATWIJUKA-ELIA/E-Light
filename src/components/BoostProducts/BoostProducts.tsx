@@ -29,6 +29,10 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { useBoostContext } from "@/app/BoostContext"
+import useGetProductsByIds from "@/hooks/useGetProductsByIds"
+import { Id } from "../../../convex/_generated/dataModel"
+
 
 interface Product {
   id: string
@@ -59,7 +63,7 @@ interface BoostOption {
   icon: React.ComponentType<{ className?: string }>
   features: string[]
   pricing: {
-    daily: number
+    quarterly: number
     weekly: number
     monthly: number
   }
@@ -125,7 +129,7 @@ const boostOptions: BoostOption[] = [
     description: "Increase visibility in search results",
     icon: TrendingUp,
     features: ["Higher search ranking", "Category page placement", "Basic analytics"],
-    pricing: { daily: 5, weekly: 30, monthly: 100 },
+    pricing: { weekly: 5, monthly: 30, quarterly: 100 },
     estimatedReach: { min: 500, max: 1000 },
     color: "bg-blue-500",
   },
@@ -135,7 +139,7 @@ const boostOptions: BoostOption[] = [
     description: "Featured placement and enhanced visibility",
     icon: Star,
     features: ["Featured product placement", "Homepage visibility", "Advanced analytics", "Priority customer support"],
-    pricing: { daily: 15, weekly: 90, monthly: 300 },
+    pricing: { weekly: 15, monthly: 90, quarterly: 300 },
     estimatedReach: { min: 2000, max: 5000 },
     color: "bg-purple-500",
   },
@@ -151,23 +155,20 @@ const boostOptions: BoostOption[] = [
       "Dedicated account manager",
       "Custom marketing materials",
     ],
-    pricing: { daily: 35, weekly: 210, monthly: 700 },
+    pricing: { weekly: 35, monthly: 210, quarterly: 700 },
     estimatedReach: { min: 10000, max: 25000 },
     color: "bg-gold-500",
   },
 ]
 
 export default function ProductBoost() {
+        const { boost,setBoost } = useBoostContext()
+        console.log("Current Boost Context:", boost)
+        const { data: products, } = useGetProductsByIds((boost?.flatMap(id => id)) || []);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [selectedBoost, setSelectedBoost] = useState<BoostOption>(boostOptions[0])
   const [duration, setDuration] = useState("weekly")
-//   const [budget, setBudget] = useState([100])
-//   const [targetAudience, setTargetAudience] = useState({
-//     ageRange: "25-45",
-//     location: "nationwide",
-//     interests: "",
-//     gender: "all",
-//   })
+
   const [autoRenew, setAutoRenew] = useState(false)
 
   const calculateTotalCost = () => {
@@ -182,7 +183,9 @@ export default function ProductBoost() {
       max: selectedBoost.estimatedReach.max * multiplier,
     }
   }
-
+  const handleRemove = (productId:Id<"products">) => {
+       setBoost((prev) => prev.filter((id) => id !== productId))
+  }
   const handleBoostProduct = () => {
     if (!selectedProduct) return
     console.log("Boosting product:", {
@@ -230,28 +233,28 @@ export default function ProductBoost() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-2 gap-4">
-                      {mockProducts.map((product) => (
+                      { products && products.length>0? (products.map((product) => (
                         <Card
-                          key={product.id}
+                          key={product?._id}
                           className={`cursor-pointer transition-all hover:ring-2 ring-gold hover:bg-amber-50 hover:shadow-md`}
                         >
                           <CardContent className="p-4">
                             <div className="flex gap-3">
                               <Image
-                                src={product.image || "/placeholder.svg"}
-                                alt={product.name}
+                                src={product?.product_image[0] || "/placeholder.svg"}
+                                alt={product?.product_name ||"Product Image"}
                                 width={80}
                                 height={80}
                                 className="rounded-lg object-cover"
                               />
                               <div className="flex   ">
                                <div className="flex flex-col " >
-                                 <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
-                                <p className="text-lg font-bold text-green-600 mb-2">${product.price}</p>
+                                 <h3 className="font-semibold text-gray-900 mb-1">{product?.product_name}</h3>
+                                <p className="text-lg font-bold text-green-600 mb-2">${product?.product_price}</p>
                                </div>
                                 <div className="flex items-center gap-4 text-sm text-gray-600">
-                                  
-                                  <div className="flex items-center gap-1 hover:text-red-600 transition-colors">
+                                  <div className="flex items-center gap-1 hover:text-red-600 transition-colors" 
+                                  onClick={() => handleRemove(product?._id as Id<"products">)}>
                                         <span className="text-sm ">Remove</span>
                                     <Trash2  className="w-8 h-8" />
                                   </div>
@@ -260,7 +263,14 @@ export default function ProductBoost() {
                             </div>
                           </CardContent>
                         </Card>
-                      ))}
+                      ))) : (
+                        <Card className="dark:bg-gray-800">
+                          <CardContent className="p-12 text-center">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Products Selected</h3>
+                            <p className="text-gray-600">Please select products to boost from your approved products list.</p>
+                          </CardContent>
+                        </Card>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -298,7 +308,7 @@ export default function ProductBoost() {
                                     <div className="text-right">
                                       <div className="text-sm text-gray-600">Starting at</div>
                                       <div className="text-lg font-bold text-green-600">
-                                        ${option.pricing.daily}/day
+                                        ${option.pricing.weekly}/week
                                       </div>
                                     </div>
                                   </div>
@@ -339,9 +349,9 @@ export default function ProductBoost() {
                       <Label className="text-base font-semibold mb-3 block">Campaign Duration</Label>
                       <div className="grid grid-cols-3 gap-3">
                         {[
-                          { value: "daily", label: "1 Day", price: selectedBoost.pricing.daily },
-                          { value: "weekly", label: "1 Week", price: selectedBoost.pricing.weekly },
-                          { value: "monthly", label: "1 Month", price: selectedBoost.pricing.monthly },
+                          { value: "weekly", label: "weekly", price: selectedBoost.pricing.weekly },
+                          { value: "monthly", label: "monthly", price: selectedBoost.pricing.monthly },
+                          { value: "quarterly", label: "quarterly", price: selectedBoost.pricing.quarterly },
                         ].map((option) => (
                           <Card
                             key={option.value}
@@ -513,7 +523,7 @@ export default function ProductBoost() {
                       </div>
                     </div>
 
-                    <Button className="w-full" size="lg" onClick={handleBoostProduct} disabled={!selectedProduct}>
+                    <Button className="w-full" size="lg" onClick={handleBoostProduct} >
                       <Zap className="w-4 h-4 mr-2" />
                       Start Boost Campaign
                     </Button>
