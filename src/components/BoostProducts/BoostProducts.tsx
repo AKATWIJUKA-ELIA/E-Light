@@ -40,7 +40,7 @@ import { Product } from "@/lib/utils"
 
 
 interface BoostOption {
-  id: string
+  id: "basic" | "premium" | "elite"
   name: string
   description: string
   icon: React.ComponentType<{ className?: string }>

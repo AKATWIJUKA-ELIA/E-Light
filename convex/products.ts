@@ -37,7 +37,6 @@ export const createProduct = mutation({
                 product_name: v.string(),
                 product_owner_id: v.string(),
                 product_price: v.string(),
-
                 product_embeddings:v.optional(v.array(v.number())),
                 product_image_embeddings:v.optional(v.array(v.number())),
 
@@ -448,63 +447,71 @@ export const getImageUrl = query({
                 }
         })
 
-        export const getSponsoredProducts = query({
-                handler: async (ctx) => {
-                        const premium = await ctx.db.query("products")
-                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "premium")).collect();
-                        const basic = await ctx.db.query("products")
-                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "basic")).collect();
-                        const elite = await ctx.db.query("products")
-                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "elite")).collect();
-                        const sponsored = [...premium, ...basic, ...elite];
-                        return await Promise.all(
-                                sponsored.map(async (product) => {
-                                        if (!product) return null; // Handle case where product is not found
-                                        return {
-                                                ...product,
-                                                product_image: (product.product_image && product.product_image.length > 0)
-                                                        ? (await Promise.all(
-                                                                product.product_image.map(async (image: string) => {
-                                                                        return await ctx.storage.getUrl(image);
-                                                                })
-                                                        )).filter((url): url is string => url !== null)
-                                                        : []
-                                        };
-                                })
-                        );
+        // export const getSponsoredProducts = query({
+        //         handler: async (ctx) => {
+        //                 const premium = await ctx.db.query("products")
+        //                 .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "premium")).collect();
+        //                 const basic = await ctx.db.query("products")
+        //                 .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "basic")).collect();
+        //                 const elite = await ctx.db.query("products")
+        //                 .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "elite")).collect();
+        //                 const sponsored = [...premium, ...basic, ...elite];
+        //                 return await Promise.all(
+        //                         sponsored.map(async (product) => {
+        //                                 if (!product) return null; // Handle case where product is not found
+        //                                 return {
+        //                                         ...product,
+        //                                         product_image: (product.product_image && product.product_image.length > 0)
+        //                                                 ? (await Promise.all(
+        //                                                         product.product_image.map(async (image: string) => {
+        //                                                                 return await ctx.storage.getUrl(image);
+        //                                                         })
+        //                                                 )).filter((url): url is string => url !== null)
+        //                                                 : []
+        //                                 };
+        //                         })
+        //                 );
                           
-        }})
+        // }})
 
         export const BoostProducts = mutation({
                 args: {
                         product_id: v.id("products"),
                         user_id: v.string(),
-                        boost_type:v.string(),
+                        boost_type:v.union(
+                                v.literal("basic"),
+                                v.literal("premium"),
+                                v.literal("elite"),),
                         duration: v.string(), // Duration in milliseconds
                         status: v.optional(v.union(
                                 v.literal("active"),
                                 v.literal("expired"),))
                 },
                 handler: async (ctx, args) => {
-                        const product = await ctx.db.get(args.product_id);
+
+                        const product = await ctx.db.get(args.product_id)
                         if (!product) {
                                 return { success: false, message: "Product not found" };
                         }
-                        // Check if the user is the owner of the product
-                        if (product.product_owner_id !== args.user_id) {
-                                return { success: false, message: "You are not the owner of this product" };
-                        }
-                        // Check if the product is already boosted
+                        
                         const existingBoost = await ctx.db.query("boosts")
                                 .filter((q) => q.eq(q.field("product_id"), args.product_id))
                                 .first();
                         if (existingBoost) {
                                 return { success: false, message: "Product is already boosted" };
                         }
+
+                        await ctx.db.patch(args.product_id, {
+                                product_sponsorship: {
+                                        type: args.boost_type,
+                                        status: args.status ? args.status : "active",
+                                }
+                        });
+                   
                         // Insert the boost record
                         await ctx.db.insert("boosts", {
                                 ...args,
-                                status: args.status ? args.status : "active", // Default to "active" if not provided
+                                status: args.status ? args.status : "active", 
                                 duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                         });
                         return { success: true, message: "Boost prepared successfully" };
