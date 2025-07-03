@@ -36,6 +36,7 @@ import { Id } from "../../../convex/_generated/dataModel"
 import useBoost from "@/hooks/useBoost"
 import { useNotification } from "@/app/NotificationContext"
 import { Product } from "@/lib/utils"
+import { formatDate } from "@/lib/helpers"
 
 
 
@@ -147,6 +148,12 @@ useEffect(() => {
             boost_type: selectedBoost.id,
             duration:duration,
             status: "active",
+          }).then((response) => {
+            if (!response.success) {
+              setNotification({ status: "error", message: response.message })
+            } else {
+              setNotification({ status: "success", message: response.message })
+            }
           })
         })
         setNotification({ status: "success", message: "Products boosted successfully!" })
@@ -516,34 +523,36 @@ useEffect(() => {
                                 <h3 className="font-semibold">{product?.product_name}</h3>
                                 <div className="flex items-center gap-4 border border-gold rounded-lg p-1 text-sm font-semibold text-gray-600">
                                         <span className="flex items-center gap-1">
-                                        {checkBadge(product?.product_sponsorship || "")}
-                                        {product?.product_sponsorship || "Basic"} Boost
+                                        {checkBadge(product?.product_sponsorship?.type || "")}
+                                        {product?.product_sponsorship?.type || "Basic"} Boost
                                         </span>
-                                  {/* <span>Ends: {product.currentBoost?.endDate}</span> */}
                                 </div>
+                                <span>Ends: {product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span>
                               </div>
                             </div>
                             <div className="text-right">
-                              {/* <div className="grid grid-cols-3 gap-4 text-center">
+                              <div className="grid grid-cols-3 gap-4 text-center">
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.currentBoost?.performance.impressions.toLocaleString()}
+                                    {product.product_likes?.toLocaleString()}
                                   </div>
-                                  <div className="text-xs text-gray-600">Impressions</div>
+                                  {/* Likes refers to the bookmark count  we use bookmark as like */}
+                                  <div className="text-xs text-gray-600">BookMark Count</div> 
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.currentBoost?.performance.clicks.toLocaleString()}
+                                    {product.product_views?.toLocaleString()}
                                   </div>
                                   <div className="text-xs text-gray-600">Clicks</div>
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.currentBoost?.performance.conversions}
+                                        {/* Sales we order count ie the number of times the product was ordered / appears in the orders table */}
+                                    {/* {product.currentBoost?.performance.conversions} */}
                                   </div>
-                                  <div className="text-xs text-gray-600">Sales</div>
+                                  {/* <div className="text-xs text-gray-600">Sales</div> */}
                                 </div>
-                              </div> */}
+                              </div>
                             </div>
                           </div>
                         </CardContent>

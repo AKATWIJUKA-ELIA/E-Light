@@ -18,7 +18,13 @@ export interface Product {
         product_price: string,
         product_embeddings?: number[],
         product_image_embeddings?: number[],
-        product_sponsorship?: "premium" | "basic" | "elite",
+        product_likes?: number,
+        product_views?: number,
+        product_sponsorship?: {
+                type?: "basic" | "premium" | "elite",
+                duration?: number,
+                status?: "active" | "expired"
+        }
         _creationTime: number
 }
 export interface User {

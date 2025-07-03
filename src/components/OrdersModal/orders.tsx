@@ -38,6 +38,7 @@ import {
 import Image from "next/image"
 import useGetOrders from "@/hooks/usegetOrders"
 import { Id } from "../../../convex/_generated/dataModel"
+import { formatDate } from "@/lib/helpers"
 
 
 interface Order {
@@ -122,15 +123,6 @@ export default function OrdersTracking() {
     )
   }
 
-  const formatDate = (dateString: number) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  }
 
 //   const reorderItems = (order: Order) => {
 //     // This would typically add items to cart and redirect to checkout

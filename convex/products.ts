@@ -505,6 +505,7 @@ export const getImageUrl = query({
                                 product_sponsorship: {
                                         type: args.boost_type,
                                         status: args.status ? args.status : "active",
+                                        duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                                 }
                         });
                    
@@ -514,7 +515,7 @@ export const getImageUrl = query({
                                 status: args.status ? args.status : "active", 
                                 duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                         });
-                        return { success: true, message: "Boost prepared successfully" };
+                        return { success: true, message: "Boost processed successfully" };
                 }
         })
 
