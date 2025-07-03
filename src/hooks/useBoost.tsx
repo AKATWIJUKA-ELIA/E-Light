@@ -17,7 +17,7 @@ const useBoost = () => {
         useEffect(() => {
         if (products) {
         console.log("Fetched Boosts:", products);
-        setBoostedProducts(products.filter((p): p is Product => p !== null));
+        setBoostedProducts(products.filter((p) => p !== null) as Product[]);
         }
         }, [loading]);
 

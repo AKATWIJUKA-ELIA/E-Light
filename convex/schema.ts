@@ -51,14 +51,22 @@ export default defineSchema({
     product_price: v.string(),
     product_embeddings:v.optional(v.array(v.number())),
     product_image_embeddings:v.optional(v.array(v.number())),
-    product_sponsorship:v.optional(v.union(
-    v.literal("basic"),
-    v.literal("premium"),
-    v.literal("elite"),
-  )),
-     _creationTime: v.number()
+    product_sponsorship:v.optional(v.object({
+        type:v.optional(v.union(
+                v.literal("basic"),
+                v.literal("premium"),
+                v.literal("elite"),)),
+        duration: v.optional(v.number()),
+        status: v.optional(v.union(
+                v.literal("active"),
+                v.literal("expired"),
+        )),
+    }),),
+  product_likes: v.optional(v.number()),
+  product_views: v.optional(v.number()),
+  _creationTime: v.number()
   }).index("by_product_category", ["product_cartegory"])
-  .index("by_sponsorship", ["product_sponsorship"])
+  .index("by_sponsorship", ["product_sponsorship.type"])
   .vectorIndex("by_product_embeddings",{
         vectorField:"product_embeddings",
         dimensions:384

@@ -56,7 +56,7 @@ export interface Bookmark {
 }
 export interface Boost {
         product_id: Id<"products">,
-        boost_type:string,
+        boost_type: "premium" | "basic" | "elite",
         duration: string,
         status: "active" | "expired" | undefined
 }
