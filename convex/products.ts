@@ -452,11 +452,11 @@ export const getImageUrl = query({
                 handler: async (ctx) => {
                         const premium = await ctx.db.query("products")
                         .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "premium")).collect();
-                        const medium = await ctx.db.query("products")
-                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "medium")).collect();
-                        const starter = await ctx.db.query("products")
-                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "starter")).collect();
-                        const sponsored = [...premium, ...medium, ...starter];
+                        const basic = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "basic")).collect();
+                        const elite = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "elite")).collect();
+                        const sponsored = [...premium, ...basic, ...elite];
                         return await Promise.all(
                                 sponsored.map(async (product) => {
                                         if (!product) return null; // Handle case where product is not found
@@ -510,3 +510,18 @@ export const getImageUrl = query({
                         return { success: true, message: "Boost prepared successfully" };
                 }
         })
+
+export const getBoostedProductsIds = query({
+        args: { user_id: v.string() },
+        handler: async (ctx, args) => {
+                const boosts = await ctx.db.query("boosts")
+                .withIndex("by_user_and_status",(q)=>(q.eq("user_id",args.user_id).eq("status","active")))
+                .collect();
+                const boostedProductsIds = await Promise.all(
+                        boosts.map(async (boost) => {
+                                return boost.product_id;
+                        })
+                );
+                return boostedProductsIds.filter((id) => id !== null);
+        }
+});

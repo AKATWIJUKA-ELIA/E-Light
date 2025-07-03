@@ -5,6 +5,22 @@ import { Id } from "../../convex/_generated/dataModel"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export interface Product {
+        _id: Id<"products">,
+        approved: boolean,
+        product_cartegory: string,
+        product_condition: string,
+        product_description: string,
+        product_image: string[],
+        product_name: string,
+        product_owner_id: string,
+        product_price: string,
+        product_embeddings?: number[],
+        product_image_embeddings?: number[],
+        product_sponsorship?: "premium" | "basic" | "elite",
+        _creationTime: number
+}
 export interface User {
         _id: Id<"customers">,
         username: string,

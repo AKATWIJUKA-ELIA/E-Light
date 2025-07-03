@@ -2,13 +2,12 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 // import { Textarea } from "@/components/ui/textarea"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -25,6 +24,9 @@ import {
   BarChart3,
   Users,
   CheckCircle,
+  Award,
+  ShieldHalf ,
+  BadgeCheck ,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -33,6 +35,7 @@ import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import { Id } from "../../../convex/_generated/dataModel"
 import useBoost from "@/hooks/useBoost"
 import { useNotification } from "@/app/NotificationContext"
+import { Product } from "@/lib/utils"
 
 
 
@@ -53,7 +56,18 @@ interface BoostOption {
   }
   color: string
 }
-
+const checkBadge = (sponsorship: string) => {
+  switch (sponsorship) {
+        case "basic":
+      return <ShieldHalf  className="w-4 h-4 text-blue-500" />
+    case "premium":
+      return <Award className="w-4 h-4 text-white" />
+    case "elite":
+      return <BadgeCheck className="w-4 h-4 text-gold" />
+    default:
+      return null
+  }
+}
 
 
 const boostOptions: BoostOption[] = [
@@ -101,13 +115,17 @@ export default function ProductBoost() {
         const [selectedBoost, setSelectedBoost] = useState<BoostOption>(boostOptions[0])
         const [duration, setDuration] = useState("weekly")
         const [autoRenew, setAutoRenew] = useState(false)
-        const { boostProduct } = useBoost()
+        const { boostProduct,BoostedProducts } = useBoost()
+        const [activeBoosts, setActiveBoosts] = useState<Product[]>([])
         const { setNotification } = useNotification()
 
   const calculateTotalCost = () => {
     const baseCost = selectedBoost.pricing[duration as keyof typeof selectedBoost.pricing]
     return baseCost
   }
+useEffect(() => {
+                setActiveBoosts(BoostedProducts ?? [])
+},[BoostedProducts])
 
   const getEstimatedReach = () => {
     const multiplier = duration === "weekly" ? 1 : duration === "monthly" ? 5 : 20
@@ -129,7 +147,6 @@ export default function ProductBoost() {
             boost_type: selectedBoost.id,
             duration:duration,
             status: "active",
-        //     autoRenew,
           })
         })
         setNotification({ status: "success", message: "Products boosted successfully!" })
@@ -310,7 +327,9 @@ export default function ProductBoost() {
                       <Label htmlFor="auto-renew" className="text-base font-semibold">
                         Auto-renew campaign
                       </Label>
-                      <Switch id="auto-renew" checked={autoRenew} onCheckedChange={setAutoRenew} />
+                      <Button variant="outline" className={`${autoRenew ? "bg-red-500 hover:bg-red-600 ":"bg-green-400 hover:bg-green-600 " }`}  onClick={() => setAutoRenew(!autoRenew)}>
+                                {autoRenew ? "Disable Auto-renew" : "Enable Auto-renew"}
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -480,9 +499,8 @@ export default function ProductBoost() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {/* {products
-                    .filter((product) => product?.currentBoost)
-                    .map((product) => (
+                   {activeBoosts && activeBoosts.length > 0 ? (
+                     activeBoosts.map((product) => (
                       <Card key={product?._id} className="hover:shadow-md dark:bg-gray-800">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
@@ -496,14 +514,17 @@ export default function ProductBoost() {
                               />
                               <div>
                                 <h3 className="font-semibold">{product?.product_name}</h3>
-                                <div className="flex items-center gap-4 text-sm text-gray-600">
-                                  <Badge className="bg-purple-500">{product.currentBoost?.type} Boost</Badge>
-                                  <span>Ends: {product.currentBoost?.endDate}</span>
+                                <div className="flex items-center gap-4 border border-gold rounded-lg p-1 text-sm font-semibold text-gray-600">
+                                        <span className="flex items-center gap-1">
+                                        {checkBadge(product?.product_sponsorship || "")}
+                                        {product?.product_sponsorship || "Basic"} Boost
+                                        </span>
+                                  {/* <span>Ends: {product.currentBoost?.endDate}</span> */}
                                 </div>
                               </div>
                             </div>
                             <div className="text-right">
-                              <div className="grid grid-cols-3 gap-4 text-center">
+                              {/* <div className="grid grid-cols-3 gap-4 text-center">
                                 <div>
                                   <div className="text-lg font-bold">
                                     {product.currentBoost?.performance.impressions.toLocaleString()}
@@ -522,12 +543,16 @@ export default function ProductBoost() {
                                   </div>
                                   <div className="text-xs text-gray-600">Sales</div>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </CardContent>
                       </Card>
-                    ))} */}
+                    ))):(
+                        <div className="p-4 text-center text-gray-600">
+                          No active boost campaigns found.
+                        </div>
+                    )}
                 </div>
               </CardContent>
             </Card>
