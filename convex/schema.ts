@@ -52,9 +52,9 @@ export default defineSchema({
     product_embeddings:v.optional(v.array(v.number())),
     product_image_embeddings:v.optional(v.array(v.number())),
     product_sponsorship:v.optional(v.union(
+    v.literal("basic"),
     v.literal("premium"),
-    v.literal("medium"),
-    v.literal("starter"),
+    v.literal("elite"),
   )),
      _creationTime: v.number()
   }).index("by_product_category", ["product_cartegory"])
@@ -104,4 +104,5 @@ boosts: defineTable({
         v.literal("expired")),
 }).index("by_product_id", ["product_id"])
 .index("by_boost_type", ["boost_type"])
+.index("by_user_and_status",["user_id","status"])
 });

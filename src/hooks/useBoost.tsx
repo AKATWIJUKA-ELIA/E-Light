@@ -1,11 +1,25 @@
 import { api } from "../../convex/_generated/api"; 
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useAppSelector } from "@/hooks";
-import { Boost } from "@/lib/utils";
+import { Boost, Product } from "@/lib/utils";
+import useGetProductsByIds from "./useGetProductsByIds";
+import { useEffect, useState } from "react";
+
 
 const useBoost = () => {
+        
         const User = useAppSelector((state) => state.user.user);
         const boost = useMutation(api.products.BoostProducts);
+        const ids = useQuery(api.products.getBoostedProductsIds, { user_id: User?.User_id || "" });
+        const [BoostedProducts, setBoostedProducts] = useState<Product[]|null>([])
+
+        const { data: products,loading } = useGetProductsByIds(ids ? ids.flat() : []);
+        useEffect(() => {
+        if (products) {
+        console.log("Fetched Boosts:", products);
+        setBoostedProducts(products.filter((p): p is Product => p !== null));
+        }
+        }, [loading]);
 
         const boostProduct = async (boostItem:Boost) =>{
 
@@ -24,6 +38,6 @@ const useBoost = () => {
                         
                 }
         }
-        return { boostProduct };
+        return { boostProduct,BoostedProducts };
 }
 export default useBoost;
