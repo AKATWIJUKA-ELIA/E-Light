@@ -447,32 +447,32 @@ export const getImageUrl = query({
                 }
         })
 
-        // export const getSponsoredProducts = query({
-        //         handler: async (ctx) => {
-        //                 const premium = await ctx.db.query("products")
-        //                 .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "premium")).collect();
-        //                 const basic = await ctx.db.query("products")
-        //                 .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "basic")).collect();
-        //                 const elite = await ctx.db.query("products")
-        //                 .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship", "elite")).collect();
-        //                 const sponsored = [...premium, ...basic, ...elite];
-        //                 return await Promise.all(
-        //                         sponsored.map(async (product) => {
-        //                                 if (!product) return null; // Handle case where product is not found
-        //                                 return {
-        //                                         ...product,
-        //                                         product_image: (product.product_image && product.product_image.length > 0)
-        //                                                 ? (await Promise.all(
-        //                                                         product.product_image.map(async (image: string) => {
-        //                                                                 return await ctx.storage.getUrl(image);
-        //                                                         })
-        //                                                 )).filter((url): url is string => url !== null)
-        //                                                 : []
-        //                                 };
-        //                         })
-        //                 );
+        export const getSponsoredProducts = query({
+                handler: async (ctx) => {
+                        const premium = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship.type", "premium")).collect();
+                        const basic = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship.type", "basic")).collect();
+                        const elite = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship.type", "elite")).collect();
+                        const sponsored = [...premium, ...basic, ...elite];
+                        return await Promise.all(
+                                sponsored.map(async (product) => {
+                                        if (!product) return null; // Handle case where product is not found
+                                        return {
+                                                ...product,
+                                                product_image: (product.product_image && product.product_image.length > 0)
+                                                        ? (await Promise.all(
+                                                                product.product_image.map(async (image: string) => {
+                                                                        return await ctx.storage.getUrl(image);
+                                                                })
+                                                        )).filter((url): url is string => url !== null)
+                                                        : []
+                                        };
+                                })
+                        );
                           
-        // }})
+        }})
 
         export const BoostProducts = mutation({
                 args: {

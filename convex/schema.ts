@@ -66,7 +66,7 @@ export default defineSchema({
   product_views: v.optional(v.number()),
   _creationTime: v.number()
   }).index("by_product_category", ["product_cartegory"])
-  .index("by_sponsorship", ["product_sponsorship"])
+  .index("by_sponsorship", ["product_sponsorship.type"])
   .vectorIndex("by_product_embeddings",{
         vectorField:"product_embeddings",
         dimensions:384
