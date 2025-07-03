@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 // import { Textarea } from "@/components/ui/textarea"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -60,7 +59,7 @@ interface BoostOption {
 const checkBadge = (sponsorship: string) => {
   switch (sponsorship) {
         case "basic":
-      return <ShieldHalf  className="w-4 h-4 text-white" />
+      return <ShieldHalf  className="w-4 h-4 text-blue-500" />
     case "premium":
       return <Award className="w-4 h-4 text-white" />
     case "elite":
@@ -328,7 +327,9 @@ useEffect(() => {
                       <Label htmlFor="auto-renew" className="text-base font-semibold">
                         Auto-renew campaign
                       </Label>
-                      {/* <Switch id="auto-renew" checked={autoRenew} onCheckedChange={setAutoRenew} /> */}
+                      <Button variant="outline" className={`${autoRenew ? "bg-red-500 hover:bg-red-600 ":"bg-green-400 hover:bg-green-600 " }`}  onClick={() => setAutoRenew(!autoRenew)}>
+                                {autoRenew ? "Disable Auto-renew" : "Enable Auto-renew"}
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -513,7 +514,7 @@ useEffect(() => {
                               />
                               <div>
                                 <h3 className="font-semibold">{product?.product_name}</h3>
-                                <div className="flex items-center gap-4 bg-purple-500 rounded-lg p-1 text-sm font-semibold text-gray-600">
+                                <div className="flex items-center gap-4 border border-gold rounded-lg p-1 text-sm font-semibold text-gray-600">
                                         <span className="flex items-center gap-1">
                                         {checkBadge(product?.product_sponsorship || "")}
                                         {product?.product_sponsorship || "Basic"} Boost
