@@ -35,7 +35,7 @@ import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import { Id } from "../../../convex/_generated/dataModel"
 import useBoost from "@/hooks/useBoost"
 import { useNotification } from "@/app/NotificationContext"
-import { Product } from "@/lib/utils"
+import { Product,BoostWithInteraction } from "@/lib/utils"
 import { formatDate } from "@/lib/helpers"
 
 
@@ -117,7 +117,7 @@ export default function ProductBoost() {
         const [duration, setDuration] = useState("weekly")
         const [autoRenew, setAutoRenew] = useState(false)
         const { boostProduct,BoostedProducts } = useBoost()
-        const [activeBoosts, setActiveBoosts] = useState<Product[]>([])
+        const [activeBoosts, setActiveBoosts] = useState<BoostWithInteraction[]>([])
         const { setNotification } = useNotification()
 
   const calculateTotalCost = () => {
@@ -548,9 +548,9 @@ useEffect(() => {
                                 <div>
                                   <div className="text-lg font-bold">
                                         {/* Sales we order count ie the number of times the product was ordered / appears in the orders table */}
-                                    {/* {product.currentBoost?.performance.conversions} */}
+                                    {product.interaction?.count}
                                   </div>
-                                  {/* <div className="text-xs text-gray-600">Sales</div> */}
+                                  <div className="text-xs text-gray-600">{product.interaction?.type}s</div>
                                 </div>
                               </div>
                             </div>

@@ -372,6 +372,25 @@ export const getImageUrl = query({
                         return { success: true, message: "Interaction updated successfully" };
                 },
         });
+        export const getInteractionsbyProductIds = query({
+        args: {
+        product_ids: v.array(v.string()),
+        },
+        handler: async (ctx, args) => {
+        const allInteractions = await Promise.all(
+                args.product_ids.map(async (id) => {
+                const interactions = await ctx.db
+                .query("interactions")
+                .withIndex("by_product_id", (q) => q.eq("product_id", id))
+                .collect();
+                return interactions; 
+        })
+        );
+
+        // Flatten if needed, since this will be an array of arrays
+        return allInteractions.flat();
+        },
+        });
 
         export const recommendProducts: ReturnType<typeof query> = query({
                 args: { user_id: v.string(), type: v.string() }, // type can be "view", "cart", "purchase"

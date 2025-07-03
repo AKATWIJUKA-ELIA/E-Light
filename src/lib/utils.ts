@@ -66,3 +66,12 @@ export interface Boost {
         duration: string,
         status: "active" | "expired" | undefined
 }
+export interface Interaction{
+          user_id: string
+          product_id: string
+          count:number
+          type: string
+}
+export interface BoostWithInteraction extends Product {
+        interaction?: Interaction
+}
