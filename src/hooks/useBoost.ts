@@ -1,7 +1,7 @@
 import { api } from "../../convex/_generated/api"; 
 import { useMutation, useQuery } from "convex/react";
 import { useAppSelector } from "@/hooks";
-import { Boost, Product,BoostWithInteraction,Interaction } from "@/lib/utils";
+import { Boost,BoostWithInteraction, } from "@/lib/utils";
 import useGetProductsByIds from "./useGetProductsByIds";
 import { useEffect, useState } from "react";
 
@@ -20,7 +20,7 @@ const useBoost = () => {
   console.log("Merged Interactions:", interactions);
 }, [interactions]);
 
-        const { data: products,loading } = useGetProductsByIds(ids ? ids.flat() : []);
+        const { data: products } = useGetProductsByIds(ids ? ids.flat() : []);
         
         const boostedProductsWithInteractions = products?.map((product) => {
                 const interaction = interactions?.find((i) => i.product_id === product?._id);

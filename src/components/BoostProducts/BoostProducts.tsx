@@ -35,7 +35,7 @@ import useGetProductsByIds from "@/hooks/useGetProductsByIds"
 import { Id } from "../../../convex/_generated/dataModel"
 import useBoost from "@/hooks/useBoost"
 import { useNotification } from "@/app/NotificationContext"
-import { Product,BoostWithInteraction } from "@/lib/utils"
+import { BoostWithInteraction } from "@/lib/utils"
 import { formatDate } from "@/lib/helpers"
 
 
