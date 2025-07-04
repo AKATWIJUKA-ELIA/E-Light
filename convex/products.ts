@@ -1,6 +1,7 @@
 import {action, internalQuery, mutation, query} from "./_generated/server"
 import {v} from "convex/values"
 import { api, internal } from "../convex/_generated/api";
+import { Id } from "./_generated/dataModel";
 
 export const generateUploadUrl = mutation(async (ctx)=>{
       return await ctx.storage.generateUploadUrl()
@@ -351,43 +352,128 @@ export const getImageUrl = query({
                 product_id: v.string(),
                 type: v.string(), // "view" | "cart" | "purchase"
                 },
-                handler: async (ctx, args) => {
-                        const existingInteractions =  await ctx.db.query("interactions").collect();
-                        const existingInteraction = existingInteractions.find(interaction => 
-                                interaction.user_id === args.user_id && 
-                                interaction.product_id === args.product_id &&
-                                interaction.type === args.type
-                        );
-                        if (!existingInteraction) {
-                                await ctx.db.insert("interactions", {
-                                ...args,
-                                count: 1, // Initialize count to 1 for new interaction
-                        });
-                        return { success: true, message: "Interaction recorded successfully" };
-                        }
-                        const interaction =  existingInteraction.count + 1;
-                        await ctx.db.patch(existingInteraction._id, {
-                                count: interaction,
-                        });
-                        return { success: true, message: "Interaction updated successfully" };
-                },
+  handler: async (ctx, args) => {
+        const existingInteraction = await ctx.db
+        .query("interactions")
+        .filter((q) =>
+                q.and(
+                q.eq(q.field("user_id"), args.user_id),
+                q.eq(q.field("product_id"), args.product_id)
+                )
+        )
+        .first();
+
+    // Helper to build the type object
+    const buildTypeObject = (
+      base: { cart: { count: number }; view: { count: number } },
+      interactionType: string
+    ) => {
+      if (interactionType === "cart") {
+        return {
+          cart: { count: base.cart.count + 1 },
+          view: { count: base.view.count },
+        };
+      }
+      if (interactionType === "view") {
+        return {
+          cart: { count: base.cart.count },
+          view: { count: base.view.count + 1 },
+        };
+      }
+      return base;
+    };
+
+    // If no interaction exists, create one
+    if (!existingInteraction) {
+      let typeObj = {
+        cart: { count: 0 },
+        view: { count: 0 },
+      };
+      if (args.type === "cart") {
+        typeObj.cart.count = 1;
+      } else if (args.type === "view") {
+        typeObj.view.count = 1;
+      }
+
+      await ctx.db.insert("interactions", {
+        user_id: args.user_id,
+        product_id: args.product_id,
+        type: typeObj,
+      });
+      return {
+        success: true,
+        message: "Interaction recorded successfully",
+      };
+    }
+
+        // If interaction exists, update it
+    let newTypeObj = buildTypeObject(
+      existingInteraction.type,
+      args.type
+    );
+    await ctx.db.patch(
+      existingInteraction._id as Id<"interactions">,
+      {
+        type: newTypeObj,
+      }
+    );
+    return {
+      success: true,
+      message: "Interaction updated successfully",
+    };
+  },
+});
+
+        export const getInteractionsbyProductIds = query({
+        args: {
+        product_ids: v.array(v.string()),
+        },
+        handler: async (ctx, args) => {
+        const allInteractions = await Promise.all(
+                args.product_ids.map(async (id) => {
+                const interactions = await ctx.db
+                .query("interactions")
+                .withIndex("by_product_id", (q) => q.eq("product_id", id))
+                .collect();
+                return interactions; 
+        })
+        );
+
+        // Flatten if needed, since this will be an array of arrays
+        return allInteractions.flat();
+        },
         });
 
         export const recommendProducts: ReturnType<typeof query> = query({
                 args: { user_id: v.string(), type: v.string() }, // type can be "view", "cart", "purchase"
                 handler: async (ctx, args) => {
-                        const recommendations = await ctx.db
-                        .query("interactions")
-                        .withIndex("by_user_and_type", (q) => q.eq("user_id", args.user_id).eq("type", args.type))
-                        .take(10) // Limit to 10 interactions for performance
+                        const getConditionalRecommendations = (type: string) => {
+                                switch (type) {
+                                        case "view":
+                                                return ctx.db.query("interactions")
+                                                .withIndex("by_user_and_type_view", (q) => q.eq("user_id", args.user_id).gt("type.view.count",0 ))
+                                                .take(10);
+                                        case "cart":
+                                                return ctx.db.query("interactions")
+                                                .withIndex("by_user_and_type_cart", (q) => q.eq("user_id", args.user_id).gt("type.cart.count",0 ))
+                                                .take(10);
+                                        // case "purchase":
+                                        //         return ctx.db.query("interactions")
+                                        //         .withIndex("by_user_and_type_purchase", (q) => q.eq("user_id", args.user_id).gt("type.purchase.count",0 ));
+                                        default:
+                                                throw new Error(`Unknown interaction type: ${type}`);
+                                }
+                        }
+
+                        const recommendations = await getConditionalRecommendations(args.type);
+
                         if (!recommendations  || recommendations.length === 0) {
                                 return await ctx.runQuery(
                                         internal.products.getTopRated ).then(
                                                 results => results.slice(0, 3) 
                                         ) // show  top rated  products
                         }
-                                       
-                                       
+                                            
                         const recommendedProductIds = [...new Set(recommendations.map((v) => v.product_id))];
 
                         const recommendedProducts = await Promise.all(
@@ -505,6 +591,7 @@ export const getImageUrl = query({
                                 product_sponsorship: {
                                         type: args.boost_type,
                                         status: args.status ? args.status : "active",
+                                        duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                                 }
                         });
                    
@@ -514,7 +601,7 @@ export const getImageUrl = query({
                                 status: args.status ? args.status : "active", 
                                 duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                         });
-                        return { success: true, message: "Boost prepared successfully" };
+                        return { success: true, message: "Boost processed successfully" };
                 }
         })
 

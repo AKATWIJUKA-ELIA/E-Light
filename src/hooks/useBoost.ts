@@ -1,26 +1,38 @@
 import { api } from "../../convex/_generated/api"; 
 import { useMutation, useQuery } from "convex/react";
 import { useAppSelector } from "@/hooks";
-import { Boost, Product } from "@/lib/utils";
+import { Boost,BoostWithInteraction, } from "@/lib/utils";
 import useGetProductsByIds from "./useGetProductsByIds";
 import { useEffect, useState } from "react";
 
 
 const useBoost = () => {
-        
+
+
+        const [BoostedProducts, setBoostedProducts] = useState<BoostWithInteraction[]|null>([])
         const User = useAppSelector((state) => state.user.user);
         const boost = useMutation(api.products.BoostProducts);
         const ids = useQuery(api.products.getBoostedProductsIds, { user_id: User?.User_id || "" });
-        const [BoostedProducts, setBoostedProducts] = useState<Product[]|null>([])
+        const interactions = useQuery(api.products.getInteractionsbyProductIds,  { product_ids: ids ?? [] } )
 
-        const { data: products,loading } = useGetProductsByIds(ids ? ids.flat() : []);
+
+        useEffect(() => {
+  console.log("Merged Interactions:", interactions);
+}, [interactions]);
+
+        const { data: products } = useGetProductsByIds(ids ? ids.flat() : []);
+        
+        const boostedProductsWithInteractions = products?.map((product) => {
+                const interaction = interactions?.find((i) => i.product_id === product?._id);
+                return { ...product, interaction } as BoostWithInteraction;
+        });
+
         useEffect(() => {
         if (products) {
-        console.log("Fetched Boosts:", products);
-        setBoostedProducts(products.filter((p) => p !== null) as Product[]);
+        setBoostedProducts(boostedProductsWithInteractions||[]);
         }
-        }, [loading]);
-
+        }, [interactions,]);
+//   console.log("Fetched Boosts:", boostedProductsWithInteractions);
         const boostProduct = async (boostItem:Boost) =>{
 
                 try{

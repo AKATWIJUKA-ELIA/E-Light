@@ -18,7 +18,13 @@ export interface Product {
         product_price: string,
         product_embeddings?: number[],
         product_image_embeddings?: number[],
-        product_sponsorship?: "premium" | "basic" | "elite",
+        product_likes?: number,
+        product_views?: number,
+        product_sponsorship?: {
+                type?: "basic" | "premium" | "elite",
+                duration?: number,
+                status?: "active" | "expired"
+        }
         _creationTime: number
 }
 export interface User {
@@ -59,4 +65,20 @@ export interface Boost {
         boost_type: "premium" | "basic" | "elite",
         duration: string,
         status: "active" | "expired" | undefined
+}
+export interface Interaction{
+          user_id: string
+          product_id: string
+          count:number
+          type:  {
+                  view:{
+                          count:number
+                  },
+                  cart:{
+                          count:number
+                  }
+            },
+}
+export interface BoostWithInteraction extends Product {
+        interaction?: Interaction
 }
