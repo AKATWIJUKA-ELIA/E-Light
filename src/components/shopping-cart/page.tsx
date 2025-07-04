@@ -227,7 +227,7 @@ const ShoppingCart= ()=> {
           </Button>
         </div>
 
-        <div className="bg-white p-4 rounded border border-gray-200 dark:bg-gray-500 dark:border-gray-500 ">
+        <div className="bg-white h-[500px] overflow-auto p-4 rounded border border-gray-200 dark:bg-gray-500 dark:border-gray-500 ">
           <h2 className="text-lg font-bold mb-4">Your may also Like </h2>
                <Recommended type="view" />
         </div>
