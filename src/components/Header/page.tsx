@@ -15,7 +15,6 @@ import { BiX } from 'react-icons/bi';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { usePathname } from 'next/navigation';
-import { MdPhotoCamera } from "react-icons/md";
 import UserModel from '../UserModel/page';
 import {useData} from  '../../app/DataContext';
 import useGetCart from '@/hooks/useGetCart';
@@ -86,9 +85,9 @@ const Header = () => {
                 setcomingSoon(true)
         }
 
-        const handleImageSearch = () =>{
-                setShowImageModal(true)
-        }
+        // const handleImageSearch = () =>{
+        //         setShowImageModal(true)
+        // }
         useEffect(() => {
                
                 //  ============================================================
