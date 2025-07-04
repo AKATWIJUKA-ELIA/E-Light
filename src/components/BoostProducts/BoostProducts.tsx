@@ -16,6 +16,7 @@ import {
   Trash2, 
   DollarSign,
   Eye,
+  Heart ,
   ShoppingCart,
   Star,
   Zap,
@@ -41,7 +42,7 @@ import { formatDate } from "@/lib/helpers"
 
 
 interface BoostOption {
-  id: "basic" | "premium" | "elite"
+  id: "basic" | "premium" | "platinum"
   name: string
   description: string
   icon: React.ComponentType<{ className?: string }>
@@ -62,11 +63,23 @@ const checkBadge = (sponsorship: string) => {
         case "basic":
       return <ShieldHalf  className="w-4 h-4 text-blue-500" />
     case "premium":
-      return <Award className="w-4 h-4 text-white" />
-    case "elite":
-      return <BadgeCheck className="w-4 h-4 text-gold" />
+      return <Award className="w-4 h-4 text-gold" />
+    case "platinum":
+      return <BadgeCheck className="w-4 h-4 text-purple-500" />
     default:
       return null
+  }
+}
+const conditionalborder = (sponsorship: string) => {
+  switch (sponsorship) {
+    case "basic":
+      return "border-blue-500 text-blue-500"
+    case "premium":
+      return "border-gold text-gold"
+    case "platinum":
+      return "border-purple-500 text-purple-500"
+    default:
+      return "border-gray-300"
   }
 }
 
@@ -93,8 +106,8 @@ const boostOptions: BoostOption[] = [
     color: "bg-purple-500",
   },
   {
-    id: "elite",
-    name: "Elite ",
+    id: "platinum",
+    name: "Platinum ",
     description: "Maximum exposure with premium features",
     icon: Crown,
     features: [
@@ -519,38 +532,48 @@ useEffect(() => {
                                 height={60}
                                 className="rounded-lg object-cover"
                               />
-                              <div>
+                              <div className="flex flex-col space-y-2"> 
                                 <h3 className="font-semibold">{product?.product_name}</h3>
-                                <div className="flex items-center gap-4 border border-gold rounded-lg p-1 text-sm font-semibold text-gray-600">
+                                <div className={`flex items-center w-auto   border ${conditionalborder(product?.product_sponsorship?.type||"")} rounded-lg p-1 text-sm font-semibold `}>
                                         <span className="flex items-center gap-1">
                                         {checkBadge(product?.product_sponsorship?.type || "")}
-                                        {product?.product_sponsorship?.type || "Basic"} Boost
+                                        {product?.product_sponsorship?.type || "Basic"}
                                         </span>
                                 </div>
-                                <span>Ends: {product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span>
+                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ends: <span className="font-semibold text-red-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
                               </div>
                             </div>
+
                             <div className="text-right">
-                              <div className="grid grid-cols-3 gap-4 text-center">
+                              <div className="grid grid-cols-3 gap-6  text-center">
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.product_likes?.toLocaleString()}
+                                    {product.product_likes?.toLocaleString()??0}
                                   </div>
                                   {/* Likes refers to the bookmark count  we use bookmark as like */}
-                                  <div className="text-xs text-gray-600">BookMark Count</div> 
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                        <span>Likes </span>
+                                        <Heart  className="w-4 h-4" fill="red" color="red"  />  
+                                        </div> 
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
                                     {product.interaction?.type.cart.count ??0}
                                   </div>
-                                  <div className="text-xs text-gray-600">Cart</div>
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                        <span>Cart</span> 
+                                        <ShoppingCart   className="w-4 h-4" color="purple" />
+                                        </div>
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
                                         {/* Sales we order count ie the number of times the product was ordered / appears in the orders table */}
                                     {product.interaction?.type.view.count??0}
                                   </div>
-                                  <div className="text-xs text-gray-600">views</div>
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                        <span>views</span>
+                                        <Eye className="w-4 h-4 text-blue-500" />
+                                        </div>
                                 </div>
                               </div>
                             </div>

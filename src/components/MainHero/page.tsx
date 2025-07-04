@@ -56,7 +56,7 @@ const MainHero = () => {
                         
 useEffect(() => {
   if (sponsored && sponsored.length > 0) {
-    setproducts(sponsored.filter((item): item is Product => item !== null));
+    setproducts(sponsored.filter((item): item is Product => item !== null && item.product_sponsorship?.type==="platinum"),);
   }
 }, [sponsored]);
         

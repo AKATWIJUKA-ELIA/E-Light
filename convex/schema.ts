@@ -55,7 +55,7 @@ export default defineSchema({
         type:v.optional(v.union(
                 v.literal("basic"),
                 v.literal("premium"),
-                v.literal("elite"),)),
+                v.literal("platinum"),)),
         duration: v.optional(v.number()),
         status: v.optional(v.union(
                 v.literal("active"),
@@ -66,6 +66,7 @@ export default defineSchema({
   product_views: v.optional(v.number()),
   _creationTime: v.number()
   }).index("by_product_category", ["product_cartegory"])
+  .index("by_product_owner", ["product_owner_id"])
   .index("by_sponsorship", ["product_sponsorship.type"])
   .vectorIndex("by_product_embeddings",{
         vectorField:"product_embeddings",

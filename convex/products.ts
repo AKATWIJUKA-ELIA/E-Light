@@ -539,9 +539,9 @@ export const getImageUrl = query({
                         .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship.type", "premium")).collect();
                         const basic = await ctx.db.query("products")
                         .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship.type", "basic")).collect();
-                        const elite = await ctx.db.query("products")
-                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship.type", "elite")).collect();
-                        const sponsored = [...premium, ...basic, ...elite];
+                        const platinum = await ctx.db.query("products")
+                        .withIndex("by_sponsorship", (q) => q.eq("product_sponsorship.type", "platinum")).collect();
+                        const sponsored = [...premium, ...basic, ...platinum];
                         return await Promise.all(
                                 sponsored.map(async (product) => {
                                         if (!product) return null; // Handle case where product is not found
@@ -567,7 +567,7 @@ export const getImageUrl = query({
                         boost_type:v.union(
                                 v.literal("basic"),
                                 v.literal("premium"),
-                                v.literal("elite"),),
+                                v.literal("platinum"),),
                         duration: v.string(), // Duration in milliseconds
                         status: v.optional(v.union(
                                 v.literal("active"),
