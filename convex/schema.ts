@@ -97,11 +97,18 @@ bookmarks: defineTable({
 interactions:defineTable( {
   user_id: v.string(),
   product_id: v.string(),
-  count:v.number(),
-  type: v.string(), // e.g. "view", "cart", "purchase"
+  type: v.object({
+        view:v.object({
+                count:v.number()
+        }),
+        cart:v.object({
+                count:v.number()
+        })
+  }), // e.g. "view", "cart", "purchase"
 }).index("by_user", ["user_id"])
 .index("by_product_id", ["product_id"])
-.index("by_user_and_type", ["user_id", "type"]),
+.index("by_user_and_type_cart", ["user_id", "type.cart.count"])
+.index("by_user_and_type_view", ["user_id", "type.view.count"]),
 boosts: defineTable({
     product_id: v.string(),
     user_id: v.string(),

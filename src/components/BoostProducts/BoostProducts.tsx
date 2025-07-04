@@ -541,16 +541,16 @@ useEffect(() => {
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.product_views?.toLocaleString()}
+                                    {product.interaction?.type.cart.count ??0}
                                   </div>
-                                  <div className="text-xs text-gray-600">Clicks</div>
+                                  <div className="text-xs text-gray-600">Cart</div>
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
                                         {/* Sales we order count ie the number of times the product was ordered / appears in the orders table */}
-                                    {product.interaction?.count}
+                                    {product.interaction?.type.view.count??0}
                                   </div>
-                                  <div className="text-xs text-gray-600">{product.interaction?.type}s</div>
+                                  <div className="text-xs text-gray-600">views</div>
                                 </div>
                               </div>
                             </div>

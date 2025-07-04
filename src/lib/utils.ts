@@ -70,7 +70,14 @@ export interface Interaction{
           user_id: string
           product_id: string
           count:number
-          type: string
+          type:  {
+                  view:{
+                          count:number
+                  },
+                  cart:{
+                          count:number
+                  }
+            },
 }
 export interface BoostWithInteraction extends Product {
         interaction?: Interaction
