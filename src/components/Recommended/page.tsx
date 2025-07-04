@@ -55,7 +55,7 @@ const Recommended = ({ type }: RecommendedProps) => {
         //         }
         // }
   return (
-        <div className=''  >
+        <div className=' '  >
         {productData  ? productData.map((productData) => (
           <div
             key={productData._id}
