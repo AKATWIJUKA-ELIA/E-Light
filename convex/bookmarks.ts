@@ -28,9 +28,8 @@ export const createBookmark = mutation({
               await ctx.db.patch(exisitingProduct?._id as Id<"products"> , {
                 product_likes: (exisitingProduct?.product_likes || 0) + 1,
               });
-              
                         return { success: true, message: "success" };
-                  }
+                }
               
               return { success: false, message: "Item already bookmarked!" };
         }catch{

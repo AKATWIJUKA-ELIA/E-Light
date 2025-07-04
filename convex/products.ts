@@ -353,6 +353,15 @@ export const getImageUrl = query({
                 type: v.string(), // "view" | "cart" | "purchase"
                 },
   handler: async (ctx, args) => {
+        const exisitingProduct = await ctx.db.query("products").filter((q) =>
+                        q.eq(q.field("_id"), args.product_id))
+                        .first();
+                        if(args.type ==="view"){
+                await ctx.db.patch(exisitingProduct?._id as Id<"products"> , {
+                        product_views: (exisitingProduct?.product_views || 0) + 1,
+                });
+                        }
+
         const existingInteraction = await ctx.db
         .query("interactions")
         .filter((q) =>
