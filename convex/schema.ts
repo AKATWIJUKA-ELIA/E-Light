@@ -55,7 +55,7 @@ export default defineSchema({
         type:v.optional(v.union(
                 v.literal("basic"),
                 v.literal("premium"),
-                v.literal("elite"),)),
+                v.literal("platinum"),)),
         duration: v.optional(v.number()),
         status: v.optional(v.union(
                 v.literal("active"),
