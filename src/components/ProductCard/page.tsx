@@ -222,7 +222,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
           onClick={() => {handleBookmark(product._id)}}
           className=" text-black border border-black w-full px-4 py-2 rounded-3xl hover:border-blue-600 hover:text-white hover:bg-blue-700 transition"
         >
-          Add to bookmarks
+          Like
         </button>
         </div>
        

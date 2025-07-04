@@ -1,5 +1,7 @@
 import {action, internalQuery, mutation, query} from "./_generated/server"
 import {v} from "convex/values"
+import { UpdateProduct } from "./products";
+import { Id } from "./_generated/dataModel";
 
 
 export const createBookmark = mutation({
@@ -11,6 +13,10 @@ export const createBookmark = mutation({
         },
         handler: async (ctx, args) => {
                 try{
+                        const exisitingProduct = await ctx.db.query("products").filter((q) =>
+                        q.eq(q.field("_id"), args.Bookmark.product_id))
+                        .first();
+
                         const existing = await ctx.db
                         .query("bookmarks")
                         .withIndex("by_product_id", (q) => q.eq("product_id", args.Bookmark.product_id))
@@ -19,8 +25,11 @@ export const createBookmark = mutation({
                         await ctx.db.insert("bookmarks", {
                     ...args.Bookmark,
               });
+              await ctx.db.patch(exisitingProduct?._id as Id<"products"> , {
+                product_likes: (exisitingProduct?.product_likes || 0) + 1,
+              });
                         return { success: true, message: "success" };
-                  }
+                }
               
               return { success: false, message: "Item already bookmarked!" };
         }catch{

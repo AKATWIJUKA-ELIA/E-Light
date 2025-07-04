@@ -36,7 +36,7 @@ const Product = ({params}:PageProps) => {
                 if (product) {
                         record(product._id, "view");
                 }
-        }, [product])
+        }, [product?._id])
 
   if (!product) {
     return  <ProductsNotFound />

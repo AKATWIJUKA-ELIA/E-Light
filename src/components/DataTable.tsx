@@ -1,7 +1,6 @@
 import {
         Table,
         TableBody,
-        TableCaption,
         TableCell,
         TableHead,
         TableHeader,
@@ -14,6 +13,8 @@ import EditModal from "./EditModal/page";
 import DeleteModal from "./DeleteModal/page";
 import { useEffect, useState } from "react";
 import DeleteAllModal from "./DeleteAll/page";
+import { useBoostContext } from '@/app/BoostContext';
+import { useRouter } from "next/navigation";
 interface Product {
         _id:string,
   approved: boolean,
@@ -31,12 +32,14 @@ interface DataTable {
   status?: string; 
 }
 const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
+        const {setBoost} = useBoostContext();
         const [isvisible, setisvisible] = useState(false);
         const [isdelete, setisdelete] = useState(false);
         const [isdeleteall, setisdeleteall] = useState(false);
         const [productId, setproductId] = useState("");
         const [checked, setchecked] = useState<string[]>([]);
         const [allchecked, setallchecked] = useState(false);
+        const router = useRouter();
         // const newProducts = products.filter(product => !product.approved);
 
         const HandleCheckboxChange=(ProductId:string)=>{
@@ -79,13 +82,24 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                 // console.log(checked)
                 setisdeleteall(true)
         }
+        const HandelBoost=()=>{
+                setBoost(checked);
+                router.push("/profile/boost")
+        }
 
 
         return (
                 <>
                 <div className="w-full  overflow-x-auto rounded-lg border px-2 ">
                         <div className="flex items-center justify-between p-4 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
-                                <TableCaption className="text-lg font-semibold">{status} Products</TableCaption>
+                                <div className="text-lg font-semibold">{status} Products</div>
+                                <Button 
+                                className="bg-green-400 hover:bg-green-700 transition-transform duration-500" 
+                                onClick={() => HandelBoost()}
+                                disabled={checked.length === 0}>
+                                        Boost Selected
+                                </Button>
+                                
                                 <Button 
                                 className="bg-red-400 hover:bg-red-700 transition-transform duration-500" 
                                 onClick={() => HandelDeleteAll()}

@@ -5,6 +5,28 @@ import { Id } from "../../convex/_generated/dataModel"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export interface Product {
+        _id: Id<"products">,
+        approved: boolean,
+        product_cartegory: string,
+        product_condition: string,
+        product_description: string,
+        product_image: string[],
+        product_name: string,
+        product_owner_id: string,
+        product_price: string,
+        product_embeddings?: number[],
+        product_image_embeddings?: number[],
+        product_likes?: number,
+        product_views?: number,
+        product_sponsorship?: {
+                type?: "basic" | "premium" | "elite",
+                duration?: number,
+                status?: "active" | "expired"
+        }
+        _creationTime: number
+}
 export interface User {
         _id: Id<"customers">,
         username: string,
@@ -37,4 +59,26 @@ export interface Bookmark {
                 _creationTime: number;
                 _id: string;
   }|null;
+}
+export interface Boost {
+        product_id: Id<"products">,
+        boost_type: "premium" | "basic" | "platinum",
+        duration: string,
+        status: "active" | "expired" | undefined
+}
+export interface Interaction{
+          user_id: string
+          product_id: string
+          count:number
+          type:  {
+                  view:{
+                          count:number
+                  },
+                  cart:{
+                          count:number
+                  }
+            },
+}
+export interface BoostWithInteraction extends Product {
+        interaction?: Interaction
 }

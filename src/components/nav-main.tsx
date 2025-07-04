@@ -2,11 +2,9 @@
 
 import {type LucideIcon } from "lucide-react"
 import { IoAddCircle,IoBagCheckOutline  } from "react-icons/io5";
-import {LayoutDashboardIcon,UserCircleIcon,Bookmark} from "lucide-react"
-import { HomeIcon } from "lucide-react"
+import {LayoutDashboardIcon,UserCircleIcon,Bookmark,Rocket,HomeIcon } from "lucide-react"
 import { FcApproval  } from "react-icons/fc";
 import { MdAlignHorizontalLeft,MdOutlinePending,  } from "react-icons/md";
-
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -57,6 +55,11 @@ export function NavMain() {
                         title: "Bookmarks",
                         icon: Bookmark  as LucideIcon,
                         link:"/profile/bookmarks",
+                },
+                {
+                        title: "Boost ",
+                        icon: Rocket   as LucideIcon,
+                        link:"/profile/boost",
                 },
 
         ]

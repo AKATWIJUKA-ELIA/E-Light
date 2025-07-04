@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { BoostProvider } from "../BoostContext";
 
 
 export default function ProfileLayout({
@@ -16,6 +17,7 @@ export default function ProfileLayout({
                 };
   return (
     <div className="flex flex-col h-screen">
+        <BoostProvider>
         <SidebarProvider open={isopen} onOpenChange={setisOpen}  >
         <AppSidebar   />
                 <button
@@ -28,5 +30,6 @@ export default function ProfileLayout({
         {children}
       </main>
       </SidebarProvider>
+        </BoostProvider>
     </div>
   );}
