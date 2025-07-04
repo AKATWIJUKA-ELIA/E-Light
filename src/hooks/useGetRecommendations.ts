@@ -7,7 +7,7 @@ const useGetRecommendations = (type:string) => {
     const recommendations = useQuery(api.products.recommendProducts,  { user_id:user_id,type:type } ); // Prevent calling hook with an empty ID
 
     return {
-        recommeded: recommendations.slice(0, 3), 
+        recommeded: recommendations, 
         loading: recommendations === undefined, // Convex returns `undefined` while loading
         Error: null, // Convex doesn't provide an explicit error, so handle it elsewhere if needed
     };
