@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { api } from "../../convex/_generated/api"; 
 import { useMutation } from "convex/react";
 interface Review {
