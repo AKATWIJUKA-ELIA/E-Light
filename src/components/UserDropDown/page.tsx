@@ -1,6 +1,5 @@
 import React  from 'react';
 import Link from "next/link";
-import { Oval } from 'react-loader-spinner';
 import { IoBagCheckOutline  } from "react-icons/io5";
 import {LayoutDashboardIcon,UserCircleIcon,Bookmark,Rocket,LogOut } from "lucide-react"
 import {type LucideIcon } from "lucide-react"

@@ -16,7 +16,6 @@ import { BiX } from 'react-icons/bi';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { usePathname } from 'next/navigation';
-import UserModel from '../UserModel/page';
 import {useData} from  '../../app/DataContext';
 import useGetCart from '@/hooks/useGetCart';
 import useCart from '@/hooks/useCart';  
@@ -200,9 +199,12 @@ const Header = () => {
                                                 </div>
                                         </div>
                                         {/* For small screens */}
-                                        <div className="flex lg:hidden ">
+                                        <div className="flex lg:hidden mr-5 ">
                                                 <Link href="/profile" className='flex ' >
-                                                 <Image src={User.profilePicture?User.profilePicture:"/images/images.png"} width={100} height={50} alt='profile picture' className="rounded-full" />
+                                                 <Image src={User.profilePicture?User.profilePicture:"/images/images.png"}
+                                                  width={100}
+                                                   height={50}
+                                                    alt='profile picture' className="rounded-full" />
                                                 </Link>
                                         </div>
                                 </div> ):(
@@ -224,8 +226,8 @@ const Header = () => {
                                 </div>
                         )}
                         </div>
-                        <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
-                                <div className="relative right-2 ">
+                        <Link href="/cart" className="flex items-center gap-2 right-4 md:right-0 relative group hover:cursor-pointer">
+                                <div className="relative ">
                                 <CiShoppingCart className="text-2xl font-bold" />
                                 {cart && cart.length >0 ? (
                                 <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
@@ -327,7 +329,6 @@ const Header = () => {
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     {  searchTerm.length>1 ? (<SearchModel Focused={Focused}searchTerm={searchTerm} onClose={HandleClose} />):("")}
     {  showImageModal ? (<ImageSearchModal  onClose={HandleClose} />):("")}
-    {/* {  UserDrawer ? (<UserModel  onClose={HandleClose} />):("")} */}
         <UserDropDownMenu isvisible={UserDrawer} onClose={() => setUserDrawer(false)} />
     </>
   )
