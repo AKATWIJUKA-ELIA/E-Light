@@ -67,11 +67,11 @@ const  FeedBack: React.FC<FeedModel> = ({onClose})=> {
                         //         backgroundPosition: 'center' }}
                         >
        
-        <div className="flex flex-col-reverse md:flex md:flex-row  bg-opacity-80  bg-blend-lighten  p-4  gap-[10%] border dark:border-white shadow-md  bg-neutral-300 dark:bg-black/10 rounded-lg" >
-                <Card className="  md:w-[50%] text-white   shadow-md border-none  shadow-black/50">
+        <div className="flex flex-col-reverse md:flex md:flex-row  bg-opacity-80  bg-blend-lighten  p-4  gap-[10%] border dark:border-white shadow-md  bg-neutral-300 dark:bg-black/90 rounded-lg" >
+                <Card className="  md:w-[50%] text-white   shadow-md border-none  dark:bg-gray-800 shadow-black/50">
       <CardHeader>
         <div className="flex mx-auto">
-        <div className="flex"> { Alert?( <h1 className=" text-inline  font-semi-bold flex text-green-500"> Your message has been sent we will reply ASAP  <TiTick className=" mt-1 text-xl text-green-500"/> </h1>):( <div className=" flex text-2xl font-bold  text-black dark:text-white ">Leave Us a Feed Back</div>)} </div>
+        <div className="flex"> { Alert?( <h1 className=" text-inline  font-semi-bold flex text-green-500"> Your message has been sent we will reply ASAP  <TiTick className=" mt-1 text-xl text-green-500"/> </h1>):( <div className=" flex text-2xl font-bold  text-black  dark:text-white ">Leave Us a Feed Back</div>)} </div>
         <div className="flex"> { Error?( <h1 className=" text-inline font-semi-bold flex text-red-500"> Sorry an Error Occured   </h1>):(<h1></h1>)} </div>
 
         </div>
