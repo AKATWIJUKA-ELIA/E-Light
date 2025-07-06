@@ -16,11 +16,11 @@ const useCreateReview = () => {
                 try{
                 const response = await create({ ...review });
                  if(!response?.success){
-                        return NextResponse.json({ success: false, message: response.message }, { status: 400 });
+                        return { success: false, message: response.message, status: 400  }
                 }
-                return NextResponse.json({ success: true, message:response.message }, { status: 200 });
+                return { success: true, message:response.message, status: 200 }
                 }catch{
-                        return NextResponse.json( { success: false, message: "Sorry,  Can not upload at this time please try again later" });
+                        return  { success: false, message: "Sorry,  Can not upload at this time please try again later" };
                         
                 }
         }
