@@ -21,7 +21,7 @@ const items =[
         },
         {
                 item:"bookmarks",
-                link:"/bookmarks",
+                link:"/profile/bookmarks",
                 icon: Bookmark as LucideIcon,
         },
         {
@@ -45,7 +45,7 @@ const UserDropDownMenu: React.FC<UserDropDownMenuProps> = ({ isvisible, onClose,
       if (!isvisible) return null;
 
   return (
-  <div className="  fade-in  fixed z-40 md:top-14 md:right-40 rounded-lg   shadow-xl shadow-black/80  flex  w-[10%] h-auto  overflow-auto overflow-x-hidden bg-white dark:bg-dark " id="wrapper" onMouseLeave={onClose} >
+  <div className="  fade-in  fixed !z-[99990] md:top-14 md:right-40 rounded-lg   shadow-xl shadow-black/80  flex  w-[10%] h-auto  overflow-auto overflow-x-hidden bg-white dark:bg-dark " id="wrapper" onMouseLeave={onClose} >
         <div className="  cursor-pointer  w-full py-2" onClick={onClose} >
                 {items.map((item,index) =>(
                 <Link key={index} href={`${item.link}`}  className='flex hover:bg-gray-400 p-2 gap-3  dark:hover:bg-gray-800'>

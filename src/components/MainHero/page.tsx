@@ -45,13 +45,7 @@ const MainHero = () => {
                         src:"https://cheery-cod-687.convex.cloud/api/storage/55199998-af85-4493-af98-d8c3aff3d8dd",
                         overlay:"Grab May Discounts While Offers Last😁🤗"
                 },
-                // {
-                //         name:"Heror",
-                //         src:"https://cheery-cod-687.convex.cloud/api/storage/a0cb51bd-83c4-4a01-8590-04818bf8111e",
-                //         overlay:"Different Categories For Grabs😂😮"
-                // },
                 
-//HalyonBC
         ]
                         
 useEffect(() => {
@@ -135,7 +129,7 @@ useEffect(() => {
         <Card className="h-auto bg-transparent w-full">
           <CardContent className="relative  bg-blue-500 animate-pulse  flex rounded-lg items-center justify-center  h-36 overflow-hidden w-full">
               <div className="flex  opacity-95 w-[100%] h-[100%] items-center justify-center">
-                        <div className="flex"><h1 className='text-2xl text-dark  '>Sh</h1></div>
+                        <div className="flex"><h1 className='text-sm md:text-2xl text-dark  '>Sh</h1></div>
                         <div className="flex">
                                 <Oval
                                         visible={true}
@@ -146,7 +140,7 @@ useEffect(() => {
                                         ariaLabel="oval-loading"
                                         />
                         </div>
-                                        <div className="flex text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
+                                        <div className="flex text-sm md:text-2xl text-dark  ">p<span className="text-gold">Cheap</span>.  .  .</div>
                                 </div>
           </CardContent>
         </Card>
