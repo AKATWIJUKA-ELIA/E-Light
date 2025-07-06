@@ -199,14 +199,12 @@ const Header = () => {
                                                 </div>
                                         </div>
                                         {/* For small screens */}
-                                        <div className="flex lg:hidden mr-5 ">
-                                                <Link href="/profile" className='flex ' >
+                                        <Link href="/profile" className='flex lg:hidden mr-5' >
                                                  <Image src={User.profilePicture?User.profilePicture:"/images/images.png"}
                                                   width={100}
                                                    height={50}
                                                     alt='profile picture' className="rounded-full" />
                                                 </Link>
-                                        </div>
                                 </div> ):(
                                 <div>
                                         <div className="hidden md:flex items-center gap-1">
