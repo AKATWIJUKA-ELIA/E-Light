@@ -21,7 +21,7 @@ const items =[
         },
         {
                 item:"bookmarks",
-                link:"/bookmarks",
+                link:"/profile/bookmarks",
                 icon: Bookmark as LucideIcon,
         },
         {
