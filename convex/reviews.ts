@@ -15,17 +15,19 @@ export const createReview = mutation({
   },
   handler: async (ctx, args) => {
         try {
-                const existing = ctx.db.query("reviews").filter((q)=>q.and(
-                        q.eq("product_id",args.product_id),
-                        q.eq("reviewer_id",args.reviewer_id)
-                ) )
-                if(existing){
-                        return { success: false, message: "Only one review per product is allowed" };
+                const existing = await ctx.db.query("reviews")
+                .withIndex("by_reviewer_id_and_product_id", q =>
+                        q.eq("reviewer_id", args.reviewer_id)
+                        .eq("product_id", args.product_id))
+                .first();
+                if(!existing){
+                        await ctx.db.insert("reviews", {
+                                ...args,
+                        });
+                        return { success: true, message: "Review created successfully" };
                 }
-    await ctx.db.insert("reviews", {
-      ...args,
-    });
-    return { success: true, message: "Review created successfully" };
+                return { success: false, message: "Only one review per product is allowed" };
+    
   } catch (error) {
     return { success: false, message: "Failed to create review" };
   }

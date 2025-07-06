@@ -86,7 +86,8 @@ reviews : defineTable({
      verified: v.optional(v.boolean()),
     _creationTime: v.number(),
 }).index("by_product_id", ["product_id"])
-.index("by_reviewer_id", ["reviewer_id"]),
+.index("by_reviewer_id", ["reviewer_id"])
+.index("by_reviewer_id_and_product_id", ["reviewer_id", "product_id"]),
 
 bookmarks: defineTable({
     user_id: v.string(),
