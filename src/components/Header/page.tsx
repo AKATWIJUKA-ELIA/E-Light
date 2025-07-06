@@ -6,6 +6,7 @@ import { BsList } from "react-icons/bs";
 import { VscAccount } from "react-icons/vsc";
 import { CiShoppingCart } from "react-icons/ci";
 import DropDownMenu from '../DropDownMenu/page';
+import UserDropDownMenu from '../UserDropDown/page';
 import ImageSearchModal from '../ImageSearchModal/page';
 import Link from 'next/link';
 import { useAppSelector } from '@/hooks';
@@ -186,10 +187,10 @@ const Header = () => {
 
                         {User ? (
                                 <div className='flex' >
-                                        <div className="hidden lg:flex  bg-white hover:bg-gray-200 transition duration-100 border border-gray-300 rounded-3xl">
-                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' 
-                                                // onClick={()=>setUserDrawer(true)}
-                                                 >
+                                        <div className="hidden lg:flex  bg-white hover:bg-gray-200 transition duration-100 border border-gray-300 rounded-3xl"
+                                        onMouseEnter={()=>setUserDrawer(true)}
+                                        >
+                                                <div className='flex mt-1 font-sans dark:text-dark px-2 ' >
                                                         <Link href={"/profile/account"} >
                                                         {User.Username}
                                                         </Link>
@@ -200,16 +201,10 @@ const Header = () => {
                                         </div>
                                         {/* For small screens */}
                                         <div className="flex lg:hidden ">
-                                                <Link href="/sign-in" className='flex ' >
+                                                <Link href="/profile" className='flex ' >
                                                  <Image src={User.profilePicture?User.profilePicture:"/images/images.png"} width={100} height={50} alt='profile picture' className="rounded-full" />
                                                 </Link>
                                         </div>
-
-                                        <Link href="/profile" className='flex p-1'>
-                                        <button >
-                                        Dashboard
-                                        </button>
-                                        </Link>
                                 </div> ):(
                                 <div>
                                         <div className="hidden md:flex items-center gap-1">
@@ -217,7 +212,6 @@ const Header = () => {
                                                 <VscAccount className="text-2xl" />
                                                 <h1>Sign in</h1>
                                                 </Link>
-                                                {/* <SignInButton mode="modal"  /> */}
                                         </div>
 
                                         <div className="flex md:hidden items-center gap-1">
@@ -229,25 +223,9 @@ const Header = () => {
                                         </div>
                                 </div>
                         )}
-
-                        {/* <SignedOut>
-                        <div className="hidden md:flex items-center gap-1">
-                        <VscAccount className="text-2xl" />
-                        <SignInButton mode="modal"  />
-                        </div>
-                        <div className="flex md:hidden items-center gap-1">
-                        
-                        <SignInButton mode="modal"  >
-                        <button className="p-2 rounded bg-transparent ">
-                        Replace this with an icon or keep it empty for no text
-                        <VscAccount className="text-2xl" />
-                        </button>
-                        </SignInButton>
-                        </div>
-                        </SignedOut> */}
                         </div>
                         <Link href="/cart" className="flex items-center gap-2 relative group hover:cursor-pointer">
-                                <div className="relative">
+                                <div className="relative right-2 ">
                                 <CiShoppingCart className="text-2xl font-bold" />
                                 {cart && cart.length >0 ? (
                                 <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
@@ -349,7 +327,8 @@ const Header = () => {
     <DropDownMenu isvisible={Hovered} onClose={() => setHovered(false)} />
     {  searchTerm.length>1 ? (<SearchModel Focused={Focused}searchTerm={searchTerm} onClose={HandleClose} />):("")}
     {  showImageModal ? (<ImageSearchModal  onClose={HandleClose} />):("")}
-    {  UserDrawer ? (<UserModel  onClose={HandleClose} />):("")}
+    {/* {  UserDrawer ? (<UserModel  onClose={HandleClose} />):("")} */}
+        <UserDropDownMenu isvisible={UserDrawer} onClose={() => setUserDrawer(false)} />
     </>
   )
 }
