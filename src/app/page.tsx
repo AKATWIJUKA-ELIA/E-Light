@@ -9,7 +9,7 @@ import MainHero from "@/components/MainHero/page";
 import TopRatings from "@/components/TopRatings/main";
 export default function Home() {
   return (
-        <div className="px-6" >
+        <div className="" >
                 <Provider store={store}>
                 <PersistGate persistor={persistor}>
                         <MainHero />
