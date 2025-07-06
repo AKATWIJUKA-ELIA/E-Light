@@ -9,6 +9,7 @@ import { Star, } from "lucide-react"
 import useCreateReview from "@/hooks/useCreateReview"
 import { Label } from "../ui/label"
 import { useAppSelector } from "@/hooks"
+import { useNotification } from "@/app/NotificationContext"
 
 interface ReviewFormProps {
   productId: string
@@ -20,6 +21,7 @@ export function ReviewForm({ productId, productName }: ReviewFormProps) {
   const [review, setReview] = useState("")
   const [hoveredRating, setHoveredRating] = useState(0)
   const { CreateReview } = useCreateReview()
+  const { setNotification } = useNotification()
   const user = useAppSelector((state) => state.user.user)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,11 +38,24 @@ export function ReviewForm({ productId, productName }: ReviewFormProps) {
           reviewer_id: user?.User_id || "",
           verified: true,
         }
-        CreateReview(reviewData)
-        // Reset form fields
-        setRating(0)
-        setReviewTitle("")
-        setReview("")       
+        CreateReview(reviewData).then((response) => {
+          if (!response.success) {
+                setNotification({
+                        status: "error",
+                        message: response.message || "Failed to create review",
+                })
+                }else{
+                setNotification({
+                        status: "success",
+                        message: response.message || "Review created successfully",
+                })
+                setRating(0)
+                setReviewTitle("")
+                setReview("")
+                }
+        })
+
+      
   }
 
   return (
