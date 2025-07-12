@@ -45,17 +45,11 @@ const SecondHero = () => {
 
   return (
 
-<div className='flex flex-col dark:bg-black ' >
-
-      <div className='flex justify-center ' >
-        <h1 className='hidden md:flex text-3xl font-bold mt-10 text-gray-900 dark:text-gold'>
-                Sponsored <span className='text-gold dark:text-white ' >  Products</span>
-        </h1>
-        </div>  
+<div className='flex flex-col dark:bg-black bg-slate-600 ' >
 
  <div className="hidden md:flex  items-center justify-center   bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100  p-10 px-10 gap-3 dark:bg-gray-900 dark:bg-none   ">
 
- <div className="flex flex-col justify-center gap-8 border border-gray-200 shadow-lg  hover:bg-white transition-colors duration-[10000ms] ease-in-out p-20 w-[50%] max-w-6xl  dark:hover:bg-gray-800 dark:border-gray-600 ">
+ <div className="flex flex-col justify-center gap-8 hover:scale-105 hover:rotate-3 border border-gray-200 shadow-lg  hover:bg-white transition duration-200 ease-in-out p-20 w-[50%] max-w-6xl  dark:hover:bg-gray-800 dark:border-gray-600 ">
 
 {/* Carousels Wrapper */}
 <div className="flex flex-col gap-3 ">
@@ -168,7 +162,7 @@ const SecondHero = () => {
 </div>
 </div>
 
-<div className="flex flex-col justify-center gap-8 border border-gray-100 shadow-lg  hover:bg-white transition-colors duration-[10000ms] ease-in-out p-20  w-[50%] max-w-6xl  dark:hover:bg-gray-800 dark:border-gray-600 ">
+<div className="flex flex-col justify-center gap-8 hover:scale-105 hover:-rotate-3 border border-gray-100 shadow-lg  hover:bg-white transition duration-200 ease-in-out p-20  w-[50%] max-w-6xl  dark:hover:bg-gray-800 dark:border-gray-600 ">
 
 {/* Carousels Wrapper */}
 <div className="flex flex-col gap-3">

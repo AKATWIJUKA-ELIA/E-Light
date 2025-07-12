@@ -9,7 +9,11 @@ import MainHero from "@/components/MainHero/page";
 import TopRatings from "@/components/TopRatings/main";
 export default function Home() {
   return (
-        <div className="" >
+        <div className="backdrop-blur-md"
+        // style={{ backgroundImage: `url("images/wallp.jpg")`,
+        //                 backgroundSize: 'cover',
+        //                 backgroundPosition: 'center' }}
+        >
                 <Provider store={store}>
                 <PersistGate persistor={persistor}>
                         <MainHero />
