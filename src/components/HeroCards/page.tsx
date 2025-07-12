@@ -40,13 +40,13 @@ const HeroCard = ({ product }: HeroCardProps) => {
         {productData  ? (
           <div
             key={productData._id}
-            className="bg-transparent flex flex-col rounded-md shadow-m overflow-hidden shadow-xl hover:bg-yellow-100 border  transition-transform duration-500   dark:hover:bg-gray-900 dark:border-black"
+            className=" flex flex-col  rounded-3xl shadow-m overflow-hidden shadow-xl  border   hover:scale-[103%]    transition-transform duration-500   dark:hover:bg-gray-900 dark:border-black "
           >
 
            
             {/* Product Image */}
-            <Link href={`/product/${productData._id}`} className="w-full">
-              <div className="relative w-full h-48 flex items-center justify-center bg-transparent transition-transform duration-200 hover:scale-105">
+            <Link href={`/product/${productData._id}`} className="w-full rounded-lg">
+              <div className="relative rounded-lg w-full h-48 flex items-center justify-center bg-transparent transition-transform duration-200 p-4">
                 <Image
                   src={
                      Array.isArray(productData.product_image)
@@ -56,7 +56,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
                   alt={productData.product_name}
                   width={900}
                   height={500}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover p- rounded-3xl  hover:scale-105 transition-transform duration-500"
                 />
               </div>
             </Link>
@@ -91,6 +91,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
                 </time>
               </div>
             </div>
+
           </div>
         ) : (
                 <ProductSkeleton/>
