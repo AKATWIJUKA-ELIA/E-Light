@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className=" " >
         <ConvexClientProvider>
                 <GoogleOAuthProvider clientId={CLIENT_ID}>
                         <NotificationProvider>
