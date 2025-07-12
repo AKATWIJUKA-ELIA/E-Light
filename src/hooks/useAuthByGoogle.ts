@@ -88,6 +88,9 @@ const useAuthByGoogle = () => {
                                         isVerified: user?.isVerified,
                                 }),
                         });
+                         if (!response.ok) {
+                                throw new Error('Failed to create session');
+                        }
                         const usertosave:UsertoSave = { 
                                 User_id: user?._id||"",
                                 Username:user?.username||"",
@@ -98,9 +101,7 @@ const useAuthByGoogle = () => {
                         }
                         saveUser(usertosave)
                         
-                        if (!response.ok) {
-                                throw new Error('Failed to create session');
-                        }
+                       
                         
                         return { success: true, status: 201, message: 'Success' };
                 } catch (error) {
