@@ -18,9 +18,9 @@ const DeleteAllModal: React.FC<DeleteModalProps> = ({ isdeleteall, onClose, prod
   const user  = useAppSelector((state)=>state.user.user) 
   const admin = process.env.NEXT_PUBLIC_ADMIN
   const Delete = useDeleteProduct()
-  const { data: Products } = useGetProductsByIds(productIds as  Id<"menu_items">[])
+  const { data: Products } = useGetProductsByIds(productIds as  Id<"products">[])
 
-        const productNames = Products?.map(product => product?.name).join(" , ") || "Products"
+        const productNames = Products?.map(product => product?.product_name).join(" , ") || "Products"
           const HandleDeleteAll=(checked:string[])=>{
                 try{
                 checked.forEach(element => {
@@ -28,7 +28,7 @@ const DeleteAllModal: React.FC<DeleteModalProps> = ({ isdeleteall, onClose, prod
                 });
                 onClose()
                  if (admin) {
-        sendEmail(admin, "Product Deletion", `User ${user?.Username}, Deleted product ${productNames}`)
+        sendEmail(admin, "Product Deletion", `User ${user?.Username}, Deleted product ${productNames}`,"management")
       }
 
                 if (user?.email) {
@@ -36,6 +36,7 @@ const DeleteAllModal: React.FC<DeleteModalProps> = ({ isdeleteall, onClose, prod
                         user?.email,
                         "Product Deletion",
                         `Hello ${user.Username}, Your products ${productNames} was Deleted \nyou can always add more products   \n Thank you for Doing Business with Us... \n Regards \n ShopCheap \n https://shopcheap.vercel.app/ .`,
+                        "management"
                         )
                 }
                 }catch (error) {
