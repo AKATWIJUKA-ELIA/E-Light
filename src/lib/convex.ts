@@ -2,6 +2,7 @@ import {ConvexClient} from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import { User } from "./utils";
 import { Id } from "../../convex/_generated/dataModel";
+import { OrderItem } from "./utils";
 
 const convex = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -41,6 +42,19 @@ export async function getOrderById (orderId: Id<"orders">) {
         return { success: true, order: order.order };
     } catch (error) {
         console.error("Error fetching order by ID:", error);
+        return { success: false, message: "Internal Server Error", status: 500 };
+    }
+}
+
+export async function UpdateOrder(order: OrderItem) {
+    try {
+        const response = await convex.mutation(api.orders.updateOrder, { order:order });
+        if (!response?.success) {
+            return { success: false, message: response?.message, status: response?.status };
+        }
+        return { success: true, message: "Order updated successfully", status: 200 };
+    } catch (error) {
+        console.error("Error updating order:", error);
         return { success: false, message: "Internal Server Error", status: 500 };
     }
 }

@@ -6,7 +6,7 @@ import { Id } from "./_generated/dataModel";
 
 
 export const getUserOrders = query({
-                args: { userId: v.string() },
+                args: { userId: v.id("customers") },
                 handler: async (ctx, args) => {
                   const orders = await ctx.db.query("orders")
                     .withIndex("by_user_id", (q) => q.eq("user_id", args.userId))
@@ -67,9 +67,15 @@ export const updateOrder = mutation({
         args: {
                 order: v.object({
                         _id: v.id("orders"),
-                        user_id: v.string(),
+                        user_id: v.id("customers"),
                        product_id: v.string(),
-                        order_status: v.string(),
+                        order_status: v.union(
+                                v.literal("pending"),
+                                v.literal("confirmed"),
+                                v.literal("out-for-delivery"),
+                                v.literal("delivered"),
+                                v.literal("cancelled")
+                        ),
                         specialInstructions: v.optional(v.string()),
                         cost: v.optional(v.number()),
                 }),

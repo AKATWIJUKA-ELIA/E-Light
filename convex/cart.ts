@@ -94,7 +94,7 @@ export const IncreaseCart = mutation({
                 }       
               });
               export const checkOutCart = mutation({
-                args: { userId: v.string() },
+                args: { userId: v.id("customers") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
                     .withIndex("by_cart_Owner_id", (q) => q.eq("cart_Owner_id", args.userId))

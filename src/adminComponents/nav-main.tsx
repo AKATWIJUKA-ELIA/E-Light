@@ -1,6 +1,6 @@
 "use client"
 
-import {type LucideIcon } from "lucide-react"
+import {Rocket, type LucideIcon } from "lucide-react"
 import { IoBagCheckOutline  } from "react-icons/io5";
 import {LayoutDashboardIcon,HomeIcon,CreditCard,SquarePlus,Rows4,Users,HandCoins,SquareStack,Newspaper,User        } from "lucide-react"
 
@@ -12,6 +12,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link";
+import { MdOutlinePending } from "react-icons/md";
+import { FcApproval } from "react-icons/fc";
 
 export function NavMain() {
         const items = [
@@ -29,45 +31,43 @@ export function NavMain() {
                 },
              
                  {
-                        title: "Add to Menu",
+                        title: "Add products",
                         icon: SquarePlus   as LucideIcon,
-                        link:"/admin/add-menu-item",
+                        link:"/admin/post",
                 },
                 {
-                        title: "Add categories",
-                        icon: SquareStack    as LucideIcon,
-                        link:"/admin/add-category",
-                },
-                {
-                        title: "Menu Items",
+                        title: "All products",
                         icon: Rows4    as LucideIcon,
-                        link:"/admin/menu-items",
+                        link:"/admin/#all",
+                },
+                {
+                        title: "Approved Products",
+                        icon: FcApproval    as LucideIcon,
+                        link:"/admin/approved",
+                },
+                
+                {
+                        title: "Pending",
+                        icon: MdOutlinePending     as LucideIcon,
+                        link:"/admin/pending",
                 },
                 {
                         title: "Transactions",
                         icon: CreditCard   as LucideIcon,
                         link:"/admin/payment-methods",
                 },
+                
                 {
-                        title: "Customers",
-                        icon: Users     as LucideIcon,
-                        link:"/admin/customers",
+                        title: "Boost ",
+                        icon: Rocket   as LucideIcon,
+                        link:"/profile/boost",
                 },
-                {
-                        title: "Offers",
-                        icon: HandCoins     as LucideIcon,
-                        link:"/admin/offers",
-                },
-                {
-                        title: "NewsLetter",
-                        icon: Newspaper      as LucideIcon,
-                        link:"/admin/newsletter",
-                },
-                {
-                        title: "Add User",
-                        icon: User      as LucideIcon,
-                        link:"/admin/add-user",
-                },
+                // {
+                //         title: "NewsLetter",
+                //         icon: Newspaper      as LucideIcon,
+                //         link:"/admin/newsletter",
+                // },
+               
                 
                 
         ]

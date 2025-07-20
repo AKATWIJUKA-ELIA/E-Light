@@ -29,9 +29,9 @@ import {
   Trash
 } from "lucide-react"
 import Image from "next/image"
-import useGetUserOrders from "@/hooks/useGetUserOrders"
+import useGetSellersOrders from "@/hooks/useGetSellersOrders"
 import { formatDate } from "@/lib/helpers"
-import { Order,} from "@/lib/types"
+import { Order} from "@/lib/utils"
 import { CardHeader } from "@/adminComponents/ui/card"
 import { truncateString } from "@/lib/helpers"
 import useDeleteOrder from "@/hooks/useDeleteOrder"
@@ -52,7 +52,7 @@ const statusConfig = {
 export default function OrdersTracking() {
         const { setNotification } = useNotification()
                 const { sendEmail, } = useSendMail();
-        const { data:Orders, } = useGetUserOrders()
+        const { data:Orders, } = useGetSellersOrders()
         const {handleDelete} = useDeleteOrder()
         const [selectedOrder, setSelectedOrder] = useState<Order |null>(null)
         const [searchTerm, setSearchTerm] = useState("")
@@ -60,10 +60,10 @@ export default function OrdersTracking() {
         const [activeTab, setActiveTab] = useState("all")
         const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
         const finalOrders = filteredOrders.filter((order) => {
-        const matchesSearch = order.items.some((item)=>
-        item?.product?.name.toLowerCase().includes(searchTerm.toLowerCase())||
-        item?.product?.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item?.product?.description?.toLowerCase().includes(searchTerm.toLowerCase()) 
+        const matchesSearch = filteredOrders.some((item)=>
+        item?.product?.product_name.toLowerCase().includes(searchTerm.toLowerCase())||
+        item?.product?.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item?.product?.product_description?.toLowerCase().includes(searchTerm.toLowerCase())
         )
         
 
@@ -75,15 +75,15 @@ export default function OrdersTracking() {
 
     return matchesSearch && matchesStatus && matchesTab
   })
-  const GetUser = async (userId: Id<"Users">) => {
+  const GetUser = async (userId: Id<"customers">) => {
         const user = await getUserById(userId)
         if (!user.user){
-                return "Unknown User"
+                return null
         }
         return user.user
   }
 
-  const ChangeOrderStatus = async (OrderId: Id<"orders">, newStatus: string) => {
+  const ChangeOrderStatus = async (OrderId: Id<"orders">, newStatus: "pending" | "confirmed" | "out-for-delivery" | "delivered" | "cancelled") => {
     const order = await getOrderById(OrderId);
     
     if (!order.success) {
@@ -106,7 +106,7 @@ export default function OrdersTracking() {
         ...order.order,
         order_status: newStatus,
     };
-    const user = await GetUser(order.order.user_id as Id<"Users">)
+    const user = await GetUser(order.order.user_id as Id<"customers">)
 
     return await UpdateOrder(updatedOrder).then((res) => {
         if (!res.success) {
@@ -122,7 +122,7 @@ export default function OrdersTracking() {
             message: `Order  has been marked as  ${newStatus} successfully`,
         });
         // Send An Email To the user if user is valid
-        if (user !== "Unknown User" && user.email ) {
+        if (user !== null && user.email ) {
             sendEmail(user.email, `Your order has been marked as ${newStatus}`,` 
                 <html>
                     <body>
@@ -130,7 +130,7 @@ export default function OrdersTracking() {
                         <p>Dear ${user.username},</p>
                         <p>Your order status has been changed to ${newStatus}.</p>
                     </body>
-                </html>` );
+                </html>`,"management" );
         }
 
         return true;
@@ -144,17 +144,11 @@ useEffect(() => {
       const sanitizedOrders = await Promise.all(
         Orders.map(async (order) => ({
           ...order,
-          user: await GetUser(order.user_id as Id<"Users">),
-          items: order.items.map(item => ({
-            ...item,
-            product: item.product && {
-              ...item.product,
-              name: item.product.name ?? "",
-            },
-          })),
+          user: await GetUser(order.user_id as Id<"customers">),
+                // product: await getOrderById(order._id as Id<"orders">).then(res => res.order?.product_id ? res.order.product_id : null)
         }))
       );
-      setFilteredOrders(sanitizedOrders as Order[]);
+      setFilteredOrders(sanitizedOrders);
     };
     fetchUsersAndSetOrders();
   }
@@ -276,7 +270,7 @@ useEffect(() => {
                                                 </p>
                                                 <p>Special Instructions: {order.specialInstructions || 'None'}</p>
                                                 <p className="text-lg font-semibold text-gray-900">
-                                                Total: UGX {order?.total_amount?.toLocaleString() || '0'}
+                                                Total: UGX {order?.cost?.toLocaleString() || '0'}
                                                 </p>
                                         </div>
                                         </div>
@@ -335,14 +329,12 @@ useEffect(() => {
                                 </CardHeader>
                                 </Card>
                                 <CardContent className="grid  grid-cols-2 lg:grid-cols-3  border  gap-3 p-2 rounded-2xl ">
-                                        {
-                                        order.items.map((item) => (
-                                        <div key={item.product_id} className="flex flex-col md:flex-row space-x-4 gap-2  bg-blue-500/10 items-center  border border-purple-400 rounded-2xl p-1   ">
+                                       <div className="flex flex-col md:flex-row space-x-4 gap-2  bg-blue-500/10 items-center  border border-purple-400 rounded-2xl p-1   ">
                                                 <div className="flex gap-3 items-center  w-[25%] h-[85%] rounded-md">
-                                                       {item.product?.imageUrl ? (
+                                                       {order.product?.product_image ? (
                                                                           <Image
-                                                                            src={item.product.imageUrl}
-                                                                            alt={item.product.name}
+                                                                            src={order.product.product_image[0]}
+                                                                            alt={order.product.product_name || "Product Image"}
                                                                             width={40}
                                                                             height={40}
                                                                             className="rounded-lg  w-[100%] h-[100%] "
@@ -353,17 +345,17 @@ useEffect(() => {
                                                 </div>
 
                                                 <div className="text-sm text-gray-600 space-y-1">
-                                                                <h3 className="text-lg font-semibold">{item.product?.name}</h3>
+                                                                <h3 className="text-lg font-semibold">{order.product?.product_name}</h3>
                                                                 <div className="flex items-center gap-2">
-                                                                        Price: {item.CostPrice}
+                                                                        Price: {order.product?.product_price ? `Ugx: ${Number(order.product.product_price).toLocaleString()}` : "N/A"}
                                                                 </div>
                                                                 <div className="flex items-center gap-2">
                                                                 <TbListDetails className="w-4 h-4" />
-                                                                {truncateString(item.product?.description||"",7) || "No description available"}
+                                                                {truncateString(order.product?.product_description||"",7) || "No description available"}
                                                                 </div>
                                                                 <div className="flex items-center gap-2">
                                                                 Quantity: 
-                                                                {item.quantity}
+                                                                {order.quantity}
                                                                 </div>
                                                         </div>
 
@@ -382,7 +374,7 @@ useEffect(() => {
                                                 </DialogTrigger>
                                                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                                                         <DialogHeader>
-                                                        <DialogTitle>Order Details for - {item?.product?.name}</DialogTitle>
+                                                        <DialogTitle>Order Details for - {order?.product?.product_name}</DialogTitle>
                                                         <DialogDescription>
                                                         Placed on {order._creationTime ? formatDate(order._creationTime) : ""}
                                                         </DialogDescription>
@@ -398,23 +390,23 @@ useEffect(() => {
                                                         <div className="space-y-3">
                                                                 <div  className="flex items-center gap-3">
                                                                 <Image
-                                                                src={item.product?.imageUrl || "/placeholder.svg"}
-                                                                alt={item.product?.name || "Product Image"}
+                                                                src={order.product?.product_image[0] || "/placeholder.svg"}
+                                                                alt={order.product?.product_name || "Product Image"}
                                                                 width={60}
                                                                 height={60}
                                                                 className="rounded-lg object-cover"
                                                                 />
                                                                 <div className="flex-1">
-                                                                <h5 className="font-medium">{item.product?.name}</h5>
+                                                                <h5 className="font-medium">{order.product?.product_name}</h5>
                                                                 {/* {item.customizations && (
                                                                         <p className="text-sm text-gray-600">
                                                                         {item.customizations.join(", ")}
                                                                         </p>
                                                                 )} */}
-                                                                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                                                                <p className="text-sm text-gray-500">Qty: {order.quantity}</p>
                                                                 </div>
                                                                 <div className="text-right">
-                                                                <p className="font-medium">Ugx:{(Number(item.product?.price) * item.quantity).toLocaleString()}</p>
+                                                                <p className="font-medium">Ugx:{(Number(order.product?.product_price) * order.quantity).toLocaleString()}</p>
                                                                 </div>
                                                                 </div>
                                                         </div>
@@ -428,7 +420,7 @@ useEffect(() => {
                                                         <div className="space-y-2 text-sm">
                                                         <div>
                                                                 <h1>
-                                                                        {item.product?.description}
+                                                                        {order.product?.product_description}
                                                                 </h1>
                                                         </div>
                                                                 <div className="flex justify-between">
@@ -438,7 +430,7 @@ useEffect(() => {
                                                                 <Separator />
                                                                 <div className="flex justify-between font-semibold text-base">
                                                                 <span>Total</span>
-                                                                Ugx: {(Number(item.product?.price) * item.quantity).toLocaleString()}
+                                                                Ugx: {(Number(order.product?.product_price) * order.quantity).toLocaleString()}
                                                                 </div>
                                                         </div>
                                                         </div>
@@ -467,8 +459,7 @@ useEffect(() => {
 
                                                 </div>
                                                 </div>
-                                        </div>    ))
-                                        }    
+                                        </div> 
                                 </CardContent>
                         </Card>
                       
