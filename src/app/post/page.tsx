@@ -269,8 +269,8 @@ https://shopcheap.vercel.app/</h3>
 </body>
 </html>
                       `
-                      sendEmail( `${admin}` ,"New Product Created", `User ${user?.Username}, Added a product`);
-                      sendEmail( `${user?.email}`,"New Product Created", html);
+                //       sendEmail( `${admin}` ,"New Product Created", `User ${user?.Username}, Added a product`,"marketing");
+                      sendEmail( `${user?.email}`,"New Product Created", html,"marketing");
                 })(), TIMEOUT_MS);
                   } catch (error) {
                         setErrorProduct("Error creating product")
@@ -405,6 +405,8 @@ https://shopcheap.vercel.app/</h3>
                       <Image
                         src={src || "/placeholder.svg"}
                         alt={`Preview ${index + 1}`}
+                        width={100}
+                        height={100}
                         className="h-20 w-20 object-cover rounded-md border border-gray-300"
                       />
                     </div>

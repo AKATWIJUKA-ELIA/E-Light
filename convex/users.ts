@@ -4,6 +4,7 @@ import {v} from "convex/values"
 import { ConvexError } from "convex/values";
 import { api } from "../convex/_generated/api";
 import bcrypt from "bcryptjs";
+import { internal } from "./_generated/api";
 type Response = {
   success: boolean;
   message: string;
@@ -48,6 +49,7 @@ export const CreateUser = mutation({
                 const user = await ctx.db.insert("customers",{
                         ...args
                 }) 
+                // await ctx.runMutation(internal.sendEmail.sendEmail,{})
                 return {success:true,message:"Success",status:200,user:user};
         }catch{
                         throw new ConvexError({error:"Error creating user",message:"Error creating user",status:500})
