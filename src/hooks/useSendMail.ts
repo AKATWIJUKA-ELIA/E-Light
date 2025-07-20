@@ -1,13 +1,12 @@
-import { NextResponse } from 'next/server';
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export const useSendMail = () => {
-         const sendWelcomeEmail = useMutation(api.sendEmail.sendEmail);
+         const sendSingleEmail = useMutation(api.sendEmail.sendEmail);
   const sendEmail = async (to:string, subject: string, message: string,department:string,replyTo?:string) => {
 
     try {
-      const response = await sendWelcomeEmail({
+      const response = await sendSingleEmail({
         receiverEmail: to,
         subject: subject,
         html: message,

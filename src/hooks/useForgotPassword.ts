@@ -16,7 +16,7 @@ const useForgotPassword = () => {
                 try{
                 const res = await check({email});
                  if(!res.success){
-                        return NextResponse.json({ success: false, message: res.message }, { status: 400 });
+                        return { success: false, message: res.message ,  status: 400 };
                 }
                 const token = generateSecureToken();
                 const user = res?.user
@@ -113,15 +113,14 @@ const useForgotPassword = () => {
   </div>
 </body>
 </html>`
-                const send = sendEmail(user?.email||"","Password Reset",html)
+                const resp = await sendEmail(user?.email||"","Password Reset",html,"management")
 
-                const resp = await (await send).json()
                 if(!resp.success){
-                return NextResponse.json({ success: false, message:`${res.message}` }, { status: 200 });
+                return { success: false, message:`${resp.message}` ,  status: 200 };
                 }
-                return NextResponse.json({ success: true, message:`${res.message}\nA password reset link has been sent to your email` }, { status: 200 });
+                return { success: true, message:`${resp.message}\nA password reset link has been sent to your email` ,  status: 200 };
                 }catch(error){
-                        return NextResponse.json( { success: false, message: error });
+                        return  { success: false, message: error };
                         
                 }
         }

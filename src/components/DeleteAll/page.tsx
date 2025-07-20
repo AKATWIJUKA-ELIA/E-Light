@@ -27,7 +27,7 @@ const DeleteAllModal: React.FC<DeleteModalProps> = ({ isdeleteall, onClose, prod
                 });
                 onClose()
                  if (admin) {
-        sendEmail(admin, "Product Deletion", `User ${user?.Username}, Deleted product ${productNames}`)
+        sendEmail(admin, "Product Deletion", `User ${user?.Username}, Deleted product ${productNames}`,"sales")
       }
 
                 if (user?.email) {
@@ -35,7 +35,7 @@ const DeleteAllModal: React.FC<DeleteModalProps> = ({ isdeleteall, onClose, prod
                         user?.email,
                         "Product Deletion",
                         `Hello ${user.Username}, Your products ${productNames} was Deleted \nyou can always add more products   \n Thank you for Doing Business with Us... \n Regards \n ShopCheap \n https://shopcheap.vercel.app/ .`,
-                        )
+                        "sales")
                 }
                 }catch (error) {
                 alert(error)

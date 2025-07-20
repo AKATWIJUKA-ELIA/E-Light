@@ -175,7 +175,7 @@ const handleclose =()=>{
 
       // Send notification emails
       if (admin) {
-        sendEmail(admin, "Product Updated", `User ${user?.Username}, updated  product ${product?._id} ${product?.product_name}`)
+        sendEmail(admin, "Product Updated", `User ${user?.Username}, updated  product ${product?._id} ${product?.product_name}`,"sales")
       }
 
       if (user?.email) {
@@ -255,6 +255,7 @@ https://shopcheap.vercel.app/</h3>
           user?.email,
           "Product Updated",
           html,
+                "sales"
         )
       }
 

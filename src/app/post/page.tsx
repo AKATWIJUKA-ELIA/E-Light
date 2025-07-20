@@ -269,8 +269,8 @@ https://shopcheap.vercel.app/</h3>
 </body>
 </html>
                       `
-                //       sendEmail( `${admin}` ,"New Product Created", `User ${user?.Username}, Added a product`,"marketing");
-                      sendEmail( `${user?.email}`,"New Product Created", html,"marketing");
+                      sendEmail( `${admin}` ,"New Product Created", `User ${user?.Username}, Added a product`,"sales");
+                      sendEmail( `${user?.email}`,"New Product Created", html,"sales");
                 })(), TIMEOUT_MS);
                   } catch (error) {
                         setErrorProduct("Error creating product")

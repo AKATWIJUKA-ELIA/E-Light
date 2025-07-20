@@ -266,8 +266,8 @@ Thanks  for using Shopcheap. \n
   </div>
 </body>
 </html>`
-                      sendEmail( `${admin}` ,"New User Updated", `User ${formdata?.username?? User?.email}, was Updated `);
-                      sendEmail( `${formdata?.email}`,"Account Updated", html)
+                      sendEmail( `${admin}` ,"New User Updated", `User ${formdata?.username?? User?.email}, was Updated ` ,"management");
+                      sendEmail( `${formdata?.email}`,"Account Updated", html,"management")
 
 clearForm()
                 

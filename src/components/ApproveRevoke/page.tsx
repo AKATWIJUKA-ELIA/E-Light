@@ -120,7 +120,7 @@ useEffect(()=>{
   </div>
 </body>
 </html>`
-        sendEmail(`${UserEmail}`,`Product ${action}d`,html)
+        sendEmail(`${UserEmail}`,`Product ${action}d`,html,"sales")
         setmessage("")
   }
 
