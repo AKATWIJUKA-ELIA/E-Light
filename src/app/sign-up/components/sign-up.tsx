@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
-import { useSendMail } from '@/hooks/useSendMail';
 import useValidateUsername from "@/hooks/useValidateUsername"
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
@@ -77,7 +76,6 @@ const SignUpForm = ({
         })
         const {SignUpWithGoogle} = useSignUpWithGoogle()
         const router = useRouter()
-        const { sendEmail, } = useSendMail();
         const  {CheckUsername} = useValidateUsername()
 
         const HandleGoogleLogin= async(response:CredentialResponse)=>{

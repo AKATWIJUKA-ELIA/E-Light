@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { api } from "../../convex/_generated/api"; 
 import { useAction,useMutation } from "convex/react";
 import { useSendMail } from "./useSendMail";

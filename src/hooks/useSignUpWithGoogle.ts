@@ -1,7 +1,6 @@
 import {jwtDecode} from 'jwt-decode'
-import { api } from "../../convex/_generated/api"; 
-import { useMutation } from "convex/react";
 import { CredentialResponse } from "@react-oauth/google";
+import useCreateUser from "@/hooks/useCreateUser"
 
 interface user {
         username: string,
@@ -32,7 +31,7 @@ interface DecodedToken {
 }
 
 const useSignUpWithGoogle =()=>{
-        const CreateUser = useMutation(api.users.CreateUser);
+        const {CreateUser} = useCreateUser()
         
         try{
         const SignUpWithGoogle = async (Response:CredentialResponse)=>{
