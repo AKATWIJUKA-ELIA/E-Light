@@ -31,8 +31,7 @@ const  FeedBack: React.FC<FeedModel> = ({onClose})=> {
     // Handle form submission
     setsending(true)
     const { email, subject, message } = formData
-    try{    const send = sendEmail(Admin,`${subject} Feed back from ${email}`,  message)
-    const  res = await (await send).json()
+    try{    const res = await sendEmail(Admin,`${subject} Feed back from ${email}`,  message,"feedback",)
     if (res.success) {
         setError(false)
         setsending(false)

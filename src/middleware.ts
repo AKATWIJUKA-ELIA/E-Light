@@ -21,7 +21,7 @@ const Middleware = async (req: NextRequest) => {
         const session = await decrypt(cookie)
         
 
-        if(isProtectedPath && !session?.userId){
+        if(isProtectedPath && !session){
                 return NextResponse.redirect(new URL('/sign-in', req.url))
         }
         if(isRoleProtected && session?.role!="superuser"){

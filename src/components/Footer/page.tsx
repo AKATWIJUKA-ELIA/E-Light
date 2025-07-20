@@ -115,7 +115,7 @@ https://shopcheap.vercel.app/</h3>
   </div>
 </body>
 </html>`
-sendEmail(useremail, "Welcome to ShopCheap - Thanks for Subscribing!", html)
+sendEmail(useremail, "Welcome to ShopCheap - Thanks for Subscribing!", html,"marketing")
 setTimeout(() => {
         setIsSubmitting(false);
         setsubmitted(true)

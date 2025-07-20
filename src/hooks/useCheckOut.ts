@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/hooks";
 import { api } from "../../convex/_generated/api"; 
 import { useMutation } from "convex/react";
+import { Id } from "../../convex/_generated/dataModel";
 
 
 const useCheckOutCart = () =>{
@@ -8,7 +9,7 @@ const useCheckOutCart = () =>{
         const User = useAppSelector(state=> state.user.user)
         const handleCheckOut = async()=>{
                 try{
-                        const res = await checkOut({userId:User?.User_id ||""})
+                        const res = await checkOut({userId:User?.User_id as Id<"customers">})
                         if(!res.success){
                                 return {success:false, message:res.message}
                         }
