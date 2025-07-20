@@ -28,7 +28,7 @@ const Profile=()=> {
               <SectionCards />
               <div className=" flex flex-col md:flex-row @2xl:flex  gap-3 p-4 lg:px-6 ">
                 <ChartAreaInteractive />
-                <PieChart customer={customers?.length||0} orders={orders?.length||0} />
+                <PieChart products={products?.length||0} orders={orders?.length||0} />
               </div>
 
               <div className="flex flex-col gap-4 px-4 lg:px-6">
