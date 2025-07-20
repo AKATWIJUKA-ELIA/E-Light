@@ -7,14 +7,12 @@ import { SiteHeader } from "../../adminComponents/site-header"
 import { SidebarInset,  } from "../../adminComponents/ui/sidebar"
 import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
 import useGetSellersOrders from "@/hooks/useGetSellersOrders"
-import useGetAllCustomers  from "@/hooks/useGetAllCustomers"
 import { useAppSelector } from "@/hooks"
 
 const Profile=()=> {
         const User = useAppSelector((state)=>state.user.user)
         const { data: products, } = useGetProductsByOwner(User?.User_id||'') ;
         const { data: orders } = useGetSellersOrders();
-        const { data: customers } = useGetAllCustomers();
         
         
   return (
