@@ -57,7 +57,10 @@ export const getSellerOrders = query({
                   return await Promise.all(
       orders.map(async order => ({
         ...order,
-        product: await ctx.db.get(order.product_id as Id<"products">),
+        product: await ctx.db.get(order.product_id).then(async product => ({
+          ...product,
+          product_image: await ctx.storage.getUrl(product?.product_image[0]||"")||"",
+        })),
       }))
     );
   }
@@ -68,7 +71,7 @@ export const updateOrder = mutation({
                 order: v.object({
                         _id: v.id("orders"),
                         user_id: v.id("customers"),
-                       product_id: v.string(),
+                       product_id: v.id("products"),
                         order_status: v.union(
                                 v.literal("pending"),
                                 v.literal("confirmed"),

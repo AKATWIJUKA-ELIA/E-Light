@@ -28,7 +28,7 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/adminComponents/ui/toggle-group"
-import useGetOrders from "@/hooks/useGetUserOrders"
+import useGetSellersOrders from "@/hooks/useGetSellersOrders"
 // const chartData = [
 //   { date: "2024-04-01", desktop: 222, mobile: 150 },
 //   { date: "2024-04-02", desktop: 97, mobile: 180 },
@@ -138,7 +138,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
-        const { data: orders } = useGetOrders();
+        const { data: orders } = useGetSellersOrders();
         const [timeRange, setTimeRange] = React.useState("30d")
         function generateDateRange(startDate: string | number | Date, endDate: string | number | Date) {
   const dates = [];
@@ -288,11 +288,11 @@ const data = fullDateRange.map(date => {
                 />
               </linearGradient>
             </defs>
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={true} />
             <XAxis
               dataKey="date"
-              tickLine={false}
-              axisLine={false}
+              tickLine={true}
+              axisLine={true}
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
@@ -313,17 +313,17 @@ const data = fullDateRange.map(date => {
                       day: "numeric",
                     })
                   }}
-                  indicator="dot"
+                  indicator="line"
                 />
               }
             />
-            <Area
+            {/* <Area
               dataKey="mobile"
               type="natural"
               fill="url(#fillMobile)"
               stroke="var(--color-mobile)"
               stackId="a"
-            />
+            /> */}
             <Area
               dataKey="ordersCount"
               type="natural"

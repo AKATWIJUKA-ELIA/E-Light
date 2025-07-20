@@ -6,7 +6,7 @@ import {v} from "convex/values"
 export const createCart = mutation({
         args:{
               CartItem: v.object({
-                product_id: v.string(),
+                product_id: v.id("products"),
                 quantity: v.number(),
                 cart_Owner_id: v.string(),
 
@@ -35,7 +35,7 @@ export const createCart = mutation({
   })
 
           export const DeleteCart = mutation({
-                args: { id: v.string() },
+                args: { id: v.id("products") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
                     .withIndex("by_product_id", (q) => q.eq("product_id", args.id))
@@ -49,7 +49,7 @@ export const createCart = mutation({
               });
 
 export const IncreaseCart = mutation({
-                args: { id: v.string() },
+                args: { id: v.id("products") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
                     .withIndex("by_product_id", (q) => q.eq("product_id", args.id))
@@ -64,7 +64,7 @@ export const IncreaseCart = mutation({
                 },
               });
         export const ReduceCart = mutation({
-                args: { id: v.string() },
+                args: { id: v.id("products") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
                     .withIndex("by_product_id", (q) => q.eq("product_id", args.id))
@@ -103,7 +103,7 @@ export const IncreaseCart = mutation({
                     return { message: "Cart is empty", success: false };
                   }
                   cart.forEach(async (item) => {
-                        const sellerId = await ctx.db.get(item.product_id as Id<"products">).then(product => product?.product_owner_id);
+                        const sellerId = await ctx.db.get(item.product_id ).then(product => product?.product_owner_id);
                         await ctx.db.insert("orders", {
                               user_id: args.userId,
                               product_id: item.product_id,

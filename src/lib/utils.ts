@@ -7,15 +7,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export interface Product {
-        _id: Id<"products">,
-        approved: boolean,
-        product_cartegory: string,
-        product_condition: string,
-        product_description: string,
-        product_image: string[],
-        product_name: string,
-        product_owner_id: string,
-        product_price: string,
+        _id?: Id<"products">,
+        approved?: boolean,
+        product_cartegory?: string,
+        product_condition?: string,
+        product_description?: string,
+        product_image: string,
+        product_name?: string,
+        product_owner_id?: string,
+        product_price?: string,
         product_embeddings?: number[],
         product_image_embeddings?: number[],
         product_likes?: number,
@@ -25,7 +25,7 @@ export interface Product {
                 duration?: number,
                 status?: "active" | "expired"
         }
-        _creationTime: number
+        _creationTime?: number
 }
 export interface User {
         _id: Id<"customers">,

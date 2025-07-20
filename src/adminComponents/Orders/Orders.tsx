@@ -61,8 +61,8 @@ export default function OrdersTracking() {
         const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
         const finalOrders = filteredOrders.filter((order) => {
         const matchesSearch = filteredOrders.some((item)=>
-        item?.product?.product_name.toLowerCase().includes(searchTerm.toLowerCase())||
-        item?.product?.product_cartegory.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item?.product?.product_name?.toLowerCase().includes(searchTerm.toLowerCase())||
+        item?.product?.product_cartegory?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.product?.product_description?.toLowerCase().includes(searchTerm.toLowerCase())
         )
         
@@ -333,7 +333,7 @@ useEffect(() => {
                                                 <div className="flex gap-3 items-center  w-[25%] h-[85%] rounded-md">
                                                        {order.product?.product_image ? (
                                                                           <Image
-                                                                            src={order.product.product_image[0]}
+                                                                            src={order.product.product_image}
                                                                             alt={order.product.product_name || "Product Image"}
                                                                             width={40}
                                                                             height={40}
@@ -390,7 +390,7 @@ useEffect(() => {
                                                         <div className="space-y-3">
                                                                 <div  className="flex items-center gap-3">
                                                                 <Image
-                                                                src={order.product?.product_image[0] || "/placeholder.svg"}
+                                                                src={order.product?.product_image || "/placeholder.svg"}
                                                                 alt={order.product?.product_name || "Product Image"}
                                                                 width={60}
                                                                 height={60}
