@@ -119,7 +119,7 @@ const useForgotPassword = () => {
                 }
                 return { success: true, message:`${resp.message}\nA password reset link has been sent to your email` ,  status: 200 };
                 }catch(error){
-                        return  { success: false, message: error };
+                        return  { success: false, message: error as string , status: 500 };
                         
                 }
         }
