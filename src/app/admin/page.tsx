@@ -7,14 +7,12 @@ import { SiteHeader } from "../../adminComponents/site-header"
 import { SidebarInset,  } from "../../adminComponents/ui/sidebar"
 import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
 import useGetSellersOrders from "@/hooks/useGetSellersOrders"
-import useGetAllCustomers  from "@/hooks/useGetAllCustomers"
 import { useAppSelector } from "@/hooks"
 
 const Profile=()=> {
         const User = useAppSelector((state)=>state.user.user)
         const { data: products, } = useGetProductsByOwner(User?.User_id||'') ;
         const { data: orders } = useGetSellersOrders();
-        const { data: customers } = useGetAllCustomers();
         
         
   return (
@@ -28,7 +26,7 @@ const Profile=()=> {
               <SectionCards />
               <div className=" flex flex-col md:flex-row @2xl:flex  gap-3 p-4 lg:px-6 ">
                 <ChartAreaInteractive />
-                <PieChart customer={customers?.length||0} orders={orders?.length||0} />
+                <PieChart products={products?.length||0} orders={orders?.length||0} />
               </div>
 
               <div className="flex flex-col gap-4 px-4 lg:px-6">

@@ -2,11 +2,11 @@ import { Cell, Pie, PieChart, Tooltip, ResponsiveContainer } from "recharts";
 import React from 'react';
 interface Approved{
         orders:number,
-        customer:number
+        products:number
 }
-const Pie_chart = ({orders,customer}:Approved) => {
+const Pie_chart = ({orders,products}:Approved) => {
   const data = [
-    { name: 'customers', value: customer },
+    { name: 'products', value: products },
     { name: 'orders', value: orders },
   ];
   
