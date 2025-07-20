@@ -1,5 +1,5 @@
 import useGetAllProducts from "@/hooks/useGetAllProducts"
-import useGetOrders from "@/hooks/useGetUserOrders"
+import useGetSellersOrders from "@/hooks/useGetSellersOrders"
 import '../app/globals.css'
 import {
   Card,
@@ -13,7 +13,7 @@ import {
 export function SectionCards() {
         // const User = useAppSelector((state)=>state.user.user)
          const { data: products, } = useGetAllProducts();
-        const { data: orders } = useGetOrders();
+        const { data: orders } = useGetSellersOrders();
   return (
     <div className="  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 px-4  lg:px-6">
       <Card className="@container/card bg-blue-100 transition-transform duration-200 hover:border-pink-400 hover:cursor-pointer hover:scale-105 dark:text-black  dark:bg-gray-500 ">

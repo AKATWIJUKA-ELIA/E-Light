@@ -1,9 +1,10 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useAppSelector } from "@/hooks";
-const useGetUserOrders = () => {
+import { Id } from "../../convex/_generated/dataModel";
+const useGetSellersOrders = () => {
         const User = useAppSelector((state) => state.user.user);
-    const Orders = useQuery(api.orders.getUserOrders,{userId:User?.User_id ||""});
+    const Orders = useQuery(api.orders.getSellerOrders,{userId:User?.User_id as Id<"customers">});
     
     return {
         data: Orders,
@@ -12,4 +13,4 @@ const useGetUserOrders = () => {
     };
 };
 
-export default useGetUserOrders;
+export default useGetSellersOrders;
