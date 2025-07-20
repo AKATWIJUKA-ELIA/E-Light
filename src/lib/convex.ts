@@ -31,3 +31,16 @@ export async function UpdateUser(userToUpdate: User | null) {
         return { success: false, message: e instanceof Error ? e.message : "Unknown error" };
     }
 }
+
+export async function getOrderById (orderId: Id<"orders">) {
+    try {
+        const order = await convex.query(api.orders.getOrderById, { orderId });
+        if (!order) {
+            return { success: false, message: "Order not found", status: 404 };
+        }
+        return { success: true, order: order.order };
+    } catch (error) {
+        console.error("Error fetching order by ID:", error);
+        return { success: false, message: "Internal Server Error", status: 500 };
+    }
+}

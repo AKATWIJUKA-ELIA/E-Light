@@ -36,7 +36,7 @@ import {
   Eye,
 } from "lucide-react"
 import Image from "next/image"
-import useGetOrders from "@/hooks/usegetOrders"
+import useGetUserOrders from "@/hooks/useGetUserOrders"
 import { Id } from "../../../convex/_generated/dataModel"
 import { formatDate } from "@/lib/helpers"
 
@@ -78,7 +78,7 @@ const statusConfig = {
 
 export default function OrdersTracking() {
         const HandleAddToCart = useAddToCart();
-        const { data: orders } = useGetOrders()
+        const { data: orders } = useGetUserOrders()
         const [selectedOrder, setSelectedOrder] = useState<Order |null>(null)
         const [searchTerm, setSearchTerm] = useState("")
         const [statusFilter, setStatusFilter] = useState<string>("all")

@@ -6,14 +6,14 @@ import { SectionCards } from "../../adminComponents/section-cards"
 import { SiteHeader } from "../../adminComponents/site-header"
 import { SidebarInset,  } from "../../adminComponents/ui/sidebar"
 import useGetAllProducts from "@/hooks/useGetAllProducts"
-import useGetOrders from "@/hooks/usegetOrders"
+import useGetUserOrders from "@/hooks/useGetUserOrders"
 import useGetAllCustomers  from "@/hooks/useGetAllCustomers"
 // import { useAppSelector } from "@/hooks"
 
 const Profile=()=> {
         // const User = useAppSelector((state)=>state.user.user)
         const { data: products, } = useGetAllProducts();
-        const { data: orders } = useGetOrders();
+        const { data: orders } = useGetUserOrders();
         const { data: customers } = useGetAllCustomers();
         
         

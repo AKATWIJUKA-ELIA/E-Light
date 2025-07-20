@@ -29,7 +29,7 @@ import {
   Trash
 } from "lucide-react"
 import Image from "next/image"
-import usegetOrders from "@/hooks/usegetOrders"
+import useGetUserOrders from "@/hooks/useGetUserOrders"
 import { formatDate } from "@/lib/helpers"
 import { Order,} from "@/lib/types"
 import { CardHeader } from "@/adminComponents/ui/card"
@@ -52,7 +52,7 @@ const statusConfig = {
 export default function OrdersTracking() {
         const { setNotification } = useNotification()
                 const { sendEmail, } = useSendMail();
-        const { data:Orders, } = usegetOrders()
+        const { data:Orders, } = useGetUserOrders()
         const {handleDelete} = useDeleteOrder()
         const [selectedOrder, setSelectedOrder] = useState<Order |null>(null)
         const [searchTerm, setSearchTerm] = useState("")

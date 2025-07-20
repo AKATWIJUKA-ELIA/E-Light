@@ -1,5 +1,5 @@
 import useGetAllProducts from "@/hooks/useGetAllProducts"
-import useGetOrders from "@/hooks/usegetOrders"
+import useGetOrders from "@/hooks/useGetUserOrders"
 import '../app/globals.css'
 import {
   Card,

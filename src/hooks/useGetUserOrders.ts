@@ -2,9 +2,9 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useAppSelector } from "@/hooks";
 import useGetProductsByIds from "./useGetProductsByIds";
-const useGetOrders = () => {
+const useGetUserOrders = () => {
         const User = useAppSelector((state) => state.user.user);
-    const Orders = useQuery(api.cart.getOrders,{userId:User?.User_id ||""}); 
+    const Orders = useQuery(api.orders.getUserOrders,{userId:User?.User_id ||""}); 
     const productIds = Orders?.map((order) =>order.product_id)
     const { data: products,  } = useGetProductsByIds((productIds?.flatMap(id => id)) || []);
     const FinalOrders = Orders?.map((order)=>{
@@ -25,4 +25,4 @@ const useGetOrders = () => {
     };
 };
 
-export default useGetOrders;
+export default useGetUserOrders;

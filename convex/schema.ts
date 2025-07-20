@@ -8,6 +8,7 @@ export default defineSchema({
     product_id: v.string(),
     cart_Owner_id: v.string(),
     quantity: v.number(),
+        specialInstructions: v.optional(v.string()),
   }).index("by_cart_Owner_id", ["cart_Owner_id"])
   .index("by_product_id", ["product_id"]),
 
@@ -37,7 +38,11 @@ export default defineSchema({
     product_id: v.string(),
     quantity: v.number(),
     user_id: v.string(),
+    cost: v.optional(v.number()),
+    specialInstructions: v.optional(v.string()),
+    sellerId: v.optional(v.id("customers")),
   }).index("by_user_id", ["user_id"])
+        .index("by_seller_id", ["sellerId"])
   .index("by_product_id", ["product_id"]),
   
   products: defineTable({
