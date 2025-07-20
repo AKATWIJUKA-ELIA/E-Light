@@ -7,3 +7,7 @@ export const formatDate = (dateString: number) => {
       minute: "2-digit",
     })
   }
+
+    export const truncateString = (text: string, maxLength: number): string => {
+                return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
+              };
