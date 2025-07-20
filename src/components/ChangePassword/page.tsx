@@ -113,8 +113,7 @@ const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
     setIsSubmitting(true)
 
     try {
-        const res = CheckUser(tokenFromUrl||"",PasswordHash)
-        const response = await (await res).json()
+        const response = await CheckUser(tokenFromUrl||"",PasswordHash)
       if (!response.success) {
         setIsSubmitting(false)
         setSubmittingError(response.message)

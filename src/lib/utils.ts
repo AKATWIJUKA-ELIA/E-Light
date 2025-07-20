@@ -21,7 +21,7 @@ export interface Product {
         product_likes?: number,
         product_views?: number,
         product_sponsorship?: {
-                type?: "basic" | "premium" | "elite",
+                type?: "basic" | "premium" | "platinum",
                 duration?: number,
                 status?: "active" | "expired"
         }
@@ -82,3 +82,30 @@ export interface Interaction{
 export interface BoostWithInteraction extends Product {
         interaction?: Interaction
 }
+
+export type Order = {
+  _id: Id<"orders">,
+  user_id: Id<"customers">,
+  order_status: "pending" | "confirmed" | "out-for-delivery" | "delivered" | "cancelled"
+  _creationTime: number
+  updated_at?: string
+  sellerId?: Id<"customers"> 
+  product_id: string
+  specialInstructions?: string
+  quantity: number
+  cost?: number
+user?: User | null;
+  product?: Product|null | undefined
+}
+
+export type OrderItem = {
+    order_status: "pending" | "confirmed" | "out-for-delivery" | "delivered" | "cancelled";
+    _id: Id<"orders">;
+    _creationTime: number;
+    specialInstructions?: string;
+    cost?: number;
+    sellerId?: Id<"customers">;
+    product_id: string;
+    quantity: number;
+    user_id: Id<"customers">;
+};

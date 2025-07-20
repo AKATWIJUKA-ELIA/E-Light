@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { api } from "../../convex/_generated/api"; 
 import { useAction,useMutation } from "convex/react";
 import { useSendMail } from "./useSendMail";
@@ -12,13 +11,13 @@ const useChangePasswordWithToken = () => {
                 try{
                 const res = await check({token});
                  if(!res.success){
-                        return NextResponse.json({ success: false, message: res.message }, { status: 400 });
+                        return { success: false, message: res.message , status: 400 };
                 }
        
                 const user = res?.user
                 const isTokenValid = user?.reset_token_expires  && user.reset_token_expires > Math.floor(Date.now() / 1000) 
                 if(!isTokenValid){
-                        return NextResponse.json({ success: false, message: "Token has Expired " }, { status:402})
+                        return { success: false, message: "Token has Expired ",  status:402}
                 }
                 
               
@@ -112,14 +111,13 @@ const useChangePasswordWithToken = () => {
                 
                 `
 
-                const send = sendEmail(user?.email||"","Password Changed",html)
-                const resp = await (await send).json()
+                const resp = await sendEmail(user?.email||"","Password Changed",html,"management")
                 if(!resp.success){
-                return NextResponse.json({ success: false, message:`${res.message}` }, { status: 200 });
+                return { success: false, message:`${resp.message}` ,  status: 200 };
                 }
-                return NextResponse.json({ success: true, message:`${res.message}\nYour password has been changed successfully.` }, { status: 200 });
+                return { success: true, message:`${resp.message}\nYour password has been changed successfully.` ,  status: 200 };
                 }catch(error){
-                        return NextResponse.json( { success: false, message: error });
+                        return { success: false, message: error as string , status: 500 };
                         
                 }
         }

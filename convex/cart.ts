@@ -1,3 +1,4 @@
+import { Id } from "./_generated/dataModel";
 import {action, internalQuery, mutation, query} from "./_generated/server"
 import {v} from "convex/values"
 
@@ -93,7 +94,7 @@ export const IncreaseCart = mutation({
                 }       
               });
               export const checkOutCart = mutation({
-                args: { userId: v.string() },
+                args: { userId: v.id("customers") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
                     .withIndex("by_cart_Owner_id", (q) => q.eq("cart_Owner_id", args.userId))
@@ -102,11 +103,14 @@ export const IncreaseCart = mutation({
                     return { message: "Cart is empty", success: false };
                   }
                   cart.forEach(async (item) => {
+                        const sellerId = await ctx.db.get(item.product_id as Id<"products">).then(product => product?.product_owner_id);
                         await ctx.db.insert("orders", {
                               user_id: args.userId,
                               product_id: item.product_id,
                               quantity: item.quantity,
                               order_status: "pending",
+                              sellerId: sellerId as Id<"customers">,
+                              specialInstructions: item.specialInstructions,
                         });
                         await ctx.db.delete(item._id);
                   })
@@ -114,13 +118,3 @@ export const IncreaseCart = mutation({
                   return { message: "Checkout successful", success: true };
                 }
               })
-
-              export const getOrders = query({
-                args: { userId: v.string() },
-                handler: async (ctx, args) => {
-                  const orders = await ctx.db.query("orders")
-                    .withIndex("by_user_id", (q) => q.eq("user_id", args.userId))
-                    .collect();
-                  return orders;
-                }
-                });

@@ -25,8 +25,7 @@ const ForgotPassword=({
                 e.preventDefault();
                 setIsSubmitting(true);
                 try{
-                const Auth = await CheckUser(Email)
-                const res = await Auth.json()
+                const res = await CheckUser(Email)
                 if(!res?.success){
                         setSubmittingError(res?.message)
                         setIsSubmitting(false)
