@@ -128,7 +128,7 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                             src={product.product_image[0]||""}
                             width={50}
                             height={50}
-                            alt={product.product_name}
+                            alt={product.product_name||""}
                             className="rounded"
                           />
                         </TableCell>
