@@ -13,7 +13,7 @@ import EditModal from "./EditModal/page";
 import DeleteModal from "./DeleteModal/page";
 import { useEffect, useState } from "react";
 import DeleteAllModal from "./DeleteAll/page";
-import { Product } from "@/lib/types";
+import { Product } from "@/lib/utils";
 import { Id } from "../../convex/_generated/dataModel";
 
 interface DataTable {
@@ -25,12 +25,12 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
         const [isvisible, setisvisible] = useState(false);
         const [isdelete, setisdelete] = useState(false);
         const [isdeleteall, setisdeleteall] = useState(false);
-        const [productId, setproductId] = useState<Id<"menu_items">>("" as Id<"menu_items">);
-        const [checked, setchecked] = useState<Id<"menu_items">[]>([]);
+        const [productId, setproductId] = useState<Id<"products">>("" as Id<"products">);
+        const [checked, setchecked] = useState<Id<"products">[]>([]);
         const [allchecked, setallchecked] = useState(false);
         // const newProducts = products.filter(product => !product.approved);
 
-        const HandleCheckboxChange=(ProductId:Id<"menu_items">)=>{
+        const HandleCheckboxChange=(ProductId:Id<"products">)=>{
                 if(!checked.includes(ProductId)){
                         setchecked([...checked,ProductId])
                 }else{
@@ -38,7 +38,7 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                 }
         }
 
-        const allIds = products.map(product => product._id).filter((id): id is Id<"menu_items"> => id !== undefined);
+        const allIds = products.map(product => product._id).filter((id): id is Id<"products"> => id !== undefined);
         const allSelected = allIds.every(id => checked.includes(id));
         useEffect(()=>{
                         if (allSelected) {
@@ -57,11 +57,11 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                 }
 
 }
-        const HandleEdit=(ProductId:Id<"menu_items">)=>{
+        const HandleEdit=(ProductId:Id<"products">)=>{
                 setproductId(ProductId)
                 setisvisible(true)
         }
-        const HandleDelete=(ProductId:Id<"menu_items">)=>{
+        const HandleDelete=(ProductId:Id<"products">)=>{
                 setproductId(ProductId)
                 setisdelete(true)
         }
@@ -120,19 +120,19 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                                             aria-label="Select product"
                                           />
                                         </TableCell>
-                                        <TableCell className="font-medium">{product.name}</TableCell>
-                        <TableCell className="font-medium">{product.category}</TableCell>
-                        <TableCell>{product.description}</TableCell>
+                                        <TableCell className="font-medium">{product.product_name}</TableCell>
+                        <TableCell className="font-medium">{product.product_cartegory}</TableCell>
+                        <TableCell>{product.product_description}</TableCell>
                         <TableCell className="text-right">
                           <Image
-                            src={product.imageUrl||""}
+                            src={product.product_image[0]||""}
                             width={50}
                             height={50}
-                            alt={product.name}
+                            alt={product.product_name}
                             className="rounded"
                           />
                         </TableCell>
-                        <TableCell className="text-right">{product.price}</TableCell>
+                        <TableCell className="text-right">{product.product_price}</TableCell>
                         <TableCell className="text-right">
                           <time dateTime={product._creationTime !== undefined ? new Date(product._creationTime).toISOString() : ""}>
                             {product._creationTime !== undefined ? new Date(product._creationTime).toLocaleDateString() : "N/A"}
