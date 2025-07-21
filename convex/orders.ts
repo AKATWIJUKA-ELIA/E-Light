@@ -55,10 +55,18 @@ export const getSellerOrders = query({
                     .withIndex("by_seller_id", (q) => q.eq("sellerId", args.userId))
                     .collect();
                   return await Promise.all(
-      orders.map(async order => ({
+      orders.map(async order => {
+        const product = await ctx.db.get(order.product_id);
+        return {
         ...order,
-        product: await ctx.db.get(order.product_id as Id<"products">),
-      }))
+        product: product ? {
+          ...product,
+          product_image: await Promise.all(product.product_image.map(
+                async (img) => await ctx.storage.getUrl(img)||"" 
+        ))
+        }:null,
+}
+      })
     );
   }
 });
@@ -68,7 +76,7 @@ export const updateOrder = mutation({
                 order: v.object({
                         _id: v.id("orders"),
                         user_id: v.id("customers"),
-                       product_id: v.string(),
+                       product_id: v.id("products"),
                         order_status: v.union(
                                 v.literal("pending"),
                                 v.literal("confirmed"),

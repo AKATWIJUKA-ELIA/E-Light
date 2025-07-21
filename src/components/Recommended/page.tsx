@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 // import { Bookmark  } from 'lucide-react';
 // import { useNotification } from '@/app/NotificationContext';
 import useGetRecommendations from '@/hooks/useGetRecommendations';
+import { Id } from '../../../convex/_generated/dataModel';
 interface Product {
         approved: boolean;
          product_cartegory: string;
@@ -18,7 +19,7 @@ interface Product {
          product_owner_id: string;
          product_price: string;
          _creationTime: number;
-         _id: string;
+         _id: Id<"products">;
        }
        interface RecommendedProps {
         type: string;

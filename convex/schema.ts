@@ -5,7 +5,7 @@ export default defineSchema({
   NewsLetter: defineTable({ email: v.string() }).index("by_email", ["email"]),
 
   cart: defineTable({
-    product_id: v.string(),
+    product_id: v.id("products"),
     cart_Owner_id: v.string(),
     quantity: v.number(),
         specialInstructions: v.optional(v.string()),
@@ -41,7 +41,7 @@ export default defineSchema({
         v.literal("delivered"),
         v.literal("cancelled")
     ),
-    product_id: v.string(),
+    product_id: v.id("products"),
     quantity: v.number(),
     user_id: v.id("customers"),
     cost: v.optional(v.number()),
@@ -123,7 +123,7 @@ interactions:defineTable( {
 .index("by_user_and_type_cart", ["user_id", "type.cart.count"])
 .index("by_user_and_type_view", ["user_id", "type.view.count"]),
 boosts: defineTable({
-    product_id: v.string(),
+    product_id: v.id("products"),
     user_id: v.string(),
     boost_type: v.string(),
     duration: v.number(),

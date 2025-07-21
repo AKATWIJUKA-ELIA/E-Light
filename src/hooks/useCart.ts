@@ -4,7 +4,7 @@ import { useAppSelector } from "@/hooks";
 import { Id } from "../../convex/_generated/dataModel";
 interface CartItem {
 quantity: number,
-product_id: string,
+product_id: Id<"products">,
 }
 
 const useCart = () => {
@@ -32,7 +32,7 @@ const useCart = () => {
                         
                 }
         }
-        const DeleteCart = async (product_id: Id<"cart">) => {
+        const DeleteCart = async (product_id:Id<"products">) => {
                 try {
                         const response = await deleteCart({ id:product_id });
                         if (!response?.success) {
@@ -44,7 +44,7 @@ const useCart = () => {
                 }
         }
 
-        const IncreaseCart = async(Product_id: string) => {
+        const IncreaseCart = async(Product_id: Id<"products">) => {
                 try {
                         console.log("Product_id", Product_id);
                         const response = await  increaseCart({ id:Product_id });
@@ -56,7 +56,7 @@ const useCart = () => {
                         return { success: false, message: "Sorry, Can not increase at this time please try again later" };
                 }
         }
-        const ReduceCart = async(Product_id: string,) => {
+        const ReduceCart = async(Product_id: Id<"products">,) => {
                 try {
                         const response = await reduceCart({ id:Product_id });
                         if (!response?.success) {
