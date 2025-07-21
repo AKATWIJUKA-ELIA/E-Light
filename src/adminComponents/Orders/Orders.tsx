@@ -26,7 +26,7 @@ import {
   XCircle,
   Search,
   Eye,
-  Trash
+//   Trash
 } from "lucide-react"
 import Image from "next/image"
 import useGetSellersOrders from "@/hooks/useGetSellersOrders"
@@ -34,12 +34,10 @@ import { formatDate } from "@/lib/helpers"
 import { Order} from "@/lib/utils"
 import { CardHeader } from "@/adminComponents/ui/card"
 import { truncateString } from "@/lib/helpers"
-import useDeleteOrder from "@/hooks/useDeleteOrder"
 import {getUserById,getOrderById,UpdateOrder} from "@/lib/convex"
 import { Id } from "../../../convex/_generated/dataModel"
 import { useNotification } from "@/app/NotificationContext"
 import { useSendMail } from '@/hooks/useSendMail';
-// import { order_statusHtml } from "@/lib/htmlFiles"
 
 const statusConfig = {
   pending: { color: "bg-orange-500", icon: Clock, label: "Pending" },
@@ -53,7 +51,7 @@ export default function OrdersTracking() {
         const { setNotification } = useNotification()
                 const { sendEmail, } = useSendMail();
         const { data:Orders, } = useGetSellersOrders()
-        const {handleDelete} = useDeleteOrder()
+        // const {handleDelete} = useDeleteOrder()
         const [selectedOrder, setSelectedOrder] = useState<Order |null>(null)
         const [searchTerm, setSearchTerm] = useState("")
         const [statusFilter, setStatusFilter] = useState<string>("all")
@@ -310,11 +308,11 @@ useEffect(() => {
                                         <Button
                                         variant="outline"
                                         size="sm"
-                                        className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                                        onClick={() => handleDelete(order._id)}
+                                        className="flex items-center gap-2 text-orange-600 hover:text-orange-700 hover:bg-red-50 border-red-200"
+                                        onClick={() =>  ChangeOrderStatus(order._id as Id<"orders">, "pending")}
                                         >
-                                        <Trash className="w-4 h-4" />
-                                        Delete
+                                        <Clock className="w-4 h-4" />
+                                        pending
                                         </Button>
                                         </div>
                                         </div>

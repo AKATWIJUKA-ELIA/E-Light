@@ -63,7 +63,7 @@ export function NavMain() {
                 {
                         title: "Boost ",
                         icon: Rocket   as LucideIcon,
-                        link:"/profile/boost",
+                        link:"/admin/boost",
                 },
                 // {
                 //         title: "NewsLetter",
