@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link";
 import { useAppSelector } from "@/hooks";
-import { useEffect } from "react";
 
 export function NavMain() {
         const user = useAppSelector((state)=>state.user.user)
