@@ -14,7 +14,7 @@ interface Product {
   product_owner_id: string;
   product_price: string;
   _creationTime: number;
-  _id: string;
+  _id: Id<"products">;
 }
 interface Products {
   product: Product[] | [];

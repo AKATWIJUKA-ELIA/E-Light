@@ -12,7 +12,7 @@ export interface Product {
         product_cartegory: string,
         product_condition: string,
         product_description: string,
-        product_image: string[],
+        product_image: string[]
         product_name: string,
         product_owner_id: string,
         product_price: string,
@@ -105,7 +105,7 @@ export type OrderItem = {
     specialInstructions?: string;
     cost?: number;
     sellerId?: Id<"customers">;
-    product_id: string;
+    product_id: Id<"products">;
     quantity: number;
     user_id: Id<"customers">;
 };

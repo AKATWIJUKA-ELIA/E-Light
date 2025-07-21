@@ -12,6 +12,7 @@ import HeroCard from '../HeroCards/page'
 import {useData} from  '../../app/DataContext';
 import { Card, CardContent } from '../ui/card'
 import { Oval } from 'react-loader-spinner'
+import { Id } from '../../../convex/_generated/dataModel'
 interface Product {
         approved: boolean;
          product_cartegory: string;
@@ -22,7 +23,7 @@ interface Product {
          product_owner_id: string;
          product_price: string;
          _creationTime: number;
-         _id: string;
+         _id: Id<"products">;
          product_likes?: number | 0;
          product_dislikes?: number | 0;
          product_comments?: { user_id: string; comment: string; _creationTime: number }[];
