@@ -128,10 +128,12 @@ boosts: defineTable({
     user_id: v.string(),
     boost_type: v.string(),
     duration: v.number(),
+    notified: v.optional(v.boolean()),
     status: v.union(
         v.literal("active"),
         v.literal("expired")),
 }).index("by_product_id", ["product_id"])
 .index("by_boost_type", ["boost_type"])
 .index("by_user_and_status",["user_id","status"])
+.index("by_duration_and_notified", ["duration", "notified"]),
 });
