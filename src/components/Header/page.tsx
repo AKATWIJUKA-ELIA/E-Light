@@ -190,7 +190,7 @@ const Header = () => {
                                         onMouseEnter={()=>setUserDrawer(true)}
                                         >
                                                 <div className='flex mt-1 font-sans dark:text-dark px-2 ' >
-                                                        <Link href={"/profile/account"} >
+                                                        <Link href={"/profile"} >
                                                         {User.Username}
                                                         </Link>
                                                 </div>
