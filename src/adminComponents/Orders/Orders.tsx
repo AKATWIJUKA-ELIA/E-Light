@@ -333,7 +333,7 @@ useEffect(() => {
                                                 <div className="flex gap-3 items-center  w-[25%] h-[85%] rounded-md">
                                                        {order.product?.product_image ? (
                                                                           <Image
-                                                                            src={order.product.product_image}
+                                                                            src={order.product.product_image[0]||"/placeholder.svg"}
                                                                             alt={order.product.product_name || "Product Image"}
                                                                             width={40}
                                                                             height={40}
@@ -390,7 +390,7 @@ useEffect(() => {
                                                         <div className="space-y-3">
                                                                 <div  className="flex items-center gap-3">
                                                                 <Image
-                                                                src={order.product?.product_image || "/placeholder.svg"}
+                                                                src={order.product?.product_image[0] || "/placeholder.svg"}
                                                                 alt={order.product?.product_name || "Product Image"}
                                                                 width={60}
                                                                 height={60}

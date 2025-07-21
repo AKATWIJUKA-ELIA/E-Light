@@ -55,13 +55,18 @@ export const getSellerOrders = query({
                     .withIndex("by_seller_id", (q) => q.eq("sellerId", args.userId))
                     .collect();
                   return await Promise.all(
-      orders.map(async order => ({
+      orders.map(async order => {
+        const product = await ctx.db.get(order.product_id);
+        return {
         ...order,
-        product: await ctx.db.get(order.product_id).then(async product => ({
+        product: product ? {
           ...product,
-          product_image: await ctx.storage.getUrl(product?.product_image[0]||"")||"",
-        })),
-      }))
+          product_image: await Promise.all(product.product_image.map(
+                async (img) => await ctx.storage.getUrl(img)||""
+        ))
+        }:null,
+}
+      })
     );
   }
 });
