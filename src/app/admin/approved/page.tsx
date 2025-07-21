@@ -1,6 +1,6 @@
 "use client";
 import React from 'react'
-import DataTable from '@/components/DataTable';
+import DataTable  from "@/components/DataTable"
 import useGetProductsByOwner from '@/hooks/useGetProductsByOwner';
 import { useAppSelector } from '@/hooks';
 
@@ -10,8 +10,8 @@ const Approved = () => {
         const newProducts = products?.filter(product => product.approved)
   return (
     <div className='mt-20' >
-        <div className=" px-4 " id="pending" >
-                <DataTable status='Approved'  products={newProducts ?? [] } />
+        <div className=" px-4 " id="Approved" >
+                <DataTable status='Approved' products={newProducts ?? [] } />
               </div>
         </div>
   )
