@@ -47,6 +47,7 @@ export default defineSchema({
     cost: v.optional(v.number()),
     specialInstructions: v.optional(v.string()),
     sellerId: v.optional(v.id("customers")),
+    updatedAt: v.optional(v.number()),
   }).index("by_user_id", ["user_id"])
         .index("by_seller_id", ["sellerId"])
   .index("by_product_id", ["product_id"]),
