@@ -578,6 +578,7 @@ export const getImageUrl = query({
                                 v.literal("premium"),
                                 v.literal("platinum"),),
                         duration: v.string(), // Duration in milliseconds
+                        amount: v.optional(v.number()), 
                         status: v.optional(v.union(
                                 v.literal("active"),
                                 v.literal("expired"),))
@@ -592,7 +593,7 @@ export const getImageUrl = query({
                         const existingBoost = await ctx.db.query("boosts")
                                 .filter((q) => q.eq(q.field("product_id"), args.product_id))
                                 .first();
-                        if (existingBoost) {
+                        if (existingBoost && existingBoost.status === "active") {
                                 return { success: false, message: "Product is already boosted" };
                         }
 

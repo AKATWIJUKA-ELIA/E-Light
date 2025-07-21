@@ -91,7 +91,7 @@ const boostOptions: BoostOption[] = [
     description: "Increase visibility in search results",
     icon: TrendingUp,
     features: ["Higher search ranking", "Category page placement", "Basic analytics"],
-    pricing: { weekly: 5, monthly: 15, quarterly: 65 },
+    pricing: { weekly: 5000, monthly: 15000, quarterly: 65000 },
     estimatedReach: { min: 500, max: 1000 },
     color: "bg-blue-500",
   },
@@ -101,7 +101,7 @@ const boostOptions: BoostOption[] = [
     description: "Featured placement and enhanced visibility",
     icon: Star,
     features: ["Featured product placement", "Homepage visibility", "Advanced analytics", "Priority customer support"],
-    pricing: { weekly: 10, monthly: 35, quarterly: 150 },
+    pricing: { weekly: 10000, monthly: 35000, quarterly: 150000 },
     estimatedReach: { min: 2000, max: 5000 },
     color: "bg-purple-500",
   },
@@ -117,7 +117,7 @@ const boostOptions: BoostOption[] = [
       "Dedicated account manager",
       "Custom marketing materials",
     ],
-    pricing: { weekly: 25, monthly: 75, quarterly: 350 },
+    pricing: { weekly: 25000, monthly: 75000, quarterly: 350000 },
     estimatedReach: { min: 10000, max: 25000 },
     color: "bg-gold",
   },
@@ -132,7 +132,7 @@ export default function ProductBoost() {
         const { boostProduct,BoostedProducts } = useBoost()
         const [activeBoosts, setActiveBoosts] = useState<BoostWithInteraction[]>([])
         const { setNotification } = useNotification()
-        console.log("boost",boost)
+        // console.log("boost",boost)
   const calculateTotalCost = () => {
     const baseCost = selectedBoost.pricing[duration as keyof typeof selectedBoost.pricing]
     return baseCost
@@ -161,6 +161,7 @@ useEffect(() => {
             boost_type: selectedBoost.id,
             duration:duration,
             status: "active",
+                amount: calculateTotalCost(),
           }).then((response) => {
             if (!response.success) {
               setNotification({ status: "error", message: response.message })
@@ -200,7 +201,7 @@ useEffect(() => {
                     <CardTitle className="flex items-center gap-2">
                       <ShoppingCart className="w-5 h-5" />
                       <Link href="/admin/approved" className=" border text-gold rounded-md p-2 hover:bg-gray-300 transition-all " >
-                      Select Products <span className="text-dark" >you would like to Boost Here</span>
+                      Select Products <span className="dark:text-white text-dark" >you would like to Boost Here</span>
                       </Link>
                     </CardTitle>
                     <CardDescription>Your Selected products will appear Here</CardDescription>
@@ -213,7 +214,7 @@ useEffect(() => {
                           className={`cursor-pointer transition-all hover:ring-2 ring-gold hover:bg-amber-50 hover:shadow-md`}
                         >
                           <CardContent className="p-4">
-                            <div className="flex gap-3">
+                            <div className="flex gap-5  ">
                               <Image
                                 src={product?.product_image[0] || "/placeholder.svg"}
                                 alt={product?.product_name ||"Product Image"}
@@ -221,15 +222,15 @@ useEffect(() => {
                                 height={80}
                                 className="rounded-lg object-cover"
                               />
-                              <div className="flex   ">
+                              <div className="flex  justify-between w-full">
                                <div className="flex flex-col " >
                                  <h3 className="font-semibold text-gray-900 mb-1">{product?.product_name}</h3>
-                                <p className="text-lg font-bold text-green-600 mb-2">${product?.product_price}</p>
+                                <p className="text-lg font-bold text-green-600 mb-2">UGX: {product?.product_price}</p>
                                </div>
                                 <div className="flex items-center gap-4 text-sm text-gray-600">
                                   <div className="flex items-center gap-1 hover:text-red-600 transition-colors" 
                                   onClick={() => handleRemove(product?._id as Id<"products">)}>
-                                        <span className="text-sm ">Remove</span>
+                                        {/* <span className="text-sm ">Remove</span> */}
                                     <Trash2  className="w-8 h-8" />
                                   </div>
                                 </div>
@@ -282,7 +283,7 @@ useEffect(() => {
                                     <div className="text-right">
                                       <div className="text-sm text-gray-600">Starting at</div>
                                       <div className="text-lg font-bold text-green-600">
-                                        ${option.pricing.weekly}/week
+                                        UGX {option.pricing.weekly}/week
                                       </div>
                                     </div>
                                   </div>
@@ -335,8 +336,8 @@ useEffect(() => {
                             onClick={() => setDuration(option.value)}
                           >
                             <CardContent className="p-4 text-center">
-                              <div className="font-semibold">{option.label}</div>
-                              <div className="text-lg font-bold text-green-600">${option.price}</div>
+                              <div className="font-semibold dark:text-dark">{option.label}</div>
+                              <div className="text-lg font-bold text-green-600">ugx:{option.price}</div>
                             </CardContent>
                           </Card>
                         ))}
@@ -444,9 +445,20 @@ useEffect(() => {
                         products.map((prod) => (
                                 <div key={prod?._id}>
                         <div className="flex items-center gap-3 mt-1">
-                          <div>
-                            <div className=" text-md font-semibold">{prod?.product_name}</div>
-                            <div className="text-xs text-gray-600">${prod?.product_price}</div>
+                          <div className="flex gap-3">
+                                <div className="flex gap-3">
+                                        <Image
+                                src={prod?.product_image[0] || "/placeholder.svg"}
+                                alt={prod?.product_name ||"Product Image"}
+                                width={80}
+                                height={80}
+                                className="rounded-lg object-cover"
+                              />
+                                </div>
+                            <div className="flex flex-col space-y-1">
+                                <div className=" text-md font-semibold">{prod?.product_name}</div>
+                            <div className="text-xs text-gray-600">ugx: {prod?.product_price}</div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -485,18 +497,15 @@ useEffect(() => {
                         <span>Boost Cost</span>
                         <span className="font-semibold">${calculateTotalCost()}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Platform Fee</span>
-                        <span className="font-semibold">${(calculateTotalCost() * 0.05).toFixed(2)}</span>
-                      </div>
+                      
                       <Separator />
                       <div className="flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span className="text-green-600">${(calculateTotalCost() * 1.1).toFixed(2)}</span>
+                        <span className="text-green-600">UGX: {(calculateTotalCost() * 1.1).toFixed(2)}</span>
                       </div>
                     </div>
 
-                    <Button className="w-full" size="lg" onClick={handleBoostProduct} >
+                    <Button disabled={ !activeBoosts || activeBoosts.length ===0} className="w-full" size="lg" onClick={handleBoostProduct} >
                       <Zap className="w-4 h-4 mr-2" />
                       Start Boost Campaign
                     </Button>
