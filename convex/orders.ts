@@ -62,7 +62,7 @@ export const getSellerOrders = query({
         product: product ? {
           ...product,
           product_image: await Promise.all(product.product_image.map(
-                async (img) => await ctx.storage.getUrl(img)||""
+                async (img) => await ctx.storage.getUrl(img)||"" 
         ))
         }:null,
 }

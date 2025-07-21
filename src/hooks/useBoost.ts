@@ -17,7 +17,7 @@ const useBoost = () => {
 
 
         useEffect(() => {
-  console.log("Merged Interactions:", interactions);
+//   console.log("Merged Interactions:", interactions);
 }, [interactions]);
 
         const { data: products } = useGetProductsByIds(ids ? ids.flat() : []);
