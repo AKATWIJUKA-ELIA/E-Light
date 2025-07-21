@@ -111,6 +111,7 @@ export const IncreaseCart = mutation({
                               order_status: "pending",
                               sellerId: sellerId as Id<"customers">,
                               specialInstructions: item.specialInstructions,
+                              cost: item.quantity * Number((await ctx.db.get(item.product_id))?.product_price)
                         });
                         await ctx.db.delete(item._id);
                   })

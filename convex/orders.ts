@@ -86,6 +86,9 @@ export const updateOrder = mutation({
                         ),
                         specialInstructions: v.optional(v.string()),
                         cost: v.optional(v.number()),
+                        sellerId: v.optional(v.id("customers")),
+                        quantity: v.number(),
+                        updatedAt: v.optional(v.number()),
                 }),
         },
         handler: async (ctx, args) => {
