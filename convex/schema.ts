@@ -129,6 +129,7 @@ boosts: defineTable({
     boost_type: v.string(),
     duration: v.number(),
     notified: v.optional(v.boolean()),
+    amount: v.optional(v.number()),
     status: v.union(
         v.literal("active"),
         v.literal("expired")),

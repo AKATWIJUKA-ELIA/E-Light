@@ -577,7 +577,8 @@ export const getImageUrl = query({
                                 v.literal("basic"),
                                 v.literal("premium"),
                                 v.literal("platinum"),),
-                        duration: v.string(), // Duration in milliseconds
+                        duration: v.string(), 
+                        amount: v.optional(v.number()), 
                         status: v.optional(v.union(
                                 v.literal("active"),
                                 v.literal("expired"),))
@@ -592,9 +593,26 @@ export const getImageUrl = query({
                         const existingBoost = await ctx.db.query("boosts")
                                 .filter((q) => q.eq(q.field("product_id"), args.product_id))
                                 .first();
-                        if (existingBoost) {
+                        if (existingBoost && existingBoost.status === "active") {
                                 return { success: false, message: "Product is already boosted" };
                         }
+
+                        if (existingBoost && existingBoost.status === "expired") {
+                                await ctx.db.patch(args.product_id, {
+                                product_sponsorship: {
+                                        type: args.boost_type,
+                                        status: args.status ? args.status : "active",
+                                        duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
+                                }
+                        });
+                        await ctx.db.insert("boosts", {
+                                ...args,
+                                status: args.status ? args.status : "active", 
+                                duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
+                        });
+                        return { success: true, message: "Boost Re-processed successfully" };
+                        }
+
 
                         await ctx.db.patch(args.product_id, {
                                 product_sponsorship: {
@@ -618,7 +636,7 @@ export const getBoostedProductsIds = query({
         args: { user_id: v.string() },
         handler: async (ctx, args) => {
                 const boosts = await ctx.db.query("boosts")
-                .withIndex("by_user_and_status",(q)=>(q.eq("user_id",args.user_id).eq("status","active")))
+                .withIndex("by_user_and_status",(q)=>(q.eq("user_id",args.user_id)))
                 .collect();
                 const boostedProductsIds = await Promise.all(
                         boosts.map(async (boost) => {
