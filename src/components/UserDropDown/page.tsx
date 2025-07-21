@@ -1,7 +1,7 @@
 import React  from 'react';
 import Link from "next/link";
 import { IoBagCheckOutline  } from "react-icons/io5";
-import {LayoutDashboardIcon,UserCircleIcon,Bookmark,Rocket,LogOut } from "lucide-react"
+import {UserCircleIcon,Bookmark,LogOut } from "lucide-react"
 import {type LucideIcon } from "lucide-react"
 import useLogout from '@/hooks/useLogout';
 interface UserDropDownMenuProps {

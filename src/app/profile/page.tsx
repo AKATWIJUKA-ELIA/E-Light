@@ -1,16 +1,12 @@
 "use client"
 import { SiteHeader } from "../../components/site-header"
 import { SidebarInset,  } from "../../components/ui/sidebar"
-import { useAppSelector } from "@/hooks"
+// import { useAppSelector } from "@/hooks"
 import AccountManagement from "@/components/UserProfile/Profile"
 
 const Profile=()=> {
-        const User = useAppSelector((state)=>state.user.user)
-        
         
   return (
-    
-      
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">

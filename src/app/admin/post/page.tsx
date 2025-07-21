@@ -1,7 +1,7 @@
 "use client"
 // import { useUser } from '@clerk/nextjs';
 import React, { useRef, useState } from 'react'
-import { api } from '../../../convex/_generated/api';
+import { api } from '../../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
 import { useSendMail } from '@/hooks/useSendMail';
 import useGetCategories from '@/hooks/useGetCategories';
