@@ -12,6 +12,7 @@ import FeedBackButton from "@/components/FeedBackButton/page";
 import Header from "@/components/Header/page";
 import ConditionalFooter from "@/components/ConditionalFooter/page"
 import MessagePop from "@/components/MessagePop/page";
+import { BoostProvider } from "./BoostContext";
 
 export const metadata: Metadata = {
   title: "ShopCheap",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <ConvexClientProvider>
                 <GoogleOAuthProvider clientId={CLIENT_ID}>
                         <NotificationProvider>
+                                <BoostProvider>
                                 <ReduxProvider>
                                         <ThemeProvider
                                                 attribute="class"
@@ -48,6 +50,7 @@ export default function RootLayout({
                                                 </DataProvider>
                                         </ThemeProvider> 
                                 </ReduxProvider>
+                                </BoostProvider>
                         </NotificationProvider>
                 </GoogleOAuthProvider>
         </ConvexClientProvider>

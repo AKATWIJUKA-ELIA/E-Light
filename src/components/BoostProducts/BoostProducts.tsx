@@ -132,7 +132,7 @@ export default function ProductBoost() {
         const { boostProduct,BoostedProducts } = useBoost()
         const [activeBoosts, setActiveBoosts] = useState<BoostWithInteraction[]>([])
         const { setNotification } = useNotification()
-
+        console.log("boost",boost)
   const calculateTotalCost = () => {
     const baseCost = selectedBoost.pricing[duration as keyof typeof selectedBoost.pricing]
     return baseCost
@@ -199,7 +199,7 @@ useEffect(() => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <ShoppingCart className="w-5 h-5" />
-                      <Link href="/profile/approved" className=" border text-gold rounded-md p-2 hover:bg-gray-300 transition-all " >
+                      <Link href="/admin/approved" className=" border text-gold rounded-md p-2 hover:bg-gray-300 transition-all " >
                       Select Products <span className="text-dark" >you would like to Boost Here</span>
                       </Link>
                     </CardTitle>
