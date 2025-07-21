@@ -520,7 +520,7 @@ useEffect(() => {
               <CardContent>
                 <div className="space-y-4">
                    {activeBoosts && activeBoosts.length > 0 ? (
-                     activeBoosts.map((product) => (
+                     activeBoosts.filter((boost) => (boost.product_sponsorship?.duration ?? 0) > Date.now()).map((product) => (
                       <Card key={product?._id} className="hover:shadow-md dark:bg-gray-800">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
@@ -540,7 +540,7 @@ useEffect(() => {
                                         {product?.product_sponsorship?.type || "Basic"}
                                         </span>
                                 </div>
-                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ends: <span className="font-semibold text-red-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
+                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ends: <span className="font-semibold text-green-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
                               </div>
                             </div>
 
@@ -598,56 +598,73 @@ useEffect(() => {
                 <CardDescription>Monitor and manage your previous product boosts</CardDescription>
               </CardHeader>
               <CardContent>
-                {/* <div className="space-y-4">
-                  {mockProducts
-                    .filter((product) => product.currentBoost)
-                    .map((product) => (
-                      <Card key={product.id} className="hover:shadow-md dark:bg-gray-800">
+                <div className="space-y-4">
+                  {activeBoosts && activeBoosts.length > 0 ? (
+                     activeBoosts.filter((boost) => (boost.product_sponsorship?.duration ?? 0) <= Date.now()).map((product) => (
+                      <Card key={product._id} className="hover:shadow-md dark:bg-gray-800 border border-red-500">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
                               <Image
-                                src={product.image || "/placeholder.svg"}
-                                alt={product.name}
+                                src={product.product_image[0] || "/placeholder.svg"}
+                                alt={product.product_name || "Product Image"}
                                 width={60}
                                 height={60}
                                 className="rounded-lg object-cover"
                               />
-                              <div>
-                                <h3 className="font-semibold">{product.name}</h3>
-                                <div className="flex items-center gap-4 text-sm text-gray-600">
-                                  <Badge className="bg-purple-500">{product.currentBoost?.type} Boost</Badge>
-                                  <span>Ends: {product.currentBoost?.endDate}</span>
+                              <div className="flex flex-col space-y-2"> 
+                                <h3 className="font-semibold">{product?.product_name}</h3>
+                                <div className={`flex items-center w-auto   border ${conditionalborder(product?.product_sponsorship?.type||"")} rounded-lg p-1 text-sm font-semibold `}>
+                                        <span className="flex items-center gap-1">
+                                        {checkBadge(product?.product_sponsorship?.type || "")}
+                                        {product?.product_sponsorship?.type || "Basic"}
+                                        </span>
                                 </div>
+                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ended: <span className="font-semibold text-red-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
                               </div>
                             </div>
                             <div className="text-right">
-                              <div className="grid grid-cols-3 gap-4 text-center">
+                              <div className="grid grid-cols-3 gap-6  text-center">
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.currentBoost?.performance.impressions.toLocaleString()}
+                                    {product.product_likes?.toLocaleString()??0}
                                   </div>
-                                  <div className="text-xs text-gray-600">Impressions</div>
+                                  {/* Likes refers to the bookmark count  we use bookmark as like */}
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                        <span>Likes </span>
+                                        <Heart  className="w-4 h-4" fill="red" color="red"  />  
+                                        </div> 
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.currentBoost?.performance.clicks.toLocaleString()}
+                                    {product.interaction?.type.cart.count ??0}
                                   </div>
-                                  <div className="text-xs text-gray-600">Clicks</div>
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                        <span>Cart</span> 
+                                        <ShoppingCart   className="w-4 h-4" color="purple" />
+                                        </div>
                                 </div>
                                 <div>
                                   <div className="text-lg font-bold">
-                                    {product.currentBoost?.performance.conversions}
+                                        {/* Sales we order count ie the number of times the product was ordered / appears in the orders table */}
+                                    {product.interaction?.type.view.count??0}
                                   </div>
-                                  <div className="text-xs text-gray-600">Sales</div>
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                        <span>views</span>
+                                        <Eye className="w-4 h-4 text-blue-500" />
+                                        </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </CardContent>
                       </Card>
-                    ))}
-                </div> */}
+                    ))):(
+                        <div className="p-4 text-center text-gray-600">
+                          No Previous campaigns found.
+                        </div>
+                    )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
