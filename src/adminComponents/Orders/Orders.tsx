@@ -458,7 +458,7 @@ useEffect(() => {
                                                 Order #: {order._id}
                                                 </p>
                                                 <p>Special Instructions: {order.specialInstructions || 'None'}</p>
-                                                <p className="text-lg font-semibold text-gray-900">
+                                                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                                                 Total: UGX {order?.cost?.toLocaleString() || '0'}
                                                 </p>
                                         </div>

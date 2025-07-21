@@ -65,6 +65,7 @@ export interface Boost {
         boost_type: "premium" | "basic" | "platinum",
         duration: string,
         status: "active" | "expired" | undefined
+        amount: number,
 }
 export interface Interaction{
           user_id: string
