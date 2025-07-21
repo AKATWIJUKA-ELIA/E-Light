@@ -40,7 +40,6 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
         const [checked, setchecked] = useState<string[]>([]);
         const [allchecked, setallchecked] = useState(false);
         const router = useRouter();
-        // const newProducts = products.filter(product => !product.approved);
 
         const HandleCheckboxChange=(ProductId:string)=>{
                 if(!checked.includes(ProductId)){
@@ -84,7 +83,7 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
         }
         const HandelBoost=()=>{
                 setBoost(checked);
-                router.push("/profile/boost")
+                router.push("/admin/boost")
         }
 
 
@@ -93,14 +92,14 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                 <div className="w-full  overflow-x-auto rounded-lg border px-2 ">
                         <div className="flex items-center justify-between p-4 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
                                 <div className="text-lg font-semibold">{status} Products</div>
-                                <Button 
+                                {status === 'Approved' && <Button 
                                 className="bg-green-400 hover:bg-green-700 transition-transform duration-500" 
                                 onClick={() => HandelBoost()}
                                 disabled={checked.length === 0}>
                                         Boost Selected
-                                </Button>
+                                </Button>}
                                 
-                                <Button 
+                                <Button
                                 className="bg-red-400 hover:bg-red-700 transition-transform duration-500" 
                                 onClick={() => HandelDeleteAll()}
                                 disabled={checked.length === 0}>

@@ -1,6 +1,6 @@
 "use client";
 import React from 'react'
-import DataTable  from "@/components/DataTable"
+import DataTable from '@/components/DataTable';
 import useGetProductsByOwner from '@/hooks/useGetProductsByOwner';
 import { useAppSelector } from '@/hooks';
 
@@ -11,7 +11,7 @@ const Pending = () => {
   return (
     <div className='mt-20' >
         <div className=" px-4 " id="pending" >
-                <DataTable status='Pending' products={newProducts ?? [] } />
+                <DataTable status='Pending'  products={newProducts ?? [] } />
               </div>
         </div>
   )
