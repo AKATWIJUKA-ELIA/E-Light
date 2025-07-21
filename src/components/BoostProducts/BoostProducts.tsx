@@ -21,6 +21,7 @@ import {
   Star,
   Zap,
   Crown,
+  RotateCcw,
   Rocket,
   BarChart3,
   Users,
@@ -151,6 +152,10 @@ useEffect(() => {
   const handleRemove = (productId:Id<"products">) => {
        setBoost((prev) => prev.filter((id) => id !== productId))
   }
+        const ReBoost = async (productId: Id<"products">) => {
+                setBoost((prev => [...prev, productId]))
+                setNotification({ status: "success", message: "Product added to boost list" })
+        }
   const handleBoostProduct = () => {
         if (boost.length === 0) {
                 return
@@ -633,7 +638,17 @@ useEffect(() => {
                               </div>
                             </div>
                             <div className="text-right">
-                              <div className="grid grid-cols-3 gap-6  text-center">
+                              <div className="grid grid-cols-4 gap-6  text-center">
+
+                                <div>
+                                  <div className="flex flex-col items-center gap-1 text-xs text-gray-600 hover:cursor-pointer"
+                                  onClick={()=>ReBoost(product._id as Id<"products">)    }
+                                  >
+                                         <RotateCcw   className="w-6 h-6" color="purple" />
+                                        <span>Re-Boost</span> 
+                                        </div>
+                                </div>
+
                                 <div>
                                   <div className="text-lg font-bold">
                                     {product.product_likes?.toLocaleString()??0}
