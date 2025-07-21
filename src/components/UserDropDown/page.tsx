@@ -9,14 +9,10 @@ interface UserDropDownMenuProps {
   onClose: () => void;
 }
 const items =[
-        {
-                item:"dashboard",
-                link:"/profile",
-                icon: LayoutDashboardIcon as LucideIcon,
-        },
+      
         {
                 item:"account",
-                link:"/profile/account",
+                link:"/profile",
                 icon: UserCircleIcon as LucideIcon,
         },
         {
@@ -30,12 +26,6 @@ const items =[
                 icon: IoBagCheckOutline as LucideIcon,
 
         },
-        {
-                item:"boost",
-                link:"/profile/boost",
-                icon: Rocket as LucideIcon,
-        },
-        
 
 ]
 
