@@ -540,7 +540,7 @@ useEffect(() => {
                                         {product?.product_sponsorship?.type || "Basic"}
                                         </span>
                                 </div>
-                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ends: <span className="font-semibold text-red-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
+                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ends: <span className="font-semibold text-green-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
                               </div>
                             </div>
 
@@ -601,7 +601,7 @@ useEffect(() => {
                 <div className="space-y-4">
                   {activeBoosts && activeBoosts.length > 0 ? (
                      activeBoosts.filter((boost) => (boost.product_sponsorship?.duration ?? 0) <= Date.now()).map((product) => (
-                      <Card key={product._id} className="hover:shadow-md dark:bg-gray-800">
+                      <Card key={product._id} className="hover:shadow-md dark:bg-gray-800 border border-red-500">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
@@ -612,13 +612,15 @@ useEffect(() => {
                                 height={60}
                                 className="rounded-lg object-cover"
                               />
-                              <div>
-                                <h3 className="font-semibold">{product.product_name}</h3>
-                                <div className="flex items-center gap-4 text-sm text-gray-600">
-                                  {checkBadge(product?.product_sponsorship?.type || "")}
-                                  {product?.product_sponsorship?.type || "Basic"}
-                                  <span>Ended: {product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span>
+                              <div className="flex flex-col space-y-2"> 
+                                <h3 className="font-semibold">{product?.product_name}</h3>
+                                <div className={`flex items-center w-auto   border ${conditionalborder(product?.product_sponsorship?.type||"")} rounded-lg p-1 text-sm font-semibold `}>
+                                        <span className="flex items-center gap-1">
+                                        {checkBadge(product?.product_sponsorship?.type || "")}
+                                        {product?.product_sponsorship?.type || "Basic"}
+                                        </span>
                                 </div>
+                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ended: <span className="font-semibold text-red-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
                               </div>
                             </div>
                             <div className="text-right">

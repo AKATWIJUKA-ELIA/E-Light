@@ -34,12 +34,10 @@ import { formatDate } from "@/lib/helpers"
 import { Order} from "@/lib/utils"
 import { CardHeader } from "@/adminComponents/ui/card"
 import { truncateString } from "@/lib/helpers"
-import useDeleteOrder from "@/hooks/useDeleteOrder"
 import {getUserById,getOrderById,UpdateOrder} from "@/lib/convex"
 import { Id } from "../../../convex/_generated/dataModel"
 import { useNotification } from "@/app/NotificationContext"
 import { useSendMail } from '@/hooks/useSendMail';
-// import { order_statusHtml } from "@/lib/htmlFiles"
 
 const statusConfig = {
   pending: { color: "bg-orange-500", icon: Clock, label: "Pending" },
