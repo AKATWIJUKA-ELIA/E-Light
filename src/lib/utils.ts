@@ -101,11 +101,11 @@ user?: User | null;
 export type OrderItem = {
     order_status: "pending" | "confirmed" | "out-for-delivery" | "delivered" | "cancelled";
     _id: Id<"orders">;
-    _creationTime: number;
     specialInstructions?: string;
     cost?: number;
     sellerId?: Id<"customers">;
     product_id: Id<"products">;
     quantity: number;
     user_id: Id<"customers">;
+    updatedAt?: number;
 };

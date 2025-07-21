@@ -103,8 +103,15 @@ export default function OrdersTracking() {
     }
 
     const updatedOrder = {
-        ...order.order,
+        _id: order.order._id,
+        user_id: order.order.user_id,
         order_status: newStatus,
+        updatedAt: new Date().getTime(),
+        quantity: order.order.quantity,
+        product_id: order.order.product_id,
+        specialInstructions: order.order.specialInstructions,
+        cost: order.order.cost,
+        sellerId: order.order.sellerId,
     };
     const user = await GetUser(order.order.user_id as Id<"customers">)
 
@@ -240,10 +247,7 @@ useEffect(() => {
               ) : (
                 finalOrders?.map((order) => (
                   <Card key={order._id} className="hover:shadow-md transition-shadow border border-purple-400 dark:bg-gray-900 rounded-2xl ">
-                    <CardContent className="md:p-6">
-                        <Card className="flex md:p-2" >
-                                <Card className="w-full">
-                                <CardHeader className="p-4">
+                    <CardHeader className="p-4 bg-blue-700">
                                         <div className="flex flex-col lg:flex-row justify-between gap-4">
                                         {/* Main Order Info Section */}
                                         <div className="flex-1 space-y-4">
@@ -262,18 +266,6 @@ useEffect(() => {
                                         </div>
                                         </div>
 
-                                        {/* Order Details Row */}
-                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-amber-50 rounded-xl">
-                                        <div className="space-y-1">
-                                                <p className="text-xs font-bold text-gray-700 break-all">
-                                                Order #: {order._id}
-                                                </p>
-                                                <p>Special Instructions: {order.specialInstructions || 'None'}</p>
-                                                <p className="text-lg font-semibold text-gray-900">
-                                                Total: UGX {order?.cost?.toLocaleString() || '0'}
-                                                </p>
-                                        </div>
-                                        </div>
                                         </div>
 
                                         {/* Action Section */}
@@ -327,10 +319,10 @@ useEffect(() => {
                                         </div>
                                         </div>
                                 </CardHeader>
-                                </Card>
-                                <CardContent className="grid  grid-cols-2 lg:grid-cols-3  border  gap-3 p-2 rounded-2xl ">
-                                       <div className="flex flex-col md:flex-row space-x-4 gap-2  bg-blue-500/10 items-center  border border-purple-400 rounded-2xl p-1   ">
-                                                <div className="flex gap-3 items-center  w-[25%] h-[85%] rounded-md">
+                    <CardContent className="md:p-6 grid  grid-cols-2 lg:grid-cols-3  border  gap-3 p-2 rounded-2xl ">
+                        
+                        <div className="flex flex-col md:flex-row space-x-4 gap-2  bg-blue-500/10 items-center  border border-purple-400 rounded-2xl p-1   ">
+                                                <div className="flex gap-3 items-center  w-[25%] h-[85%] rounded-md ">
                                                        {order.product?.product_image ? (
                                                                           <Image
                                                                             src={order.product.product_image[0]||"/placeholder.svg"}
@@ -459,10 +451,21 @@ useEffect(() => {
 
                                                 </div>
                                                 </div>
-                                        </div> 
-                                </CardContent>
-                        </Card>
-                      
+                        </div> 
+
+                        {/* Order Details Row */}
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-amber-50 rounded-xl">
+                                        <div className="space-y-1">
+                                                <p className="text-xs font-bold text-gray-700 break-all">
+                                                Order #: {order._id}
+                                                </p>
+                                                <p>Special Instructions: {order.specialInstructions || 'None'}</p>
+                                                <p className="text-lg font-semibold text-gray-900">
+                                                Total: UGX {order?.cost?.toLocaleString() || '0'}
+                                                </p>
+                                        </div>
+                                        </div>
+
                     </CardContent>
                   </Card>
                 ))
