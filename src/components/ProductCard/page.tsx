@@ -19,7 +19,7 @@ import { useNotification } from '@/app/NotificationContext';
 
 interface ProductProps {
   product: {
-    _id: string;
+    _id: Id<"products">;
     product_name: string;
     product_image: string[];
     product_price: string;

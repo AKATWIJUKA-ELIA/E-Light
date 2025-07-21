@@ -4,6 +4,7 @@ import { MdAddShoppingCart } from "react-icons/md";
 import ProductSkeleton from '../ProductsSkeleton/page'
 import useAddToCart  from '../../hooks/useAddToCart';
 import { useEffect, useState } from 'react';
+import { Id } from '../../../convex/_generated/dataModel';
 
 interface Product {
         approved: boolean;
@@ -15,7 +16,7 @@ interface Product {
          product_owner_id: string;
          product_price: string;
          _creationTime: number;
-         _id: string;
+         _id: Id<"products">;
        }
        interface HeroCardProps {
         product: Product | null;
