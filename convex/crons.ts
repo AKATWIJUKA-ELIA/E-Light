@@ -9,7 +9,7 @@ export const findExpiringSubscriptions = internalQuery({
   args: {},
   handler: async (ctx) => {
     const now = Date.now();
-    const soon = now + 3 * 24 * 60 * 60 * 1000; // 3 days from now
+    const soon = now + 7 * 24 * 60 * 60 * 1000; // 7 days from now
     return await ctx.db
       .query("boosts")
       .withIndex("by_duration_and_notified", (q) =>

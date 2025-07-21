@@ -2,9 +2,8 @@
 
 import {type LucideIcon } from "lucide-react"
 import { IoAddCircle,IoBagCheckOutline  } from "react-icons/io5";
-import {LayoutDashboardIcon,UserCircleIcon,Bookmark,Rocket,HomeIcon } from "lucide-react"
-import { FcApproval  } from "react-icons/fc";
-import { MdAlignHorizontalLeft,MdOutlinePending,  } from "react-icons/md";
+import {LayoutDashboardIcon,UserCircleIcon,Bookmark,CreditCard, } from "lucide-react"
+
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -13,29 +12,18 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link";
+import { useAppSelector } from "@/hooks";
 
 export function NavMain() {
+        const user = useAppSelector((state)=>state.user.user)
+        
         const items = [
                 {
-                        title: "Home",
-                        icon: HomeIcon as LucideIcon,
-                        link:"/profile",
+                        title: "My ShopCheap",
+                        icon: UserCircleIcon  as LucideIcon,
+                        link:"/profile/",
                 },
-                {
-                        title: "All Products",
-                        icon: MdAlignHorizontalLeft as LucideIcon,
-                        link:"/profile/#all",
-                },
-                {
-                        title: "Approved Products",
-                        icon: FcApproval as LucideIcon,
-                        link:"/profile/approved",
-                },
-                {
-                        title: "Pending",
-                        icon: MdOutlinePending as LucideIcon,
-                        link:"/profile/pending",
-                },
+              
                 {
                         title: "Orders",
                         icon: IoBagCheckOutline as LucideIcon,
@@ -46,23 +34,29 @@ export function NavMain() {
                         icon: IoAddCircle  as LucideIcon,
                         link:"/post",
                 },
-                 {
-                        title: "Account",
-                        icon: UserCircleIcon  as LucideIcon,
-                        link:"/profile/account",
-                },
+                 
                 {
                         title: "Bookmarks",
                         icon: Bookmark  as LucideIcon,
                         link:"/profile/bookmarks",
                 },
                 {
-                        title: "Boost ",
-                        icon: Rocket   as LucideIcon,
-                        link:"/profile/boost",
+                        title: "payments",
+                        icon: CreditCard  as LucideIcon,
+                        link:"/profile/payments",
                 },
 
         ]
+        if(user?.role === "admin"){
+                        items.push(
+                                {
+                        title: "AdminDashBoard",
+                        icon: LayoutDashboardIcon  as LucideIcon,
+                        link:"/admin",
+                },
+                        )
+                }
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2 mt-4">
