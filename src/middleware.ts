@@ -1,4 +1,3 @@
-// import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from 'next/server'
 import { decrypt } from "../src/lib/sessions"
 import { cookies } from 'next/headers'
@@ -6,9 +5,10 @@ import { cookies } from 'next/headers'
 const isProtected = [
         '/post',
         '/profile',
+        "/admin"
 ]
 const publicRoutes = ['/sign-in', '/sign-up']
-const RoleProtected = ['/administrator(.*)'];
+const RoleProtected = ['/admin(.*)'];
 const Middleware = async (req: NextRequest) => {
         
         const path = req.nextUrl.pathname
@@ -24,7 +24,7 @@ const Middleware = async (req: NextRequest) => {
         if(isProtectedPath && !session){
                 return NextResponse.redirect(new URL('/sign-in', req.url))
         }
-        if(isRoleProtected && session?.role!="superuser"){
+        if(isRoleProtected && session?.role!="admin"){
                 return NextResponse.json({unauthorized:"You are Unauthorized to Access this page"})
         }
 
