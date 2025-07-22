@@ -13,6 +13,9 @@ import Link from 'next/link';
 import useGetSponsored from '@/hooks/useGetSponsored';
 import { Oval } from 'react-loader-spinner';
 import { Id } from '../../../convex/_generated/dataModel';
+import { Button } from '../ui/button';
+import { MdAddShoppingCart } from "react-icons/md";
+import { Eye } from 'lucide-react';
 
 interface Product {
   approved: boolean;
@@ -55,40 +58,101 @@ useEffect(() => {
 }, [sponsored]);
         
   return (
-        <div className= ' bg-pink-200   mt-32 grid grid-cols-1  '  >
+        <div className= ' bg-pink-200 grid grid-cols-1  mt-36   h-[550px]'  >
 
-        <Carousel opts={{align: "start",loop: true}} plugins={[carousel1]} className="h-full">
-        <CarouselContent className='h-full'>
-  {images.map((image, index) => (
-    <CarouselItem key={index} className="h-full">
-      <div className="h-full  ">
-        <Card className="h-auto bg-transparent w-full">
-          <CardContent className="relative  bg-transparent flex  items-center justify-center  h-80 overflow-hidden w-full">
-            {/* Image */}
-        
-            <Image
-              src={image.src}
-        //       height={100}
-        //       width={450}
-              alt={image.name}
-             fill
-             className='object-cover w-full h-full  '
-            />
-            <div className="absolute top-7 md:left-16 flex items-center justify-center bg-black/40 text-white text-3xl font-semibold p-4">
-              {image.overlay}
+        <Carousel opts={{ align: "start", loop: true }} plugins={[carousel1]} className="grid grid-cols-1 w-full h-full bg-blue-400">
+    <CarouselContent className='h-full w-full '>
+      {products && products.length > 0 ? (
+        products.map((product, index) => (
+          <CarouselItem key={index} className="h-full w-full ">
+            <div className="h-full w-full bg-purple-500/10 "
+            style={{ backgroundImage: `url("${product.product_image[0] ?? ""}")`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backdropFilter: 'blur(10px)'
+                }}
+            >
+              <Card className="h-full w-full bg-transparent shadow-2xl ">
+                <CardContent className=" relative flex items-center justify-center  h-full bg-transparent backdrop-blur-md bg-opacity-35  overflow-hidden  w-full"               >
+                  {/* <Image
+                    src={product.product_image[0] ?? ""}
+                    alt={product.product_name}
+                    fill
+                    className='object-cover w-full h-full'
+                  /> */}
+                 <div className="hidden left-4  md:flex absolute top-10 bottom-0  w-[60%] h-[50%]">
+                    
+                    <div className="absolute top-32 left-6 text-2xl md:text-7xl flex items-center justify-center text-gold  font-semibold">
+                      <Link href={`/category/${product.product_cartegory}`} className='flex gap-2' >
+                        <span className='text-3xl md:text-5xl font-bold'>{product.product_cartegory}</span>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="hidden group md:flex absolute top-0 bottom-0 shadow-lg border-8 rotate-6 opacity-50 hover:opacity-100 hover:-rotate-2 transition duration-1000 border-white right-24 bg-blue-400 w-[30%] h-full">
+                    <Image
+                      src={product.product_image[0] ?? ""}
+                      alt={product.product_name}
+                      fill
+                      className='object-cover w-80 h-80 border-8 border-white hover:scale-105 transition-transform duration-1000 ease-in-out'
+                    />
+                    <div className="absolute flex-col inset-0 opacity-40  group-hover:opacity-100 transition-all duration-400 translate-y-2 group-hover:translate-y-0   bg-black/40 flex items-center justify-center text-white text-2xl font-semibold">
+                      {/* Shs: {product.product_price} /= */}
+                      <span className="text-4xl md:text-5xl font-bold">Ugx: {(parseFloat(product.product_price) || 0).toLocaleString()}</span>
+          <span className="text-3xl font-semi-bold text-gray-500 line-through italic">Ugx: { parseFloat(product.product_price)*3}</span>
+                    </div>
+                    <div className="absolute opacity-40 group-hover:opacity-100 transition-all duration-300  translate-y-2 group-hover:translate-y-0  bottom-24 left-28 gap-12  flex items-center justify-center text-white text-2xl font-semibold">
+                      <Button className="bg-blue-600 hover:bg-blue-800 rounded-full p-6 text-white">
+                        <Link href={`/product/${product._id}`} className='flex gap-2' > <Eye/> View Product</Link>
+                      </Button>
+
+                      <Button className="bg-gold hover:bg-yellow-600 rounded-full p-6 text-white">
+                        <Link href={`/product/${product._id}`} className='flex gap-2' > <MdAddShoppingCart/> Add to Cart</Link>
+                      </Button>
+
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </CarouselItem>
-  ))}
-        </CarouselContent>
-        {/* <CarouselPrevious />
-        <CarouselNext /> */}
-        </Carousel>
+          </CarouselItem>
+        ))
+      ) : (
+        images.map((image, index) => (
+          <CarouselItem key={index} className="h-full w-full">
+            <div className="h-full w-full">
+              <Card className="h-full w-full">
+                <CardContent className="relative flex items-center justify-center h-full overflow-hidden w-full">
+                  <Image
+                    src={image.src}
+                    alt={image.name}
+                    fill
+                    className='object-cover w-full h-full'
+                  />
+
+                        <div className="absolute left-14 inset-0 bg-black/40 flex items-center justify-center text-white text-2xl md:text-7xl font-semibold">
+                        {image.overlay} 
+                        </div>
+                  <div className="hidden group md:flex absolute top-0 bottom-0 shadow-lg border-8 rotate-6 opacity-50 hover:opacity-100 hover:-rotate-2 transition duration-1000 border-white right-24 bg-blue-400 w-[30%] h-full">
+                    
+                    <Image
+                      src={image.src}
+                      alt={image.name}
+                      height={100}
+                      width={450}
+                      className='object-cover w-full h-full'
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </CarouselItem>
+        ))
+      )}
+    </CarouselContent>
+  </Carousel>
 
         {products && products.length > 0 ? (
-                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-5   md:mt-80  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
         <CarouselContent className=''>
   {products.map((product, index) => (
     <CarouselItem key={index} className=" basis-[200px] md:basis-[300px] shrink-0">
@@ -121,7 +185,7 @@ useEffect(() => {
         <CarouselNext />
         </Carousel>
         ):(
-                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16  mt-40 md:mt-36  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16   md:mt-80  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
         <CarouselContent className=''>
   {Array.from({ length: 7 }).map((_, idx) => (
     <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
