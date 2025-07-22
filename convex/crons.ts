@@ -3,6 +3,8 @@ import { v } from "convex/values";
 import { cronJobs } from "convex/server";
 import { internal, api } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
+import {generateProductEmailHTML} from "../src/EmailTemplates/ProductRecommendations";
+
 
 
 export const UpdateProduct = mutation({
@@ -79,7 +81,7 @@ export const notifyExpiringSubscriptions = internalAction({
         receiverEmail: user.email,
         subject: "Your subscription is expiring soon",
         html: `Hi, your subscription will expire on ${new Date(sub.duration)}. Please renew soon!`,
-        department:"support",
+        department:"ShopCheap",
       });
       // Mark as notified
       await ctx.runMutation(internal.crons.markNotified, { subscriptionId: sub._id });
@@ -105,7 +107,7 @@ export const notifyExpiredSubscriptions = internalAction({
         receiverEmail: user.email,
         subject: "Your subscription has expired",
         html: `Hi, your subscription has Expired today ${new Date(Date.now()).toLocaleString()}. Please renew to get your benefits back!`,
-        department:"support",
+        department:"ShopCheap",
       });
         // Mark as expired
       await ctx.runMutation(internal.crons.markExpired, { subscriptionId: sub._id });
@@ -113,7 +115,25 @@ export const notifyExpiredSubscriptions = internalAction({
   },
 });
 
-// Register cron job to run every hour
+export const SendRecommendedProducts = internalAction({
+  args: {},
+  handler: async (ctx) => {
+        const customers = await ctx.runQuery(api.users.GetAllCustomers, {});
+        for (const customer of customers) {
+            const products = await ctx.runQuery(api.products.recommendProducts, { user_id: customer._id as Id<"customers">,type: "view" });
+            if (!products || products.length === 0) continue;
+            // Send email
+            await ctx.runMutation(api.sendEmail.sendEmail, {
+                receiverEmail: customer.email,
+                subject: "Recommended Products Just For You",
+                html: generateProductEmailHTML(products),
+                department:"ShopCheap",
+            });
+        }
+  }
+})
+
+// Register cron jobs
 const crons = cronJobs();
 crons.interval(
   "Notify expiring subscriptions",
@@ -123,8 +143,14 @@ crons.interval(
 );
 crons.interval(
   "Notify expired subscriptions",
-  { minutes: 1 },
+  { hours: 1 },
   internal.crons.notifyExpiredSubscriptions,
+  {}
+);
+crons.interval(
+  "Send recommended products",
+  { hours: 24 },
+  internal.crons.SendRecommendedProducts,
   {}
 );
 export default crons;
