@@ -58,9 +58,9 @@ useEffect(() => {
 }, [sponsored]);
         
   return (
-        <div className= ' bg-pink-200 grid grid-cols-1  mt-36   h-[550px]'  >
+        <div className= ' bg-pin k-200 flex  mt-36   h-[550px]'  >
 
-        <Carousel opts={{ align: "start", loop: true }} plugins={[carousel1]} className="grid grid-cols-1 w-full h-full bg-blue-400">
+        <Carousel opts={{ align: "start", loop: true }} plugins={[carousel1]} className="grid grid-cols-1 w-full h-full ">
     <CarouselContent className='h-full w-full '>
       {products && products.length > 0 ? (
         products.map((product, index) => (
@@ -73,18 +73,18 @@ useEffect(() => {
                 }}
             >
               <Card className="h-full w-full bg-transparent shadow-2xl ">
-                <CardContent className=" relative flex items-center justify-center  h-full bg-transparent backdrop-blur-md bg-opacity-35  overflow-hidden  w-full"               >
+                <CardContent className=" relative flex items-center justify-center  h-full bg-black backdrop-blur-md bg-opacity-60  overflow-hidden  w-full"               >
                   {/* <Image
                     src={product.product_image[0] ?? ""}
                     alt={product.product_name}
                     fill
                     className='object-cover w-full h-full'
                   /> */}
-                 <div className="hidden left-4  md:flex absolute top-10 bottom-0  w-[60%] h-[50%]">
+                 <div className="flex left-16   absolute top-10 bottom-0  w-[60%] h-[50%]">
                     
-                    <div className="absolute top-32 left-6 text-2xl md:text-7xl flex items-center justify-center text-gold  font-semibold">
+                    <div className="absolute top-32 left-16 text-2xl md:text-7xl flex items-center justify-center text-gold  font-semibold">
                       <Link href={`/category/${product.product_cartegory}`} className='flex gap-2' >
-                        <span className='text-3xl md:text-5xl font-bold'>{product.product_cartegory}</span>
+                        <span className='font-bold'>{product.product_cartegory}</span>
                       </Link>
                     </div>
                   </div>
@@ -152,7 +152,7 @@ useEffect(() => {
   </Carousel>
 
         {products && products.length > 0 ? (
-                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-5   md:mt-80  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-5   mt-80  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
         <CarouselContent className=''>
   {products.map((product, index) => (
     <CarouselItem key={index} className=" basis-[200px] md:basis-[300px] shrink-0">
@@ -185,7 +185,7 @@ useEffect(() => {
         <CarouselNext />
         </Carousel>
         ):(
-                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16   md:mt-80  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
+                <Carousel opts={{align: "start",loop: true}} plugins={[carousel]} className="absolute w-[60%] md:w-[65%] md:left-16   mt-80  flex items-center justify-center bg-black/40 text-white text-xl font-semibold md:p-2">
         <CarouselContent className=''>
   {Array.from({ length: 7 }).map((_, idx) => (
     <CarouselItem key={idx} className=" basis-[200px] md:basis-[300px] shrink-0">
