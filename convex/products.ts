@@ -593,11 +593,10 @@ export const getImageUrl = query({
                         const existingBoost = await ctx.db.query("boosts")
                                 .filter((q) => q.eq(q.field("product_id"), args.product_id))
                                 .first();
+
                         if (existingBoost && existingBoost.status === "active") {
                                 return { success: false, message: "Product is already boosted" };
-                        }
-
-                        if (existingBoost && existingBoost.status === "expired") {
+                        }else if (existingBoost && existingBoost.status === "expired") {
                                 await ctx.db.patch(args.product_id, {
                                 product_sponsorship: {
                                         type: args.boost_type,
@@ -605,16 +604,26 @@ export const getImageUrl = query({
                                         duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                                 }
                         });
-                        await ctx.db.insert("boosts", {
-                                ...args,
-                                status: args.status ? args.status : "active", 
-                                duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
-                        });
+                        const boostData = {
+                        product_id: args.product_id,
+                        user_id: args.user_id,
+                        boost_type: args.boost_type,
+                        duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(),
+                        amount: args.amount,
+                        status: args.status ?? "active",
+                        notified: false,
+                        };
+                        await ctx.db.patch(existingBoost._id as Id<"boosts">, boostData);
+                        // send Email to user
+                        await ctx.runMutation(api.sendEmail.sendEmail, {
+                                receiverEmail: await ctx.db.get(product.product_owner_id as Id<"customers">).then(user => user?.email||""),
+                                subject: "Your Boost has been Re-processed",
+                                html: `Hi, your Boost for the product ${product.product_name} has been re-processed successfully. Enjoy the benefits!`,
+                                department:"support",
+                        })
                         return { success: true, message: "Boost Re-processed successfully" };
-                        }
-
-
-                        await ctx.db.patch(args.product_id, {
+                        }else{
+                                await ctx.db.patch(args.product_id, {
                                 product_sponsorship: {
                                         type: args.boost_type,
                                         status: args.status ? args.status : "active",
@@ -625,10 +634,13 @@ export const getImageUrl = query({
                         // Insert the boost record
                         await ctx.db.insert("boosts", {
                                 ...args,
-                                status: args.status ? args.status : "active", 
+                                status: args.status ? args.status : "active",
+                                notified: false, // Set notified to false initially
                                 duration: args.duration ? new Date(getFutureDate(args.duration)).getTime() : new Date(getFutureDate("weekly")).getTime(), // Default to 7 days if not provided
                         });
                         return { success: true, message: "Boost processed successfully" };
+                        }
+
                 }
         })
 

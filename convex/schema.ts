@@ -128,7 +128,7 @@ boosts: defineTable({
     user_id: v.string(),
     boost_type: v.string(),
     duration: v.number(),
-    notified: v.optional(v.boolean()),
+    notified: v.boolean(),
     amount: v.optional(v.number()),
     status: v.union(
         v.literal("active"),

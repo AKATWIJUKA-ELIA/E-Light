@@ -38,19 +38,19 @@ const MainHero = () => {
                 {
                 name:"Heror",
                 src:"https://cheery-cod-687.convex.cloud/api/storage/115cc2cd-79c0-4b3c-bb84-86df5f76e138",
-                overlay:"Mid Year Sales Here 😊 "
+                overlay:"Very Hot  Sales Here 🔥🔥🔥 "
                 },
                 {
                         name:"Hero1",
                         src:"https://cheery-cod-687.convex.cloud/api/storage/55199998-af85-4493-af98-d8c3aff3d8dd",
-                        overlay:"Grab May Discounts While Offers Last😁🤗"
+                        overlay:"Grab Crazy Discounts While Offers Last😁🤗"
                 },
                 
         ]
                         
 useEffect(() => {
   if (sponsored && sponsored.length > 0) {
-    setproducts(sponsored.filter((item): item is Product => item !== null && item.product_sponsorship?.type==="platinum"),);
+    setproducts(sponsored.filter((item): item is Product => item !== null && item.product_sponsorship?.type==="platinum" && item.product_sponsorship?.status==="active"));
   }
 }, [sponsored]);
         
