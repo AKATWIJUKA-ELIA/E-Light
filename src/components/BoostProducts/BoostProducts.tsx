@@ -133,7 +133,7 @@ export default function ProductBoost() {
         const { boostProduct,BoostedProducts } = useBoost()
         const [activeBoosts, setActiveBoosts] = useState<BoostWithInteraction[]>([])
         const { setNotification } = useNotification()
-        // console.log("boost",boost)
+        console.log("boost",boost)
   const calculateTotalCost = () => {
     const baseCost = selectedBoost.pricing[duration as keyof typeof selectedBoost.pricing]
     return baseCost
@@ -154,6 +154,7 @@ useEffect(() => {
   }
         const ReBoost = async (productId: Id<"products">) => {
                 setBoost((prev => [...prev, productId]))
+                
                 setNotification({ status: "success", message: "Product added to boost list" })
         }
   const handleBoostProduct = () => {
@@ -175,7 +176,6 @@ useEffect(() => {
             }
           })
         })
-        setNotification({ status: "success", message: "Products boosted successfully!" })
         setBoost([]) // Clear selected products after boosting
   }
 
