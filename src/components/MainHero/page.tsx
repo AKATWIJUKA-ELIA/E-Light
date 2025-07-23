@@ -16,6 +16,7 @@ import { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/button';
 import { MdAddShoppingCart } from "react-icons/md";
 import { Eye } from 'lucide-react';
+import useAddToCart from "@/hooks/useAddToCart"
 
 interface Product {
   approved: boolean;
@@ -35,6 +36,7 @@ const MainHero = () => {
   const carousel1 = Autoplay({ delay: 9000 });
   const carousel = Autoplay({ delay: 10000 });
   const [products, setproducts] = useState<Product[]>([]);
+  const HandleAddToCart = useAddToCart();
   const { sponsored: sponsored } = useGetSponsored();
 
   const images = [
@@ -105,8 +107,10 @@ useEffect(() => {
                         <Link href={`/product/${product._id}`} className='flex gap-2' > <Eye/> View Product</Link>
                       </Button>
 
-                      <Button className="bg-gold hover:bg-yellow-600 rounded-full p-6 text-white">
-                        <Link href={`/product/${product._id}`} className='flex gap-2' > <MdAddShoppingCart/> Add to Cart</Link>
+                      <Button className="bg-gold hover:bg-yellow-600 rounded-full p-6 text-white"
+                      onClick={() => HandleAddToCart({_id:product._id as Id<"products">})}
+                      >
+                        <div  className='flex gap-2' > <MdAddShoppingCart/> Add to Cart</div>
                       </Button>
 
                     </div>
