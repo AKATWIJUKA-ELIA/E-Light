@@ -32,7 +32,8 @@ export default defineSchema({
   }).index("by_email", ["email"])
   .index("by_username", ["username"])
   .index("by_isVerified", ["isVerified"])
-  .index("by_reset_token", ["reset_token"]),
+  .index("by_reset_token_expires", ["reset_token_expires"])
+  .index("by_reset_token_and_by_reset_token_expires", ["reset_token", "reset_token_expires"]),
 
   orders: defineTable({
     order_status: v.union(

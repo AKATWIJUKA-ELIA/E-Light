@@ -75,7 +75,7 @@ export const CreateUser = mutation({
                 args:{token:v.string()},
                 handler:async(ctx,args)=>{
                         const customer = await ctx.db.query("customers")
-                        .withIndex("by_reset_token", (q) => q.eq("reset_token", args.token))
+                        .withIndex("by_reset_token_and_by_reset_token_expires", (q) => q.eq("reset_token", args.token).gt("reset_token_expires", Date.now()))
                         .unique();
                         if (!customer) {
                                return { success:false ,status: 404,message: "User not Found",user:null };
@@ -133,8 +133,11 @@ export const GetAllCustomers = query({
                         const user = await ctx.runQuery(api.users.GetCustomer, {
                                 email: args.email,
                         });
-                        if (!user) {
-                               return { success:false ,status: 404,message: "User not Found",user };
+                        if (!user.success || !user.user) {
+                               return { success:false ,status: 404,message: "User not Found",user:user.user };
+                        }
+                        if (!user.user?.isVerified) {
+                               return { success:false ,status: 404,message: `This User is not verified pliz verify your Account via the email that was sent to ${user.user?.email}`,user:user.user };
                         }
                         
                         const isMatch = await bcrypt.compare(args.password, user.user?.passwordHash ?? "");

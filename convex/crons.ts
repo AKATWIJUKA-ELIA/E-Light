@@ -16,6 +16,13 @@ export const DeleteUnVerifiedUsers = internalMutation({
         const Today = Date.now();
         for (const customer of customers) {
                 if(customer._creationTime + 7 * 24 * 60 * 60 * 1000 < Today) {
+                        await ctx.runMutation(api.sendEmail.sendEmail, {
+        receiverEmail: customer.email,
+        subject: "Your subscription is expiring soon",
+        html: `Hi, ${customer.username} your Account Has been Deleted  Since you didnt verify it within Seven (7) days from creation,
+        Please Create a new account to continue enjoying our services! <a href="https://shopcheap.vercel.app/sign-up">Create Account</a>`,
+        department:"ShopCheap",
+      });
                         await ctx.db.delete(customer._id);
                 }
         }
@@ -170,7 +177,7 @@ crons.interval(
   {}
 );
 crons.interval(
-  "DeleteUnVerifiedUsers",
+  "Delete UnVerified Users",
   { hours: 24 },
   internal.crons.DeleteUnVerifiedUsers,
   {}
