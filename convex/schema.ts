@@ -31,6 +31,7 @@ export default defineSchema({
     lastLogin: v.optional(v.number()),
   }).index("by_email", ["email"])
   .index("by_username", ["username"])
+  .index("by_isVerified", ["isVerified"])
   .index("by_reset_token", ["reset_token"]),
 
   orders: defineTable({

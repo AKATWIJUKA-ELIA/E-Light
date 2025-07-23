@@ -5,7 +5,23 @@ import { internal, api } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import {generateProductEmailHTML} from "../src/EmailTemplates/ProductRecommendations";
 
-
+export const DeleteUnVerifiedUsers = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+        const customers = await ctx.db
+        .query("customers")
+        .withIndex("by_isVerified", (q) => q.eq("isVerified", false))
+        .collect();
+        if (customers.length === 0) return { success: false, message: "No unverified users found", status: 404 };
+        const Today = Date.now();
+        for (const customer of customers) {
+                if(customer._creationTime + 7 * 24 * 60 * 60 * 1000 < Today) {
+                        await ctx.db.delete(customer._id);
+                }
+        }
+        return { success: true, message: "Deleted unverified users", status: 200 };
+  }
+})
 
 export const UpdateProduct = mutation({
         args:{_id:v.id("products")},
@@ -151,6 +167,12 @@ crons.interval(
   "Send recommended products",
   { hours: 24 },
   internal.crons.SendRecommendedProducts,
+  {}
+);
+crons.interval(
+  "DeleteUnVerifiedUsers",
+  { hours: 24 },
+  internal.crons.DeleteUnVerifiedUsers,
   {}
 );
 export default crons;
