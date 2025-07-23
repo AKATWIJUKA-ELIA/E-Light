@@ -5,27 +5,28 @@ import { cookies } from 'next/headers'
 const isProtected = [
         '/post',
         '/profile',
-        "/admin"
+        "/admin",
+        
 ]
 const publicRoutes = ['/sign-in', '/sign-up']
 const RoleProtected = ['/admin(.*)'];
 const Middleware = async (req: NextRequest) => {
         
         const path = req.nextUrl.pathname
-        const isProtectedPath = isProtected.includes(path)
+        const isProtectedPath = isProtected.some(route => path.startsWith(route));
         const isPublicRoute = publicRoutes.includes(path)
         const isRoleProtected = RoleProtected.some((pattern) => new RegExp(pattern).test(path));
 
         const cookie = (await cookies()).get("session")?.value
         // console.log("session",cookie)
-        const session = await decrypt(cookie)
+        const session = cookie ?await decrypt(cookie):null
         
 
         if(isProtectedPath && !session){
                 return NextResponse.redirect(new URL('/sign-in', req.url))
         }
         if(isRoleProtected && session?.role!="admin"){
-                return NextResponse.json({unauthorized:"You are Unauthorized to Access this page"})
+                return NextResponse.redirect(new URL('/unauthorized', req.url));
         }
 
         if (isPublicRoute && session?.userId && req.nextUrl.pathname != '/') {

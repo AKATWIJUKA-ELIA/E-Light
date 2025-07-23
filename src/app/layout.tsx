@@ -3,6 +3,7 @@ import "./globals.css";
 import ReduxProvider from "./ReduxProvider";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "@/components/theme-provider";
+// import SessionChecker from "./sessionchecker";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { FileProvider } from "./FileContext";
 import { DataProvider } from "./DataContext";
@@ -32,6 +33,7 @@ export default function RootLayout({
                         <NotificationProvider>
                                 <BoostProvider>
                                 <ReduxProvider>
+                                        {/* <SessionChecker /> */}
                                         <ThemeProvider
                                                 attribute="class"
                                                 defaultTheme="system"
