@@ -105,7 +105,7 @@ const handlePassword2Change = (e: React.ChangeEvent<HTMLInputElement>)=>{
         e.preventDefault();
         const urlParams = new URLSearchParams(window.location.search);
     const tokenFromUrl =  urlParams.get("3c59c3c631572e859cbZZV05c6d4D637ad496d67b04ea8b0553ae4e1454933d27caf");
-    console.log("TOKEN IS", tokenFromUrl)
+//     console.log("TOKEN IS", tokenFromUrl)
     if (!tokenFromUrl) {
       console.error("Token is missing!");
 //       return;
