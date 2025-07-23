@@ -4,18 +4,17 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useData } from "./DataContext";
 import Loader from "@/components/Loader/loader";
-import useGetSponsored from '@/hooks/useGetSponsored';
+// import useGetSponsored from '@/hooks/useGetSponsored';
 
 
 export default function Page() {
   const router = useRouter();
   const {data} = useData();
-   const { sponsored: sponsored } = useGetSponsored();
+//    const { sponsored: sponsored } = useGetSponsored();
 
   useEffect(() => {
     if (!data|| data.Products.product.length === 0 
-        || data.Categories.categories.length === 0
-        || !sponsored || sponsored.length === 0) {
+        || data.Categories.categories.length === 0) {
       return
     }else{
         router.push("/home"); 
