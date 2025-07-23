@@ -38,6 +38,7 @@ import {getUserById,getOrderById,UpdateOrder} from "@/lib/convex"
 import { Id } from "../../../convex/_generated/dataModel"
 import { useNotification } from "@/app/NotificationContext"
 import { useSendMail } from '@/hooks/useSendMail';
+import {generateStatusChangeEmailHTML} from "@/EmailTemplates/OrderStatusChange";
 
 const statusConfig = {
   pending: { color: "bg-orange-500", icon: Clock, label: "Pending" },
@@ -113,7 +114,7 @@ export default function OrdersTracking() {
     };
     const user = await GetUser(order.order.user_id as Id<"customers">)
 
-    return await UpdateOrder(updatedOrder).then((res) => {
+    return await UpdateOrder(updatedOrder).then(async (res) => {
         if (!res.success) {
             setNotification({
                 status: "error",
@@ -128,14 +129,7 @@ export default function OrdersTracking() {
         });
         // Send An Email To the user if user is valid
         if (user !== null && user.email ) {
-            sendEmail(user.email, `Your order has been marked as ${newStatus}`,` 
-                <html>
-                    <body>
-                        <h1>Your order has been updated</h1>
-                        <p>Dear ${user.username},</p>
-                        <p>Your order status has been changed to ${newStatus}.</p>
-                    </body>
-                </html>`,"management" );
+            sendEmail(user.email, `Your order has been marked as ${newStatus}`, await generateStatusChangeEmailHTML(updatedOrder),"shopcheap" );
         }
 
         return true;
