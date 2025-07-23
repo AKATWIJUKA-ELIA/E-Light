@@ -3,14 +3,13 @@ import { api } from "../../convex/_generated/api";
 
 export const useSendMail = () => {
          const sendSingleEmail = useMutation(api.sendEmail.sendEmail);
-  const sendEmail = async (to:string, subject: string, message: string,department:string,replyTo?:string) => {
+  const sendEmail = async (to:string, subject: string, message: string,department:string) => {
 
     try {
       const response = await sendSingleEmail({
         receiverEmail: to,
         subject: subject,
         html: message,
-        replyTo: replyTo,
         department: department,})
 
       if (!response.success) {

@@ -25,7 +25,6 @@ export const sendEmail = mutation({
                 receiverEmail: v.string(),
                 subject: v.string(),
                 html: v.string(),
-                replyTo: v.optional(v.string()),
                 department: v.string(),
         },
   handler: async (ctx,args) => {
@@ -35,6 +34,7 @@ export const sendEmail = mutation({
       to: `${args.receiverEmail}`,
       subject: args.subject,
       html: args.html,
+      replyTo:["eliaakjtrnq@gmail.com"]
     });
         return { success: true, message: "Email sent successfully", status: 200 };
 } catch (error) {

@@ -58,3 +58,16 @@ export async function UpdateOrder(order: OrderItem) {
         return { success: false, message: "Internal Server Error", status: 500 };
     }
 }
+
+export async function getProductById (productId: Id<"products">) {
+    try {
+        const product = await convex.query(api.products.getProduct, { id:productId });
+        if (!product) {
+            return { success: false, message: "Product not found", status: 404 };
+        }
+        return { success: true, product: product };
+    } catch (error) {
+        console.error("Error fetching product by ID:", error);
+        return { success: false, message: "Internal Server Error", status: 500 };
+    }
+}
