@@ -34,7 +34,7 @@ const useCart = () => {
         }
         const DeleteCart = async (product_id:Id<"products">) => {
                 try {
-                        const response = await deleteCart({ id:product_id });
+                        const response = await deleteCart({ id:product_id,user_id: User?.User_id as Id<"customers"> });
                         if (!response?.success) {
                                 return { success: false, message: response.message, status: 400 };
                         }
@@ -46,8 +46,8 @@ const useCart = () => {
 
         const IncreaseCart = async(Product_id: Id<"products">) => {
                 try {
-                        console.log("Product_id", Product_id);
-                        const response = await  increaseCart({ id:Product_id });
+                        // console.log("Product_id", Product_id);
+                        const response = await  increaseCart({ id:Product_id,user_id: User?.User_id as Id<"customers"> });
                         if (!response?.success) {
                                 return { success: false, message: response.message , status: 400 };
                         }
@@ -58,7 +58,7 @@ const useCart = () => {
         }
         const ReduceCart = async(Product_id: Id<"products">,) => {
                 try {
-                        const response = await reduceCart({ id:Product_id });
+                        const response = await reduceCart({ id:Product_id,user_id:User?.User_id as Id<"customers"> });
                         if (!response?.success) {
                                 return { success: false, message: response.message , status: 400 };
                         }
