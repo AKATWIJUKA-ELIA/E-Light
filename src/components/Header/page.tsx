@@ -60,7 +60,7 @@ const Header = () => {
         }, [User]);
 
         useEffect(()=>{
-                if(pathname ==="/sign-up" || pathname === "/sign-in" || pathname.includes("profile") || pathname.includes("admin")){
+                if(pathname ==="/sign-up" || pathname === "/sign-in" ||pathname.includes("register") || pathname.includes("profile") || pathname.includes("admin")){
                         setshowlowerBar(false)
                 }
                 else{
@@ -259,11 +259,11 @@ const Header = () => {
         <div className='flex ml-5  md:ml-32  ' >
                 
         <div className='flex flex-nowrap gap-4 ' >
-                <div className='flex rounded-xl   p-1 bg-gray-100 hover:cursor-pointer hover:bg-gray-100 gap-2 dark:bg-transparent dark:hover:bg-gray-700'   onMouseOver={showDropDownMenu} >
+                <div className={`flex rounded-full   p-2 ${Hovered?"bg-gray-100":"bg-gray-500 "} transition duration-500  hover:cursor-pointer  gap-2 dark:bg-transparent dark:hover:bg-gray-700`}   onMouseOver={showDropDownMenu} >
                          <BsList className=' font-bold text-2xl ' /> <h1 className='flex '>Categories</h1>
                 </div  >
-                <div className='flex rounded-full   p-2   hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700' onMouseOver={() => setHovered(false)} >
-                        <Link className='hidden md:flex' href="/post" >Sell Something?</Link>
+                <div className='flex rounded-full bg-gold   p-2   hover:cursor-pointer hover:bg-yellow-400 dark:hover:bg-gray-700' onMouseOver={() => setHovered(false)} >
+                        <Link className='hidden md:flex' href="/register" >Become a Seller?</Link>
                         <Link className='flex md:hidden' href="/post" >sell ?</Link>
                 </div>
         </div >
@@ -274,7 +274,7 @@ const Header = () => {
     data.Categories.categories?.slice(0, 7).map((cartegory, index) =>
       <div
         key={index}
-        className='rounded-xl p-2 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700'
+        className={`rounded-full p-2 hover:cursor-pointer  bg-gray-100 hover:bg-gray-200 dark:text-black dark:hover:bg-gray-700`}
       >
         <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap'>
           {cartegory.cartegory}
