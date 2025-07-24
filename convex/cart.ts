@@ -1,6 +1,8 @@
+import { api } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import {action, internalQuery, mutation, query} from "./_generated/server"
 import {v} from "convex/values"
+import {newOrderCreationEmailHTML} from "../src/EmailTemplates/OrderCreationEmail";
 
 
 export const createCart = mutation({
@@ -16,7 +18,7 @@ export const createCart = mutation({
                 try{
                         const existing = await ctx.db
                         .query("cart")
-                        .withIndex("by_product_id", (q) => q.eq("product_id", args.CartItem.product_id))
+                        .withIndex("by_product_and_user", (q) => q.eq("product_id", args.CartItem.product_id).eq("cart_Owner_id", args.CartItem.cart_Owner_id))
                         .unique();
                   if(existing){
                         await ctx.db.patch(existing._id, {
@@ -35,10 +37,10 @@ export const createCart = mutation({
   })
 
           export const DeleteCart = mutation({
-                args: { id: v.id("products") },
+                args: { id: v.id("products"),user_id: v.id("customers") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
-                    .withIndex("by_product_id", (q) => q.eq("product_id", args.id))
+                    .withIndex("by_product_and_user", (q) => q.eq("product_id", args.id).eq("cart_Owner_id", args.user_id))
                     .first();
                   if (!cart) {
                     return {message:"Cart product not found", success: false } 
@@ -49,10 +51,10 @@ export const createCart = mutation({
               });
 
 export const IncreaseCart = mutation({
-                args: { id: v.id("products") },
+                args: { id: v.id("products"),user_id:v.id("customers") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
-                    .withIndex("by_product_id", (q) => q.eq("product_id", args.id))
+                    .withIndex("by_product_and_user", (q) => q.eq("product_id", args.id).eq("cart_Owner_id", args.user_id))
                     .first();
                   if (!cart) {
                     return {message:"Cart product not found", success: false } 
@@ -64,10 +66,10 @@ export const IncreaseCart = mutation({
                 },
               });
         export const ReduceCart = mutation({
-                args: { id: v.id("products") },
+                args: { id: v.id("products"),user_id:v.id("customers") },
                 handler: async (ctx, args) => {
                   const cart = await ctx.db.query("cart")
-                    .withIndex("by_product_id", (q) => q.eq("product_id", args.id))
+                    .withIndex("by_product_and_user", (q) => q.eq("product_id", args.id).eq("cart_Owner_id", args.user_id))
                     .first();
                   if (!cart) {
                     return {message:"Cart product not found", success: false } 
@@ -104,7 +106,9 @@ export const IncreaseCart = mutation({
                   }
                   cart.forEach(async (item) => {
                         const sellerId = await ctx.db.get(item.product_id ).then(product => product?.product_owner_id);
-                        await ctx.db.insert("orders", {
+                        const Seller = await ctx.db.get(sellerId as Id<"customers">)
+                        const product = await ctx.db.get(item.product_id as Id<"products">);
+                        const newOrder = await ctx.db.insert("orders", {
                               user_id: args.userId,
                               product_id: item.product_id,
                               quantity: item.quantity,
@@ -113,6 +117,28 @@ export const IncreaseCart = mutation({
                               specialInstructions: item.specialInstructions,
                               cost: item.quantity * Number((await ctx.db.get(item.product_id))?.product_price)
                         });
+
+                        if (product && Seller) {
+                          await ctx.runMutation(api.sendEmail.sendEmail, {
+                                receiverEmail: (await ctx.db.get(sellerId as Id<"customers">))?.email || "",
+                                subject: "New Order Created",
+                                html: await newOrderCreationEmailHTML({
+                                  _id: newOrder,
+                                  user_id: args.userId,
+                                  product_id: item.product_id,
+                                  quantity: item.quantity,
+                                  order_status: "pending",
+                                  sellerId: sellerId as Id<"customers">,
+                                  specialInstructions: item.specialInstructions,
+                                  cost: item.quantity * Number((await ctx.db.get(item.product_id))?.product_price),
+                                  _creationTime: Date.now(),
+                                },
+                                  Seller,
+                                  product
+                                ),
+                                department: "ShopCheap",
+                          });
+                        }
                         await ctx.db.delete(item._id);
                   })
                   

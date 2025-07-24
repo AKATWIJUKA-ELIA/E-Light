@@ -4,7 +4,8 @@ import { User } from "./utils";
 import { Id } from "../../convex/_generated/dataModel";
 import { OrderItem } from "./utils";
 
-const convex = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+
+const convex = new ConvexClient("https://cheery-cod-687.convex.cloud");
 
 export async function getUserById(id:  Id<"customers">) {
   if (!id) return { user: null, loading: false, error: "No ID provided" };
