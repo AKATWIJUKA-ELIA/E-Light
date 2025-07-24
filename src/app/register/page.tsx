@@ -64,8 +64,8 @@ interface SellerFormData {
   identityDocument: File | null
 
   // Agreement
-  termsAccepted: boolean
-  privacyAccepted: boolean
+  termsAccepted: string
+  privacyAccepted: string
 }
 
 const businessTypes = ["Sole Proprietorship", "Partnership", "LLC", "Corporation", "Non-Profit", "Other"]
@@ -114,15 +114,15 @@ export default function SellerRegistration() {
     businessLicense: null,
     taxCertificate: null,
     identityDocument: null,
-    termsAccepted: false,
-    privacyAccepted: false,
+    termsAccepted: "no",
+    privacyAccepted: "no",
   })
 
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const handleInputChange = (field: keyof SellerFormData, value: any) => {
+  const handleInputChange = (field: keyof SellerFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -200,7 +200,7 @@ export default function SellerRegistration() {
         "Registration submitted successfully! We will review your application and get back to you within 2-3 business days.",
       )
     } catch (error) {
-      alert("An error occurred. Please try again.")
+      alert(`An error occurred.${error} Please try again.`)
     } finally {
       setIsSubmitting(false)
     }
@@ -761,7 +761,7 @@ export default function SellerRegistration() {
 
                     <div>
                       <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                        Identity Document (Driver's License, Passport, etc.)
+                        Identity Document (Driver&apos;s License, Passport, etc.)
                       </Label>
                       <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
                         <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
@@ -795,7 +795,7 @@ export default function SellerRegistration() {
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                   <h3 className="text-lg font-semibold text-blue-900 mb-4">Review Your Information</h3>
                   <p className="text-blue-700 text-sm">
-                    Please review all the information you've provided. Once submitted, our team will review your
+                    Please review all the information you&apos;ve provided. Once submitted, our team will review your
                     application within 2-3 business days.
                   </p>
                 </div>
@@ -869,8 +869,8 @@ export default function SellerRegistration() {
                   <div className="flex items-start space-x-3">
                     <Checkbox
                       id="terms"
-                      checked={formData.termsAccepted}
-                      onCheckedChange={(checked) => handleInputChange("termsAccepted", checked)}
+                      checked={formData.termsAccepted=== "yes"? true : false}
+                      onCheckedChange={(checked) => handleInputChange("termsAccepted", `${checked?"yes":"no"}`)}
                       className={errors.termsAccepted ? "border-red-500" : ""}
                     />
                     <Label htmlFor="terms" className="text-sm text-gray-700 leading-relaxed">
@@ -891,8 +891,8 @@ export default function SellerRegistration() {
                   <div className="flex items-start space-x-3">
                     <Checkbox
                       id="privacy"
-                      checked={formData.privacyAccepted}
-                      onCheckedChange={(checked) => handleInputChange("privacyAccepted", checked)}
+                      checked={formData.privacyAccepted=== "yes"? true : false}
+                      onCheckedChange={(checked) => handleInputChange("privacyAccepted", `${checked?"yes":"no"}`)}
                       className={errors.privacyAccepted ? "border-red-500" : ""}
                     />
                     <Label htmlFor="privacy" className="text-sm text-gray-700 leading-relaxed">

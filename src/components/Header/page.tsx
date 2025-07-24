@@ -274,7 +274,7 @@ const Header = () => {
     data.Categories.categories?.slice(0, 7).map((cartegory, index) =>
       <div
         key={index}
-        className={`rounded-full p-2 hover:cursor-pointer  bg-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700`}
+        className={`rounded-full p-2 hover:cursor-pointer  bg-gray-100 hover:bg-gray-200 dark:text-black dark:hover:bg-gray-700`}
       >
         <Link href={`/category/${cartegory.cartegory}`} className='flex-nowrap'>
           {cartegory.cartegory}
