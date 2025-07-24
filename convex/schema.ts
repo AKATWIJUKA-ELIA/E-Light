@@ -10,6 +10,7 @@ export default defineSchema({
     quantity: v.number(),
         specialInstructions: v.optional(v.string()),
   }).index("by_cart_Owner_id", ["cart_Owner_id"])
+  .index("by_product_and_user", ["product_id", "cart_Owner_id"])
   .index("by_product_id", ["product_id"]),
 
   cartegories: defineTable({ 
