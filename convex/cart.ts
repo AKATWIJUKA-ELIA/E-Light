@@ -86,6 +86,7 @@ export const IncreaseCart = mutation({
                   return {message:"success", success: true };
                 },
               });
+              
               export const getCart = query({
                 args: {userId: v.string()},
                 handler: async (ctx, args) => {
