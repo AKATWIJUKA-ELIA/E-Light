@@ -7,6 +7,7 @@ import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, ArrowRight 
 import { useSendMail } from "@/hooks/useSendMail"
 import useAddEmail from "@/hooks/useAddEmail"
 import { useState } from "react"
+import Image from "next/image"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -178,46 +179,50 @@ setTimeout(() => {
           {/* Main Footer Content */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {/* Company Info */}
-            <div>
-              <h4 className="font-bold text-lg text-white mb-4 dark:text-gray-100">Company</h4>
-              <div className="space-y-3">
-                <Link href="/about" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
-                  About Us
+            <div className="flex flex-col text-gray-600 dark:text-gray-300 items-center  space-y-4 gap-6 ">
+              
+              <div className=" flex p-4 space-y-3">
+                <Link href="/" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                  <div className='flex rounded-md ml-5'>
+                                <Link href="/">
+                                <Image 
+                                 src="/images/Logo1.png"
+                                  alt='logo'
+                                   width='200'
+                                    height="100"
+                                    className=' h-12'
+                                    />
+                                
+                                </Link>
+                        </div>
                 </Link>
-                <Link href="/careers" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
-                  Careers
-                </Link>
-                <Link href="/impact" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
-                  Social Impact
-                </Link>
-                <Link href="/affiliates" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
-                  Affiliate Program
-                </Link>
+                
               </div>
+              <h4 className="font-bold text-lg text-white mb-4 dark:text-gray-100">Anytime  Anywhere ... </h4>
             </div>
       
             {/* Customer Service */}
             <div>
               <h4 className="font-bold text-lg text-white mb-4 dark:text-gray-100">Customer Service</h4>
               <div className="space-y-3">
-                <Link href="/help" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
-                  Help Center
+                <Link href="/about" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                  About Us
                 </Link>
-                <Link href="/shipping" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
-                  Shipping & Delivery
+                <Link href="/register" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                  Sell on ShopCheap
                 </Link>
-                <Link href="/returns" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                {/* <Link href="/returns" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
                   Returns & Exchanges
-                </Link>
-                <Link href="/order-tracking" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                </Link> */}
+                <Link href="/profile/orders" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
                   Order Tracking
                 </Link>
-                <Link href="/gift-cards" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                {/* <Link href="/gift-cards" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
                   Gift Cards
-                </Link>
-                <Link href="/contact" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                </Link> */}
+                {/* <Link href="/contact" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
                   Contact Us
-                </Link>
+                </Link> */}
               </div>
             </div>
       
@@ -229,10 +234,13 @@ setTimeout(() => {
                   Sign In
                 </Link>
                 <Link href="/sign-up" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
-                  Register
+                  Create Account
                 </Link>
                 <Link href="/cart" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
                   Shopping Cart
+                </Link>
+                <Link href="/profile/bookmarks" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
+                  Bookmarks
                 </Link>
               </div>
             </div>
