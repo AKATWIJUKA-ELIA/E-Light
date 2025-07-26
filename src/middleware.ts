@@ -27,9 +27,10 @@ const Middleware = async (req: NextRequest) => {
         if(isProtectedPath && !session){
                 return NextResponse.redirect(new URL('/sign-in', req.url))
         }
-        if(isRoleProtected && session?.role!="admin"){
-                return NextResponse.redirect(new URL('/unauthorized', req.url));
-        }
+        if(
+                isRoleProtected && (session?.role !== "admin" && session?.role !== "sudo")){
+                        return NextResponse.redirect(new URL('/unauthorized', req.url));
+                }
 
         if (isPublicRoute && session?.userId && req.nextUrl.pathname != '/') {
                 return NextResponse.redirect(new URL('/', req.nextUrl))
