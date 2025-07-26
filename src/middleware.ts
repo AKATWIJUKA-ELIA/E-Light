@@ -6,10 +6,12 @@ const isProtected = [
         '/post',
         '/profile',
         "/admin",
+        "/register",
+        "/sudo",
         
 ]
 const publicRoutes = ['/sign-in', '/sign-up']
-const RoleProtected = ['/admin(.*)'];
+const RoleProtected = ['/admin(.*)', '/sudo(.*)', ];
 const Middleware = async (req: NextRequest) => {
         
         const path = req.nextUrl.pathname
