@@ -955,19 +955,7 @@ export default function SellerRegistration() {
           </CardContent>
         </Card>
 
-        {/* Footer */}
-        <div className="text-center mt-8 text-sm text-gray-600">
-          <p>
-            Need help? Contact our seller support team at{" "}
-            <a href="mailto:sellers@yourstore.com" className="text-blue-600 hover:underline">
-              sellers@yourstore.com
-            </a>{" "}
-            or call{" "}
-            <a href="tel:+1234567890" className="text-blue-600 hover:underline">
-              (123) 456-7890
-            </a>
-          </p>
-        </div>
+    
       </div>
     </div >
   )
