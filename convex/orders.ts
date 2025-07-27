@@ -12,10 +12,25 @@ export const getUserOrders = query({
                     .withIndex("by_user_id", (q) => q.eq("user_id", args.userId))
                     .collect();
                   return await Promise.all(
-      orders.map(async order => ({
-        ...order,
-        product: await ctx.db.get(order.product_id as Id<"products">),
-      }))
+      orders.map(async order => {
+        const product = await ctx.db.get(order.product_id as Id<"products">);
+        if (!product) return { ...order, product: null };
+
+        // Convert product_images (array of storage IDs) to URLs
+        const imageUrls = await Promise.all(
+          (product.product_image || []).map(async (imgId) =>
+            imgId ? await ctx.storage.getUrl(imgId) || "" : ""
+          )
+        );
+        return {
+          ...order,
+          product: {
+            ...product,
+            product_image: imageUrls, // Now an array of URLs
+          },
+        }
+                })
+      
     );
   }
 });
