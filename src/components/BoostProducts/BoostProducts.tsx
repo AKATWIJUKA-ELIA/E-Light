@@ -537,7 +537,7 @@ useEffect(() => {
                      activeBoosts.filter((boost) => (boost.product_sponsorship?.duration ?? 0) > Date.now()).map((product) => (
                       <Card key={product?._id} className="hover:shadow-md dark:bg-gray-800">
                         <CardContent className="p-4">
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col md:flex-row items-center justify-between">
                             <div className="flex items-center gap-4">
                               <Image
                                 src={product?.product_image[0] || "/placeholder.svg"}
@@ -554,7 +554,7 @@ useEffect(() => {
                                         {product?.product_sponsorship?.type || "Basic"}
                                         </span>
                                 </div>
-                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ends: <span className="font-semibold text-green-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
+                                <span className="flex items-center gap-1 " ><Clock className="w-4 h-4 " color="red"  /> Ends: <span className="md:font-semibold text-sm  text-green-600" >{product.product_sponsorship?.duration? formatDate(product.product_sponsorship.duration):"NaN"}</span></span>
                               </div>
                             </div>
 

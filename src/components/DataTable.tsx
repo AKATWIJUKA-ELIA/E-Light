@@ -90,9 +90,10 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
         return (
                 <>
                 <div className="w-full  overflow-x-auto rounded-lg border px-2 ">
-                        <div className="flex items-center justify-between p-4 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
-                                <div className="text-lg font-semibold">{status} Products</div>
-                                {status === 'Approved' && <Button 
+                        <div className="flex flex-col md:flex-row items-center justify-between p-4 space-y-2 bg-gray-100  dark:bg-gray-800 rounded-t-lg">
+                                <div className="md:text-lg font-semibold">{status} Products</div>
+                                <div className="flex space-x-4" >
+                                        {status === 'Approved' && <Button 
                                 className="bg-green-400 hover:bg-green-700 transition-transform duration-500" 
                                 onClick={() => HandelBoost()}
                                 disabled={checked.length === 0}>
@@ -105,6 +106,7 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                                 disabled={checked.length === 0}>
                                         Delete Selected
                                 </Button>
+                                </div>
                         </div>
                 {products && products.length > 0 ?( 
                         <Table className="min-w-[800px]">
