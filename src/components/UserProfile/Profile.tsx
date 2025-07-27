@@ -286,34 +286,14 @@ clearForm()
 
 
   return (
-    <div className="flex justify-center gap-44 " >
+    <div className="flex flex-col md:flex-row justify-center md:gap-44 " >
        
         <div className="flex flex-col gap-24">
                  <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">Account Settings </h1>
                         <h1 className="font-extrabold font-sans  text-red-700 text-xl " >Hi, <span className=" font-extrabold" >{ User?.username.toUpperCase()}!</span></h1>
-                        <div className="flex mt-4 font-semibold p-3 hover:cursor-pointer transition duration-300  hover:bg-gray-400 rounded-md   gap-2">
-                        <h1>
-                                Past Orders
-                        </h1>
-                        </div>
-                 <div className="flex mt-4 font-semibold p-3 hover:cursor-pointer transition duration-300  hover:bg-gray-400 rounded-md  gap-2">
-                        <h1>
-                                Payment Methods
-                        </h1>
                  </div>
-                 </div>
- 
-                 
-                 <div className="flex flex-col gap-4 mt-34">
-                   
-                        <Button variant={"destructive"} 
-                        className="w-full hover:cursor-pointer hover:bg-red-400  "
-                        // onClick={()=>LogOut()}
-                >
-                        Delete Account
-                        </Button>
-                 </div>
+
         </div>
         <form onSubmit={handleSubmit} className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
@@ -322,7 +302,7 @@ clearForm()
           Enter your your Details below to Update to your Data
         </p>
         {Created && <p className="text-balance text-sm text-green-500">
-          Success !  You acount has been updated, 
+          Success !  You acount has been updated,
         </p> }
         {SubmittingError  && SubmittingError.length>0  && <p className="text-balance text-sm text-red-500">
           Error !  {SubmittingError}
