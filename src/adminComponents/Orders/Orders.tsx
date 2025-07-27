@@ -261,7 +261,7 @@ useEffect(() => {
                                         </div>
 
                                         {/* Action Section */}
-                                        <div className="flex items-start justify-end gap-1">
+                                        <div className="grid grid-cols-3 items-start justify-end gap-1">
                                         <Button
                                         variant="outline"
                                         size="sm"
@@ -311,9 +311,9 @@ useEffect(() => {
                                         </div>
                                         </div>
                                 </CardHeader>
-                    <CardContent className="md:p-6 grid  grid-cols-2 lg:grid-cols-3  border  gap-3 p-2 rounded-2xl ">
+                    <CardContent className="md:p-6 grid  md:grid-cols-2 lg:grid-cols-3  border  gap-3 p-2 rounded-2xl ">
                         
-                        <div className="flex flex-col md:flex-row space-x-4 gap-2  bg-blue-500/10 items-center  border border-purple-400 rounded-2xl p-1   ">
+                        <div className="flex  space-x-4 gap-2  bg-blue-500/10 items-center  border border-purple-400 rounded-2xl p-1   ">
                                                 <div className="flex gap-3 items-center  w-[25%] h-[85%] rounded-md ">
                                                        {order.product?.product_image ? (
                                                                           <Image
@@ -328,7 +328,8 @@ useEffect(() => {
                                                                                 )}
                                                 </div>
 
-                                                <div className="text-sm text-gray-600 space-y-1">
+                                                <div className="flex" >
+                                                        <div className="text-sm text-gray-600 space-y-1">
                                                                 <h3 className="text-lg font-semibold">{order.product?.product_name}</h3>
                                                                 <div className="flex items-center gap-2">
                                                                         Price: {order.product?.product_price ? `Ugx: ${Number(order.product.product_price).toLocaleString()}` : "N/A"}
@@ -343,105 +344,106 @@ useEffect(() => {
                                                                 </div>
                                                         </div>
 
-                                                <div className="flex flex-col bg-amber-3d00  items-start sm:items-center gap-3">
-                                                <div className=" flex flex-col text-right">
-                                                
-                                                </div>
-                                                <div className="flex gap-2">
-                                                <Dialog>
-                                                <DialogTrigger asChild>
-                                                        <Button variant="outline" size="sm" onClick={() => setSelectedOrder(order)}>
-                                                        <Eye className="w-4 h-4 mr-1" />
-                                                        View
-                                                        </Button>
+                                                        <div className="flex flex-col bg-amber-3d00  items-start sm:items-center gap-3">
+                                                        <div className=" flex flex-col text-right">
                                                         
-                                                </DialogTrigger>
-                                                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                                                        <DialogHeader>
-                                                        <DialogTitle>Order Details for - {order?.product?.product_name}</DialogTitle>
-                                                        <DialogDescription>
-                                                        Placed on {order._creationTime ? formatDate(order._creationTime) : ""}
-                                                        </DialogDescription>
-                                                        </DialogHeader>
-
-                                                        {selectedOrder && (
-                                                        <div className="space-y-6">
-                                                        <Separator />
-
-                                                        {/* Order Items */}
-                                                        <div>
-                                                        <h4 className="font-semibold mb-3">Order Items</h4>
-                                                        <div className="space-y-3">
-                                                                <div  className="flex items-center gap-3">
-                                                                <Image
-                                                                src={order.product?.product_image[0] || "/placeholder.svg"}
-                                                                alt={order.product?.product_name || "Product Image"}
-                                                                width={60}
-                                                                height={60}
-                                                                className="rounded-lg object-cover"
-                                                                />
-                                                                <div className="flex-1">
-                                                                <h5 className="font-medium">{order.product?.product_name}</h5>
-                                                                {/* {item.customizations && (
-                                                                        <p className="text-sm text-gray-600">
-                                                                        {item.customizations.join(", ")}
-                                                                        </p>
-                                                                )} */}
-                                                                <p className="text-sm text-gray-500">Qty: {order.quantity}</p>
-                                                                </div>
-                                                                <div className="text-right">
-                                                                <p className="font-medium">Ugx:{(Number(order.product?.product_price) * order.quantity).toLocaleString()}</p>
-                                                                </div>
-                                                                </div>
                                                         </div>
-                                                        </div>
+                                                        <div className="flex gap-2">
+                                                        <Dialog>
+                                                        <DialogTrigger asChild>
+                                                                <Button variant="outline" size="sm" onClick={() => setSelectedOrder(order)}>
+                                                                <Eye className="w-4 h-4 mr-1" />
+                                                                View
+                                                                </Button>
+                                                                
+                                                        </DialogTrigger>
+                                                        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                                                                <DialogHeader>
+                                                                <DialogTitle>Order Details for - {order?.product?.product_name}</DialogTitle>
+                                                                <DialogDescription>
+                                                                Placed on {order._creationTime ? formatDate(order._creationTime) : ""}
+                                                                </DialogDescription>
+                                                                </DialogHeader>
 
-                                                        <Separator />
-
-                                                        {/* Order Details */}
-                                                        <div>
-                                                        <h4 className="font-semibold mb-3">Order Details</h4>
-                                                        <div className="space-y-2 text-sm">
-                                                        <div>
-                                                                <h1>
-                                                                        {order.product?.product_description}
-                                                                </h1>
-                                                        </div>
-                                                                <div className="flex justify-between">
-                                                                <span>Delivery Fee</span>
-                                                                {/* <span>${selectedOrder.deliveryFee.toFixed(2)}</span> */}
-                                                                </div>
+                                                                {selectedOrder && (
+                                                                <div className="space-y-6">
                                                                 <Separator />
-                                                                <div className="flex justify-between font-semibold text-base">
-                                                                <span>Total</span>
-                                                                Ugx: {(Number(order.product?.product_price) * order.quantity).toLocaleString()}
+
+                                                                {/* Order Items */}
+                                                                <div>
+                                                                <h4 className="font-semibold mb-3">Order Items</h4>
+                                                                <div className="space-y-3">
+                                                                        <div  className="flex items-center gap-3">
+                                                                        <Image
+                                                                        src={order.product?.product_image[0] || "/placeholder.svg"}
+                                                                        alt={order.product?.product_name || "Product Image"}
+                                                                        width={60}
+                                                                        height={60}
+                                                                        className="rounded-lg object-cover"
+                                                                        />
+                                                                        <div className="flex-1">
+                                                                        <h5 className="font-medium">{order.product?.product_name}</h5>
+                                                                        {/* {item.customizations && (
+                                                                                <p className="text-sm text-gray-600">
+                                                                                {item.customizations.join(", ")}
+                                                                                </p>
+                                                                        )} */}
+                                                                        <p className="text-sm text-gray-500">Qty: {order.quantity}</p>
+                                                                        </div>
+                                                                        <div className="text-right">
+                                                                        <p className="font-medium">Ugx:{(Number(order.product?.product_price) * order.quantity).toLocaleString()}</p>
+                                                                        </div>
+                                                                        </div>
                                                                 </div>
-                                                        </div>
-                                                        </div>
+                                                                </div>
 
-                                                        <Separator />
+                                                                <Separator />
 
-                                                        {/* Delivery & Payment Info */}
-                                                        <div className="grid md:grid-cols-2 gap-6">
-                                                        <div>
-                                                                <h4 className="font-semibold mb-2">Delivery Address</h4>
-                                                                {/* <p className="text-sm text-gray-600">{selectedOrder.deliveryAddress}</p> */}
-                                                        </div>
-                                                        <div>
-                                                                <h4 className="font-semibold mb-2">Payment Method</h4>
-                                                                {/* <p className="text-sm text-gray-600">{selectedOrder.paymentMethod}</p> */}
-                                                        </div>
-                                                        </div>
+                                                                {/* Order Details */}
+                                                                <div>
+                                                                <h4 className="font-semibold mb-3">Order Details</h4>
+                                                                <div className="space-y-2 text-sm">
+                                                                <div>
+                                                                        <h1>
+                                                                                {order.product?.product_description}
+                                                                        </h1>
+                                                                </div>
+                                                                        <div className="flex justify-between">
+                                                                        <span>Delivery Fee</span>
+                                                                        {/* <span>${selectedOrder.deliveryFee.toFixed(2)}</span> */}
+                                                                        </div>
+                                                                        <Separator />
+                                                                        <div className="flex justify-between font-semibold text-base">
+                                                                        <span>Total</span>
+                                                                        Ugx: {(Number(order.product?.product_price) * order.quantity).toLocaleString()}
+                                                                        </div>
+                                                                </div>
+                                                                </div>
 
-                                                        <Separator />
+                                                                <Separator />
 
-                                                        
+                                                                {/* Delivery & Payment Info */}
+                                                                <div className="grid md:grid-cols-2 gap-6">
+                                                                <div>
+                                                                        <h4 className="font-semibold mb-2">Delivery Address</h4>
+                                                                        {/* <p className="text-sm text-gray-600">{selectedOrder.deliveryAddress}</p> */}
+                                                                </div>
+                                                                <div>
+                                                                        <h4 className="font-semibold mb-2">Payment Method</h4>
+                                                                        {/* <p className="text-sm text-gray-600">{selectedOrder.paymentMethod}</p> */}
+                                                                </div>
+                                                                </div>
+
+                                                                <Separator />
+
+                                                                
+                                                                </div>
+                                                                )}
+                                                        </DialogContent>
+                                                        </Dialog>
+
                                                         </div>
-                                                        )}
-                                                </DialogContent>
-                                                </Dialog>
-
-                                                </div>
+                                                        </div>
                                                 </div>
                         </div> 
 
