@@ -2,7 +2,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider,SidebarTrigger  } from "@/components/ui/sidebar";
 import { useState } from "react";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+// import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { BoostProvider } from "../BoostContext";
 
 
