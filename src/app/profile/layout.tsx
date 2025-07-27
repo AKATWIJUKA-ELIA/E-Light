@@ -1,8 +1,6 @@
 "use client";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider,SidebarTrigger  } from "@/components/ui/sidebar";
-import { useState } from "react";
-// import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { BoostProvider } from "../BoostContext";
 
 
@@ -11,14 +9,11 @@ export default function ProfileLayout({
 }: {
   children: React.ReactNode;
 }) {
-         const [isopen, setisOpen] = useState(true);   
-        const toggleSidebar = () => {
-                  setisOpen(prev => !prev);
-                };
+  
   return (
     <div className="flex flex-col h-screen">
         <BoostProvider>
-        <SidebarProvider open={isopen} onOpenChange={setisOpen}  >
+        <SidebarProvider  >
         <AppSidebar   />
         
                 {/* <button
