@@ -24,8 +24,8 @@ export default function ProfileLayout({
                 >
                   {isopen ? <FaAngleLeft /> : <FaAngleRight />}
                 </button> */}
-      <main className="flex-1 overflow-y-auto relative ">
-        <SidebarTrigger className="absolute z-50 bg-dark text-white dark:bg-blue-800 top-[13%] " />
+      <main className="flex-1 overflow-y-auto  ">
+        <SidebarTrigger className=" z-50 absolute bg-dark text-white dark:bg-blue-800 top-[13%] " />
         {children}
       </main>
       </SidebarProvider>
