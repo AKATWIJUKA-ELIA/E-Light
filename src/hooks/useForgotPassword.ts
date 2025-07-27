@@ -29,7 +29,7 @@ const useForgotPassword = () => {
                         role:user?.role||"",
                         isVerified:user?.isVerified||false,
                         reset_token: token,
-                        reset_token_expires:Math.floor(Date.now() / 1000) + 10 * 60,
+                        reset_token_expires:Date.now() + 10*60 * 1000,
                         updatedAt:Date.now(),
                         lastLogin:Date.now(),
                 }

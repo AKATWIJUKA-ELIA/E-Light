@@ -74,9 +74,13 @@ export const CreateUser = mutation({
                 export const GetCustomerByToken = query({
                 args:{token:v.string()},
                 handler:async(ctx,args)=>{
+                        
                         const customer = await ctx.db.query("customers")
-                        .withIndex("by_reset_token_and_by_reset_token_expires", (q) => q.eq("reset_token", args.token).gt("reset_token_expires", Date.now()))
+                        .withIndex("by_reset_token_and_by_reset_token_expires", (q) => q
+                        .eq("reset_token", args.token)
+                        .gt("reset_token_expires", Date.now()))
                         .unique();
+                        console.log("Customer by token:", customer);
                         if (!customer) {
                                return { success:false ,status: 404,message: "User not Found",user:null };
                         }
