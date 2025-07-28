@@ -4,6 +4,7 @@ import { cronJobs } from "convex/server";
 import { internal, api } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import {generateProductEmailHTML} from "../src/EmailTemplates/ProductRecommendations";
+import {AccountDeletion} from "../src/EmailTemplates/AccountDeletion";
 
 export const DeleteUnVerifiedUsers = internalMutation({
   args: {},
@@ -18,9 +19,8 @@ export const DeleteUnVerifiedUsers = internalMutation({
                 if(customer._creationTime + 7 * 24 * 60 * 60 * 1000 < Today) {
                         await ctx.runMutation(api.sendEmail.sendEmail, {
         receiverEmail: customer.email,
-        subject: "Your subscription is expiring soon",
-        html: `Hi, ${customer.username} your Account Has been Deleted  Since you didnt verify it within Seven (7) days from creation,
-        Please Create a new account to continue enjoying our services! <a href="https://shopcheap.vercel.app/sign-up">Create Account</a>`,
+        subject: "Account Deletion Notice",
+        html: AccountDeletion(customer.email, customer.username),
         department:"ShopCheap",
       });
                         await ctx.db.delete(customer._id);
