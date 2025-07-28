@@ -2,8 +2,8 @@
 
 import {Rocket, type LucideIcon } from "lucide-react"
 import { IoBagCheckOutline  } from "react-icons/io5";
-import {LayoutDashboardIcon,HomeIcon,CreditCard,SquarePlus,Rows4,
-        // Users,HandCoins,SquareStack,Newspaper,User
+import {LayoutDashboardIcon,HomeIcon,CreditCard,SquarePlus,Rows4,Newspaper
+        // Users,HandCoins,SquareStack,User
 
 } from "lucide-react"
 
@@ -23,53 +23,53 @@ export function NavMain() {
                 {
                         title: "Home",
                         icon: HomeIcon as LucideIcon,
-                        link:"/admin",
+                        link:"/sudo",
                 },
                 
               
                 {
                         title: "Orders",
                         icon: IoBagCheckOutline as LucideIcon,
-                        link:"/admin/orders",
+                        link:"/sudo/orders",
                 },
              
                  {
                         title: "Add products",
                         icon: SquarePlus   as LucideIcon,
-                        link:"/admin/post",
+                        link:"/sudo/post",
                 },
                 {
                         title: "All products",
                         icon: Rows4    as LucideIcon,
-                        link:"/admin/#all",
+                        link:"/sudo/#all",
                 },
                 {
                         title: "Approved Products",
                         icon: FcApproval    as LucideIcon,
-                        link:"/admin/approved",
+                        link:"/sudo/approved",
                 },
                 
                 {
                         title: "Pending",
                         icon: MdOutlinePending     as LucideIcon,
-                        link:"/admin/pending",
+                        link:"/sudo/pending",
                 },
                 {
                         title: "Transactions",
                         icon: CreditCard   as LucideIcon,
-                        link:"/admin/payment-methods",
+                        link:"/sudo/payment-methods",
                 },
                 
                 {
                         title: "Boost ",
                         icon: Rocket   as LucideIcon,
-                        link:"/admin/boost",
+                        link:"/sudo/boost",
                 },
-                // {
-                //         title: "NewsLetter",
-                //         icon: Newspaper      as LucideIcon,
-                //         link:"/admin/newsletter",
-                // },
+                {
+                        title: "NewsLetter",
+                        icon: Newspaper      as LucideIcon,
+                        link:"/sudo/newsletter",
+                },
                
                 
                 

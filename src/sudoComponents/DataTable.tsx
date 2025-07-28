@@ -13,9 +13,24 @@ import EditModal from "./EditModal/page";
 import DeleteModal from "./DeleteModal/page";
 import { useEffect, useState } from "react";
 import DeleteAllModal from "./DeleteAll/page";
-import { Product } from "@/lib/utils";
+// import { Product } from "@/lib/utils";
 import { Id } from "../../convex/_generated/dataModel";
+import ApproveRevokeModal from "@/components/ApproveRevoke/page";
+import useGetProductById from "@/hooks/useGetProductById";
 
+
+interface Product {
+        _id:Id<"products">,
+  approved: boolean,
+  product_cartegory: string,
+  product_condition: string,
+  product_description: string,
+  product_image: string[]|string|null,
+  product_name: string,
+  product_owner_id: string,
+  product_price: string,
+  _creationTime:number
+}
 interface DataTable {
   products: Product[];
   status?: string; 
@@ -23,12 +38,21 @@ interface DataTable {
 const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
 
         const [isvisible, setisvisible] = useState(false);
+        const [ischange, setischange] = useState(false);        
         const [isdelete, setisdelete] = useState(false);
         const [isdeleteall, setisdeleteall] = useState(false);
         const [productId, setproductId] = useState<Id<"products">>("" as Id<"products">);
         const [checked, setchecked] = useState<Id<"products">[]>([]);
         const [allchecked, setallchecked] = useState(false);
+        const[action, setaction] = useState(Boolean)
         // const newProducts = products.filter(product => !product.approved);
+
+         const {data:product} = useGetProductById(productId)
+                useEffect(()=>{
+                        if(product){
+                                setaction(product.approved)
+                        }
+                })
 
         const HandleCheckboxChange=(ProductId:Id<"products">)=>{
                 if(!checked.includes(ProductId)){
@@ -57,6 +81,12 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                 }
 
 }
+
+ const HandleApproveRevoke=(ProductId:Id<"products">)=>{
+                setproductId(ProductId)
+                setischange(true)
+        }
+
         const HandleEdit=(ProductId:Id<"products">)=>{
                 setproductId(ProductId)
                 setisvisible(true)
@@ -125,7 +155,7 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                         <TableCell>{product.product_description}</TableCell>
                         <TableCell className="text-right">
                           <Image
-                            src={product.product_image[0]||""}
+                            src={Array.isArray(product.product_image) ? product.product_image[0] ?? "" : product.product_image ?? ""}
                             width={50}
                             height={50}
                             alt={product.product_name||""}
@@ -139,6 +169,8 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                           </time>
                         </TableCell>
                         <TableCell className=" justify-center  flex gap-1">
+                                <Button className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 " onClick={()=>{HandleApproveRevoke(product._id)}} >{product.approved? "Revoke" : "Approve"}</Button>
+
                         <Button
                           className="flex  bg-blue-400 hover:bg-blue-700 transition-transform duration-500 "
                           onClick={() => {
@@ -173,6 +205,7 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
                 <EditModal isvisible={isvisible} onClose={() => setisvisible(false)} productId={productId} />
                 <DeleteModal isdelete={isdelete} onClose={() => setisdelete(false)} productId={productId} />
                         <DeleteAllModal isdeleteall={isdeleteall} onClose={() => setisdeleteall(false)} productIds={checked} />
+                                <ApproveRevokeModal ischange={ischange}  onClose={() => setischange(false)} productId={productId} Action={action}/>
                 </>
               
         )

@@ -19,9 +19,9 @@ import {
 } from "lucide-react"
 
 // import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/adminComponents/nav-main"
-import { NavSecondary } from "@/adminComponents/nav-secondary"
-import { NavUser } from "@/adminComponents/nav-user"
+import { NavMain } from "@/sudoComponents/nav-main"
+import { NavSecondary } from "@/sudoComponents/nav-secondary"
+import { NavUser } from "@/sudoComponents/nav-user"
 import {
   Sidebar,
   SidebarContent,
