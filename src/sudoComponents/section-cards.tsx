@@ -1,5 +1,5 @@
-import useGetProductsByOwner from "@/hooks/useGetProductsByOwner";
-import useGetSellersOrders from "@/hooks/useGetSellersOrders"
+import useGetAllProducts from "@/hooks/useGetAllProducts";
+import useGetAllOrders from "@/hooks/useGetAllOrders";
 import '../app/globals.css'
 import {
   Card,
@@ -8,12 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { useAppSelector } from "@/hooks"
 
 export function SectionCards() {
-        const User = useAppSelector((state)=>state.user.user)
-         const { data: products, } = useGetProductsByOwner(User?.User_id||'') ;
-        const { data: orders } = useGetSellersOrders();
+         const { data: products, } = useGetAllProducts() ;
+        const { data: orders } = useGetAllOrders();
         // const approved = products?.filter((product) => product.approved).length || 0;
         const pending = products?.filter((product) => !product.approved).length || 0;
   return (

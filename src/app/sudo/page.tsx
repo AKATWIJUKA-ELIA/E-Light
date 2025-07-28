@@ -1,18 +1,18 @@
 "use client"
 import { ChartAreaInteractive } from "@/adminComponents/chart-area-interactive"
-import PieChart  from "@/adminComponents/pie-chart"
-import DataTable  from "@/adminComponents/data-table"
-import { SectionCards } from "../../adminComponents/section-cards"
-import { SiteHeader } from "../../adminComponents/site-header"
-import { SidebarInset,  } from "../../adminComponents/ui/sidebar"
-import useGetProductsByOwner from "@/hooks/useGetProductsByOwner"
-import useGetSellersOrders from "@/hooks/useGetSellersOrders"
+import PieChart  from "@/sudoComponents/pie-chart"
+import DataTable  from "@/sudoComponents/data-table"
+import { SectionCards } from "../../sudoComponents/section-cards"
+import { SiteHeader } from "../../sudoComponents/site-header"
+import { SidebarInset,  } from "../../sudoComponents/ui/sidebar"
+import useGetAllProducts from "@/hooks/useGetAllProducts";
+import useGetAllOrders from "@/hooks/useGetAllOrders";
 import { useAppSelector } from "@/hooks"
 
 const Profile=()=> {
         const User = useAppSelector((state)=>state.user.user)
-        const { data: products, } = useGetProductsByOwner(User?.User_id||'') ;
-        const { data: orders } = useGetSellersOrders();
+        const { data: products, } = useGetAllProducts() ;
+        const { data: orders } = useGetAllOrders();
         
         
   return (

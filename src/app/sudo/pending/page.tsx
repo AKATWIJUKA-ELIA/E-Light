@@ -1,17 +1,22 @@
 "use client";
 import React from 'react'
-import DataTable from '@/components/DataTable';
-import useGetProductsByOwner from '@/hooks/useGetProductsByOwner';
-import { useAppSelector } from '@/hooks';
+import DataTable from '@/sudoComponents/DataTable';
+import useGetAllProducts from '@/hooks/useGetAllProducts';
 
 const Pending = () => {
-        const User = useAppSelector((state)=>state.user.user)
-        const { data: products, } = useGetProductsByOwner(User?.User_id||'');
+        const { data: products, } = useGetAllProducts();
         const newProducts = products?.filter(product => !product.approved)
+    const finalProducts = newProducts?.map((product) => ({
+        ...product,
+        product_image: Array.isArray(product.product_image)
+            ? product.product_image.filter((img): img is string => typeof img === 'string')
+            : typeof product.product_image === 'string' ? [product.product_image] : []
+    }));
+
   return (
     <div className='mt-20' >
         <div className=" px-4 " id="pending" >
-                <DataTable status='Pending'  products={newProducts ?? [] } />
+                <DataTable status='Pending'  products={finalProducts ?? [] } />
               </div>
         </div>
   )

@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { Footer } from '../Footer/page';
 const ConditionalFooter = () => {
         const pathname = usePathname()
-        if(pathname.includes("profile") || pathname.includes("admin")){
+        if(pathname.includes("profile") || pathname.includes("admin")|| pathname.includes("sudo")){
                         return null
                 }
   return (

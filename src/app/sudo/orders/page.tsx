@@ -1,5 +1,5 @@
 import React from 'react'
-import CustomOrders from '@/adminComponents/Orders/Orders'
+import CustomOrders from '@/sudoComponents/Orders/Orders'
 const Order = () => {
   return (
     <div>
