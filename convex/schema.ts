@@ -140,4 +140,18 @@ boosts: defineTable({
 .index("by_boost_type", ["boost_type"])
 .index("by_user_and_status",["user_id","status"])
 .index("by_duration_and_notified", ["duration", "notified"]),
+NewsLetterStorage: defineTable({
+        subject: v.string(),
+        content: v.string(),
+        status: v.union(
+                v.literal("draft"),
+                v.literal("sent"),
+                v.literal("scheduled"),
+                v.literal("failed"),
+                v.literal("bounced"),
+                
+        ),
+        scheduledTime: v.optional(v.number()),
+        DateSent: v.optional(v.number()),
+})
 });
