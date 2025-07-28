@@ -57,6 +57,21 @@ export function NavMain() {
                         )
                 }
 
+                if(user?.role === "sudo"){
+                        items.push(
+                                {
+                        title: "Sudo DashBoard",
+                        icon: LayoutDashboardIcon  as LucideIcon,
+                        link:"/sudo",
+                },
+                {
+                        title: "Sellers DashBoard",
+                        icon: LayoutDashboardIcon  as LucideIcon,
+                        link:"/admin",
+                },
+                        )
+                }
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2 mt-4">
