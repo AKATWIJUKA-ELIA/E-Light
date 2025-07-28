@@ -7,10 +7,8 @@ import { SiteHeader } from "../../sudoComponents/site-header"
 import { SidebarInset,  } from "../../sudoComponents/ui/sidebar"
 import useGetAllProducts from "@/hooks/useGetAllProducts";
 import useGetAllOrders from "@/hooks/useGetAllOrders";
-import { useAppSelector } from "@/hooks"
 
 const Profile=()=> {
-        const User = useAppSelector((state)=>state.user.user)
         const { data: products, } = useGetAllProducts() ;
         const { data: orders } = useGetAllOrders();
         
