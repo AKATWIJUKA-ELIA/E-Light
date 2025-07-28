@@ -16,6 +16,7 @@ import DeleteAllModal from "./DeleteAll/page";
 // import { Product } from "@/lib/utils";
 import { Id } from "../../convex/_generated/dataModel";
 import ApproveRevokeModal from "@/components/ApproveRevoke/page";
+import useGetProductById from "@/hooks/useGetProductById";
 
 
 interface Product {
@@ -45,6 +46,13 @@ const PendingDataTable: React.FC<DataTable> = ({ products, status }) => {
         const [allchecked, setallchecked] = useState(false);
         const[action, setaction] = useState(Boolean)
         // const newProducts = products.filter(product => !product.approved);
+
+         const {data:product} = useGetProductById(productId)
+                useEffect(()=>{
+                        if(product){
+                                setaction(product.approved)
+                        }
+                })
 
         const HandleCheckboxChange=(ProductId:Id<"products">)=>{
                 if(!checked.includes(ProductId)){
