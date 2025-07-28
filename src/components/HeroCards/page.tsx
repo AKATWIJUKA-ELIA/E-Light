@@ -28,7 +28,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
          const addToCart = useAddToCart()
          const [productData, setProductData] = useState<Product | null>(product)
         const truncateString = (text: string, maxLength: number): string => {
-                return text.length > maxLength ? text.slice(0, maxLength) + " . . ." : text;
+                return text.length > maxLength ? text.slice(0, maxLength) + ".." : text;
               };
               useEffect(() => {
                 if (product) {
@@ -41,12 +41,13 @@ const HeroCard = ({ product }: HeroCardProps) => {
         {productData  ? (
           <div
             key={productData._id}
-            className=" flex flex-col  rounded-3xl shadow-m overflow-hidden shadow-xl  border   hover:scale-[103%]    transition-transform duration-500   dark:hover:bg-gray-900 dark:border-black "
+            className=" flex flex-col  rounded-3xl  overflow-hidden shadow-xl  border
+               hover:scale-[103%]    transition-transform duration-500   dark:hover:bg-gray-900 dark:border-black "
           >
 
            
             {/* Product Image */}
-            <Link href={`/product/${productData._id}`} className="w-full rounded-lg">
+            <Link href={`/product/${productData._id}`} className="w-full flex rounded-lg">
               <div className="relative rounded-lg w-full h-48 flex items-center justify-center bg-transparent transition-transform duration-200 p-4">
                 <Image
                   src={
@@ -63,11 +64,11 @@ const HeroCard = ({ product }: HeroCardProps) => {
             </Link>
       
             {/* Product Details */}
-            <div className="p-4 flex flex-col gap-2">
+            <div className="px-4  flex flex-col gap-2">
               {/* Product Name */}
               <h2 className="flex text-lg font-semibold text-gray-900 dark:text-white">
                 <Link href={`/product/${productData._id}`} className="hover:underline">
-                  {productData.product_name}
+                  {truncateString(productData.product_name, 18)}
                 </Link>
               </h2>
       
@@ -79,7 +80,7 @@ const HeroCard = ({ product }: HeroCardProps) => {
       
               {/* Product Description */}
               <p className="text-gray-600 text-sm dark:text-gray-300">
-                {truncateString(productData.product_description, 30)}
+                {truncateString(productData.product_description, 20)}
               </p>
       
               {/* Footer (Price & Date) */}
@@ -87,9 +88,9 @@ const HeroCard = ({ product }: HeroCardProps) => {
                 <span className="font-semibold md:text-lg text-dark dark:text-gray-100">
                   Shs: {productData.product_price ? Number(productData.product_price).toFixed(2) : "loading.."}
                 </span>
-                <time dateTime={new Date(productData._creationTime).toISOString()}>
+                {/* <time dateTime={new Date(productData._creationTime).toISOString()}>
                   {new Date(productData._creationTime).toLocaleDateString()}
-                </time>
+                </time> */}
               </div>
             </div>
 
