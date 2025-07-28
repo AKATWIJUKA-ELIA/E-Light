@@ -1,12 +1,10 @@
 "use client";
 import React from 'react'
-import DataTable  from "@/components/DataTable"
-import useGetProductsByOwner from '@/hooks/useGetProductsByOwner';
-import { useAppSelector } from '@/hooks';
+import DataTable  from "@/sudoComponents/DataTable"
+import useGetAllProducts from "@/hooks/useGetAllProducts";
 
 const Approved = () => {
-        const User = useAppSelector((state)=>state.user.user)
-        const { data: products, } = useGetProductsByOwner(User?.User_id||'');
+        const { data: products, } = useGetAllProducts();
         const newProducts = products?.filter(product => product.approved)
   return (
     <div className='mt-20' >

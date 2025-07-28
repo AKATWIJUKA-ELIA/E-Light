@@ -1,5 +1,5 @@
 "use client";
-import { AppSidebar } from "@/adminComponents/app-sidebar";
+import { AppSidebar } from "@/sudoComponents/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
