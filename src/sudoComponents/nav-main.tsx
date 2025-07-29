@@ -2,8 +2,9 @@
 
 import {Rocket, type LucideIcon } from "lucide-react"
 import { IoBagCheckOutline  } from "react-icons/io5";
-import {LayoutDashboardIcon,HomeIcon,CreditCard,SquarePlus,Rows4,Newspaper
-        // Users,HandCoins,SquareStack,User
+import {LayoutDashboardIcon,HomeIcon,CreditCard,SquarePlus,Rows4,Newspaper,
+        Users,
+        // HandCoins,SquareStack,User
 
 } from "lucide-react"
 
@@ -55,6 +56,11 @@ export function NavMain() {
                         link:"/sudo/pending",
                 },
                 {
+                        title: "Customers",
+                        icon: Users     as LucideIcon,
+                        link:"/sudo/customers",
+                },
+                {
                         title: "Transactions",
                         icon: CreditCard   as LucideIcon,
                         link:"/sudo/payment-methods",
@@ -70,6 +76,7 @@ export function NavMain() {
                         icon: Newspaper      as LucideIcon,
                         link:"/sudo/newsletter",
                 },
+
                
                 
                 
