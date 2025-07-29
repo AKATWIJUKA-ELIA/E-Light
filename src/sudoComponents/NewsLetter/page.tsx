@@ -11,7 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Send, Save, Eye, Users, Mail, Calendar, FileText, Plus, X, Upload, BarChart3 } from "lucide-react"
+import { Send, Save, Users, Mail, Calendar, FileText, Plus, X, Clock, BarChart3 } from "lucide-react"
+import { api } from "../../../convex/_generated/api"
+import { useQuery } from "convex/react"
+
 
 interface Newsletter {
   id: string
@@ -34,6 +37,7 @@ interface EmailList {
 
 export default function NewsletterAdmin() {
   const [activeTab, setActiveTab] = useState("compose")
+  const subscribers = useQuery(api.NewsLetter.getSubscribers)
   const [newsletter, setNewsletter] = useState({
     subject: "",
     content: "",
@@ -43,7 +47,7 @@ export default function NewsletterAdmin() {
     {
       id: "1",
       name: "All Subscribers",
-      emails: ["user1@example.com", "user2@example.com", "user3@example.com"],
+      emails: subscribers ? subscribers.map((s) => s.email) : [],
       tags: ["general"],
     },
     {
@@ -74,10 +78,10 @@ export default function NewsletterAdmin() {
       createdAt: new Date("2024-01-20"),
     },
   ])
+  
   const [previewMode, setPreviewMode] = useState(false)
   const [newEmail, setNewEmail] = useState("")
   const [selectedList, setSelectedList] = useState<string>("")
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleSaveDraft = () => {
     const newNewsletter: Newsletter = {
@@ -139,28 +143,6 @@ export default function NewsletterAdmin() {
     }
   }
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file && file.type === "text/csv") {
-      // Simulate CSV parsing
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const text = e.target?.result as string
-        const emails = text
-          .split("\n")
-          .map((line) => line.trim())
-          .filter((email) => email.includes("@"))
-        if (selectedList) {
-          setEmailLists((lists) =>
-            lists.map((list) =>
-              list.id === selectedList ? { ...list, emails: [...new Set([...list.emails, ...emails])] } : list,
-            ),
-          )
-        }
-      }
-      reader.readAsText(file)
-    }
-  }
 
   return (
     <div className="min-h-screen mt-20 bg-gray-50 dark:bg-dark p-6">
@@ -193,21 +175,15 @@ export default function NewsletterAdmin() {
           <TabsContent value="compose" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <Card className="dark:bg-dark" >
+                <Card className="dark:bg-gray-600" >
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       Newsletter Composer
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => setPreviewMode(!previewMode)}>
-                          <Eye className="h-4 w-4 mr-2" />
-                          {previewMode ? "Edit" : "Preview"}
-                        </Button>
-                      </div>
+                      
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {!previewMode ? (
-                      <>
+                    <>
                         <div>
                           <Label htmlFor="subject">Subject Line</Label>
                           <Input
@@ -229,25 +205,12 @@ export default function NewsletterAdmin() {
                           />
                         </div>
                       </>
-                    ) : (
-                      <div className="border rounded-lg p-6 bg-white">
-                        <div className="mb-4 pb-4 border-b">
-                          <h2 className="text-xl font-semibold">{newsletter.subject || "Newsletter Subject"}</h2>
-                          <p className="text-sm text-gray-500">Preview Mode</p>
-                        </div>
-                        <div className="prose max-w-none">
-                          <div className="whitespace-pre-wrap">
-                            {newsletter.content || "Newsletter content will appear here..."}
-                          </div>
-                        </div>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               </div>
 
               <div className="space-y-6">
-                <Card className="dark:bg-dark" >
+                <Card className="dark:bg-gray-600" >
                   <CardHeader>
                     <CardTitle className="text-lg">Recipients</CardTitle>
                     <CardDescription>{newsletter.recipients.length} recipients selected</CardDescription>
@@ -292,7 +255,7 @@ export default function NewsletterAdmin() {
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="dark:bg-gray-600" >
                   <CardHeader>
                     <CardTitle className="text-lg">Actions</CardTitle>
                   </CardHeader>
@@ -309,6 +272,11 @@ export default function NewsletterAdmin() {
                       <Save className="h-4 w-4 mr-2" />
                       Save as Draft
                     </Button>
+
+                    <Button variant="outline" onClick={handleSaveDraft} className="w-full bg-transparent">
+                      <Clock className="h-4 w-4 mr-2" />
+                      Schedule Mail
+                    </Button>
                   </CardContent>
                 </Card>
               </div>
@@ -316,8 +284,8 @@ export default function NewsletterAdmin() {
           </TabsContent>
 
           <TabsContent value="recipients" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="dark:bg-dark" >
+            <div className="grid grid-cols-1 2 gap-6">
+              <Card className="dark:bg-gray-600" >
                 <CardHeader>
                   <CardTitle>Email Lists</CardTitle>
                   <CardDescription>Manage your subscriber lists</CardDescription>
@@ -347,75 +315,11 @@ export default function NewsletterAdmin() {
                 </CardContent>
               </Card>
 
-              <Card className="dark:bg-dark" >
-                <CardHeader>
-                  <CardTitle>Add Subscribers</CardTitle>
-                  <CardDescription>Add new email addresses to your lists</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <Label htmlFor="email-list">Select List</Label>
-                    <select
-                      id="email-list"
-                      value={selectedList}
-                      onChange={(e) => setSelectedList(e.target.value)}
-                      className="w-full mt-1 p-2 border rounded-md"
-                    >
-                      <option value="">Choose a list...</option>
-                      {emailLists.map((list) => (
-                        <option key={list.id} value={list.id}>
-                          {list.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="new-email">Email Address</Label>
-                    <div className="flex gap-2 mt-1">
-                      <Input
-                        id="new-email"
-                        type="email"
-                        placeholder="user@example.com"
-                        value={newEmail}
-                        onChange={(e) => setNewEmail(e.target.value)}
-                      />
-                      <Button onClick={addEmailToList} disabled={!newEmail || !selectedList}>
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div>
-                    <Label>Import from CSV</Label>
-                    <div className="mt-2">
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept=".csv"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                      <Button
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={!selectedList}
-                        className="w-full"
-                      >
-                        <Upload className="h-4 w-4 mr-2" />
-                        Upload CSV File
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 
           <TabsContent value="history" className="space-y-6">
-            <Card className="dark:bg-dark">
+            <Card className="dark:bg-gray-800">
               <CardHeader>
                 <CardTitle>Newsletter History</CardTitle>
                 <CardDescription>View and manage your sent newsletters</CardDescription>
@@ -423,7 +327,7 @@ export default function NewsletterAdmin() {
               <CardContent>
                 <div className="space-y-4">
                   {newsletters.map((newsletter) => (
-                    <div key={newsletter.id} className="border rounded-lg p-4">
+                    <div key={newsletter.id} className="border border-gray-100 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="font-medium">{newsletter.subject}</h3>
                         <div className="flex items-center gap-2">
@@ -452,7 +356,7 @@ export default function NewsletterAdmin() {
 
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="dark:bg-dark" >
+              <Card className="dark:bg-gray-600" >
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Total Sent</CardTitle>
                 </CardHeader>
@@ -462,7 +366,7 @@ export default function NewsletterAdmin() {
                 </CardContent>
               </Card>
 
-              <Card className="dark:bg-dark"  >
+              <Card className="dark:bg-gray-600"  >
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Total Subscribers</CardTitle>
                 </CardHeader>
@@ -474,7 +378,7 @@ export default function NewsletterAdmin() {
                 </CardContent>
               </Card>
 
-              <Card className="dark:bg-dark"  >
+              <Card className="dark:bg-gray-600"  >
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Avg. Open Rate</CardTitle>
                 </CardHeader>
@@ -493,7 +397,7 @@ export default function NewsletterAdmin() {
               </Card>
             </div>
 
-            <Card className="dark:bg-dark" >
+            <Card className="dark:bg-gray-600" >
               <CardHeader>
                 <CardTitle>Recent Performance</CardTitle>
                 <CardDescription>Performance metrics for your recent newsletters</CardDescription>

@@ -1,4 +1,4 @@
-import {mutation} from "./_generated/server"
+import {mutation,query} from "./_generated/server"
 import { ConvexError } from "convex/values";
 import {v} from "convex/values"
 
@@ -21,3 +21,11 @@ export const AddEmail = mutation({
           });
         },
       });
+
+      export const getSubscribers = query({
+        args:{},
+        handler: async(ctx)=>{
+                const subscribeList = await ctx.db.query("NewsLetter").collect()
+                return subscribeList
+        }
+      })
