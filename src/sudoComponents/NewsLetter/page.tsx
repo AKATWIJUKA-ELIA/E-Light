@@ -28,12 +28,6 @@ interface Newsletter {
   _creationTime?: number
 }
 
-interface EmailList {
-  id: string
-  name: string
-  emails: string[]
-  tags: string[]
-}
 
 export default function NewsletterAdmin() {
   const [activeTab, setActiveTab] = useState("compose")
