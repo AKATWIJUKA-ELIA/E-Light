@@ -153,5 +153,6 @@ NewsLetterStorage: defineTable({
         ),
         scheduledTime: v.optional(v.number()),
         DateSent: v.optional(v.number()),
+        receipients: v.array(v.string()),
 })
 });
