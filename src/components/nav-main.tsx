@@ -47,17 +47,17 @@ export function NavMain() {
                 },
 
         ]
-        if(user?.role === "admin"){
+        if(user?.role === "seller"){
                         items.push(
                                 {
-                        title: "AdminDashBoard",
+                        title: "Sellers DashBoard",
                         icon: LayoutDashboardIcon  as LucideIcon,
                         link:"/admin",
                 },
                         )
                 }
 
-                if(user?.role === "sudo"){
+                if(user?.role === "admin"){
                         items.push(
                                 {
                         title: "Sudo DashBoard",
