@@ -67,7 +67,7 @@ export function NavMain() {
                 },
                 
                 {
-                        title: "Boost ",
+                        title: "Boosts ",
                         icon: Rocket   as LucideIcon,
                         link:"/sudo/boost",
                 },
