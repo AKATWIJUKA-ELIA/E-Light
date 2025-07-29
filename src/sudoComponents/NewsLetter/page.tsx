@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, } from "react"
+import { useEffect, useState, } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,21 +11,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Send, Save, Users, Mail, Calendar, FileText, Plus, X, Clock, BarChart3 } from "lucide-react"
+import { Send,  Users, Mail, Calendar, FileText, Plus, X,  BarChart3 } from "lucide-react"
 import { api } from "../../../convex/_generated/api"
 import { useQuery } from "convex/react"
+import useSaveNewsLetter from "@/hooks/useSaveNewsLetter"
 
 
 interface Newsletter {
-  id: string
+        _id?: string
   subject: string
   content: string
   recipients: string[]
-  status: "draft" | "sent" | "scheduled"
-  createdAt: Date
-  sentAt?: Date
-  openRate?: number
-  clickRate?: number
+  status: "draft" | "sent" | "scheduled" | "failed" | "bounced"
+  DateSent?: Date
+  scheduledTime?: Date
+  _creationTime?: number
 }
 
 interface EmailList {
@@ -37,17 +37,32 @@ interface EmailList {
 
 export default function NewsletterAdmin() {
   const [activeTab, setActiveTab] = useState("compose")
+  const [subscriberlist, setSubscriberlist] = useState<string[]>()
   const subscribers = useQuery(api.NewsLetter.getSubscribers)
+  const fetchnewsLetters = useQuery(api.NewsLetter.getNewsLetters)
+  const { save } = useSaveNewsLetter()
+
+
+  useEffect(() => {
+        if(subscribers && subscribers.length > 0) {
+                  console.log("Subscribers:", subscribers)
+                  setSubscriberlist(subscribers.map((subscriber) => subscriber.email))
+                   console.log("subscriberlist:", subscriberlist)
+        }
+  },[subscribers])
+
   const [newsletter, setNewsletter] = useState({
     subject: "",
     content: "",
     recipients: [] as string[],
+    status: "draft",
+    scheduledTime: undefined 
   })
   const [emailLists, setEmailLists] = useState<EmailList[]>([
     {
       id: "1",
       name: "All Subscribers",
-      emails: subscribers ? subscribers.map((s) => s.email) : [],
+      emails: subscriberlist  || [],
       tags: ["general"],
     },
     {
@@ -57,74 +72,38 @@ export default function NewsletterAdmin() {
       tags: ["premium", "paid"],
     },
   ])
-  const [newsletters, setNewsletters] = useState<Newsletter[]>([
-    {
-      id: "1",
-      subject: "Welcome to Our Platform!",
-      content: "Thank you for joining us...",
-      recipients: ["user1@example.com", "user2@example.com"],
-      status: "sent",
-      createdAt: new Date("2024-01-15"),
-      sentAt: new Date("2024-01-15"),
-      openRate: 85,
-      clickRate: 12,
-    },
-    {
-      id: "2",
-      subject: "Monthly Update - January",
-      content: "Here are the latest updates...",
-      recipients: ["user1@example.com"],
-      status: "draft",
-      createdAt: new Date("2024-01-20"),
-    },
-  ])
-  
-  const [previewMode, setPreviewMode] = useState(false)
-  const [newEmail, setNewEmail] = useState("")
-  const [selectedList, setSelectedList] = useState<string>("")
+  const [newsletters, setNewsletters] = useState<Newsletter[]>([])
 
-  const handleSaveDraft = () => {
-    const newNewsletter: Newsletter = {
-      id: Date.now().toString(),
+  useEffect(()=>{
+        if(fetchnewsLetters && fetchnewsLetters.length > 0) {
+          console.log("Fetched Newsletters:", fetchnewsLetters)
+          setNewsletters(fetchnewsLetters.map((newsletter) => ({
+                subject: newsletter.subject,
+                content: newsletter.content,
+                recipients: newsletter.receipients,
+                status: newsletter.status,
+                DateSent: newsletter.DateSent ? new Date(newsletter.DateSent) : undefined,
+                scheduledTime: newsletter.scheduledTime ? new Date(newsletter.scheduledTime) : undefined,
+          })))
+        }
+  },[fetchnewsLetters])
+  
+
+
+  const handleSaveLetter = () => {
+    const newNewsletter = {
       subject: newsletter.subject,
       content: newsletter.content,
       recipients: newsletter.recipients,
-      status: "draft",
-      createdAt: new Date(),
+      status: "draft" as "draft"| "sent" | "scheduled" | "failed" | "bounced",
+      scheduledTime: newsletter.scheduledTime ? new Date(newsletter.scheduledTime) : undefined,
     }
-    setNewsletters([newNewsletter, ...newsletters])
-    // Show success message
+    save(newNewsletter)
     alert("Newsletter saved as draft!")
   }
 
-  const handleSendNewsletter = () => {
-    if (!newsletter.subject || !newsletter.content || newsletter.recipients.length === 0) {
-      alert("Please fill in all fields and select recipients")
-      return
-    }
 
-    const newNewsletter: Newsletter = {
-      id: Date.now().toString(),
-      subject: newsletter.subject,
-      content: newsletter.content,
-      recipients: newsletter.recipients,
-      status: "sent",
-      createdAt: new Date(),
-      sentAt: new Date(),
-    }
-    setNewsletters([newNewsletter, ...newsletters])
-    setNewsletter({ subject: "", content: "", recipients: [] })
-    alert(`Newsletter sent to ${newsletter.recipients.length} recipients!`)
-  }
 
-  const addEmailToList = () => {
-    if (newEmail && selectedList) {
-      setEmailLists((lists) =>
-        lists.map((list) => (list.id === selectedList ? { ...list, emails: [...list.emails, newEmail] } : list)),
-      )
-      setNewEmail("")
-    }
-  }
 
   const removeEmailFromRecipients = (email: string) => {
     setNewsletter((prev) => ({
@@ -133,12 +112,11 @@ export default function NewsletterAdmin() {
     }))
   }
 
-  const addListToRecipients = (listId: string) => {
-    const list = emailLists.find((l) => l.id === listId)
+  const addListToRecipients = (list: string[]) => {
     if (list) {
       setNewsletter((prev) => ({
         ...prev,
-        recipients: [...new Set([...prev.recipients, ...list.emails])],
+        recipients: [...new Set([...prev.recipients, ...list])],
       }))
     }
   }
@@ -220,17 +198,19 @@ export default function NewsletterAdmin() {
                       <div>
                         <Label className="text-sm font-medium">Email Lists</Label>
                         <div className="mt-2 space-y-2">
-                          {emailLists.map((list) => (
-                            <div key={list.id} className="flex items-center justify-between p-2 border rounded">
+                          
+                            <div  className="flex items-center justify-between p-2 border rounded">
                               <div>
-                                <p className="font-medium text-sm">{list.name}</p>
-                                <p className="text-xs text-gray-500">{list.emails.length} emails</p>
+                                <p className="font-medium text-sm">All Subscribers</p>
+                                <p className="text-xs text-gray-500">{subscriberlist?.length} emails</p>
                               </div>
-                              <Button size="sm" variant="outline" onClick={() => addListToRecipients(list.id)}>
+                              <Button size="sm" variant="outline" 
+                              onClick={() => addListToRecipients(subscriberlist||[])}
+                              >
                                 <Plus className="h-3 w-3" />
                               </Button>
                             </div>
-                          ))}
+                         
                         </div>
                       </div>
 
@@ -261,21 +241,12 @@ export default function NewsletterAdmin() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button
-                      onClick={handleSendNewsletter}
+                    onClick={handleSaveLetter} 
                       className="w-full"
                       disabled={!newsletter.subject || !newsletter.content || newsletter.recipients.length === 0}
                     >
                       <Send className="h-4 w-4 mr-2" />
-                      Send Newsletter
-                    </Button>
-                    <Button variant="outline" onClick={handleSaveDraft} className="w-full bg-transparent">
-                      <Save className="h-4 w-4 mr-2" />
-                      Save as Draft
-                    </Button>
-
-                    <Button variant="outline" onClick={handleSaveDraft} className="w-full bg-transparent">
-                      <Clock className="h-4 w-4 mr-2" />
-                      Schedule Mail
+                      Save and Send Newsletter
                     </Button>
                   </CardContent>
                 </Card>
@@ -292,22 +263,11 @@ export default function NewsletterAdmin() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {emailLists.map((list) => (
-                      <div key={list.id} className="border rounded-lg p-4">
+                    {subscriberlist?.map((list,index) => (
+                      <div key={index} className="border rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-medium">{list.name}</h3>
-                          <Badge variant="secondary">{list.emails.length} emails</Badge>
-                        </div>
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {list.tags.map((tag) => (
-                            <Badge key={tag} variant="outline" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          {list.emails.slice(0, 3).join(", ")}
-                          {list.emails.length > 3 && ` +${list.emails.length - 3} more`}
+                          <h3 className="font-medium">{list}</h3>
+                          <Badge variant="secondary">{list} emails</Badge>
                         </div>
                       </div>
                     ))}
@@ -327,7 +287,7 @@ export default function NewsletterAdmin() {
               <CardContent>
                 <div className="space-y-4">
                   {newsletters.map((newsletter) => (
-                    <div key={newsletter.id} className="border border-gray-100 rounded-lg p-4">
+                    <div key={newsletter._id} className="border border-gray-100 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="font-medium">{newsletter.subject}</h3>
                         <div className="flex items-center gap-2">
@@ -344,8 +304,8 @@ export default function NewsletterAdmin() {
                       </div>
                       <p className="text-sm text-gray-600 mb-2">{newsletter.content.substring(0, 100)}...</p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>Created: {newsletter.createdAt.toLocaleDateString()}</span>
-                        {newsletter.sentAt && <span>Sent: {newsletter.sentAt.toLocaleDateString()}</span>}
+                        <span>Created: {newsletter._creationTime?.toLocaleString()}</span>
+                        {newsletter.DateSent && <span>Sent: {newsletter.DateSent.toLocaleDateString()}</span>}
                       </div>
                     </div>
                   ))}
@@ -378,23 +338,6 @@ export default function NewsletterAdmin() {
                 </CardContent>
               </Card>
 
-              <Card className="dark:bg-gray-600"  >
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Avg. Open Rate</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {newsletters.filter((n) => n.openRate).length > 0
-                      ? Math.round(
-                          newsletters.filter((n) => n.openRate).reduce((acc, n) => acc + (n.openRate || 0), 0) /
-                            newsletters.filter((n) => n.openRate).length,
-                        )
-                      : 0}
-                    %
-                  </div>
-                  <p className="text-xs text-gray-500">average open rate</p>
-                </CardContent>
-              </Card>
             </div>
 
             <Card className="dark:bg-gray-600" >
@@ -405,17 +348,14 @@ export default function NewsletterAdmin() {
               <CardContent>
                 <div className="space-y-4">
                   {newsletters
-                    .filter((n) => n.status === "sent" && n.openRate)
+                    .filter((n) => n.status === "sent" )
                     .map((newsletter) => (
-                      <div key={newsletter.id} className="flex items-center justify-between p-3 border rounded">
+                      <div key={newsletter._id} className="flex items-center justify-between p-3 border rounded">
                         <div>
                           <p className="font-medium text-sm">{newsletter.subject}</p>
                           <p className="text-xs text-gray-500">Sent to {newsletter.recipients.length} recipients</p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm font-medium">{newsletter.openRate}% opened</p>
-                          <p className="text-xs text-gray-500">{newsletter.clickRate}% clicked</p>
-                        </div>
+                        
                       </div>
                     ))}
                 </div>
