@@ -58,20 +58,7 @@ export default function NewsletterAdmin() {
     status: "draft",
     scheduledTime: undefined 
   })
-  const [emailLists, setEmailLists] = useState<EmailList[]>([
-    {
-      id: "1",
-      name: "All Subscribers",
-      emails: subscriberlist  || [],
-      tags: ["general"],
-    },
-    {
-      id: "2",
-      name: "Premium Users",
-      emails: ["premium1@example.com", "premium2@example.com"],
-      tags: ["premium", "paid"],
-    },
-  ])
+
   const [newsletters, setNewsletters] = useState<Newsletter[]>([])
 
   useEffect(()=>{
@@ -332,7 +319,7 @@ export default function NewsletterAdmin() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {emailLists.reduce((acc, list) => acc + list.emails.length, 0)}
+                    {subscribers?.reduce((acc, list) => acc + list.email.length, 0)}
                   </div>
                   <p className="text-xs text-gray-500">active subscribers</p>
                 </CardContent>
