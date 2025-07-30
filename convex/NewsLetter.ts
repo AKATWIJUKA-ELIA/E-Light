@@ -97,3 +97,18 @@ export const AddEmail = mutation({
                 });
         }
         })
+
+        export const DeleteSubscriber = mutation({
+                args:{email: v.string()},
+                handler: async (ctx, args) => {
+                        const { email } = args;
+                        const exisiting = await ctx.db.query("NewsLetter")
+                        .withIndex("by_email", (q) => q.eq("email", email))
+                        .unique();
+                        if (!exisiting) {
+                                return { success: false, message: "Subscriber not found" };
+                        }
+                        await ctx.db.delete(exisiting._id);
+                        return { success: true, message: "Subscriber deleted successfully" };
+                }
+        })
