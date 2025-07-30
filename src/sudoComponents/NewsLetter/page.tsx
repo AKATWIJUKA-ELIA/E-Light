@@ -15,17 +15,29 @@ import { Send,  Users, Mail, Calendar, FileText, Plus, X,  BarChart3 } from "luc
 import { api } from "../../../convex/_generated/api"
 import { useQuery } from "convex/react"
 import useSaveNewsLetter from "@/hooks/useSaveNewsLetter"
+import { formatDate } from "@/lib/helpers"
 
 
-interface Newsletter {
-        _id?: string
-  subject: string
-  content: string
-  recipients: string[]
-  status: "draft" | "sent" | "scheduled" | "failed" | "bounced"
-  DateSent?: Date
-  scheduledTime?: Date
-  _creationTime?: number
+// interface Newsletter {
+//         _id?: string
+//   subject: string
+//   content: string
+//   recipients: string[]
+//   status: "sent" | "scheduled" | "failed" | "bounced"|"pending"
+//   DateSent?: Date
+//   scheduledTime?: Date
+//   _creationTime?: number
+// }
+
+interface newNewsletter {
+        _id: string
+        subject: string
+        content: string
+        recipients: string[]
+        status: "sent" | "scheduled" | "failed" | "bounced"|"pending"
+        DateSent?: Date
+        scheduledTime?: Date
+        _creationTime: number
 }
 
 
@@ -49,11 +61,11 @@ export default function NewsletterAdmin() {
     subject: "",
     content: "",
     recipients: [] as string[],
-    status: "draft",
+    status: "pending",
     scheduledTime: undefined 
   })
 
-  const [newsletters, setNewsletters] = useState<Newsletter[]>([])
+  const [newsletters, setNewsletters] = useState<newNewsletter[]>([])
 
   useEffect(()=>{
         if(fetchnewsLetters && fetchnewsLetters.length > 0) {
@@ -65,6 +77,8 @@ export default function NewsletterAdmin() {
                 status: newsletter.status,
                 DateSent: newsletter.DateSent ? new Date(newsletter.DateSent) : undefined,
                 scheduledTime: newsletter.scheduledTime ? new Date(newsletter.scheduledTime) : undefined,
+                _id: newsletter._id,
+                _creationTime: newsletter._creationTime || Date.now()
           })))
         }
   },[fetchnewsLetters])
@@ -76,11 +90,11 @@ export default function NewsletterAdmin() {
       subject: newsletter.subject,
       content: newsletter.content,
       recipients: newsletter.recipients,
-      status: "draft" as "draft"| "sent" | "scheduled" | "failed" | "bounced",
+      status: "pending" as "pending"| "sent" | "scheduled" | "failed" | "bounced",
       scheduledTime: newsletter.scheduledTime ? new Date(newsletter.scheduledTime) : undefined,
     }
     save(newNewsletter)
-    alert("Newsletter saved as draft!")
+    alert("Newsletter saved as pending!")
   }
 
 
@@ -285,7 +299,7 @@ export default function NewsletterAdmin() {
                       </div>
                       <p className="text-sm text-gray-600 mb-2">{newsletter.content.substring(0, 100)}...</p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>Created: {newsletter._creationTime?.toLocaleString()}</span>
+                        <span>Created: { formatDate(newsletter._creationTime)}</span>
                         {newsletter.DateSent && <span>Sent: {newsletter.DateSent.toLocaleDateString()}</span>}
                       </div>
                     </div>
