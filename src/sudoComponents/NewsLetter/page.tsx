@@ -16,6 +16,7 @@ import { api } from "../../../convex/_generated/api"
 import { useQuery } from "convex/react"
 import useSaveNewsLetter from "@/hooks/useSaveNewsLetter"
 import { formatDate } from "@/lib/helpers"
+import { useNotification } from "@/app/NotificationContext"
 
 
 // interface Newsletter {
@@ -47,6 +48,7 @@ export default function NewsletterAdmin() {
   const subscribers = useQuery(api.NewsLetter.getSubscribers)
   const fetchnewsLetters = useQuery(api.NewsLetter.getNewsLetters)
   const { save } = useSaveNewsLetter()
+  const {setNotification} = useNotification()
 
 
   useEffect(() => {
@@ -57,12 +59,18 @@ export default function NewsletterAdmin() {
         }
   },[subscribers])
 
-  const [newsletter, setNewsletter] = useState({
+  const [newsletter, setNewsletter] = useState<{
+    subject: string
+    content: string
+    recipients: string[]
+    status: "pending"
+    scheduledTime: Date
+  }>({
     subject: "",
     content: "",
-    recipients: [] as string[],
+    recipients: [],
     status: "pending",
-    scheduledTime: undefined 
+    scheduledTime: new Date()  
   })
 
   const [newsletters, setNewsletters] = useState<newNewsletter[]>([])
@@ -86,19 +94,35 @@ export default function NewsletterAdmin() {
 
 
   const handleSaveLetter = () => {
+        if(newsletter.scheduledTime && newsletter.scheduledTime < new Date()) {
+                setNotification({
+                        status: "error",
+                        message: "Scheduled time must be in the future",
+                })
+         
+          return
+
+        }
     const newNewsletter = {
       subject: newsletter.subject,
       content: newsletter.content,
       recipients: newsletter.recipients,
       status: "pending" as "pending"| "sent" | "scheduled" | "failed" | "bounced",
-      scheduledTime: newsletter.scheduledTime ? new Date(newsletter.scheduledTime) : undefined,
+      scheduledTime: newsletter.scheduledTime ,
     }
     save(newNewsletter)
-    alert("Newsletter saved as pending!")
+    setNotification({
+                        status: "success",
+                        message: "Newsletter saved successfully",
+                })
+    setNewsletter({
+      subject: "",
+      content: "",
+      recipients: [],
+      status: "pending",
+      scheduledTime: new Date()
+    })
   }
-
-
-
 
   const removeEmailFromRecipients = (email: string) => {
     setNewsletter((prev) => ({
@@ -167,6 +191,7 @@ export default function NewsletterAdmin() {
                             className="mt-1"
                           />
                         </div>
+
                         <div>
                           <Label htmlFor="content">Content</Label>
                           <Textarea
@@ -174,8 +199,47 @@ export default function NewsletterAdmin() {
                             placeholder="Write your newsletter content here..."
                             value={newsletter.content}
                             onChange={(e) => setNewsletter((prev) => ({ ...prev, content: e.target.value }))}
-                            className="mt-1 min-h-[400px]"
+                            className="mt-1 h-[300px]"
                           />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="scheduledTime">Schedule Time</Label>
+                         <Input
+                         id="scheduledTime"
+                        type="datetime-local"
+                        required
+                        min={new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16)}
+                        value={newsletter.scheduledTime
+                        ? new Date(newsletter.scheduledTime.getTime() - newsletter.scheduledTime.getTimezoneOffset() * 60000)
+                                .toISOString().slice(0, 16)
+                        : ""
+                        }
+                        onChange={(e) => {
+                        if (!e.target.value) {
+                        setNewsletter((prev) => ({ ...prev, scheduledTime: new Date() }));
+                        return;
+                        }
+                        
+                        // Create date in local timezone
+                        const localDate = new Date(e.target.value);
+                        
+                        // Check if it's in the future
+                        if (localDate < new Date()) {
+                        setNotification({
+                        status: "error",
+                        message: "Scheduled time must be in the future",
+                })
+                        return;
+                        }
+                        
+                        setNewsletter((prev) => ({
+                        ...prev,
+                        scheduledTime: localDate
+                        }));
+                        }}
+                        className="mt-1"
+                        />
                         </div>
                       </>
                   </CardContent>
@@ -238,7 +302,7 @@ export default function NewsletterAdmin() {
                     <Button
                     onClick={handleSaveLetter} 
                       className="w-full"
-                      disabled={!newsletter.subject || !newsletter.content || newsletter.recipients.length === 0}
+                      disabled={!newsletter.subject || !newsletter.content || newsletter.recipients.length === 0 ||newsletter.scheduledTime === undefined}
                     >
                       <Send className="h-4 w-4 mr-2" />
                       Save and Send Newsletter
@@ -276,7 +340,14 @@ export default function NewsletterAdmin() {
           <TabsContent value="history" className="space-y-6">
             <Card className="dark:bg-gray-800">
               <CardHeader>
-                <CardTitle>Newsletter History</CardTitle>
+                <CardTitle>Newsletter History 
+                         {newsletters && (
+                            <Badge variant="outline">
+                              <Mail className="h-3 w-3 mr-1" />
+                              {newsletters.length}
+                            </Badge>
+                          )}
+                </CardTitle>
                 <CardDescription>View and manage your sent newsletters</CardDescription>
               </CardHeader>
               <CardContent>
@@ -289,19 +360,22 @@ export default function NewsletterAdmin() {
                           <Badge variant={newsletter.status === "sent" ? "default" : "secondary"}>
                             {newsletter.status}
                           </Badge>
-                          {newsletter.status === "sent" && (
-                            <Badge variant="outline">
-                              <Mail className="h-3 w-3 mr-1" />
-                              {newsletter.recipients.length}
-                            </Badge>
-                          )}
+                          
                         </div>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">{newsletter.content.substring(0, 100)}...</p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>Created: { formatDate(newsletter._creationTime)}</span>
-                        {newsletter.DateSent && <span>Sent: {newsletter.DateSent.toLocaleDateString()}</span>}
                       </div>
+                       <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span>scheduled: { formatDate(newsletter.scheduledTime ? newsletter.scheduledTime.getTime() : 0)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span>Date Sent: {  formatDate(newsletter.DateSent ? newsletter.DateSent.getTime() : 0)}</span>
+                      </div>
+                      {newsletter.recipients && <span>Receipients: [ {newsletter.recipients.join(",  ")} ]</span>}
+
+                       
                     </div>
                   ))}
                 </div>

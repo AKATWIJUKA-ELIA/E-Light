@@ -5,6 +5,7 @@ import { internal, api } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import {generateProductEmailHTML} from "../src/EmailTemplates/ProductRecommendations";
 import {AccountDeletion} from "../src/EmailTemplates/AccountDeletion";
+import {CreateNewsLetter} from "../src/EmailTemplates/NewsLetter"
 
 export const DeleteUnVerifiedUsers = internalMutation({
   args: {},
@@ -160,7 +161,7 @@ export const SendNewsLetter = internalAction({
         args:{},
         handler:async(ctx)=>{
                 const newsletters = await ctx.runQuery(api.NewsLetter.getNewsLetters)
-                const newsletterToSend = newsletters.filter((letter)=>letter.scheduledTime?letter.scheduledTime:0<=Date.now() && letter.status==="pending" )
+                const newsletterToSend = newsletters.filter((letter)=>letter.scheduledTime<=Date.now() && letter.status==="pending" )
                 
                 for( const newsletter of newsletterToSend){
                         const receivers = newsletter.receipients
@@ -168,10 +169,16 @@ export const SendNewsLetter = internalAction({
                                 await ctx.runMutation(api.sendEmail.sendEmail, {
                                         receiverEmail: receiver,
                                         subject: newsletter.subject,
-                                        html: newsletter.content,
+                                        html: CreateNewsLetter(newsletter.content),
                                         department:"ShopCheap",
-            });
-        }
+                                });
+                        }
+                        await ctx.runMutation(api.NewsLetter.updateNewsLetter, {
+                                ...newsletter,
+                                _id: newsletter._id,
+                                status: "sent",
+                                DateSent: Date.now(),
+                        });
                 }
                 
         }
@@ -202,6 +209,12 @@ crons.interval(
   "Delete UnVerified Users",
   { hours: 24 },
   internal.crons.DeleteUnVerifiedUsers,
+  {}
+);
+crons.interval(
+  "Send NewsLetter",
+  { minutes: 1 },
+  internal.crons.SendNewsLetter,
   {}
 );
 export default crons;

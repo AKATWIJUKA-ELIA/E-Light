@@ -8,7 +8,7 @@ interface Newsletter {
   recipients: string[]
   status: "pending" | "sent" | "scheduled" | "failed" | "bounced"
   DateSent?: Date | number
-  scheduledTime?: Date | number
+  scheduledTime: Date | number
 }
 const useSaveNewsLetter= ()=>{
         const SaveNewsLetter = useMutation(api.NewsLetter.CreateNewsLetter);
