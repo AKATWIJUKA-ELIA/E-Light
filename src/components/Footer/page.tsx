@@ -184,7 +184,6 @@ setTimeout(() => {
               <div className=" flex p-4 space-y-3">
                 <Link href="/" className="block text-gray-600 hover:text-orange-400 dark:text-gray-300 dark:hover:text-orange-300">
                   <div className='flex rounded-md ml-5'>
-                                <Link href="/">
                                 <Image 
                                  src="/images/Logo1.png"
                                   alt='logo'
@@ -192,8 +191,6 @@ setTimeout(() => {
                                     height="100"
                                     className=' h-12'
                                     />
-                                
-                                </Link>
                         </div>
                 </Link>
                 

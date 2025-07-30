@@ -151,7 +151,7 @@ NewsLetterStorage: defineTable({
                 v.literal("pending")
                 
         ),
-        scheduledTime: v.optional(v.number()),
+        scheduledTime: v.number(),
         DateSent: v.optional(v.number()),
         receipients: v.array(v.string()),
 })
