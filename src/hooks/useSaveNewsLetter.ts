@@ -6,7 +6,7 @@ interface Newsletter {
   subject: string
   content: string
   recipients: string[]
-  status: "draft" | "sent" | "scheduled" | "failed" | "bounced"
+  status: "pending" | "sent" | "scheduled" | "failed" | "bounced"
   DateSent?: Date | number
   scheduledTime?: Date | number
 }

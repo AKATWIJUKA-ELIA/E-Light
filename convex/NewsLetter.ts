@@ -35,7 +35,7 @@ export const AddEmail = mutation({
                 content: v.string(),
                 recipients: v.array(v.string()),
                status: v.union(
-                v.literal("draft"),
+                v.literal("pending"),
                 v.literal("sent"),
                 v.literal("scheduled"),
                 v.literal("failed"),

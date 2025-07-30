@@ -156,6 +156,28 @@ export const SendRecommendedProducts = internalAction({
   }
 })
 
+export const SendNewsLetter = internalAction({
+        args:{},
+        handler:async(ctx)=>{
+                const newsletters = await ctx.runQuery(api.NewsLetter.getNewsLetters)
+                const newsletterToSend = newsletters.filter((letter)=>letter.scheduledTime?letter.scheduledTime:0<=Date.now() && letter.status==="pending" )
+                
+                for( const newsletter of newsletterToSend){
+                        const receivers = newsletter.receipients
+                        for (const receiver of receivers) {
+                                await ctx.runMutation(api.sendEmail.sendEmail, {
+                                        receiverEmail: receiver,
+                                        subject: newsletter.subject,
+                                        html: newsletter.content,
+                                        department:"ShopCheap",
+            });
+        }
+                }
+                
+        }
+
+})
+
 // Register cron jobs
 const crons = cronJobs();
 crons.interval(
