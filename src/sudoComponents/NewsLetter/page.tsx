@@ -64,13 +64,13 @@ export default function NewsletterAdmin() {
     content: string
     recipients: string[]
     status: "pending"
-    scheduledTime: Date | undefined
+    scheduledTime: Date
   }>({
     subject: "",
     content: "",
     recipients: [],
     status: "pending",
-    scheduledTime: undefined 
+    scheduledTime: new Date()  
   })
 
   const [newsletters, setNewsletters] = useState<newNewsletter[]>([])
@@ -108,7 +108,7 @@ export default function NewsletterAdmin() {
       content: newsletter.content,
       recipients: newsletter.recipients,
       status: "pending" as "pending"| "sent" | "scheduled" | "failed" | "bounced",
-      scheduledTime: newsletter.scheduledTime ? new Date(newsletter.scheduledTime) : undefined,
+      scheduledTime: newsletter.scheduledTime ,
     }
     save(newNewsletter)
     setNotification({
@@ -120,7 +120,7 @@ export default function NewsletterAdmin() {
       content: "",
       recipients: [],
       status: "pending",
-      scheduledTime: undefined
+      scheduledTime: new Date()
     })
   }
 
@@ -217,7 +217,7 @@ export default function NewsletterAdmin() {
                         }
                         onChange={(e) => {
                         if (!e.target.value) {
-                        setNewsletter((prev) => ({ ...prev, scheduledTime: undefined }));
+                        setNewsletter((prev) => ({ ...prev, scheduledTime: new Date() }));
                         return;
                         }
                         

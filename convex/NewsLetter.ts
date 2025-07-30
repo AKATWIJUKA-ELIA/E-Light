@@ -41,7 +41,7 @@ export const AddEmail = mutation({
                 v.literal("failed"),
                 v.literal("bounced"),
         ),
-                scheduledTime: v.optional(v.number()),
+                scheduledTime: v.number(),
                 DateSent: v.optional(v.number()),
         },
         handler: async (ctx, args) => {
@@ -65,3 +65,35 @@ export const AddEmail = mutation({
           return newsletters
         }
         });
+
+        export const updateNewsLetter = mutation({
+        args: {
+          _id: v.id("NewsLetterStorage"),
+          subject: v.optional(v.string()),
+          content: v.optional(v.string()),
+          receipients: v.optional(v.array(v.string())),
+          status: v.optional(
+            v.union(
+              v.literal("pending"),
+              v.literal("sent"),
+              v.literal("scheduled"),
+              v.literal("failed"),
+              v.literal("bounced")
+            )
+          ),
+          scheduledTime: v.optional(v.number()),
+          DateSent: v.optional(v.number()),
+          _creationTime: v.optional(v.number()),
+        },
+        handler:async (ctx, args) => {
+                const { _id, subject, content, receipients, status, scheduledTime, DateSent } = args;
+                await ctx.db.patch(_id, {
+                        subject,
+                        content,
+                        receipients:receipients,
+                        status,
+                        scheduledTime,
+                        DateSent
+                });
+        }
+        })
