@@ -20,7 +20,7 @@ import {
 
 // import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/sudoComponents/nav-main"
-import { NavSecondary } from "@/sudoComponents/nav-secondary"
+// import { NavSecondary } from "@/sudoComponents/nav-secondary"
 import { NavUser } from "@/sudoComponents/nav-user"
 import {
   Sidebar,
@@ -157,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain  />
         {/* <NavDocuments items={data.documents} /> */}
-        <NavSecondary items={data.navSecondary} className="mt-5" />
+        {/* <NavSecondary items={data.navSecondary} className="mt-5" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

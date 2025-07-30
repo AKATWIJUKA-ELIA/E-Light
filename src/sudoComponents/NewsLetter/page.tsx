@@ -326,7 +326,7 @@ export default function NewsletterAdmin() {
                       <div key={index} className="border rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-medium">{list}</h3>
-                          <Badge variant="secondary">{list} emails</Badge>
+                          <Badge variant="secondary">{list} </Badge>
                         </div>
                       </div>
                     ))}
