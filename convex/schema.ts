@@ -144,11 +144,11 @@ NewsLetterStorage: defineTable({
         subject: v.string(),
         content: v.string(),
         status: v.union(
-                v.literal("draft"),
                 v.literal("sent"),
                 v.literal("scheduled"),
                 v.literal("failed"),
                 v.literal("bounced"),
+                v.literal("pending")
                 
         ),
         scheduledTime: v.optional(v.number()),
