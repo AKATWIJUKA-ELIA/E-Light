@@ -11,12 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Send,  Users, Mail, Calendar, FileText, Plus, X,  BarChart3 } from "lucide-react"
+import { Send,  Users, Mail, Calendar, FileText, Plus, X,  BarChart3, Trash2 } from "lucide-react"
 import { api } from "../../../convex/_generated/api"
 import { useQuery } from "convex/react"
 import useSaveNewsLetter from "@/hooks/useSaveNewsLetter"
 import { formatDate } from "@/lib/helpers"
 import { useNotification } from "@/app/NotificationContext"
+import useDeleteSubscriber  from "@/hooks/useDeleteSubscriber"
 
 
 // interface Newsletter {
@@ -49,6 +50,7 @@ export default function NewsletterAdmin() {
   const fetchnewsLetters = useQuery(api.NewsLetter.getNewsLetters)
   const { save } = useSaveNewsLetter()
   const {setNotification} = useNotification()
+  const {handleDelete} = useDeleteSubscriber()
 
 
   useEffect(() => {
@@ -90,8 +92,23 @@ export default function NewsletterAdmin() {
           })))
         }
   },[fetchnewsLetters])
-  
 
+  const RemoveEmail =(email: string) => {
+        handleDelete(email)
+          .then((data) => {
+                if(!data.success){
+                        setNotification({
+                  status: "error",
+                  message: data.message,
+                })
+                }
+                setNotification({
+                  status: "success",
+                  message: `Subscriber ${email} deleted successfully`,
+                })
+                
+          })
+  }
 
   const handleSaveLetter = () => {
         if(newsletter.scheduledTime && newsletter.scheduledTime < new Date()) {
@@ -150,7 +167,7 @@ export default function NewsletterAdmin() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="compose" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Compose
@@ -162,10 +179,6 @@ export default function NewsletterAdmin() {
             <TabsTrigger value="history" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               History
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" />
-              Analytics
             </TabsTrigger>
           </TabsList>
 
@@ -326,7 +339,10 @@ export default function NewsletterAdmin() {
                       <div key={index} className="border rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-medium">{list}</h3>
-                          <Badge variant="secondary">{list} </Badge>
+                          <Button variant="destructive" className="hover:bg-red-700"
+                          onClick={()=>RemoveEmail(list)}
+                          > <Trash2/>
+                          </Button>
                         </div>
                       </div>
                     ))}
@@ -383,54 +399,6 @@ export default function NewsletterAdmin() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="dark:bg-gray-600" >
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Total Sent</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{newsletters.filter((n) => n.status === "sent").length}</div>
-                  <p className="text-xs text-gray-500">newsletters sent</p>
-                </CardContent>
-              </Card>
-
-              <Card className="dark:bg-gray-600"  >
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Total Subscribers</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {subscribers?.reduce((acc, list) => acc + list.email.length, 0)}
-                  </div>
-                  <p className="text-xs text-gray-500">active subscribers</p>
-                </CardContent>
-              </Card>
-
-            </div>
-
-            <Card className="dark:bg-gray-600" >
-              <CardHeader>
-                <CardTitle>Recent Performance</CardTitle>
-                <CardDescription>Performance metrics for your recent newsletters</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {newsletters
-                    .filter((n) => n.status === "sent" )
-                    .map((newsletter) => (
-                      <div key={newsletter._id} className="flex items-center justify-between p-3 border rounded">
-                        <div>
-                          <p className="font-medium text-sm">{newsletter.subject}</p>
-                          <p className="text-xs text-gray-500">Sent to {newsletter.recipients.length} recipients</p>
-                        </div>
-                        
-                      </div>
-                    ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
     </div>
