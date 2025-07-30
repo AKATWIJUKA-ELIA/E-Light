@@ -340,7 +340,14 @@ export default function NewsletterAdmin() {
           <TabsContent value="history" className="space-y-6">
             <Card className="dark:bg-gray-800">
               <CardHeader>
-                <CardTitle>Newsletter History</CardTitle>
+                <CardTitle>Newsletter History 
+                         {newsletters && (
+                            <Badge variant="outline">
+                              <Mail className="h-3 w-3 mr-1" />
+                              {newsletters.length}
+                            </Badge>
+                          )}
+                </CardTitle>
                 <CardDescription>View and manage your sent newsletters</CardDescription>
               </CardHeader>
               <CardContent>
@@ -353,19 +360,22 @@ export default function NewsletterAdmin() {
                           <Badge variant={newsletter.status === "sent" ? "default" : "secondary"}>
                             {newsletter.status}
                           </Badge>
-                          {newsletter.status === "sent" && (
-                            <Badge variant="outline">
-                              <Mail className="h-3 w-3 mr-1" />
-                              {newsletter.recipients.length}
-                            </Badge>
-                          )}
+                          
                         </div>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">{newsletter.content.substring(0, 100)}...</p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>Created: { formatDate(newsletter._creationTime)}</span>
-                        {newsletter.DateSent && <span>Sent: {newsletter.DateSent.toLocaleDateString()}</span>}
                       </div>
+                       <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span>scheduled: { formatDate(newsletter.scheduledTime ? newsletter.scheduledTime.getTime() : 0)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span>Date Sent: {  formatDate(newsletter.DateSent ? newsletter.DateSent.getTime() : 0)}</span>
+                      </div>
+                      {newsletter.recipients && <span>Receipients: [ {newsletter.recipients.join(",  ")} ]</span>}
+
+                       
                     </div>
                   ))}
                 </div>
