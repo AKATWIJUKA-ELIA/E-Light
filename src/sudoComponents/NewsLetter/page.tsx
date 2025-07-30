@@ -18,16 +18,16 @@ import useSaveNewsLetter from "@/hooks/useSaveNewsLetter"
 import { formatDate } from "@/lib/helpers"
 
 
-interface Newsletter {
-        _id?: string
-  subject: string
-  content: string
-  recipients: string[]
-  status: "sent" | "scheduled" | "failed" | "bounced"|"pending"
-  DateSent?: Date
-  scheduledTime?: Date
-  _creationTime?: number
-}
+// interface Newsletter {
+//         _id?: string
+//   subject: string
+//   content: string
+//   recipients: string[]
+//   status: "sent" | "scheduled" | "failed" | "bounced"|"pending"
+//   DateSent?: Date
+//   scheduledTime?: Date
+//   _creationTime?: number
+// }
 
 interface newNewsletter {
         _id: string
