@@ -165,6 +165,7 @@ export const IncreaseCart = mutation({
                                 department: "ShopCheap",
                           });
                         }
+                        
                         await ctx.db.delete(item._id);
                   })
                   
