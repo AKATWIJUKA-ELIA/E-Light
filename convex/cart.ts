@@ -125,6 +125,17 @@ export const IncreaseCart = mutation({
                                   const newproduct = await ctx.runQuery(api.products.getProduct, { id: item.product_id});
                                   const customer = await ctx.runQuery(api.users.GetCustomerById, { id: args.userId });
 
+                                await ctx.runMutation(api.transactions.CreateTransaction,{
+                                        Transaction: {
+                                                order_id: newOrder,
+                                                user_id: args.userId,
+                                                amount: item.quantity * Number((await ctx.db.get(item.product_id))?.product_price),
+                                                status: "pending",
+                                                payment_method: "other",
+                                                type: "purchase",
+                                                reference: `Order-${newOrder}`,           
+                                        }
+                                })
                                 await ctx.runMutation(api.sendEmail.sendEmail, {
                                 receiverEmail: (await ctx.db.get(args.userId as Id<"customers">))?.email || "",
                                 subject: "New Order Received",
@@ -165,7 +176,7 @@ export const IncreaseCart = mutation({
                                 department: "ShopCheap",
                           });
                         }
-                        
+
                         await ctx.db.delete(item._id);
                   })
                   

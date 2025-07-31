@@ -159,7 +159,7 @@ transactions: defineTable({
   user_id: v.id("customers"),
   order_id: v.optional(v.id("orders")),
   amount: v.number(),
-  currency: v.string(),
+  currency: v.optional(v.string()),
   status: v.union(
       v.literal("pending"),
       v.literal("completed"),
