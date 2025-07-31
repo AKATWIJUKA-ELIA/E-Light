@@ -3,6 +3,8 @@ import { Id } from "./_generated/dataModel";
 import {action, internalQuery, mutation, query} from "./_generated/server"
 import {v} from "convex/values"
 import {newOrderCreationEmailHTML} from "../src/EmailTemplates/OrderCreationEmail";
+import {generateStatusChangeEmailHTML, User} from "../src/EmailTemplates/OrderStatusChange";
+import { Product } from "../src/EmailTemplates/ProductRecommendations";
 
 
 export const createCart = mutation({
@@ -120,6 +122,29 @@ export const IncreaseCart = mutation({
                         });
 
                         if (product && Seller) {
+                                  const newproduct = await ctx.runQuery(api.products.getProduct, { id: item.product_id});
+                                  const customer = await ctx.runQuery(api.users.GetCustomerById, { id: args.userId });
+
+                                await ctx.runMutation(api.sendEmail.sendEmail, {
+                                receiverEmail: (await ctx.db.get(args.userId as Id<"customers">))?.email || "",
+                                subject: "New Order Received",
+                                html: await generateStatusChangeEmailHTML({
+                                  _id: newOrder,
+                                  user_id: args.userId,
+                                  product_id: item.product_id,
+                                  quantity: item.quantity,
+                                  order_status: "pending",
+                                  sellerId: sellerId as Id<"customers">,
+                                  specialInstructions: item.specialInstructions,
+                                  cost: item.quantity * Number((await ctx.db.get(item.product_id))?.product_price),
+                                  _creationTime: Date.now(),
+                                },
+                                newproduct as Product,
+                                customer as User
+                                ),
+                                department: "ShopCheap",
+                          });
+
                           await ctx.runMutation(api.sendEmail.sendEmail, {
                                 receiverEmail: (await ctx.db.get(sellerId as Id<"customers">))?.email || "",
                                 subject: "New Order Created",

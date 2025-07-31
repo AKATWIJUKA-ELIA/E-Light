@@ -1,7 +1,5 @@
 import { Id } from "../../convex/_generated/dataModel";
-import {getProductById} from "@/lib/convex";
-import { formatDate } from "@/lib/helpers";
-import { getUserById } from "@/lib/convex";
+
 export type OrderItem = {
     order_status: "pending" | "confirmed" | "out-for-delivery" | "delivered" | "cancelled";
     _id: Id<"orders">;
@@ -35,10 +33,36 @@ export interface Product {
         }
         _creationTime: number
 }
-
+export interface User {
+        _id: Id<"customers">,
+        username: string,
+        email: string,
+        passwordHash: string,
+        phoneNumber?: string,
+        profilePicture?: string,
+        isVerified: boolean | false,
+        role: string|"",
+        reset_token?:string
+        reset_token_expires:number,
+        updatedAt: number,
+        lastLogin?: number,
+        _creationTime:number,
+}
+export const formatDate = (dateString: number) => {
+        if (dateString ===0) return "N/A";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+  }
 
 export const generateStatusChangeEmailHTML = async (
   Order: OrderItem,
+  product?: Product,
+  Customer?: User
 )=> {
   const companyName = 'ShopCheap'
     const companyLogo="https://cheery-cod-687.convex.cloud/api/storage/143325e4-3c05-4b88-82ba-cbbfa7fcd594"
@@ -83,8 +107,8 @@ export const generateStatusChangeEmailHTML = async (
       message: 'Your order has been cancelled. If you have any questions, please contact us.',
     }
   };
- const product = (await getProductById(Order.product_id as Id<"products">)).product;
- const Customer = await getUserById(Order.user_id as Id<"customers">).then((res) => res.user);
+//  const product = useQuery( api.products.getProduct, { id: Order.product_id } ) ;
+//  const Customer =useQuery( api.users.GetCustomerById, { id: Order.user_id } ) ;
 
   const currentStatus = statusConfig[Order.order_status];
   const totalAmount = Order.cost ? parseFloat(Order.cost.toString()) : 0;
