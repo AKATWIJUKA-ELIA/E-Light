@@ -47,12 +47,12 @@ const conditionalborder = (sponsorship: string) => {
 }
 
 export default function ProductBoost() {
-        const { BoostedProducts } = useBoost()
+        const { AllBoostedProducts } = useBoost()
         const [activeBoosts, setActiveBoosts] = useState<BoostWithInteraction[]>([])
 
 useEffect(() => {
-                setActiveBoosts(BoostedProducts ?? [])
-},[BoostedProducts])
+                setActiveBoosts(AllBoostedProducts ?? [])
+},[AllBoostedProducts])
 
 
   return (
