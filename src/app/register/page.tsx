@@ -433,8 +433,7 @@ export default function SellerRegistration() {
                     <MapPin className="w-4 h-4 mr-1" />
                     Business Address *
                   </Label>
-                  <Input
-                    id="businessAddress"
+                  <Input       id="businessAddress"
                     value={formData.businessAddress}
                     onChange={(e) => handleInputChange("businessAddress", e.target.value)}
                     className={errors.businessAddress ? "border-red-500" : ""}

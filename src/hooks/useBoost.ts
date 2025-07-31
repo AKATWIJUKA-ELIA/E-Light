@@ -10,15 +10,19 @@ const useBoost = () => {
 
 
         const [BoostedProducts, setBoostedProducts] = useState<BoostWithInteraction[]|null>([])
+        const [AllBoostedProducts, setAllBoostedProducts] = useState<BoostWithInteraction[]|null>([])
         const User = useAppSelector((state) => state.user.user);
         const boost = useMutation(api.products.BoostProducts);
-        const ids = useQuery(api.products.getBoostedProductsIds, { user_id: User?.User_id || "" });
+        const ids = useQuery(api.products.getBoostedProductsIdsByUser, { user_id: User?.User_id || "" });
         const interactions = useQuery(api.products.getInteractionsbyProductIds,  { product_ids: ids ?? [] } )
 
+        // Fetching all boosted products for admin or sudo users
+        const allids = useQuery(api.products.getBoostedProductsIds,);
+        const allinteractions = useQuery(api.products.getInteractionsbyProductIds,  { product_ids: allids ?? [] } )
 
         useEffect(() => {
 //   console.log("Merged Interactions:", interactions);
-}, [interactions]);
+}, [interactions,]);
 
         const { data: products } = useGetProductsByIds(ids ? ids.flat() : []);
         
@@ -32,6 +36,23 @@ const useBoost = () => {
         setBoostedProducts(boostedProductsWithInteractions||[]);
         }
         }, [interactions,]);
+
+
+                //  Getting all boosted products 
+
+        const { data: newProducts } = useGetProductsByIds(allids ? allids.flat() : []);
+
+        const NewboostedProductsWithInteractions = newProducts?.map((product) => {
+                const interaction = interactions?.find((i) => i.product_id === product?._id);
+                return { ...product, interaction } as BoostWithInteraction;
+        });
+
+        useEffect(() => {
+        if (products) {
+        setAllBoostedProducts(NewboostedProductsWithInteractions||[]);
+        }
+        }, [allinteractions,]);
+
 //   console.log("Fetched Boosts:", boostedProductsWithInteractions);
         const boostProduct = async (boostItem:Boost) =>{
 
@@ -50,6 +71,6 @@ const useBoost = () => {
                         
                 }
         }
-        return { boostProduct,BoostedProducts };
+        return { boostProduct,BoostedProducts,AllBoostedProducts };
 }
 export default useBoost;
