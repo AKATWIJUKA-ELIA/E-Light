@@ -618,7 +618,7 @@ export default function SellerRegistration() {
                 )}
               </div>
             )}
-
+  
             {/* Step 4: Banking Information */}
             {currentStep === 4 && (
               <div className="space-y-6">

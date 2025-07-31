@@ -154,5 +154,36 @@ NewsLetterStorage: defineTable({
         scheduledTime: v.number(),
         DateSent: v.optional(v.number()),
         receipients: v.array(v.string()),
-})
+}),
+transactions: defineTable({
+  user_id: v.id("customers"),
+  order_id: v.optional(v.id("orders")),
+  amount: v.number(),
+  currency: v.string(),
+  status: v.union(
+      v.literal("pending"),
+      v.literal("completed"),
+      v.literal("failed"),
+      v.literal("cancelled"),
+      v.literal("refunded")
+  ),
+  payment_method: v.union(
+      v.literal("card"),
+      v.literal("mobile-money"),
+      v.literal("bank-transfer"),
+      v.literal("cash"),
+      v.literal("other")
+  ),
+  reference: v.optional(v.string()),
+  type:  v.union(
+      v.literal("purchase"),
+      v.literal("refund"),
+      v.literal("becoming-a-seller"),
+      v.literal("other")
+  ),
+}).index("by_user_id", ["user_id"])
+  .index("by_order_id", ["order_id"])
+  .index("by_status", ["status"])
+  .index("by_order_and_user", ["order_id", "user_id"])
+  .index("by_payment_method", ["payment_method"]),
 });
