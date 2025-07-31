@@ -644,11 +644,25 @@ export const getImageUrl = query({
                 }
         })
 
-export const getBoostedProductsIds = query({
+export const getBoostedProductsIdsByUser = query({
         args: { user_id: v.string() },
         handler: async (ctx, args) => {
                 const boosts = await ctx.db.query("boosts")
                 .withIndex("by_user_and_status",(q)=>(q.eq("user_id",args.user_id)))
+                .collect();
+                const boostedProductsIds = await Promise.all(
+                        boosts.map(async (boost) => {
+                                return boost.product_id;
+                        })
+                );
+                return boostedProductsIds.filter((id) => id !== null);
+        }
+});
+
+export const getBoostedProductsIds= query({
+        args: {},
+        handler: async (ctx, args) => {
+                const boosts = await ctx.db.query("boosts")
                 .collect();
                 const boostedProductsIds = await Promise.all(
                         boosts.map(async (boost) => {

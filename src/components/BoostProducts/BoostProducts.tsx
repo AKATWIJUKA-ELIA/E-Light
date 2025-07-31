@@ -510,7 +510,7 @@ useEffect(() => {
                       </div>
                     </div>
 
-                    <Button disabled={ !activeBoosts || activeBoosts.length ===0} className="w-full" size="lg" onClick={handleBoostProduct} >
+                    <Button disabled={ !selectedBoost } className="w-full" size="lg" onClick={handleBoostProduct} >
                       <Zap className="w-4 h-4 mr-2" />
                       Start Boost Campaign
                     </Button>
