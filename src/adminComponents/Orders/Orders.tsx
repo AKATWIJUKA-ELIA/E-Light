@@ -34,7 +34,7 @@ import { formatDate } from "@/lib/helpers"
 import { Order} from "@/lib/utils"
 import { CardHeader } from "@/adminComponents/ui/card"
 import { truncateString } from "@/lib/helpers"
-import {getUserById,getOrderById,UpdateOrder} from "@/lib/convex"
+import {getUserById,getOrderById,UpdateOrder,getProductById} from "@/lib/convex"
 import { Id } from "../../../convex/_generated/dataModel"
 import { useNotification } from "@/app/NotificationContext"
 import { useSendMail } from '@/hooks/useSendMail';
@@ -113,6 +113,7 @@ export default function OrdersTracking() {
         sellerId: order.order.sellerId,
     };
     const user = await GetUser(order.order.user_id as Id<"customers">)
+    const newProduct = (await getProductById(updatedOrder.product_id)).product
 
     return await UpdateOrder(updatedOrder).then(async (res) => {
         if (!res.success) {
@@ -129,7 +130,10 @@ export default function OrdersTracking() {
         });
         // Send An Email To the user if user is valid
         if (user !== null && user.email ) {
-            sendEmail(user.email, `Your order has been marked as ${newStatus}`, await generateStatusChangeEmailHTML(updatedOrder),"shopcheap" );
+            sendEmail(user.email, `Your order has been marked as ${newStatus}`, await generateStatusChangeEmailHTML({
+                ...updatedOrder,
+                _creationTime: order.order?._creationTime || Date.now(),
+            },newProduct,user),"shopcheap" );
         }
 
         return true;

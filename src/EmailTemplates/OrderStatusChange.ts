@@ -10,7 +10,7 @@ export type OrderItem = {
     quantity: number;
     user_id: Id<"customers">;
     updatedAt?: number;
-    _creationTime?: number;
+    _creationTime: number;
 };
 export interface Product {
         _id: Id<"products">,
@@ -193,7 +193,7 @@ export const generateStatusChangeEmailHTML = async (
                                                     </td>
                                                     <td style="width: 50%; text-align: right;">
                                                         <p style="margin: 0; color: #6c757d; font-size: 14px; font-weight: 500;">Date Ordered</p>
-                                                        <p style="margin: 5px 0 0 0; color: #2c3e50; font-size: 16px; font-weight: bold;">${formatDate(Order._creationTime?Order._creationTime:0)}</p>
+                                                        <p style="margin: 5px 0 0 0; color: #2c3e50; font-size: 16px; font-weight: bold;">${formatDate(Order._creationTime)}</p>
                                                     </td>
                                                 </tr>
                                             </table>
